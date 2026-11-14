@@ -175,6 +175,8 @@ def load_v3_data():
         files['rr_player_fit'] = pd.read_csv(OUTPUTS_V3 / "RR_PLAYER_FIT.csv")
         files['rr_retention'] = pd.read_csv(OUTPUTS_V3 / "RR_RETENTION_SCENARIOS.csv")
         files['rr_budget'] = pd.read_csv(OUTPUTS_V3 / "RR_AUCTION_BUDGET_SCENARIOS.csv")
+        files['crosswalk'] = pd.read_csv(OUTPUTS_V3 / "RR_PLAYER_ID_CROSSWALK.csv")
+        files['apps'] = pd.read_csv(OUTPUTS_V3 / "rr_2026_player_appearances.csv")
         
         # Reference
         files['user_brief'] = pd.read_csv(REF_DIR / "rr_2026_user_brief.csv")
@@ -434,10 +436,12 @@ elif section == "Section 2: Rajasthan Royals 2026 Analysis":
     **Empirical Season Review:** Grounded in all 16 matches (14 league matches, Eliminator victory, Qualifier 2) and 3,788 ball-by-ball delivery records in IPL 2026.
     """)
 
-    rr_tab1, rr_tab2, rr_tab3, rr_tab4, rr_tab5 = st.tabs([
+    rr_tab1, rr_tab2, rr_tab3, rr_tab4, rr_tab5, rr_tab6, rr_tab7 = st.tabs([
         "🏆 RR Season Overview & Results",
         "🏏 RR Batting Performance",
         "🎯 RR Bowling Performance",
+        "⚡ Phase-Wise Team Performance",
+        "📋 Audited Player Appearances",
         "👥 Player Contribution Breakdown",
         "⚖️ Empirical Strengths & Weaknesses"
     ])
@@ -482,7 +486,7 @@ elif section == "Section 2: Rajasthan Royals 2026 Analysis":
             st.info("""
             **Reconciliation Confirmation:**
             - **Vaibhav Sooryavanshi:** 776 runs, average 48.50, strike rate 237.31, 72 sixes (Orange Cap & MVP).
-            - **Dhruv Jurel:** 515 runs, average 32.19, strike rate 154.65.
+            - **Dhruv Jurel:** 515 runs, average 36.79 (14 dismissals, 2 not outs; partner run-outs excluded), strike rate 154.65.
             - **Yashasvi Jaiswal:** 427 runs, average 30.50, strike rate 152.50.
             - **Donovan Ferreira:** 317 runs, average 35.22, strike rate 179.10.
             - **Riyan Parag:** 309 runs, average 23.77, strike rate 157.65.
@@ -516,15 +520,32 @@ elif section == "Section 2: Rajasthan Royals 2026 Analysis":
             - **Ravindra Jadeja:** 10 wickets in 12 matches.
             - **Sandeep Sharma:** 5 wickets in 6 matches.
             - **Tushar Deshpande:** 4 wickets in 7 matches.
+            - **Adam Milne:** 1 match appeared, 3.2 overs, 0 wickets.
             - *Note on Bowling Economy:* Quarantined from derived totals due to categorical extras representation; user-provided economy figures preserved under reference files.
             """)
 
     with rr_tab4:
+        st.markdown("### ⚡ RR Phase-Wise Performance (IPL 2026)")
+        st.markdown("""
+        **Data Contract Compliance:** Runs represent audited `team_batter_runs` off the bat. Full team totals including extras are quarantined.
+        """)
+        if 'rr_phase' in data and not data['rr_phase'].empty:
+            st.dataframe(data['rr_phase'], use_container_width=True, hide_index=True)
+
+    with rr_tab5:
+        st.markdown("### 📋 Audited Player Appearances (16 RR Matches)")
+        st.markdown("""
+        **Appearance Semantics:** Distinguishes matches listed in match squad sheet, starting XI, impact sub entries, matches with batting participation, and matches with bowling participation.
+        """)
+        if 'apps' in data and not data['apps'].empty:
+            st.dataframe(data['apps'], use_container_width=True, hide_index=True)
+
+    with rr_tab6:
         st.markdown("### 👥 Player Contribution Share & Salary Efficiency")
         if 'rr_contrib' in data and not data['rr_contrib'].empty:
             st.dataframe(data['rr_contrib'], use_container_width=True, hide_index=True)
 
-    with rr_tab5:
+    with rr_tab7:
         st.markdown("### ⚖️ Empirical Strengths & Weaknesses")
         col_st, col_wk = st.columns(2)
         with col_st:
@@ -700,8 +721,9 @@ elif section == "Section 5: Data & Model Transparency":
     **Governance Disclosure:** Full data provenance, model validation status, and strict quarantine documentation.
     """)
 
-    dt_tab1, dt_tab2, dt_tab3 = st.tabs([
+    dt_tab1, dt_tab2, dt_tab3, dt_tab4 = st.tabs([
         "📋 Match Cohort & Provenance",
+        "🏷️ Player ID Crosswalk & Resolution",
         "✅ Model Validation Status",
         "🚫 Quarantined Metrics & Known Limitations"
     ])
@@ -715,6 +737,15 @@ elif section == "Section 5: Data & Model Transparency":
             st.dataframe(cm.head(50), use_container_width=True, hide_index=True)
 
     with dt_tab2:
+        st.markdown("### 🏷️ Verified Player Entity Crosswalk (40 Resolved Entities)")
+        st.markdown("""
+        **Resolution Standard:** Canonical dataset player IDs are used for all database and model joins. 
+        Resolves historical reference ID discrepancies (e.g. Sooryavanshi 50284 vs 281699; Jurel 7260 vs 7825; Archer 3298 vs 3262) and eliminates candidate misattributions.
+        """)
+        if 'crosswalk' in data and not data['crosswalk'].empty:
+            st.dataframe(data['crosswalk'], use_container_width=True, hide_index=True)
+
+    with dt_tab3:
         st.markdown("### ✅ V3 Model Validation Status Matrix")
         model_matrix = [
             {'Model': 'Dual Pre-Delivery Pressure Model', 'Type': 'Ex-Ante Proxy', 'Validation Split': 'Chronological Match', 'Leakage': 'Zero', 'Status': 'PRODUCTION_VALIDATED'},
@@ -727,7 +758,7 @@ elif section == "Section 5: Data & Model Transparency":
         ]
         st.dataframe(pd.DataFrame(model_matrix), use_container_width=True, hide_index=True)
 
-    with dt_tab3:
+    with dt_tab4:
         st.markdown("### 🚫 Quarantined Metrics & Limitations")
         st.markdown("""
         1. **`extras1_runs` is Categorical (Codes 1–7):** Never summed as runs.

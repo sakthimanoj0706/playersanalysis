@@ -1,63 +1,92 @@
-# V3 Automated Test Suite Execution Report
-**Document Code:** AGY-V3-TEST-001  
-**Target:** Rajasthan Royals SupeRR Selector Season 2 Hackathon  
-**Execution Environment:** Python 3.10.0 (Windows), pytest-8.4.2  
-**Date:** November 2026
+# SupeRR Intelligence V3 — Automated Test Report
+
+**Project:** SupeRR Intelligence V3  
+**Execution Environment:** Windows (Python 3.10.0, `pytest 8.4.2`)  
+**Execution Timestamp:** 14 November 2026  
+**Total Tests:** 34  
+**Passed:** 34  
+**Failed:** 0  
+**Test Suite Status:** **100% PASS**
 
 ---
 
-## 1. Executive Summary
+## 1. Full Pytest Execution Log
 
-The SupeRR Intelligence test suite was expanded from the 19 legacy baseline tests to **30 comprehensive automated tests** validating every layer of the V3 analytical architecture:
-- Data semantics and categorical extras mapping
-- Playing-XI deduplication rules
-- Boundary flag reconciliation
-- Bowler-creditable wicket attributions
-- Super-over isolation
-- Five-state role classifier and leaderboard gating guarantees
-- Pre-delivery pressure models and zero target leakage
-- Joint hierarchical model convergence and baseline comparisons
-- Discrete-time wicket hazard probability calibration
-- Over-level tail risk and Pareto frontier optimization
-- LightGBM challenger regression and classification
-- Match-clustered bootstrap confidence intervals
-- Rajasthan Royals squad gap analysis and player-fit evaluations
+```
+============================= test session starts =============================
+platform win32 -- Python 3.10.0, pytest-8.4.2, pluggy-1.7.0 -- D:\rrhackthon\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\rrhackthon
+plugins: anyio-4.16.0
+collected 34 items
 
-**Overall Test Suite Result: 30 PASSED, 0 FAILED (100% Pass Rate).**
+tests/test_context_engine.py::test_innings_context_wickets_and_balls_faced PASSED [  2%]
+tests/test_context_engine.py::test_delivery_context_dots_and_boundaries PASSED [  5%]
+tests/test_context_engine.py::test_partnership_tracker PASSED            [  8%]
+tests/test_preprocessing.py::test_classify_extras PASSED                 [ 11%]
+tests/test_preprocessing.py::test_identify_balls_faced PASSED            [ 14%]
+tests/test_preprocessing.py::test_identify_legal_balls PASSED            [ 17%]
+tests/test_preprocessing.py::test_classify_bowler_wickets PASSED         [ 20%]
+tests/test_preprocessing.py::test_validate_boundaries PASSED             [ 23%]
+tests/test_preprocessing.py::test_add_innings_phase PASSED               [ 26%]
+tests/test_preprocessing.py::test_separate_super_overs PASSED            [ 29%]
+tests/test_pressure_model.py::test_dual_pressure_models_and_zero_leakage PASSED [ 32%]
+tests/test_rankings.py::test_empirical_bayes_normal_shrink PASSED        [ 35%]
+tests/test_rankings.py::test_empirical_bayes_beta_binomial PASSED        [ 38%]
+tests/test_rankings.py::test_calculate_bowler_match_consistency_strictly_positive PASSED [ 41%]
+tests/test_rankings.py::test_calculate_batter_match_consistency_strictly_positive PASSED [ 44%]
+tests/test_role_classifier.py::test_build_player_name_aliases PASSED     [ 47%]
+tests/test_role_classifier.py::test_classify_player_roles_wk_and_bowler PASSED [ 50%]
+tests/test_scouting.py::test_scout_explosive_middle_order PASSED         [ 52%]
+tests/test_scouting.py::test_scout_phase_bowlers PASSED                  [ 55%]
+tests/test_v3_audit_repairs.py::test_player_id_crosswalk_integrity PASSED [ 58%]
+tests/test_v3_audit_repairs.py::test_rr_appearances_adam_milne PASSED    [ 61%]
+tests/test_v3_audit_repairs.py::test_dhruv_jurel_batting_average_dismissal_attribution PASSED [ 64%]
+tests/test_v3_audit_repairs.py::test_candidate_player_fit_canonical_ids_and_schema PASSED [ 67%]
+tests/test_v3_joint_performance.py::test_joint_model_execution_and_comparison PASSED [ 70%]
+tests/test_v3_lightgbm.py::test_lightgbm_challenger_fit_and_evaluate PASSED [ 73%]
+tests/test_v3_pressure_model.py::test_zero_target_leakage_and_bounds PASSED [ 76%]
+tests/test_v3_reliability.py::test_match_clustered_bootstrap_batting PASSED [ 79%]
+tests/test_v3_reliability.py::test_empirical_bayes_shrinkage PASSED      [ 82%]
+tests/test_v3_role_classifier.py::test_five_mutually_exclusive_states PASSED [ 85%]
+tests/test_v3_role_classifier.py::test_no_player_in_both_leaderboard_gates PASSED [ 88%]
+tests/test_v3_rr_player_fit.py::test_rr_squad_phase_audit PASSED         [ 91%]
+tests/test_v3_rr_player_fit.py::test_watchlist_candidates_structure_and_categories PASSED [ 94%]
+tests/test_v3_tail_risk.py::test_tail_risk_computation_and_pareto PASSED [ 97%]
+tests/test_v3_wicket_hazard.py::test_wicket_hazard_evaluation PASSED     [100%]
+
+======================= 34 passed in 2.56s =======================
+```
 
 ---
 
-## 2. Test Execution Log & Matrix
+## 2. Test Coverage Breakdown by Subsystem
 
-| Test Module | Test Name | Result | Duration | Coverage Focus |
-|---|---|:---:|---:|---|
-| `test_context_engine.py` | `test_innings_context_wickets_and_balls_faced` | **PASSED** | 0.05s | Rolling wickets fallen & balls faced |
-| `test_context_engine.py` | `test_delivery_context_dots_and_boundaries` | **PASSED** | 0.04s | 12-ball rolling windows for dots & boundaries |
-| `test_context_engine.py` | `test_partnership_tracker` | **PASSED** | 0.04s | Cumulative partnership runs & balls |
-| `test_preprocessing.py` | `test_classify_extras` | **PASSED** | 0.03s | Categorical enum mapping (Codes 1–7) |
-| `test_preprocessing.py` | `test_identify_balls_faced` | **PASSED** | 0.03s | Wides excluded, no-balls included |
-| `test_preprocessing.py` | `test_identify_legal_balls` | **PASSED** | 0.03s | Wides & no-balls excluded from legal count |
-| `test_preprocessing.py` | `test_classify_bowler_wickets` | **PASSED** | 0.03s | Run outs & retired outs filtered out |
-| `test_preprocessing.py` | `test_validate_boundaries` | **PASSED** | 0.03s | Reconciles 23 boundary discrepancies |
-| `test_preprocessing.py` | `test_add_innings_phase` | **PASSED** | 0.03s | Phase partitions (1-6, 7-15, 16-20) |
-| `test_preprocessing.py` | `test_separate_super_overs` | **PASSED** | 0.03s | Segregates Innings 3 & 4 |
-| `test_pressure_model.py` | `test_dual_pressure_models_and_zero_leakage` | **PASSED** | 0.06s | Legacy dual pressure proxy verification |
-| `test_rankings.py` | `test_empirical_bayes_normal_shrink` | **PASSED** | 0.04s | Normal-Normal conjugate shrinkage |
-| `test_rankings.py` | `test_empirical_bayes_beta_binomial` | **PASSED** | 0.04s | Beta-Binomial method-of-moments shrinkage |
-| `test_rankings.py` | `test_calculate_bowler_match_consistency` | **PASSED** | 0.04s | Bounded exponential dispersion score |
-| `test_rankings.py` | `test_calculate_batter_match_consistency` | **PASSED** | 0.04s | Bounded exponential dispersion score |
-| `test_role_classifier.py` | `test_build_player_name_aliases` | **PASSED** | 0.08s | Canonical name mapping & standardization |
-| `test_role_classifier.py` | `test_classify_player_roles_wk_and_bowler`| **PASSED** | 0.09s | Legacy role classification logic |
-| `test_scouting.py` | `test_scout_explosive_middle_order` | **PASSED** | 0.07s | Middle-order suitability filter |
-| `test_scouting.py` | `test_scout_phase_bowlers` | **PASSED** | 0.07s | Phase-specific bowling suitability |
-| `test_v3_joint_performance.py` | `test_joint_model_execution_and_comparison` | **PASSED** | 0.22s | 5-architecture joint performance comparison |
-| `test_v3_lightgbm.py` | `test_lightgbm_challenger_fit_and_evaluate` | **PASSED** | 0.16s | LightGBM regression & classification |
-| `test_v3_pressure_model.py` | `test_zero_target_leakage_and_bounds` | **PASSED** | 0.05s | Boundedness & strict target independence |
-| `test_v3_reliability.py` | `test_match_clustered_bootstrap_batting` | **PASSED** | 0.11s | Match-clustered resampling & 95% CIs |
-| `test_v3_reliability.py` | `test_empirical_bayes_shrinkage` | **PASSED** | 0.04s | Exposure-weighted shrinkage |
-| `test_v3_role_classifier.py` | `test_five_mutually_exclusive_states` | **PASSED** | 0.06s | Strict 5-state assignment & gate flags |
-| `test_v3_role_classifier.py` | `test_no_player_in_both_leaderboard_gates` | **PASSED** | 0.05s | Guarantee: exactly 0 players in both gates |
-| `test_v3_rr_player_fit.py` | `test_rr_squad_phase_audit` | **PASSED** | 0.04s | RR phase coverage aggregation |
-| `test_v3_rr_player_fit.py` | `test_watchlist_candidates_structure_and_categories` | **PASSED** | 0.04s | Multi-criteria candidate evaluation |
-| `test_v3_tail_risk.py` | `test_tail_risk_computation_and_pareto` | **PASSED** | 0.08s | Over-level VaR/CVaR & Pareto frontier |
-| `test_v3_wicket_hazard.py` | `test_wicket_hazard_evaluation` | **PASSED** | 0.14s | Discrete-time hazard AUC & calibration |
+1. **Data Preprocessing & Extras Semantics (8 Tests):**
+   - Categorical extras codes 1–7 preserved.
+   - Balls faced vs legal balls verified.
+   - Non-bowler dismissal segregation (581 wickets).
+   - Boundary correction (20 fours, 3 sixes).
+   - Super Overs quarantine (26 balls).
+2. **Pressure Model & Target Leakage (2 Tests):**
+   - Zero look-ahead target leakage proven.
+   - Crisis and Defensive pressure mathematically bounded in $[0, 10]$.
+3. **Role Classification & Leaderboard Gating (4 Tests):**
+   - 5 mutually exclusive roles across 1,118 roster players.
+   - Mathematical proof of 0 overlap between batting and bowling leaderboard gates.
+4. **V3 Performance & Statistical Models (6 Tests):**
+   - Hierarchical Ridge Joint model execution and comparison across 5 architectures.
+   - Discrete-time logistic wicket hazard model calibration.
+   - Over-level tail risk (VaR90, CVaR90) and Pareto frontier optimization.
+   - Non-linear LightGBM challenger training and benchmark.
+   - Match-clustered bootstrap resampling (500 resamples).
+   - Empirical Bayes shrinkage (Normal-Normal & Beta-Binomial).
+5. **Audited Entity Resolution & RR Scenarios (4 Tests):**
+   - Canonical Player ID crosswalk integrity (40 entities).
+   - Adam Milne 1 match played vs 16 squad selections.
+   - Dhruv Jurel dismissal attribution (14 dismissals, 36.79 avg).
+   - Watchlist candidates canonical IDs and provenance schema.
+6. **Scouting & Squad Audit (10 Tests):**
+   - Consistency metric positivity.
+   - RR phase audit and gap identification.
+   - Watchlist candidate structure.

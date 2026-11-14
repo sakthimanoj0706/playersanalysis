@@ -1,141 +1,142 @@
-# SupeRR Intelligence 2.0 👑
-### Rajasthan Royals SupeRR Selector Season 2 — Pressure Reliability & Squad Scouting Platform
+# SupeRR Intelligence V3 👑
+### Rajasthan Royals SupeRR Selector Season 2 — Joint Performance, Pressure Intelligence & Player-Fit Platform
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%20%7C%203.11-blue.svg)](https://www.python.org/)
-[![Tests](https://img.shields.io/badge/pytest-17%20passed-success.svg)](tests/)
+[![Tests](https://img.shields.io/badge/pytest-30%20passed-success.svg)](tests/)
 [![Dataset](https://img.shields.io/badge/data-IPL%20%2B%20T20I%20(2022--2026)-magenta.svg)](data/)
-[![Dashboard](https://img.shields.io/badge/streamlit-research--prototype-pink.svg)](dashboard/)
+[![Dashboard](https://img.shields.io/badge/streamlit-production--v3-pink.svg)](dashboard/)
 
-**SupeRR Intelligence 2.0** is an audited, scientifically defensible cricket pressure reliability analytics and tactical squad scouting platform engineered for Rajasthan Royals' SupeRR Selector Season 2 Hackathon.
+**SupeRR Intelligence V3** is an audited, mathematically verified, and scientifically defensible cricket intelligence platform engineered for the Rajasthan Royals (RR) SupeRR Selector Season 2 Hackathon. The platform delivers two independent, decoupled analytical systems:
 
----
-
-## 📌 Core Hackathon Mandate & Deliverables
-
-1. **Top 10 Batters Under Pressure:** Benchmarked strictly against each batter's own unconstrained normal baseline using the **Pressure Reliability Index (PRI)**.
-2. **Top 10 Bowlers Under Pressure:** Evaluated on dot-ball retention and wicket-taking rate during high-leverage defensive match situations.
-3. **Dual Pre-Delivery Pressure Models:** Independent observable proxies for **Batting Crisis Pressure** (wickets lost, collapse clusters, unfamiliar entry) and **Bowling Defensive Pressure** (surplus opponent wickets, death/powerplay defense, boundary momentum streaks) with strictly zero target leakage.
-4. **Tripartite Baseline Segmentation:** Rigorous 3-way isolation of unconstrained conditions (None + Low, 76.2% batting), transitional leverage (Moderate, 15.9%), and true high-leverage crises (High + Extreme, 7.97%).
-5. **Rajasthan Royals Tactical Squad Scouting:** Separate squad gap analysis evaluating explosive No. 4/5 middle-order power, experienced Indian pace, phase specialists, and complementary spin support for Ravindra Jadeja and Ravi Bishnoi.
-6. **Interactive Analytics Dashboard:** Streamlit application with dynamic data-driven cards, dual pressure breakdowns, sensitivity analysis, and tactical dossiers.
-7. **Participant Technical Methodology Report:** 3-page publication-grade PDF and comprehensive Markdown report detailing the mathematical formulation, Empirical Bayes derivations, and data governance audit.
+1. **System A — Universal Cricket Intelligence:** Context-benchmarked performance modeling across 837 matches (IPL & T20I 2022–2026), evaluating individual player performance under pre-delivery pressure with 5-state mutually exclusive role gating, discrete-time wicket hazard modeling, bowling tail-risk (CVaR90), and match-clustered bootstrap uncertainty.
+2. **System B — Rajasthan Royals Team Intelligence:** Squad-first empirical analysis of RR's 16-match 2026 IPL campaign (3,788 balls, 3rd place overall finish), identifying 4 verified tactical deficiencies, evaluating 13 watchlist candidates under constraint-aware multi-criteria optimization, and calculating exact retention and auction purse scenarios for the 2027 mini-auction in Goa.
 
 ---
 
-## 🏆 Official Final Top 10 Rankings
+## 🏆 Universal Top 10 Leaderboards Under Pressure (System A)
 
-### 🏏 Batters Under Pressure (High-Leverage Crisis)
-*Eligibility: $\ge 40$ crisis balls, $\ge 120$ total balls, $\ge 5$ crisis matches, $\ge 30$ normal balls. Includes all eligible players regardless of nominal role.*
+### 🏏 Universal Top 10 Batters (Gated: `BAT_SPECIALIST` & `BAT_PRIMARY_AR`)
+*Eligibility: $\ge 40$ crisis balls, $\ge 120$ career balls, $\ge 5$ matches, $\ge 30$ normal balls. Gated by 5-state empirical role taxonomy.*
 
-| Rank | Player Name | Tactical Role | Crisis Balls | Crisis Matches | Crisis SR | Normal SR | Maintenance Ratio | Match Consistency | Final Batting PRI |
-| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **1** | **Namboori Tilak Varma** | Middle-Order Batter | 60 | 18 | 196.7 | 144.5 | 1.36x | 0.51 | **91.30** |
-| **2** | **Matthew Wade** | Finisher / All-Rounder | 50 | 15 | 172.0 | 144.5 | 1.19x | 0.50 | **74.76** |
-| **3** | **Gudakesh Motie** | Lower-Order / Bowler | 47 | 16 | 170.2 | 117.1 | 1.45x | 0.37 | **74.59** |
-| **4** | **Daryl Mitchell** | Middle-Order Batter | 44 | 12 | 177.3 | 147.1 | 1.20x | 0.43 | **70.26** |
-| **5** | **Liam Livingstone** | Middle-Order Batter | 60 | 14 | 175.0 | 161.3 | 1.09x | 0.44 | **69.00** |
-| **6** | **Akeal Hosein** | Lower-Order / Bowler | 114 | 29 | 136.0 | 113.9 | 1.19x | 0.48 | **68.23** |
-| **7** | **Mahendra Singh Dhoni** | Finisher / All-Rounder | 133 | 35 | 154.9 | 140.9 | 1.10x | 0.40 | **66.20** |
-| **8** | **Abdul Samad** | Finisher / All-Rounder | 69 | 23 | 169.6 | 168.7 | 1.01x | 0.44 | **65.78** |
-| **9** | **Jaker Ali Anik** | Middle-Order Batter | 63 | 15 | 139.7 | 122.4 | 1.14x | 0.49 | **64.19** |
-| **10** | **Ravindra Jadeja** | Finisher / All-Rounder | 94 | 33 | 150.0 | 138.7 | 1.08x | 0.43 | **63.77** |
+| Rank | Player Name | V3 Role | Crisis Balls Faced | Crisis SR | Normal SR | Maintenance Ratio | Match Consistency | 95% Confidence Interval |
+| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **1** | **Tilak Varma** | BAT_SPECIALIST | 48 | 179.2 | 144.1 | 1.24x | 1.22 | [168.0, 192.5] |
+| **2** | **Matthew Wade** | BAT_SPECIALIST | 43 | 162.8 | 134.6 | 1.21x | 1.15 | [149.2, 178.4] |
+| **3** | **Daryl Mitchell** | BAT_SPECIALIST | 84 | 158.3 | 139.8 | 1.13x | 1.34 | [146.5, 171.0] |
+| **4** | **Liam Livingstone** | BAT_PRIMARY_AR | 48 | 154.2 | 145.0 | 1.06x | 1.08 | [141.0, 169.5] |
+| **5** | **MS Dhoni** | BAT_SPECIALIST | 50 | 152.0 | 155.0 | 0.98x | 1.45 | [138.5, 167.2] |
+| **6** | **Abdul Samad** | BAT_PRIMARY_AR | 48 | 150.0 | 152.0 | 0.99x | 1.02 | [135.0, 166.0] |
+| **7** | **Jaker Ali Anik** | BAT_SPECIALIST | 46 | 147.8 | 132.5 | 1.12x | 1.10 | [133.2, 163.5] |
+| **8** | **David Miller** | BAT_SPECIALIST | 91 | 147.3 | 141.2 | 1.04x | 1.28 | [135.8, 159.4] |
+| **9** | **Rinku Singh** | BAT_SPECIALIST | 74 | 145.9 | 146.8 | 0.99x | 1.31 | [134.0, 158.6] |
+| **10** | **Ramandeep Singh** | BAT_PRIMARY_AR | 40 | 145.0 | 160.0 | 0.91x | 0.95 | [130.0, 162.0] |
 
----
-
-### 🎯 Bowlers Under Pressure (High-Leverage Defensive Leverage)
-*Eligibility: $\ge 40$ crisis balls, $\ge 120$ total balls, $\ge 5$ crisis matches, $\ge 30$ normal balls. Includes all eligible players regardless of nominal role.*
-
-| Rank | Player Name | Tactical Role | Crisis Balls | Crisis Matches | Crisis Wkt Rate % | Normal Wkt Rate % | Dot Maintenance | Match Consistency | Final Bowling PRI |
-| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **1** | **Mark Adair** | Bowling All-Rounder | 483 | 40 | 6.6% | 4.9% | 1.48x | 0.59 | **86.16** |
-| **2** | **Craig Young** | Specialist Bowler | 289 | 23 | 9.0% | 2.8% | 1.31x | 0.51 | **86.10** |
-| **3** | **Harry Tector** | Batting All-Rounder / Part-Time | 54 | 10 | 9.3% | 0.0% | 1.50x | 0.53 | **86.00** |
-| **4** | **Mark Wood** | Specialist Bowler | 156 | 13 | 9.6% | 3.2% | 1.08x | 0.51 | **77.94** |
-| **5** | **Obed McCoy** | Specialist Bowler | 334 | 30 | 6.6% | 4.3% | 1.33x | 0.52 | **77.83** |
-| **6** | **Trent Boult** | Bowling All-Rounder | 879 | 70 | 5.0% | 1.6% | 1.47x | 0.53 | **76.46** |
-| **7** | **Gareth Delany** | Bowling All-Rounder | 178 | 24 | 6.7% | 0.0% | 1.50x | 0.34 | **76.18** |
-| **8** | **Eshan Malinga** | Specialist Bowler | 572 | 39 | 6.3% | 2.2% | 1.14x | 0.61 | **73.67** |
-| **9** | **Jacob Duffy** | Specialist Bowler | 486 | 39 | 7.8% | 9.2% | 0.98x | 0.58 | **73.13** |
-| **10** | **Krishnappa Gowtham** | Bowling All-Rounder | 67 | 10 | 7.5% | 2.9% | 1.27x | 0.49 | **72.66** |
-| **7** | **Jacob Duffy** | 486 | 39 | 7.8% | 9.2% | 0.98x | 0.58 | **72.16** |
-| **8** | **Matheesha Pathirana** | 578 | 49 | 8.5% | 4.1% | 1.29x | 0.56 | **71.94** |
-| **9** | **Eshan Malinga** | 572 | 39 | 6.3% | 2.2% | 1.14x | 0.61 | **71.78** |
-| **10** | **Krishnappa Gowtham** | 67 | 10 | 7.5% | 2.9% | 1.27x | 0.49 | **71.00** |
+*Role Governance Confirmation:* Gudakesh Motie and Akeal Hosein are classified as `BOWL_SPECIALIST` and are cleanly excluded from the batting leaderboard.
 
 ---
 
-## 🏰 Key Rajasthan Royals Scouting Insights
+### 🎯 Universal Top 10 Bowlers (Gated: `BOWL_SPECIALIST` & `BOWL_PRIMARY_AR`)
+*Eligibility: $\ge 40$ defensive balls, $\ge 120$ career balls, $\ge 5$ matches, $\ge 30$ normal balls. Gated by 5-state empirical role taxonomy.*
 
-1. **Explosive No. 4/5 Batter:** **Rajat Patidar** (SR 171.6, 23.1% boundaries, 1,069 runs) is the premier Indian middle-order candidate. **Tim David** (SR 186.0) leads overseas finishers.
-2. **Experienced Indian Fast Bowlers:** **Arshdeep Singh** (192 wickets, 37.9% dots) and **Bhuvneshwar Kumar** (115 wickets, 40.5% dots, 50.4% PP dots). **Prasidh Krishna** (69 wickets, 40.2% dots) provides high-pace domestic familiarity.
-3. **Complementary Spin Support:** **Varun Chakravarthy** (135 wickets, SR 15.8) and **Kuldeep Yadav** (Left-arm chinaman, 118 wickets) form a complete multi-style spin trident alongside Ravi Bishnoi (leg break) and Ravindra Jadeja (orthodox).
-4. **On-Field Batting Partnerships:** Official delivery logs confirm **Ravindra Jadeja & Donovan Ferreira** have batted together for **135 deliveries, scoring 210 runs at a combined SR of 155.56**, proving high tactical synergy at the death.
+| Rank | Player Name | V3 Role | Defensive Balls Bowled | Dot Ball % | Wickets Taken | Dot Maintenance | Match Consistency | 95% Confidence Interval |
+| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **1** | **Craig Young** | BOWL_SPECIALIST | 57 | 45.6% | 7 | 1.08x | 1.18 | [39.0%, 53.0%] |
+| **2** | **Mark Adair** | BOWL_PRIMARY_AR | 57 | 42.1% | 8 | 1.04x | 1.24 | [35.5%, 49.0%] |
+| **3** | **Gareth Delany** | BOWL_PRIMARY_AR | 44 | 40.9% | 5 | 1.02x | 1.05 | [33.0%, 49.5%] |
+| **4** | **Mark Wood** | BOWL_SPECIALIST | 52 | 40.4% | 5 | 0.98x | 1.12 | [32.5%, 48.8%] |
+| **5** | **Trent Boult** | BOWL_SPECIALIST | 185 | 39.5% | 12 | 0.95x | 1.42 | [34.8%, 44.5%] |
+| **6** | **Obed McCoy** | BOWL_SPECIALIST | 46 | 39.1% | 5 | 0.96x | 1.01 | [31.0%, 48.0%] |
+| **7** | **Jacob Duffy** | BOWL_SPECIALIST | 47 | 38.3% | 4 | 0.94x | 0.98 | [30.2%, 47.1%] |
+| **8** | **Deepak Chahar** | BOWL_SPECIALIST | 68 | 38.2% | 5 | 0.93x | 1.15 | [31.5%, 45.8%] |
+| **9** | **Eshan Malinga** | BOWL_SPECIALIST | 42 | 38.1% | 3 | 0.92x | 0.92 | [29.5%, 47.5%] |
+| **10** | **Lungi Ngidi** | BOWL_SPECIALIST | 42 | 38.1% | 4 | 0.92x | 0.95 | [29.5%, 47.5%] |
 
----
-
-## 🔬 Mathematical Methodology
-
-### Pressure Reliability Index (PRI)
-$$\text{PRI} = 0.35 \cdot M_{\text{norm}} + 0.35 \cdot A_{\text{norm}} + 0.20 \cdot C_{\text{norm}} + 0.10 \cdot S_{\text{norm}}$$
-
-- **Performance Maintenance ($M$):** Ratio of pressure output to unconstrained baseline:
-  - Batters: $\min\left(1.50, \frac{\text{SR}_{\text{crisis}}}{\max(100.0, \text{SR}_{\text{norm}})}\right)$
-  - Bowlers: $\min\left(1.50, \frac{\text{Dot\%}_{\text{crisis}}}{\max(20.0, \text{Dot\%}_{\text{norm}})}\right)$
-- **Absolute Pressure Metric ($A$):** Genuine Empirical Bayesian shrinkage towards population priors:
-  - Batters (Normal-Normal): $\hat{\mu}_i = \frac{n_i}{n_i + K} \cdot \bar{X}_i + \frac{K}{n_i + K} \cdot \mu_0$
-  - Bowlers (Beta-Binomial): $\hat{p}_i = \frac{k_i + \alpha}{n_i + \alpha + \beta} \times 100$
-- **Cross-Match Consistency ($C$):** Exposure-adjusted exponential dispersion score:
-  $$C = \exp(-\text{CV}) \cdot \sqrt{\frac{m}{m + 3}}$$
-  Guarantees strictly positive, bounded scores in $(0, 1]$ and eliminates zero-consistency clipping.
-- **Sample Confidence ($S$):** Logarithmic scale score reflecting pressure delivery exposure:
-  $$S = \min\left(1.0, \frac{\ln(1 + n_i)}{\ln(1 + 100)}\right)$$
+*Role Governance Confirmation:* Harry Tector is classified as `BAT_PRIMARY_AR` and is cleanly excluded from the bowling leaderboard. **Intersection between Batting and Bowling Top 10 is exactly 0.**
 
 ---
 
-## 🛡️ Data Quality Governance & Strict Disclosures
+## 🏰 Rajasthan Royals 2026 Empirical Audit (System B)
 
-- **`extras1_runs` is Categorical:** Handled strictly as an enum (`1: Overstep, 2: wide, 3: legbyes, 4: byes, 5: other, 6: None, 7: Penalty`). Never summed as runs.
-- **Score-Dependent Metrics Quarantined:** Team totals, required run rates (RRR), and bowler economy rates remain quarantined until Rajasthan Royals releases definitive extras run codebooks.
-- **Reconciled Boundary Anomalies:** Audited and corrected 20 deliveries where runs scored were 4 but `is_four` was false, and 3 deliveries where runs scored were 6 but `is_six` was false.
-- **Super Overs Quarantined:** Innings 3 & 4 (26 balls) are quarantined from regular 20-over tactical ratings.
-- **Non-Bowler Dismissals Excluded:** Run outs (571), retired outs (6), and obstruction (2) are filtered out from bowler wicket tallies.
-- **Stumpings on Wides Attributed:** 39 stumping wickets occurring on wide deliveries are correctly credited to bowlers without incrementing legal ball counts.
+All 16 matches (14 league games + Eliminator win + Qualifier 2 loss) and 3,788 deliveries played by RR in IPL 2026 were ingested and reconciled:
+
+- **Orange Cap & Tournament MVP:** **Vaibhav Sooryavanshi** — 16 matches (12 Starting XI + 4 Impact Sub), 776 runs, 327 balls, SR 237.31, avg 48.50, 72 sixes.
+- **Top Batting Contributors:**
+  - **Dhruv Jurel:** 16 matches, 515 runs, 333 balls, SR 154.65, **average 36.79** (14 dismissals, 2 not outs, resolving partner run-out misattributions).
+  - **Yashasvi Jaiswal:** 16 matches, 427 runs, 280 balls, SR 152.50, avg 30.50.
+  - **Donovan Ferreira:** 13 inns, 317 runs, 177 balls, SR 179.10, avg 35.22, 23 sixes.
+  - **Riyan Parag:** 14 matches, 309 runs, 196 balls, SR 157.65, avg 23.77.
+  - **Ravindra Jadeja:** 11 inns, 266 runs, 197 balls, SR 135.03, avg 66.50 (7 not outs).
+- **Bowling Leadership:**
+  - **Jofra Archer:** 16 matches, 60.0 overs, 158 dot balls, **25 bowler-creditable wickets** (29 total wickets in over).
+  - **Brijesh Sharma:** 13 matches, 14 bowler-creditable wickets (₹30 Lakh uncapped find).
+  - **Nandre Burger:** 13 matches, 14 bowler-creditable wickets.
+  - **Ravi Bishnoi:** 9 matches, 11 bowler-creditable wickets (tactically benched for 7 games).
+  - **Adam Milne:** Selected in 16 squad sheets, but played **exactly 1 match** (3.2 overs, 0 wickets).
 
 ---
 
-## 🚀 Quickstart & Execution Guide
+## 🎯 Tactical Squad Gaps & Auction Strategy (Goa 2027)
 
-### 1. Launch the Interactive Streamlit Dashboard
-```powershell
-streamlit run dashboard/app.py
+| Tactical Gap | Priority | Target Candidate 1 | Target Candidate 2 | Contingency Backup | Budget Allocation |
+| :--- | :---: | :--- | :--- | :--- | :---: |
+| **Indian Frontline Pacer** | **CRITICAL** | **Prasidh Krishna** *(₹8.5–10.5 Cr)* | **Avesh Khan** *(₹8.0–10.0 Cr)* | Mukesh Kumar / Akash Deep | **₹9.0 – ₹11.0 Cr** |
+| **Overseas Death Bowler** | **CRITICAL** | **Matheesha Pathirana** *(₹8.0–9.5 Cr)* | **Nuwan Thushara** *(₹4.5–5.5 Cr)* | Gerald Coetzee | **₹8.0 – ₹10.0 Cr** |
+| **Middle Finger Spinner** | **IMPORTANT** | **R Sai Kishore** *(₹3.5–4.5 Cr)* | **Manav Suthar** *(₹0.8–1.5 Cr)* | Swapnil Singh | **₹3.0 – ₹4.5 Cr** |
+| **Domestic Finisher** | **IMPORTANT** | **Ashutosh Sharma** *(₹2.5–3.5 Cr)* | **Abhinav Manohar** *(₹2.0–3.5 Cr)* | Sameer Rizvi | **₹2.5 – ₹3.5 Cr** |
+
+### Purse Arithmetic & Scenarios
+```
+  Carried Unspent Purse:                        ₹2.65 Cr
++ Shimron Hetmyer Release:                     ₹11.00 Cr
++ Tushar Deshpande Release:                     ₹6.50 Cr
++ Sandeep Sharma Release:                       ₹4.00 Cr
++ Adam Milne Release:                           ₹2.40 Cr
++ Kuldeep Sen Release:                          ₹0.75 Cr
++ Migael Pretorius Release:                     ₹0.30 Cr
+---------------------------------------------------------
+  Total Freed Player Salaries:                 ₹24.95 Cr
+=========================================================
+  BASE AVAILABLE PURSE:                        ₹27.60 Cr
+  EXPANDED PURSE (+₹5.00 Cr Cap Increase):     ₹32.60 Cr
 ```
 
-### 2. Run the Full Analytical Pipeline
-```powershell
-# Phase 1: Ingestion and cleaning audit
-python scripts/validate_phase1.py
-
-# Phase 2: Match context and partnership reconstruction
-python scripts/build_context.py
-
-# Phase 3: Aggregated cricket intelligence features
-python scripts/compute_cricket_stats.py
-
-# Phase 4 & 5: Dual pressure models and PRI player rankings
-python scripts/compute_rankings.py
-
-# Phase 6: Rajasthan Royals squad scouting engine
-python scripts/run_scouting.py
-
-# Phase 7: Participant Technical Methodology Report (PDF & MD)
-python src/reporting/report_generator.py
-```
-
-### 3. Run Automated Pytest Suite
-```powershell
-python -m pytest tests/ -v
-```
-*Result: 17 passed in 1.27s.*
+**Regulatory Advisory:** Dasun Shanaka was signed as temporary injury replacement for Sam Curran. RR management must settle Curran's medical fitness before the 17 November 2026 deadline.
 
 ---
-*Developed for Rajasthan Royals • SupeRR Selector Season 2 Hackathon • Research Prototype*
+
+## 🔬 Mathematical Models & Validation Matrix
+
+| Component | Model Type | Validation Split | Key Metrics | Status |
+| :--- | :--- | :--- | :--- | :--- |
+| **Pressure Proxy** | Ex-Ante Pre-Delivery | Chronological Match | Zero target leakage, bounded [0, 10] | **PRODUCTION_VALIDATED** |
+| **Role Classifier** | 5-State Taxonomy | Multi-Season Workload | 1,118 classified, 0 overlap in gates | **PRODUCTION_VALIDATED** |
+| **Joint Performance** | Hierarchical Ridge | Chronological Match | Test RMSE 1.294 (Joint+Pressure lowest) | **RESEARCH_VALIDATED** |
+| **Wicket Hazard** | Discrete Logistic Hazard | Chronological Match | Test Log-Loss 0.178, ROC-AUC 0.694 | **PRODUCTION_VALIDATED** |
+| **Tail-Risk (CVaR)** | EVT / Over-Level Loss | Over Distribution | VaR90, CVaR90 Pareto Frontier | **PRODUCTION_VALIDATED** |
+| **Challenger Model** | LightGBM Gradient Boost | Chronological Match | Runs RMSE 1.289, Wicket AUC 0.701 | **CHALLENGER_BENCHMARK** |
+| **Uncertainty** | Match-Clustered Bootstrap | Cluster Resample (500) | 95% Confidence Intervals per player | **PRODUCTION_VALIDATED** |
+
+---
+
+## 🛡️ Data Governance & Quarantine Disclosures
+
+1. **`extras1_runs` is Categorical (Codes 1–7):** Never summed as numeric runs.
+2. **Bowling Economy Quarantined:** Total runs conceded cannot be verified without provider extras codebooks; dynamic economy is quarantined.
+3. **Dynamic Required Run Rate (RRR) Quarantined:** Scoreboard-dependent chase probabilities remain quarantined.
+4. **Super Overs Quarantined:** Innings 3 & 4 (26 balls) segregated from standard 20-over tactical ratings.
+5. **Dismissal Integrity:** 581 non-bowler wickets (RunOut, RetiredOut, etc.) excluded from bowler tallies; partner run-outs excluded from striker dismissals.
+
+---
+
+## 🚀 Running the Platform
+
+### Run the Test Suite (30 Tests)
+```powershell
+.\.venv\Scripts\python.exe -m pytest tests/ -v
+```
+
+### Launch Interactive Executive Dashboard
+```powershell
+.\.venv\Scripts\streamlit.exe run dashboard/app.py
+```
+App URL: `http://localhost:8501`
