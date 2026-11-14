@@ -1,0 +1,854 @@
+match_id,comp_id,comp_name,match_format,season,match_date,home_team,away_team,result,win_team_id,deliveries_count,has_super_over,is_dls,status,quarantine_reason
+13511,1331,England in West Indies T20I Series 2022,T20I,2022,2022-01-22,West Indies,England,West Indies Won by 9 Wickets,28.0,224,False,False,INCLUDED,None
+13512,1331,England in West Indies T20I Series 2022,T20I,2022,2022-01-23,West Indies,England,England Won by 1 Run,22.0,252,False,False,INCLUDED,None
+13513,1331,England in West Indies T20I Series 2022,T20I,2022,2022-01-26,West Indies,England,West Indies Won by 20 runs,28.0,252,False,False,INCLUDED,None
+13514,1331,England in West Indies T20I Series 2022,T20I,2022,2022-01-29,West Indies,England,England Won by 34 runs,22.0,253,False,False,INCLUDED,None
+13515,1331,England in West Indies T20I Series 2022,T20I,2022,2022-01-30,West Indies,England,West Indies Won by 17 runs,28.0,254,False,False,INCLUDED,None
+13522,1335,West Indies in India T20I Series 2022,T20I,2022,2022-02-16,India,West Indies,India Won by 6 Wickets,18.0,247,False,False,INCLUDED,None
+13523,1335,West Indies in India T20I Series 2022,T20I,2022,2022-02-18,India,West Indies,India Won by 8 Runs,18.0,257,False,False,INCLUDED,None
+13524,1335,West Indies in India T20I Series 2022,T20I,2022,2022-02-20,India,West Indies,India Won by 17 runs,18.0,251,False,False,INCLUDED,None
+13612,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022,2022-02-11,Australia,Sri Lanka,Australia Won by 20 runs (D/L method),20.0,242,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+13613,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022,2022-02-13,Australia,Sri Lanka,Australia Won the one over Eliminator,20.0,246,False,False,INCLUDED,None
+13614,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022,2022-02-15,Australia,Sri Lanka,Australia Won by 6 Wkts,20.0,227,False,False,INCLUDED,None
+13615,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022,2022-02-18,Australia,Sri Lanka,Australia Won by 6 Wickets,20.0,236,False,False,INCLUDED,None
+13616,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022,2022-02-20,Australia,Sri Lanka,Sri Lanka Won by 5 wickets,27.0,250,False,False,INCLUDED,None
+14094,1358,IPL 2022,T20,2022,2022-03-26,Chennai Super Kings,Kolkata Knight Riders,Kolkata Knight Riders Won by 6 Wkts,8.0,237,False,False,INCLUDED,None
+14095,1358,IPL 2022,T20,2022,2022-03-27,Delhi Capitals,Mumbai Indians,Delhi Capitals Won by 4 Wickets,7.0,239,False,False,INCLUDED,None
+14096,1358,IPL 2022,T20,2022,2022-03-27,Punjab Kings,Royal Challengers Bengaluru,Punjab Kings Won by 5 Wkts,4.0,253,False,False,INCLUDED,None
+14097,1358,IPL 2022,T20,2022,2022-03-28,Gujarat Titans,Lucknow Super Giants,Gujarat Titans Won by 5 Wickets,3508.0,245,False,False,INCLUDED,None
+14098,1358,IPL 2022,T20,2022,2022-03-29,Sunrisers Hyderabad,Rajasthan Royals,Rajasthan Royals Won by 61 Runs,3.0,255,False,False,INCLUDED,None
+14099,1358,IPL 2022,T20,2022,2022-03-30,Royal Challengers Bengaluru,Kolkata Knight Riders,Royal Challengers Bengaluru Won 3 Wkts,5.0,236,False,False,INCLUDED,None
+14100,1358,IPL 2022,T20,2022,2022-03-31,Lucknow Super Giants,Chennai Super Kings,Lucknow Super Giants Won by 6 Wkts,3509.0,252,False,False,INCLUDED,None
+14101,1358,IPL 2022,T20,2022,2022-04-01,Kolkata Knight Riders,Punjab Kings,Kolkata Knight Riders Won by 6 wkts,8.0,210,False,False,INCLUDED,None
+14102,1358,IPL 2022,T20,2022,2022-04-02,Mumbai Indians,Rajasthan Royals,Rajasthan Royals Won by 23 Runs,3.0,256,False,False,INCLUDED,None
+14103,1358,IPL 2022,T20,2022,2022-04-02,Gujarat Titans,Delhi Capitals,Gujarat Titans won by 14 runs,3508.0,247,False,False,INCLUDED,None
+14104,1358,IPL 2022,T20,2022,2022-04-03,Chennai Super Kings,Punjab Kings,Punjab Kings won by 54 runs,4.0,245,False,False,INCLUDED,None
+14105,1358,IPL 2022,T20,2022,2022-04-04,Sunrisers Hyderabad,Lucknow Super Giants,Lucknow Super Giants won by 12 Runs,3509.0,247,False,False,INCLUDED,None
+14106,1358,IPL 2022,T20,2022,2022-04-05,Rajasthan Royals,Royal Challengers Bengaluru,Royal Challengers Bengaluru Won by 4 Wkts,5.0,247,False,False,INCLUDED,None
+14107,1358,IPL 2022,T20,2022,2022-04-06,Kolkata Knight Riders,Mumbai Indians,Kolkata Knight Riders Won by 5 Wickets,8.0,218,False,False,INCLUDED,None
+14108,1358,IPL 2022,T20,2022,2022-04-07,Lucknow Super Giants,Delhi Capitals,Lucknow Super Giants won by 6 wickets,3509.0,246,False,False,INCLUDED,None
+14109,1358,IPL 2022,T20,2022,2022-04-08,Punjab Kings,Gujarat Titans,Gujarat Titans won by 6 wickets,3508.0,247,False,False,INCLUDED,None
+14110,1358,IPL 2022,T20,2022,2022-04-09,Chennai Super Kings,Sunrisers Hyderabad,Sunrisers Hyderabad won by 8 wickets,242.0,235,False,False,INCLUDED,None
+14111,1358,IPL 2022,T20,2022,2022-04-09,Royal Challengers Bengaluru,Mumbai Indians,Royal Challengers Bengaluru won by 7 wickets,5.0,236,False,False,INCLUDED,None
+14112,1358,IPL 2022,T20,2022,2022-04-10,Kolkata Knight Riders,Delhi Capitals,Delhi Capitals won by 44 run,7.0,246,False,False,INCLUDED,None
+14113,1358,IPL 2022,T20,2022,2022-04-10,Rajasthan Royals,Lucknow Super Giants,Rajasthan Royals Won By 3 Runs,3.0,250,False,False,INCLUDED,None
+14114,1358,IPL 2022,T20,2022,2022-04-11,Sunrisers Hyderabad,Gujarat Titans,Sunrisers Hyderabad Won by 8 Wickets,242.0,246,False,False,INCLUDED,None
+14115,1358,IPL 2022,T20,2022,2022-04-12,Chennai Super Kings,Royal Challengers Bengaluru,Chennai Super Kings Won by 23 Runs,1.0,256,False,False,INCLUDED,None
+14116,1358,IPL 2022,T20,2022,2022-04-13,Mumbai Indians,Punjab Kings,Punjab Kings won by 12 runs,4.0,252,False,False,INCLUDED,None
+14117,1358,IPL 2022,T20,2022,2022-04-14,Rajasthan Royals,Gujarat Titans,Gujarat Titans Won by 37 runs,3508.0,246,False,False,INCLUDED,None
+14118,1358,IPL 2022,T20,2022,2022-04-15,Sunrisers Hyderabad,Kolkata Knight Riders,Sunrisers Hyderabad won by 7 wickets,242.0,234,False,False,INCLUDED,None
+14119,1358,IPL 2022,T20,2022,2022-04-16,Mumbai Indians,Lucknow Super Giants,Lucknow Super Giants won by 18 runs,3509.0,249,False,False,INCLUDED,None
+14120,1358,IPL 2022,T20,2022,2022-04-16,Delhi Capitals,Royal Challengers Bengaluru,Royal Challengers Bengaluru won by 16 runs,5.0,250,False,False,INCLUDED,None
+14121,1358,IPL 2022,T20,2022,2022-04-17,Punjab Kings,Sunrisers Hyderabad,Sunrisers Hyderabad won by 7 wicket,242.0,242,False,False,INCLUDED,None
+14122,1358,IPL 2022,T20,2022,2022-04-17,Gujarat Titans,Chennai Super Kings,Gujarat Titans won by 3 wickets,3508.0,246,False,False,INCLUDED,None
+14123,1358,IPL 2022,T20,2022,2022-04-18,Rajasthan Royals,Kolkata Knight Riders,Rajasthan Royals Won by 7 Runs,3.0,258,False,False,INCLUDED,None
+14124,1358,IPL 2022,T20,2022,2022-04-19,Lucknow Super Giants,Royal Challengers Bengaluru,Royal Challengers Bengaluru won by 18 runs,5.0,254,False,False,INCLUDED,None
+14125,1358,IPL 2022,T20,2022,2022-04-20,Delhi Capitals,Punjab Kings,Delhi Capitals won by 9 wickets,7.0,190,False,False,INCLUDED,None
+14126,1358,IPL 2022,T20,2022,2022-04-21,Mumbai Indians,Chennai Super Kings,Chennai Super Kings Won by 3 Wickets,1.0,250,False,False,INCLUDED,None
+14127,1358,IPL 2022,T20,2022,2022-04-22,Delhi Capitals,Rajasthan Royals,Rajasthan Royals Won by 15 Runs,3.0,252,False,False,INCLUDED,None
+14128,1358,IPL 2022,T20,2022,2022-04-23,Kolkata Knight Riders,Gujarat Titans,Gujarat Titans Won by 8 Runs,3508.0,253,False,False,INCLUDED,None
+14129,1358,IPL 2022,T20,2022,2022-04-23,Royal Challengers Bengaluru,Sunrisers Hyderabad,Sunrisers Hyderabad won by 9 wickets,242.0,154,False,False,INCLUDED,None
+14130,1358,IPL 2022,T20,2022,2022-04-24,Lucknow Super Giants,Mumbai Indians,Lucknow Super Giants Won 36  Runs,3509.0,251,False,False,INCLUDED,None
+14131,1358,IPL 2022,T20,2022,2022-04-25,Punjab Kings,Chennai Super Kings,Punjab Kings Won by 11 Runs,4.0,259,False,False,INCLUDED,None
+14132,1358,IPL 2022,T20,2022,2022-04-26,Royal Challengers Bengaluru,Rajasthan Royals,Rajasthan Royals Won by 29 Runs,3.0,246,False,False,INCLUDED,None
+14133,1358,IPL 2022,T20,2022,2022-04-27,Gujarat Titans,Sunrisers Hyderabad,Gujarat Titans Won by 5 Wickets,3508.0,251,False,False,INCLUDED,None
+14134,1358,IPL 2022,T20,2022,2022-04-28,Delhi Capitals,Kolkata Knight Riders,Delhi Capitals Won By 4 Wickets,7.0,241,False,False,INCLUDED,None
+14135,1358,IPL 2022,T20,2022,2022-04-29,Punjab Kings,Lucknow Super Giants,Lucknow Super Giants Won by 20 Runs,3509.0,253,False,False,INCLUDED,None
+14136,1358,IPL 2022,T20,2022,2022-04-30,Gujarat Titans,Royal Challengers Bengaluru,Gujarat Titans won by 6 wickets,3508.0,244,False,False,INCLUDED,None
+14137,1358,IPL 2022,T20,2022,2022-04-30,Rajasthan Royals,Mumbai Indians,Mumbai Indians Won By 5 Wickets,2.0,247,False,False,INCLUDED,None
+14139,1358,IPL 2022,T20,2022,2022-05-01,Delhi Capitals,Lucknow Super Giants,Lucknow Super Giants won by 6 runs,3509.0,255,False,False,INCLUDED,None
+14140,1358,IPL 2022,T20,2022,2022-05-01,Sunrisers Hyderabad,Chennai Super Kings,Chennai Super Kings won by 13 runs,1.0,246,False,False,INCLUDED,None
+14141,1358,IPL 2022,T20,2022,2022-05-02,Kolkata Knight Riders,Rajasthan Royals,Kolkata Knight Riders Won by 7 Wickets,8.0,251,False,False,INCLUDED,None
+14142,1358,IPL 2022,T20,2022,2022-05-03,Gujarat Titans,Punjab Kings,Punjab Kings Won by 8 Wickets,4.0,229,False,False,INCLUDED,None
+14143,1358,IPL 2022,T20,2022,2022-05-04,Royal Challengers Bengaluru,Chennai Super Kings,Royal Challengers Bengaluru won by 13 Runs,5.0,247,False,False,INCLUDED,None
+14144,1358,IPL 2022,T20,2022,2022-05-05,Delhi Capitals,Sunrisers Hyderabad,Delhi Capitals Won by 21 Runs,7.0,253,False,False,INCLUDED,None
+14145,1358,IPL 2022,T20,2022,2022-05-06,Gujarat Titans,Mumbai Indians,Mumbai Indians won by 5 runs,2.0,246,False,False,INCLUDED,None
+14146,1358,IPL 2022,T20,2022,2022-05-07,Punjab Kings,Rajasthan Royals,Rajasthan Royals won by 6 wickets,3.0,255,False,False,INCLUDED,None
+14147,1358,IPL 2022,T20,2022,2022-05-07,Lucknow Super Giants,Kolkata Knight Riders,Lucknow Super Giants won by 75 runs,3509.0,211,False,False,INCLUDED,None
+14148,1358,IPL 2022,T20,2022,2022-05-08,Sunrisers Hyderabad,Royal Challengers Bengaluru,Royal Challengers Bengaluru won by 67 runs,5.0,246,False,False,INCLUDED,None
+14149,1358,IPL 2022,T20,2022,2022-05-08,Chennai Super Kings,Delhi Capitals,Chennai Super Kings won by 91 runs,1.0,239,False,False,INCLUDED,None
+14150,1358,IPL 2022,T20,2022,2022-05-09,Mumbai Indians,Kolkata Knight Riders,Kolkata Knight Riders Won by 52 Runs,8.0,233,False,False,INCLUDED,None
+14151,1358,IPL 2022,T20,2022,2022-05-10,Lucknow Super Giants,Gujarat Titans,Gujarat Titans won by 62 runs,3508.0,212,False,False,INCLUDED,None
+14152,1358,IPL 2022,T20,2022,2022-05-11,Rajasthan Royals,Delhi Capitals,Delhi Capitals Won by 8 Wickets,7.0,239,False,False,INCLUDED,None
+14153,1358,IPL 2022,T20,2022,2022-05-12,Chennai Super Kings,Mumbai Indians,Mumbai Indians Won by 5 Wickets,2.0,198,False,False,INCLUDED,None
+14154,1358,IPL 2022,T20,2022,2022-05-13,Royal Challengers Bengaluru,Punjab Kings,Punjab Kings won by 54 runs,4.0,252,False,False,INCLUDED,None
+14155,1358,IPL 2022,T20,2022,2022-05-14,Kolkata Knight Riders,Sunrisers Hyderabad,Kolkata Knight Riders won by 54 runs,8.0,251,False,False,INCLUDED,None
+14156,1358,IPL 2022,T20,2022,2022-05-15,Chennai Super Kings,Gujarat Titans,Gujarat Titans won by 7 wickets,3508.0,244,False,False,INCLUDED,None
+14157,1358,IPL 2022,T20,2022,2022-05-15,Lucknow Super Giants,Rajasthan Royals,Rajasthan Royals Won by 24 Runs,3.0,251,False,False,INCLUDED,None
+14158,1358,IPL 2022,T20,2022,2022-05-16,Punjab Kings,Delhi Capitals,Delhi Capitals Won by 17 Runs,7.0,249,False,False,INCLUDED,None
+14159,1358,IPL 2022,T20,2022,2022-05-17,Mumbai Indians,Sunrisers Hyderabad,Sunrisers Hyderabad Won by 3 Runs,242.0,255,False,False,INCLUDED,None
+14160,1358,IPL 2022,T20,2022,2022-05-18,Kolkata Knight Riders,Lucknow Super Giants,Lucknow Super Giants Won by 2 Runs,3509.0,249,False,False,INCLUDED,None
+14161,1358,IPL 2022,T20,2022,2022-05-19,Royal Challengers Bengaluru,Gujarat Titans,Royal Challengers Bengaluru won by 8 wickets,5.0,237,False,False,INCLUDED,None
+14162,1358,IPL 2022,T20,2022,2022-05-20,Rajasthan Royals,Chennai Super Kings,Rajasthan Royals Won by 5 Wickets,3.0,247,False,False,INCLUDED,None
+14163,1358,IPL 2022,T20,2022,2022-05-21,Mumbai Indians,Delhi Capitals,Mumbai Indians Won by 5 wickets,2.0,247,False,False,INCLUDED,None
+14164,1358,IPL 2022,T20,2022,2022-05-22,Sunrisers Hyderabad,Punjab Kings,Punjab Kings Won by 5 wickets,4.0,219,False,False,INCLUDED,None
+15187,1358,IPL 2022,T20,2022,2022-05-24,Gujarat Titans,Rajasthan Royals,Gujarat Titans Won by 7 Wickets,3508.0,252,False,False,INCLUDED,None
+15188,1358,IPL 2022,T20,2022,2022-05-25,Lucknow Super Giants,Royal Challengers Bengaluru,Royal Challengers Bengaluru Won by 14 Runs,5.0,256,False,False,INCLUDED,None
+15189,1358,IPL 2022,T20,2022,2022-05-27,Rajasthan Royals,Royal Challengers Bengaluru,Rajasthan Royals won by 7 wickets,3.0,236,False,False,INCLUDED,None
+15190,1358,IPL 2022,T20,2022,2022-05-29,Gujarat Titans,Rajasthan Royals,Gujarat Titans Won by 7 Wickets,3508.0,233,False,False,INCLUDED,None
+15458,1435,Australia in Sri Lanka T20I Series 2022,T20I,2022,2022-06-07,Sri Lanka,Australia,Australia Won by 10 Wickets,20.0,207,False,False,INCLUDED,None
+15459,1435,Australia in Sri Lanka T20I Series 2022,T20I,2022,2022-06-08,Sri Lanka,Australia,Australia Won by 3 Wkts,20.0,229,False,False,INCLUDED,None
+15460,1435,Australia in Sri Lanka T20I Series 2022,T20I,2022,2022-06-11,Sri Lanka,Australia,Sri Lanka Won by 4 Wickets,27.0,248,False,False,INCLUDED,None
+15406,1439,South Africa in India T20I Series 2022,T20I,2022,2022-06-09,India,South Africa,South Africa Won by 7 Wkts,19.0,246,False,False,INCLUDED,None
+15407,1439,South Africa in India T20I Series 2022,T20I,2022,2022-06-12,India,South Africa,South Africa Won by 4 Wickets,19.0,238,False,False,INCLUDED,None
+15408,1439,South Africa in India T20I Series 2022,T20I,2022,2022-06-14,India,South Africa,India Won by 48 runs,18.0,240,False,False,INCLUDED,None
+15409,1439,South Africa in India T20I Series 2022,T20I,2022,2022-06-17,India,South Africa,India Won by 82 runs,18.0,226,False,False,INCLUDED,None
+15410,1439,South Africa in India T20I Series 2022,T20I,2022,2022-06-19,India,South Africa,Match Abandoned,,22,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+15546,1452,Bangladesh in West Indies T20I Series 2022,T20I,2022,2022-07-02,West Indies,Bangladesh,No Result,,82,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+15547,1452,Bangladesh in West Indies T20I Series 2022,T20I,2022,2022-07-03,West Indies,Bangladesh,West Indies Won by 35 Runs,28.0,257,False,False,INCLUDED,None
+15548,1452,Bangladesh in West Indies T20I Series 2022,T20I,2022,2022-07-07,West Indies,Bangladesh,West Indies Won by 5 Wickets,28.0,248,False,False,INCLUDED,None
+15609,1458,Afghanistan in Zimbabwe T20I Series 2022,T20I,2022,2022-06-11,Zimbabwe,Afghanistan,Afghanistan Won by 6 Wickets,78.0,251,False,False,INCLUDED,None
+15610,1458,Afghanistan in Zimbabwe T20I Series 2022,T20I,2022,2022-06-12,Zimbabwe,Afghanistan,Afghanistan Won by 21 Runs,78.0,251,False,False,INCLUDED,None
+15611,1458,Afghanistan in Zimbabwe T20I Series 2022,T20I,2022,2022-06-14,Zimbabwe,Afghanistan,Afghanistan Won by 35 Runs,78.0,254,False,False,INCLUDED,None
+15795,1474,India in Ireland T20I Series 2022,T20I,2022,2022-06-26,Ireland,India,India Won by 7 Wickets,18.0,139,False,False,INCLUDED,None
+15796,1474,India in Ireland T20I Series 2022,T20I,2022,2022-06-28,Ireland,India,India Won by 4 Runs,18.0,260,False,False,INCLUDED,None
+16040,1494,India in England T20I Series 2022,T20I,2022,2022-07-07,England,India,India Won by 50 Runs,18.0,247,False,False,INCLUDED,None
+16041,1494,India in England T20I Series 2022,T20I,2022,2022-07-09,England,India,India Won by 49 Runs,18.0,231,False,False,INCLUDED,None
+16042,1494,India in England T20I Series 2022,T20I,2022,2022-07-10,England,India,England Won by 17 runs,22.0,255,False,False,INCLUDED,None
+16062,1499,India in West Indies T20I Series 2022,T20I,2022,2022-07-29,West Indies,India,India Won by 68 Runs,18.0,253,False,False,INCLUDED,None
+16063,1499,India in West Indies T20I Series 2022,T20I,2022,2022-08-01,West Indies,India,West Indies Won by 5 Wickets,28.0,240,False,False,INCLUDED,None
+16064,1499,India in West Indies T20I Series 2022,T20I,2022,2022-08-02,West Indies,India,India Won by 7 Wickets,18.0,242,False,False,INCLUDED,None
+16065,1499,India in West Indies T20I Series 2022,T20I,2022,2022-08-06,West Indies,India,India Won by 59 Runs,18.0,249,False,False,INCLUDED,None
+16066,1499,India in West Indies T20I Series 2022,T20I,2022,2022-08-07,West Indies,India,India Won by 88 Runs,18.0,228,False,False,INCLUDED,None
+16258,1512,New Zealand in Ireland T20I Series 2022,T20I,2022,2022-07-18,Ireland,New Zealand,New Zealand Won by 31 Runs,17.0,244,False,False,INCLUDED,None
+16259,1512,New Zealand in Ireland T20I Series 2022,T20I,2022,2022-07-20,Ireland,New Zealand,New Zealand Won by 88 runs,17.0,210,False,False,INCLUDED,None
+16260,1512,New Zealand in Ireland T20I Series 2022,T20I,2022,2022-07-22,Ireland,New Zealand,New Zealand Won by 6 wickets,17.0,242,False,False,INCLUDED,None
+16315,1517,South Africa in England T20I Series 2022,T20I,2022,2022-07-27,England,South Africa,England Won by 41 Runs,22.0,250,False,False,INCLUDED,None
+16316,1517,South Africa in England T20I Series 2022,T20I,2022,2022-07-28,England,South Africa,South Africa Won by 58 Runs,19.0,234,False,False,INCLUDED,None
+16317,1517,South Africa in England T20I Series 2022,T20I,2022,2022-07-31,England,South Africa,South Africa Won by 90 Runs,19.0,227,False,False,INCLUDED,None
+16424,1523,Bangladesh in Zimbabwe T20I Series 2022,T20I,2022,2022-07-30,Zimbabwe,Bangladesh,Zimbabwe Won by 17 Runs,72.0,257,False,False,INCLUDED,None
+16425,1523,Bangladesh in Zimbabwe T20I Series 2022,T20I,2022,2022-07-31,Zimbabwe,Bangladesh,Bangladesh Won by 7 Wickets,21.0,237,False,False,INCLUDED,None
+16426,1523,Bangladesh in Zimbabwe T20I Series 2022,T20I,2022,2022-08-02,Zimbabwe,Bangladesh,Zimbabwe Won by 10 runs,72.0,242,False,False,INCLUDED,None
+16646,1531,South Africa vs Ireland T20I Series 2022,T20I,2022,2022-08-03,Ireland,South Africa,South Africa won by 21 runs,19.0,252,False,False,INCLUDED,None
+16647,1531,South Africa vs Ireland T20I Series 2022,T20I,2022,2022-08-05,Ireland,South Africa,South Africa Won by 44 Runs,19.0,249,False,False,INCLUDED,None
+16653,1533,Mens Twenty20 Asia Cup 2022,T20I,2022,2022-08-27,Sri Lanka,Afghanistan,Afghanistan Won by 8 Wickets,78.0,186,False,False,INCLUDED,None
+16654,1533,Mens Twenty20 Asia Cup 2022,T20I,2022,2022-08-28,India,Pakistan,India Won by 5 Wickets,18.0,247,False,False,INCLUDED,None
+16655,1533,Mens Twenty20 Asia Cup 2022,T20I,2022,2022-08-30,Bangladesh,Afghanistan,Afghanistan Won by 7 wickets,78.0,236,False,False,INCLUDED,None
+16656,1533,Mens Twenty20 Asia Cup 2022,T20I,2022,2022-08-31,India,Hong Kong,India Won by 40 Runs,18.0,252,False,False,INCLUDED,None
+16657,1533,Mens Twenty20 Asia Cup 2022,T20I,2022,2022-09-01,Sri Lanka,Bangladesh,Sri Lanka Won by 2 Wickets,27.0,246,False,False,INCLUDED,None
+16658,1533,Mens Twenty20 Asia Cup 2022,T20I,2022,2022-09-02,Pakistan,Hong Kong,Pakistan Won by 155 Runs,25.0,197,False,False,INCLUDED,None
+16659,1533,Mens Twenty20 Asia Cup 2022,T20I,2022,2022-09-03,Sri Lanka,Afghanistan,Sri Lanka Won by 4 Wickets,27.0,244,False,False,INCLUDED,None
+16660,1533,Mens Twenty20 Asia Cup 2022,T20I,2022,2022-09-04,India,Pakistan,Pakistan Won by 5 Wickets,25.0,251,False,False,INCLUDED,None
+16661,1533,Mens Twenty20 Asia Cup 2022,T20I,2022,2022-09-06,India,Sri Lanka,Sri Lanka Won by 6 Wickets,27.0,250,False,False,INCLUDED,None
+16662,1533,Mens Twenty20 Asia Cup 2022,T20I,2022,2022-09-07,Pakistan,Afghanistan,Pakistan Won by 1 Wicket,25.0,240,False,False,INCLUDED,None
+16663,1533,Mens Twenty20 Asia Cup 2022,T20I,2022,2022-09-08,India,Afghanistan,India Won by 101 Runs,18.0,245,False,False,INCLUDED,None
+16664,1533,Mens Twenty20 Asia Cup 2022,T20I,2022,2022-09-09,Sri Lanka,Pakistan,Sri Lanka Won by 5 Wickets,27.0,225,False,False,INCLUDED,None
+16665,1533,Mens Twenty20 Asia Cup 2022,T20I,2022,2022-09-11,Sri Lanka,Pakistan,Sri Lanka Won by 23 Runs,27.0,252,False,False,INCLUDED,None
+16666,1534,New Zealand in Netherlands T20I Series 2022,T20I,2022,2022-08-04,Netherlands,New Zealand,New Zealand Won by 16 Runs,17.0,246,False,False,INCLUDED,None
+16667,1534,New Zealand in Netherlands T20I Series 2022,T20I,2022,2022-08-05,Netherlands,New Zealand,New Zealand Won by 8 Wickets,17.0,210,False,False,INCLUDED,None
+16683,1537,New Zealand in West Indies T20I Series 2022,T20I,2022,2022-08-11,West Indies,New Zealand,New Zealand Won by 13 Runs,17.0,255,False,False,INCLUDED,None
+16684,1537,New Zealand in West Indies T20I Series 2022,T20I,2022,2022-08-13,West Indies,New Zealand,New Zealand Won by 90 Runs,17.0,247,False,False,INCLUDED,None
+16685,1537,New Zealand in West Indies T20I Series 2022,T20I,2022,2022-08-15,West Indies,New Zealand,West Indies Won by 8 Wickets,28.0,238,False,False,INCLUDED,None
+16750,1543,Afghanistan in Ireland T20I Series 2022,T20I,2022,2022-08-09,Ireland,Afghanistan,Ireland Won by 7 Wickets,23.0,247,False,False,INCLUDED,None
+16751,1543,Afghanistan in Ireland T20I Series 2022,T20I,2022,2022-08-11,Ireland,Afghanistan,Ireland Won by 5 Wickets,23.0,244,False,False,INCLUDED,None
+16752,1543,Afghanistan in Ireland T20I Series 2022,T20I,2022,2022-08-12,Ireland,Afghanistan,Afghanistan Won by 22 Runs,78.0,254,False,False,INCLUDED,None
+16753,1543,Afghanistan in Ireland T20I Series 2022,T20I,2022,2022-08-15,Ireland,Afghanistan,Afghanistan Won by 27 Runs,78.0,138,False,False,INCLUDED,None
+16754,1543,Afghanistan in Ireland T20I Series 2022,T20I,2022,2022-08-17,Ireland,Afghanistan,Ireland Won by 7 Wickets(D/L Method),23.0,134,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+16862,1551,Asia Cup T20 Qualifiers 2022,T20I,2022,2022-08-20,Singapore,Hong Kong,Hong Kong Won by 8 runs,283.0,252,False,False,INCLUDED,None
+16863,1551,Asia Cup T20 Qualifiers 2022,T20I,2022,2022-08-21,United Arab Emirates,Kuwait,Kuwait Won by 1 wicket,312.0,251,False,False,INCLUDED,None
+16864,1551,Asia Cup T20 Qualifiers 2022,T20I,2022,2022-08-22,United Arab Emirates,Singapore,United Arab Emirates Won by 47 Runs,272.0,235,False,False,INCLUDED,None
+16865,1551,Asia Cup T20 Qualifiers 2022,T20I,2022,2022-08-23,Kuwait,Hong Kong,Hong Kong Won by 8 Wickets,283.0,235,False,False,INCLUDED,None
+16866,1551,Asia Cup T20 Qualifiers 2022,T20I,2022,2022-08-24,Hong Kong,United Arab Emirates,Hong Kong Won by 8 Wickets,283.0,235,False,False,INCLUDED,None
+16867,1551,Asia Cup T20 Qualifiers 2022,T20I,2022,2022-08-24,Singapore,Kuwait,Kuwait Won by 6 Wickets,312.0,171,False,False,INCLUDED,None
+17394,1584,Australia in India T20I Series 2022,T20I,2022,2022-09-20,India,Australia,Australia Won by 4 Wickets,20.0,246,False,False,INCLUDED,None
+17395,1584,Australia in India T20I Series 2022,T20I,2022,2022-09-23,India,Australia,India Won by 6 Wickets,18.0,97,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+17396,1584,Australia in India T20I Series 2022,T20I,2022,2022-09-25,India,Australia,India Won by 6 Wickets,18.0,247,False,False,INCLUDED,None
+17553,1595,England in Pakistan T20I Series 2022,T20I,2022,2022-09-20,Pakistan,England,England Won by 6 Wickets,22.0,241,False,False,INCLUDED,None
+17554,1595,England in Pakistan T20I Series 2022,T20I,2022,2022-09-22,Pakistan,England,Pakistan Won by 10 Wickets,25.0,245,False,False,INCLUDED,None
+17555,1595,England in Pakistan T20I Series 2022,T20I,2022,2022-09-23,Pakistan,England,England Won by 63 Runs,22.0,249,False,False,INCLUDED,None
+17556,1595,England in Pakistan T20I Series 2022,T20I,2022,2022-09-25,Pakistan,England,Pakistan Won by 3 Runs,25.0,241,False,False,INCLUDED,None
+17557,1595,England in Pakistan T20I Series 2022,T20I,2022,2022-09-28,Pakistan,England,Pakistan Won by 6 Runs,25.0,241,False,False,INCLUDED,None
+17558,1595,England in Pakistan T20I Series 2022,T20I,2022,2022-09-30,Pakistan,England,England Won by 8 Wickets,22.0,211,False,False,INCLUDED,None
+17559,1595,England in Pakistan T20I Series 2022,T20I,2022,2022-10-02,Pakistan,England,England Won by 67 Runs,22.0,250,False,False,INCLUDED,None
+17625,1599,South Africa in India T20I Series 2022/23,T20I,2022/23,2022-09-28,India,South Africa,India Won by 8 Wickets,18.0,229,False,False,INCLUDED,None
+17626,1599,South Africa in India T20I Series 2022/23,T20I,2022/23,2022-10-02,India,South Africa,India Won by 16 Runs,18.0,258,False,False,INCLUDED,None
+17627,1599,South Africa in India T20I Series 2022/23,T20I,2022/23,2022-10-04,India,South Africa,South Africa Won by 49 Runs,19.0,249,False,False,INCLUDED,None
+17631,1601,Bangladesh in United Arab Emirates T20I Series 2022,T20I,2022,2022-09-25,United Arab Emirates,Bangladesh,Bangladesh won by 7 runs,21.0,249,False,False,INCLUDED,None
+17632,1601,Bangladesh in United Arab Emirates T20I Series 2022,T20I,2022,2022-09-27,United Arab Emirates,Bangladesh,Bangladesh Won by 32 Runs,21.0,247,False,False,INCLUDED,None
+17640,1603,West Indies in Australia T20I Series 2022,T20I,2022,2022-10-05,Australia,West Indies,Australia Won by 3 Wickets,20.0,254,False,False,INCLUDED,None
+17641,1603,West Indies in Australia T20I Series 2022,T20I,2022,2022-10-07,Australia,West Indies,Australia Won by 31 runs,20.0,250,False,False,INCLUDED,None
+17737,1608,New Zealand T20I Tri Series 2022/23,T20I,2022/23,2022-10-07,Bangladesh,Pakistan,Pakistan Won by 21 Runs,25.0,248,False,False,INCLUDED,None
+17738,1608,New Zealand T20I Tri Series 2022/23,T20I,2022/23,2022-10-08,New Zealand,Pakistan,Pakistan Won by 6 Wickets,25.0,234,False,False,INCLUDED,None
+17739,1608,New Zealand T20I Tri Series 2022/23,T20I,2022/23,2022-10-09,New Zealand,Bangladesh,New Zealand Won by 8 wickets,17.0,233,False,False,INCLUDED,None
+17740,1608,New Zealand T20I Tri Series 2022/23,T20I,2022/23,2022-10-11,New Zealand,Pakistan,New Zealand Won by 9 Wickets,17.0,230,False,False,INCLUDED,None
+17741,1608,New Zealand T20I Tri Series 2022/23,T20I,2022/23,2022-10-12,New Zealand,Bangladesh,New Zealand Won by 48 Runs,17.0,247,False,False,INCLUDED,None
+17742,1608,New Zealand T20I Tri Series 2022/23,T20I,2022/23,2022-10-13,Pakistan,Bangladesh,Pakistan Won by 7 Wickets,25.0,249,False,False,INCLUDED,None
+17743,1608,New Zealand T20I Tri Series 2022/23,T20I,2022/23,2022-10-14,New Zealand,Pakistan,Pakistan Won by 5 Wickets,25.0,241,False,False,INCLUDED,None
+17763,1611,England in Australia T20I Series 2022,T20I,2022,2022-10-09,Australia,England,England Won by 8 Runs,22.0,255,False,False,INCLUDED,None
+17764,1611,England in Australia T20I Series 2022,T20I,2022,2022-10-12,Australia,England,England Won by 8 Runs,22.0,254,False,False,INCLUDED,None
+17765,1611,England in Australia T20I Series 2022,T20I,2022,2022-10-14,Australia,England,No Result,,100,False,True,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+18531,1646,India in New Zealand T20I Series 2022/23,T20I,2022/23,2022-11-20,New Zealand,India,India won by 65 runs,18.0,241,False,False,INCLUDED,None
+18532,1646,India in New Zealand T20I Series 2022/23,T20I,2022/23,2022-11-22,New Zealand,India,Match Tied,,179,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+19556,1698,Sri Lanka in India T20I Series 2023,T20I,2023,2023-01-03,India,Sri Lanka,India Won by 2 Runs,18.0,249,False,False,INCLUDED,None
+19557,1698,Sri Lanka in India T20I Series 2023,T20I,2023,2023-01-05,India,Sri Lanka,Sri Lanka Won by 16 Runs,27.0,257,False,False,INCLUDED,None
+19558,1698,Sri Lanka in India T20I Series 2023,T20I,2023,2023-01-07,India,Sri Lanka,India Won by 91 Runs,18.0,235,False,False,INCLUDED,None
+19715,1700,New Zealand in India T20I Series 2023,T20I,2023,2023-01-27,India,New Zealand,New Zealand won by 21 runs,17.0,252,False,False,INCLUDED,None
+19716,1700,New Zealand in India T20I Series 2023,T20I,2023,2023-01-29,India,New Zealand,India won by 6 wickets,18.0,250,False,False,INCLUDED,None
+19717,1700,New Zealand in India T20I Series 2023,T20I,2023,2023-02-01,India,New Zealand,India Won by 168 runs,18.0,199,False,False,INCLUDED,None
+19690,1709,Ireland in Zimbabwe T20I Series 2023,T20I,2023,2023-01-12,Zimbabwe,Ireland,Zimbabwe Won by 5 Wickets,72.0,228,False,False,INCLUDED,None
+19691,1709,Ireland in Zimbabwe T20I Series 2023,T20I,2023,2023-01-14,Zimbabwe,Ireland,Ireland Won by 6 wickets,23.0,245,False,False,INCLUDED,None
+19692,1709,Ireland in Zimbabwe T20I Series 2023,T20I,2023,2023-01-15,Zimbabwe,Ireland,Zimbabwe Won by 4 Wickets,72.0,242,False,False,INCLUDED,None
+20181,1715,IPL 2023,T20,2023,2023-03-31,Gujarat Titans,Chennai Super Kings,Gujarat Titans Won by 5 wickets,3508.0,243,False,False,INCLUDED,None
+20182,1715,IPL 2023,T20,2023,2023-04-01,Punjab Kings,Kolkata Knight Riders,Punjab Kings Won by 7 Runs(D/L Method),4.0,222,False,False,INCLUDED,None
+20183,1715,IPL 2023,T20,2023,2023-04-01,Lucknow Super Giants,Delhi Capitals,Lucknow Super Giants Won by 50 runs,3509.0,251,False,False,INCLUDED,None
+20184,1715,IPL 2023,T20,2023,2023-04-02,Sunrisers Hyderabad,Rajasthan Royals,Rajasthan Royals Won By 72 Runs,3.0,248,False,False,INCLUDED,None
+20185,1715,IPL 2023,T20,2023,2023-04-02,Royal Challengers Bengaluru,Mumbai Indians,Royal Challengers Bengaluru won by 8 wickets,5.0,232,False,False,INCLUDED,None
+20186,1715,IPL 2023,T20,2023,2023-04-03,Chennai Super Kings,Lucknow Super Giants,Chennai Super Kings Won by 12 runs,1.0,260,False,False,INCLUDED,None
+20187,1715,IPL 2023,T20,2023,2023-04-04,Delhi Capitals,Gujarat Titans,Gujarat Titans won by 6 wickets,3508.0,240,False,False,INCLUDED,None
+20188,1715,IPL 2023,T20,2023,2023-04-05,Rajasthan Royals,Punjab Kings,Punjab Kings Won by 5 runs,4.0,252,False,False,INCLUDED,None
+20189,1715,IPL 2023,T20,2023,2023-04-06,Kolkata Knight Riders,Royal Challengers Bengaluru,Kolkata Knight Riders Won By 81 Runs,8.0,236,False,False,INCLUDED,None
+20190,1715,IPL 2023,T20,2023,2023-04-07,Lucknow Super Giants,Sunrisers Hyderabad,Lucknow Super Giants Won by 6 wickets,3509.0,223,False,False,INCLUDED,None
+20191,1715,IPL 2023,T20,2023,2023-04-08,Rajasthan Royals,Delhi Capitals,Rajasthan Royals Won by 57 Runs,3.0,252,False,False,INCLUDED,None
+20192,1715,IPL 2023,T20,2023,2023-04-08,Mumbai Indians,Chennai Super Kings,Chennai Super Kings Won by 7 wickets,1.0,239,False,False,INCLUDED,None
+20193,1715,IPL 2023,T20,2023,2023-04-09,Gujarat Titans,Kolkata Knight Riders,Kolkata Knight Riders Won By 3 Wickets,8.0,250,False,False,INCLUDED,None
+20194,1715,IPL 2023,T20,2023,2023-04-09,Sunrisers Hyderabad,Punjab Kings,Sunrisers Hyderabad won by 8 wickets,242.0,228,False,False,INCLUDED,None
+20195,1715,IPL 2023,T20,2023,2023-04-10,Royal Challengers Bengaluru,Lucknow Super Giants,Lucknow Super Giants Won by 1 wicket,3509.0,253,False,False,INCLUDED,None
+20196,1715,IPL 2023,T20,2023,2023-04-11,Delhi Capitals,Mumbai Indians,Mumbai Indians Won By 6 Wickets,2.0,246,False,False,INCLUDED,None
+20197,1715,IPL 2023,T20,2023,2023-04-12,Chennai Super Kings,Rajasthan Royals,Rajasthan Royals Won by 3 Runs,3.0,253,False,False,INCLUDED,None
+20198,1715,IPL 2023,T20,2023,2023-04-13,Punjab Kings,Gujarat Titans,Gujarat Titans Won By 6 Wickets,3508.0,248,False,False,INCLUDED,None
+20199,1715,IPL 2023,T20,2023,2023-04-14,Kolkata Knight Riders,Sunrisers Hyderabad,Sunrisers Hyderabad Won By 23 Runs,242.0,256,False,False,INCLUDED,None
+20200,1715,IPL 2023,T20,2023,2023-04-15,Royal Challengers Bengaluru,Delhi Capitals,Royal Challengers Bengaluru won by 23 runs,5.0,247,False,False,INCLUDED,None
+20201,1715,IPL 2023,T20,2023,2023-04-15,Lucknow Super Giants,Punjab Kings,Punjab Kings won by 2 wickets,4.0,249,False,False,INCLUDED,None
+20202,1715,IPL 2023,T20,2023,2023-04-16,Mumbai Indians,Kolkata Knight Riders,Mumbai Indians won by 5 wickets,2.0,237,False,False,INCLUDED,None
+20203,1715,IPL 2023,T20,2023,2023-04-16,Gujarat Titans,Rajasthan Royals,Rajasthan Royals Won by 3 Wickets,3.0,242,False,False,INCLUDED,None
+20204,1715,IPL 2023,T20,2023,2023-04-17,Royal Challengers Bengaluru,Chennai Super Kings,Chennai Super Kings Won by 8 Runs,1.0,252,False,False,INCLUDED,None
+20205,1715,IPL 2023,T20,2023,2023-04-18,Sunrisers Hyderabad,Mumbai Indians,Mumbai Indians Won by 14 Runs,2.0,249,False,False,INCLUDED,None
+20206,1715,IPL 2023,T20,2023,2023-04-19,Rajasthan Royals,Lucknow Super Giants,Lucknow Super Giants Won by 10 Runs,3509.0,245,False,False,INCLUDED,None
+20207,1715,IPL 2023,T20,2023,2023-04-20,Punjab Kings,Royal Challengers Bengaluru,Royal Challengers Bengaluru Won by 24 Runs,5.0,236,False,False,INCLUDED,None
+20208,1715,IPL 2023,T20,2023,2023-04-20,Delhi Capitals,Kolkata Knight Riders,Delhi Capitals Won By 4 Wickets,7.0,251,False,False,INCLUDED,None
+20209,1715,IPL 2023,T20,2023,2023-04-21,Chennai Super Kings,Sunrisers Hyderabad,Chennai Super Kings Won by 7 Wickets,1.0,234,False,False,INCLUDED,None
+20210,1715,IPL 2023,T20,2023,2023-04-22,Lucknow Super Giants,Gujarat Titans,Gujarat Titans Won by 7 runs,3508.0,241,False,False,INCLUDED,None
+20211,1715,IPL 2023,T20,2023,2023-04-22,Mumbai Indians,Punjab Kings,Punjab Kings Won By 13Runs,4.0,252,False,False,INCLUDED,None
+20212,1715,IPL 2023,T20,2023,2023-04-23,Royal Challengers Bengaluru,Rajasthan Royals,Royal Challengers Bengaluru Won By 7 Runs,5.0,251,False,False,INCLUDED,None
+20213,1715,IPL 2023,T20,2023,2023-04-23,Kolkata Knight Riders,Chennai Super Kings,Chennai Super Kings won by 49 runs,1.0,252,False,False,INCLUDED,None
+20214,1715,IPL 2023,T20,2023,2023-04-24,Sunrisers Hyderabad,Delhi Capitals,Delhi Capitals Won by 7 Runs,7.0,242,False,False,INCLUDED,None
+20215,1715,IPL 2023,T20,2023,2023-04-25,Gujarat Titans,Mumbai Indians,Gujarat Titans Won by 55 runs,3508.0,246,False,False,INCLUDED,None
+20216,1715,IPL 2023,T20,2023,2023-04-26,Royal Challengers Bengaluru,Kolkata Knight Riders,Kolkata Knight Riders Won by 21 Runs,8.0,247,False,False,INCLUDED,None
+20217,1715,IPL 2023,T20,2023,2023-04-27,Rajasthan Royals,Chennai Super Kings,Rajasthan Royals Won by 32 Runs,3.0,245,False,False,INCLUDED,None
+20218,1715,IPL 2023,T20,2023,2023-04-28,Punjab Kings,Lucknow Super Giants,Lucknow Super Giants Won by 56 runs,3509.0,257,False,False,INCLUDED,None
+20219,1715,IPL 2023,T20,2023,2023-04-29,Kolkata Knight Riders,Gujarat Titans,Gujarat Titans Won by 7 Wickets,3508.0,233,False,False,INCLUDED,None
+20220,1715,IPL 2023,T20,2023,2023-04-29,Delhi Capitals,Sunrisers Hyderabad,Sunrisers Hyderabad Won by 9 Runs,242.0,252,False,False,INCLUDED,None
+20221,1715,IPL 2023,T20,2023,2023-04-30,Chennai Super Kings,Punjab Kings,Punjab Kings Won By  4 wickets,4.0,252,False,False,INCLUDED,None
+20222,1715,IPL 2023,T20,2023,2023-04-30,Mumbai Indians,Rajasthan Royals,Mumbai Indians won by 6 wickets,2.0,258,False,False,INCLUDED,None
+20223,1715,IPL 2023,T20,2023,2023-05-01,Lucknow Super Giants,Royal Challengers Bengaluru,Royal Challengers Bengaluru Won  by 18 Runs,5.0,246,False,False,INCLUDED,None
+20224,1715,IPL 2023,T20,2023,2023-05-02,Gujarat Titans,Delhi Capitals,Delhi Capitals Won by 5 runs,7.0,248,False,False,INCLUDED,None
+20225,1715,IPL 2023,T20,2023,2023-05-03,Punjab Kings,Mumbai Indians,Mumbai Indians Won by 6 wickets,2.0,244,False,False,INCLUDED,None
+20226,1715,IPL 2023,T20,2023,2023-05-03,Lucknow Super Giants,Chennai Super Kings,Match Abandoned,,118,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+20227,1715,IPL 2023,T20,2023,2023-05-04,Sunrisers Hyderabad,Kolkata Knight Riders,Kolkata Knight Riders Won by 5 Runs,8.0,254,False,False,INCLUDED,None
+20228,1715,IPL 2023,T20,2023,2023-05-05,Rajasthan Royals,Gujarat Titans,Gujarat Titans Won by 9 Wickets,3508.0,198,False,False,INCLUDED,None
+20229,1715,IPL 2023,T20,2023,2023-05-06,Chennai Super Kings,Mumbai Indians,Chennai Super Kings Won by 6 wickets,1.0,231,False,False,INCLUDED,None
+20230,1715,IPL 2023,T20,2023,2023-05-06,Delhi Capitals,Royal Challengers Bengaluru,Delhi Capitals Won by 7 Wickets,7.0,228,False,False,INCLUDED,None
+20231,1715,IPL 2023,T20,2023,2023-05-07,Gujarat Titans,Lucknow Super Giants,Gujarat Titans Won By 56 Runs,3508.0,250,False,False,INCLUDED,None
+20232,1715,IPL 2023,T20,2023,2023-05-07,Rajasthan Royals,Sunrisers Hyderabad,Sunrisers Hyderabad Won by 4 wickets,242.0,250,False,False,INCLUDED,None
+20233,1715,IPL 2023,T20,2023,2023-05-08,Kolkata Knight Riders,Punjab Kings,Kolkata Knight Riders Won by 5 Wickets,8.0,249,False,False,INCLUDED,None
+20234,1715,IPL 2023,T20,2023,2023-05-09,Mumbai Indians,Royal Challengers Bengaluru,Mumbai Indians won by 6 wickets,2.0,229,False,False,INCLUDED,None
+20235,1715,IPL 2023,T20,2023,2023-05-10,Chennai Super Kings,Delhi Capitals,Chennai Super Kings Won by 27 Runs,1.0,255,False,False,INCLUDED,None
+20236,1715,IPL 2023,T20,2023,2023-05-11,Kolkata Knight Riders,Rajasthan Royals,Rajasthan Royals Won by 9 Wickets,3.0,203,False,False,INCLUDED,None
+20237,1715,IPL 2023,T20,2023,2023-05-12,Mumbai Indians,Gujarat Titans,Mumbai Indians Won by 27 Runs,2.0,243,False,False,INCLUDED,None
+20238,1715,IPL 2023,T20,2023,2023-05-13,Sunrisers Hyderabad,Lucknow Super Giants,Lucknow Super Giants Won by 7 wickets,3509.0,244,False,False,INCLUDED,None
+20239,1715,IPL 2023,T20,2023,2023-05-13,Delhi Capitals,Punjab Kings,Punjab Kings Won by 31 Runs,4.0,250,False,False,INCLUDED,None
+20240,1715,IPL 2023,T20,2023,2023-05-14,Rajasthan Royals,Royal Challengers Bengaluru,Royal Challengers Bengaluru Won by 112 runs,5.0,189,False,False,INCLUDED,None
+20241,1715,IPL 2023,T20,2023,2023-05-14,Chennai Super Kings,Kolkata Knight Riders,Kolkata Knight Riders won by 6 Wickets,8.0,243,False,False,INCLUDED,None
+20242,1715,IPL 2023,T20,2023,2023-05-15,Gujarat Titans,Sunrisers Hyderabad,Gujarat Titans Won by 34 runs,3508.0,253,False,False,INCLUDED,None
+20243,1715,IPL 2023,T20,2023,2023-05-16,Lucknow Super Giants,Mumbai Indians,Lucknow Super Giants won by 5 runs,3509.0,255,False,False,INCLUDED,None
+20244,1715,IPL 2023,T20,2023,2023-05-17,Punjab Kings,Delhi Capitals,Delhi Capitals Won by 15 runs,7.0,249,False,False,INCLUDED,None
+20245,1715,IPL 2023,T20,2023,2023-05-18,Sunrisers Hyderabad,Royal Challengers Bengaluru,Royal Challengers Bengaluru Won by 8 wickets,5.0,245,False,False,INCLUDED,None
+20246,1715,IPL 2023,T20,2023,2023-05-19,Punjab Kings,Rajasthan Royals,Rajasthan Royals Won by 4 wickets,3.0,252,False,False,INCLUDED,None
+20247,1715,IPL 2023,T20,2023,2023-05-20,Delhi Capitals,Chennai Super Kings,Chennai Super Kings Won by 77 runs,1.0,256,False,False,INCLUDED,None
+20248,1715,IPL 2023,T20,2023,2023-05-20,Kolkata Knight Riders,Lucknow Super Giants,Lucknow Super Giants won by 1 run,3509.0,252,False,False,INCLUDED,None
+20249,1715,IPL 2023,T20,2023,2023-05-21,Mumbai Indians,Sunrisers Hyderabad,Mumbai Indians Won by 8 wickets,2.0,239,False,False,INCLUDED,None
+20250,1715,IPL 2023,T20,2023,2023-05-21,Royal Challengers Bengaluru,Gujarat Titans,Gujarat Titans Won by 6 wickets,3508.0,248,False,False,INCLUDED,None
+21583,1715,IPL 2023,T20,2023,2023-05-23,Gujarat Titans,Chennai Super Kings,Chennai Super Kings Won by 15 runs,1.0,254,False,False,INCLUDED,None
+21584,1715,IPL 2023,T20,2023,2023-05-24,Lucknow Super Giants,Mumbai Indians,Mumbai Indians won by 81 runs,2.0,228,False,False,INCLUDED,None
+21585,1715,IPL 2023,T20,2023,2023-05-26,Gujarat Titans,Mumbai Indians,Gujarat Titans won by 62 runs,3508.0,242,False,False,INCLUDED,None
+21586,1715,IPL 2023,T20,2023,2023-05-29,Chennai Super Kings,Gujarat Titans,Chennai Super Kings Won by 5 wickets  (DLS method),1.0,216,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+19959,1718,West Indies in South Africa T20I Series 2023,T20I,2023,2023-03-25,South Africa,West Indies,West Indies won by 3 wickets,28.0,140,False,False,INCLUDED,None
+19960,1718,West Indies in South Africa T20I Series 2023,T20I,2023,2023-03-26,South Africa,West Indies,South Africa Won by 6 wickets,19.0,248,False,False,INCLUDED,None
+19961,1718,West Indies in South Africa T20I Series 2023,T20I,2023,2023-03-28,South Africa,West Indies,West Indies Won by 7 runs,28.0,258,False,False,INCLUDED,None
+21176,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023,2023-04-02,New Zealand,Sri Lanka,Sri Lanka won the super over,27.0,252,False,False,INCLUDED,None
+21177,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023,2023-04-05,New Zealand,Sri Lanka,New Zealand Won by 9 Wickets,17.0,214,False,False,INCLUDED,None
+21178,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023,2023-04-08,New Zealand,Sri Lanka,New Zealand Won by 4 Wickets,17.0,251,False,False,INCLUDED,None
+20133,1742,England in Bangladesh T20I Series 2023,T20I,2023,2023-03-09,Bangladesh,England,Bangladesh Won by 6 Wickets,21.0,232,False,False,INCLUDED,None
+20134,1742,England in Bangladesh T20I Series 2023,T20I,2023,2023-03-12,Bangladesh,England,Bangladesh Won  by 4 Wickets,21.0,242,False,False,INCLUDED,None
+20135,1742,England in Bangladesh T20I Series 2023,T20I,2023,2023-03-14,Bangladesh,England,Bangladesh won by 16 runs,21.0,249,False,False,INCLUDED,None
+21070,1769,Ireland in Bangladesh T20I Series 2023,T20I,2023,2023-03-27,Bangladesh,Ireland,Bangladesh Won by 22 Runs (DLS method),21.0,174,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+21071,1769,Ireland in Bangladesh T20I Series 2023,T20I,2023,2023-03-29,Bangladesh,Ireland,Bangladesh Won by 77 Runs,21.0,213,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+21072,1769,Ireland in Bangladesh T20I Series 2023,T20I,2023,2023-03-31,Bangladesh,Ireland,Ireland Won by 7 Wickets,23.0,206,False,False,INCLUDED,None
+20878,1792,Afghanistan v Pakistan T20I Series 2023,T20I,2023,2023-03-24,Afghanistan,Pakistan,Afghanistan Won by 6 Wickets,78.0,230,False,False,INCLUDED,None
+20879,1792,Afghanistan v Pakistan T20I Series 2023,T20I,2023,2023-03-26,Afghanistan,Pakistan,Afghanistan Won by 7 Wickets,78.0,243,False,False,INCLUDED,None
+20880,1792,Afghanistan v Pakistan T20I Series 2023,T20I,2023,2023-03-27,Afghanistan,Pakistan,Pakistan Won by 66 Runs,25.0,241,False,False,INCLUDED,None
+21403,1799,New Zealand in Pakistan T20I Series 2023,T20I,2023,2023-04-14,Pakistan,New Zealand,Pakistan Won by 88 Runs,25.0,222,False,False,INCLUDED,None
+21404,1799,New Zealand in Pakistan T20I Series 2023,T20I,2023,2023-04-15,Pakistan,New Zealand,Pakistan Won by 38 runs,25.0,246,False,False,INCLUDED,None
+21405,1799,New Zealand in Pakistan T20I Series 2023,T20I,2023,2023-04-17,Pakistan,New Zealand,New Zealand Won by 4 Runs,17.0,249,False,False,INCLUDED,None
+21406,1799,New Zealand in Pakistan T20I Series 2023,T20I,2023,2023-04-20,Pakistan,New Zealand,Match Abandoned,,118,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+21407,1799,New Zealand in Pakistan T20I Series 2023,T20I,2023,2023-04-24,Pakistan,New Zealand,New Zealand Won by 6 wickets,17.0,247,False,False,INCLUDED,None
+23673,1885,Afghanistan in Bangladesh T20I Series 2023,T20I,2023,2023-07-14,Bangladesh,Afghanistan,Bangladesh Won by 2 wickets,21.0,246,False,False,INCLUDED,None
+23674,1885,Afghanistan in Bangladesh T20I Series 2023,T20I,2023,2023-07-16,Bangladesh,Afghanistan,Bangladesh Won by 6 Wickets(D/L Method),21.0,211,False,False,INCLUDED,None
+24350,1913,India in West Indies T20I Series 2023,T20I,2023,2023-08-03,West Indies,India,West Indies Won   by 4 runs,28.0,253,False,False,INCLUDED,None
+24351,1913,India in West Indies T20I Series 2023,T20I,2023,2023-08-06,West Indies,India,West Indies Won by 2 wickets,28.0,240,False,False,INCLUDED,None
+24352,1913,India in West Indies T20I Series 2023,T20I,2023,2023-08-08,West Indies,India,India Won by 7 Wickets,18.0,235,False,False,INCLUDED,None
+24353,1913,India in West Indies T20I Series 2023,T20I,2023,2023-08-12,West Indies,India,India won by 9 wickets,18.0,229,False,False,INCLUDED,None
+24354,1913,India in West Indies T20I Series 2023,T20I,2023,2023-08-13,West Indies,India,West Indies Won by 8 wickets,28.0,238,False,False,INCLUDED,None
+24792,1997,New Zealand in United Arab Emirates T20I Series 2023,T20I,2023,2023-08-17,United Arab Emirates,New Zealand,New Zealand Won by 19 Runs,17.0,245,False,False,INCLUDED,None
+24793,1997,New Zealand in United Arab Emirates T20I Series 2023,T20I,2023,2023-08-19,United Arab Emirates,New Zealand,United Arab Emirates Won by 7 Wickets,272.0,221,False,False,INCLUDED,None
+24794,1997,New Zealand in United Arab Emirates T20I Series 2023,T20I,2023,2023-08-20,United Arab Emirates,New Zealand,New Zealand Won by 32 Runs,17.0,252,False,False,INCLUDED,None
+24822,1998,India in Ireland T20I Series 2023,T20I,2023,2023-08-18,Ireland,India,India Won by 2 Runs (DLS method),18.0,170,False,False,INCLUDED,None
+24823,1998,India in Ireland T20I Series 2023,T20I,2023,2023-08-20,Ireland,India,India Won by 33 Runs,18.0,251,False,False,INCLUDED,None
+25158,1999,New Zealand in England T20I Series 2023,T20I,2023,2023-08-30,England,New Zealand,England won by 7 wickets,22.0,214,False,False,INCLUDED,None
+25159,1999,New Zealand in England T20I Series 2023,T20I,2023,2023-09-01,England,New Zealand,England Won by 95 runs,22.0,209,False,False,INCLUDED,None
+25160,1999,New Zealand in England T20I Series 2023,T20I,2023,2023-09-03,England,New Zealand,New Zealand Won by 74 runs,17.0,240,False,False,INCLUDED,None
+25161,1999,New Zealand in England T20I Series 2023,T20I,2023,2023-09-05,England,New Zealand,New Zealand Won by 6 Wickets,17.0,232,False,False,INCLUDED,None
+25155,2000,Australia in South Africa T20I Series 2023,T20I,2023,2023-08-30,South Africa,Australia,Australia Won by 111 Runs,20.0,220,False,False,INCLUDED,None
+25156,2000,Australia in South Africa T20I Series 2023,T20I,2023,2023-09-01,South Africa,Australia,Australia won by 8 wickets,20.0,215,False,False,INCLUDED,None
+25157,2000,Australia in South Africa T20I Series 2023,T20I,2023,2023-09-03,South Africa,Australia,Australia Won by 5 Wickets,20.0,233,False,False,INCLUDED,None
+27060,2046,Australia in India T20I Series 2023,T20I,2023,2023-11-23,India,Australia,India won by 2 wickets,18.0,257,False,False,INCLUDED,None
+27061,2046,Australia in India T20I Series 2023,T20I,2023,2023-11-26,India,Australia,India won by 44 runs,18.0,258,False,False,INCLUDED,None
+27062,2046,Australia in India T20I Series 2023,T20I,2023,2023-11-28,India,Australia,Australia Won by 5 Wickets,20.0,262,False,False,INCLUDED,None
+27063,2046,Australia in India T20I Series 2023,T20I,2023,2023-12-01,India,Australia,India Won by 20 runs,18.0,250,False,False,INCLUDED,None
+27064,2046,Australia in India T20I Series 2023,T20I,2023,2023-12-03,India,Australia,India won by 6 runs,18.0,244,False,False,INCLUDED,None
+28046,2047,India in South Africa T20I Series 2023,T20I,2023,2023-12-12,South Africa,India,South Africa won by 5 wickets (DLS),19.0,209,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+28047,2047,India in South Africa T20I Series 2023,T20I,2023,2023-12-14,South Africa,India,India won by 106 runs,18.0,209,False,False,INCLUDED,None
+28063,2048,England in West Indies T20I Series 2023,T20I,2023,2023-12-13,West Indies,England,West Indies Won by 4 Wickets,28.0,241,False,False,INCLUDED,None
+28064,2048,England in West Indies T20I Series 2023,T20I,2023,2023-12-14,West Indies,England,West Indies won by 10 runs,28.0,249,False,False,INCLUDED,None
+28065,2048,England in West Indies T20I Series 2023,T20I,2023,2023-12-16,West Indies,England,England Won By 7 Wickets,22.0,249,False,False,INCLUDED,None
+28066,2048,England in West Indies T20I Series 2023,T20I,2023,2023-12-20,West Indies,England,England Won by 75 Runs,22.0,220,False,False,INCLUDED,None
+28067,2048,England in West Indies T20I Series 2023,T20I,2023,2023-12-22,West Indies,England,West Indies Won by 4 Wickets,28.0,233,False,False,INCLUDED,None
+28332,2058,Bangladesh in New Zealand T20I Series 2023,T20I,2023,2023-12-27,New Zealand,Bangladesh,Bangladesh won by 5 wickets,21.0,235,False,False,INCLUDED,None
+28333,2058,Bangladesh in New Zealand T20I Series 2023,T20I,2023,2023-12-29,New Zealand,Bangladesh,No Result,,66,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+28334,2058,Bangladesh in New Zealand T20I Series 2023,T20I,2023,2023-12-31,New Zealand,Bangladesh,New Zealand won by 17runs (DLS Method),17.0,218,False,False,INCLUDED,None
+28960,2059,Afghanistan in India T20I Series 2024,T20I,2024,2024-01-11,India,Afghanistan,India Won by 6 Wickets,18.0,233,False,False,INCLUDED,None
+28961,2059,Afghanistan in India T20I Series 2024,T20I,2024,2024-01-14,India,Afghanistan,India Won by 6 Wickets,18.0,223,False,False,INCLUDED,None
+28962,2059,Afghanistan in India T20I Series 2024,T20I,2024,2024-01-17,India,Afghanistan,India Won Super Over By 10 Runs,18.0,256,False,False,INCLUDED,None
+28963,2060,Pakistan in New Zealand T20I series 2024,T20I,2024,2024-01-12,New Zealand,Pakistan,New Zealand won by 46 runs,17.0,239,False,False,INCLUDED,None
+28964,2060,Pakistan in New Zealand T20I series 2024,T20I,2024,2024-01-14,New Zealand,Pakistan,New Zealand Won by 21 Runs,17.0,246,False,False,INCLUDED,None
+28965,2060,Pakistan in New Zealand T20I series 2024,T20I,2024,2024-01-17,New Zealand,Pakistan,New Zealand Won by 45 Runs,17.0,252,False,False,INCLUDED,None
+28966,2060,Pakistan in New Zealand T20I series 2024,T20I,2024,2024-01-19,New Zealand,Pakistan,New Zealand Won by 7 wickets,17.0,239,False,False,INCLUDED,None
+28967,2060,Pakistan in New Zealand T20I series 2024,T20I,2024,2024-01-21,New Zealand,Pakistan,Pakistan Won by 42 Runs,25.0,224,False,False,INCLUDED,None
+29815,2061,West Indies in Australia T20I Series 2024,T20I,2024,2024-02-09,Australia,West Indies,Australia Won by 11 runs,20.0,251,False,False,INCLUDED,None
+29816,2061,West Indies in Australia T20I Series 2024,T20I,2024,2024-02-11,Australia,West Indies,Australia Won by 34 Runs,20.0,255,False,False,INCLUDED,None
+29817,2061,West Indies in Australia T20I Series 2024,T20I,2024,2024-02-13,Australia,West Indies,West Indies Won by 37 runs,28.0,250,False,False,INCLUDED,None
+29982,2062,Australia in New Zealand T20I Series 2024,T20I,2024,2024-02-21,New Zealand,Australia,Australia Won by 6 wickets,20.0,258,False,False,INCLUDED,None
+29983,2062,Australia in New Zealand T20I Series 2024,T20I,2024,2024-02-23,New Zealand,Australia,Australia Won by 72 Runs,20.0,231,False,False,INCLUDED,None
+29984,2062,Australia in New Zealand T20I Series 2024,T20I,2024,2024-02-25,New Zealand,Australia,Australia Won by 27 Runs (DLS method),20.0,129,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+28057,2188,Ireland in Zimbabwe T20I Series 2023/24,T20I,2023/24,2023-12-07,Zimbabwe,Ireland,Zimbabwe Won By 1 Wicket,72.0,244,False,False,INCLUDED,None
+28058,2188,Ireland in Zimbabwe T20I Series 2023/24,T20I,2023/24,2023-12-09,Zimbabwe,Ireland,Ireland Won by 4 Wickets,23.0,254,False,False,INCLUDED,None
+28059,2188,Ireland in Zimbabwe T20I Series 2023/24,T20I,2023/24,2023-12-10,Zimbabwe,Ireland,Ireland Won By 6 Wickets,23.0,241,False,False,INCLUDED,None
+30056,2193,IPL 2024,T20,2024,2024-03-22,Chennai Super Kings,Royal Challengers Bengaluru,Chennai Super Kings Won by 6 Wickets,1.0,249,False,False,INCLUDED,None
+30057,2193,IPL 2024,T20,2024,2024-03-23,Punjab Kings,Delhi Capitals,Punjab Kings Won by 4 Wickets,4.0,246,False,False,INCLUDED,None
+30058,2193,IPL 2024,T20,2024,2024-03-23,Kolkata Knight Riders,Sunrisers Hyderabad,Kolkata Knight Riders won by 4 runs,8.0,250,False,False,INCLUDED,None
+30059,2193,IPL 2024,T20,2024,2024-03-24,Rajasthan Royals,Lucknow Super Giants,Rajasthan Royals won by 20 runs,3.0,251,False,False,INCLUDED,None
+30060,2193,IPL 2024,T20,2024,2024-03-24,Gujarat Titans,Mumbai Indians,Gujarat Titans won by 6 runs,3508.0,247,False,False,INCLUDED,None
+30061,2193,IPL 2024,T20,2024,2024-03-25,Royal Challengers Bengaluru,Punjab Kings,Royal Challengers Bengaluru won by 4 wickets,5.0,248,False,False,INCLUDED,None
+30062,2193,IPL 2024,T20,2024,2024-03-26,Chennai Super Kings,Gujarat Titans,Chennai Super Kings won by 63 runs,1.0,253,False,False,INCLUDED,None
+30063,2193,IPL 2024,T20,2024,2024-03-27,Sunrisers Hyderabad,Mumbai Indians,Sunrisers Hyderabad won by 31 runs,242.0,256,False,False,INCLUDED,None
+30064,2193,IPL 2024,T20,2024,2024-03-28,Rajasthan Royals,Delhi Capitals,Rajasthan Royals won by 12 runs,3.0,249,False,False,INCLUDED,None
+30065,2193,IPL 2024,T20,2024,2024-03-29,Royal Challengers Bengaluru,Kolkata Knight Riders,Kolkata Knight Riders won by 7 wickets,8.0,228,False,False,INCLUDED,None
+30066,2193,IPL 2024,T20,2024,2024-03-30,Lucknow Super Giants,Punjab Kings,Lucknow Super Giants won by 21 runs,3509.0,247,False,False,INCLUDED,None
+30067,2193,IPL 2024,T20,2024,2024-03-31,Gujarat Titans,Sunrisers Hyderabad,Gujarat Titans Won by 7 wickets,3508.0,241,False,False,INCLUDED,None
+30068,2193,IPL 2024,T20,2024,2024-03-31,Delhi Capitals,Chennai Super Kings,Delhi Capitals Won by 20 runs,7.0,256,False,False,INCLUDED,None
+30069,2193,IPL 2024,T20,2024,2024-04-01,Mumbai Indians,Rajasthan Royals,Rajasthan Royals Won by 6 wickets,3.0,223,False,False,INCLUDED,None
+30070,2193,IPL 2024,T20,2024,2024-04-02,Royal Challengers Bengaluru,Lucknow Super Giants,Lucknow Super Giants Won by 28 runs,3509.0,248,False,False,INCLUDED,None
+30071,2193,IPL 2024,T20,2024,2024-04-03,Delhi Capitals,Kolkata Knight Riders,Kolkata Knight Riders Won by 106 runs,8.0,244,False,False,INCLUDED,None
+30072,2193,IPL 2024,T20,2024,2024-04-04,Gujarat Titans,Punjab Kings,Punjab Kings Won by 3 wickets,4.0,247,False,False,INCLUDED,None
+30073,2193,IPL 2024,T20,2024,2024-04-05,Sunrisers Hyderabad,Chennai Super Kings,Sunrisers Hyderabad Won by 6 wickets,242.0,232,False,False,INCLUDED,None
+30074,2193,IPL 2024,T20,2024,2024-04-06,Rajasthan Royals,Royal Challengers Bengaluru,Rajasthan Royals Won by 6 Wickets,3.0,243,False,False,INCLUDED,None
+30075,2193,IPL 2024,T20,2024,2024-04-07,Mumbai Indians,Delhi Capitals,Mumbai Indians Won by 29 runs,2.0,251,False,False,INCLUDED,None
+30076,2193,IPL 2024,T20,2024,2024-04-07,Lucknow Super Giants,Gujarat Titans,Lucknow Super Giants Won by 33 runs,3509.0,243,False,False,INCLUDED,None
+31240,2193,IPL 2024,T20,2024,2024-04-08,Chennai Super Kings,Kolkata Knight Riders,Chennai Super Kings Won by 7 wickets,1.0,237,False,False,INCLUDED,None
+31241,2193,IPL 2024,T20,2024,2024-04-09,Punjab Kings,Sunrisers Hyderabad,Sunrisers Hyderabad Won by 2 runs,242.0,251,False,False,INCLUDED,None
+31242,2193,IPL 2024,T20,2024,2024-04-10,Rajasthan Royals,Gujarat Titans,Gujarat Titans Won by 3 wickets,3508.0,255,False,False,INCLUDED,None
+31243,2193,IPL 2024,T20,2024,2024-04-11,Mumbai Indians,Royal Challengers Bengaluru,Mumbai Indians Won by 7 wickets,2.0,224,False,False,INCLUDED,None
+31244,2193,IPL 2024,T20,2024,2024-04-12,Lucknow Super Giants,Delhi Capitals,Delhi Capitals Won by 6 wickets,7.0,239,False,False,INCLUDED,None
+31245,2193,IPL 2024,T20,2024,2024-04-13,Punjab Kings,Rajasthan Royals,Rajasthan Royals Won by 3 wickets,3.0,247,False,False,INCLUDED,None
+31246,2193,IPL 2024,T20,2024,2024-04-14,Kolkata Knight Riders,Lucknow Super Giants,Kolkata Knight Riders Won by 8 wickets,8.0,232,False,False,INCLUDED,None
+31247,2193,IPL 2024,T20,2024,2024-04-14,Mumbai Indians,Chennai Super Kings,Chennai Super Kings Won by 20 runs,1.0,249,False,False,INCLUDED,None
+31248,2193,IPL 2024,T20,2024,2024-04-15,Royal Challengers Bengaluru,Sunrisers Hyderabad,Sunrisers Hyderabad Won by 25 runs,242.0,265,False,False,INCLUDED,None
+31249,2193,IPL 2024,T20,2024,2024-04-17,Gujarat Titans,Delhi Capitals,Delhi Capitals Won by 6 wickets,7.0,167,False,False,INCLUDED,None
+31250,2193,IPL 2024,T20,2024,2024-04-16,Kolkata Knight Riders,Rajasthan Royals,Rajasthan Royals Won by 2 wickets,3.0,259,False,False,INCLUDED,None
+31251,2193,IPL 2024,T20,2024,2024-04-18,Punjab Kings,Mumbai Indians,Mumbai Indians Won by 9 runs,2.0,252,False,False,INCLUDED,None
+31252,2193,IPL 2024,T20,2024,2024-04-19,Lucknow Super Giants,Chennai Super Kings,Lucknow Super Giants Won by 8 wickets,3509.0,247,False,False,INCLUDED,None
+31253,2193,IPL 2024,T20,2024,2024-04-20,Delhi Capitals,Sunrisers Hyderabad,Sunrisers Hyderabad Won by 67 runs,242.0,245,False,False,INCLUDED,None
+31254,2193,IPL 2024,T20,2024,2024-04-21,Kolkata Knight Riders,Royal Challengers Bengaluru,Kolkata Knight Riders Won by 1 runs,8.0,253,False,False,INCLUDED,None
+31255,2193,IPL 2024,T20,2024,2024-04-21,Punjab Kings,Gujarat Titans,Gujarat Titans Won by 3 wickets,3508.0,239,False,False,INCLUDED,None
+31256,2193,IPL 2024,T20,2024,2024-04-22,Rajasthan Royals,Mumbai Indians,Rajasthan Royals Won by 9 wickets,3.0,245,False,False,INCLUDED,None
+31257,2193,IPL 2024,T20,2024,2024-04-23,Chennai Super Kings,Lucknow Super Giants,Lucknow Super Giants Won by 6 wickets,3509.0,245,False,False,INCLUDED,None
+31258,2193,IPL 2024,T20,2024,2024-04-24,Delhi Capitals,Gujarat Titans,Delhi Capitals Won by 4 runs,7.0,247,False,False,INCLUDED,None
+31259,2193,IPL 2024,T20,2024,2024-04-25,Sunrisers Hyderabad,Royal Challengers Bengaluru,Royal Challengers Bengaluru Won by 35 runs,5.0,254,False,False,INCLUDED,None
+31260,2193,IPL 2024,T20,2024,2024-04-26,Kolkata Knight Riders,Punjab Kings,Punjab Kings Won by 8 wickets,4.0,247,False,False,INCLUDED,None
+31261,2193,IPL 2024,T20,2024,2024-04-27,Delhi Capitals,Mumbai Indians,Delhi Capitals Won by 10 runs,7.0,255,False,False,INCLUDED,None
+31262,2193,IPL 2024,T20,2024,2024-04-27,Lucknow Super Giants,Rajasthan Royals,Rajasthan Royals Won by 7 wickets,3.0,244,False,False,INCLUDED,None
+31263,2193,IPL 2024,T20,2024,2024-04-28,Gujarat Titans,Royal Challengers Bengaluru,Royal Challengers Bengaluru Won by 9 wickets,5.0,230,False,False,INCLUDED,None
+31264,2193,IPL 2024,T20,2024,2024-04-28,Chennai Super Kings,Sunrisers Hyderabad,Chennai Super Kings Won by 78 runs,1.0,242,False,False,INCLUDED,None
+31265,2193,IPL 2024,T20,2024,2024-04-29,Kolkata Knight Riders,Delhi Capitals,Kolkata Knight Riders Won by 7 wickets,8.0,227,False,False,INCLUDED,None
+31266,2193,IPL 2024,T20,2024,2024-04-30,Lucknow Super Giants,Mumbai Indians,Lucknow Super Giants Won by 4 wickets,3509.0,248,False,False,INCLUDED,None
+31267,2193,IPL 2024,T20,2024,2024-05-01,Chennai Super Kings,Punjab Kings,Punjab Kings Won by 7 wickets,4.0,245,False,False,INCLUDED,None
+31268,2193,IPL 2024,T20,2024,2024-05-02,Sunrisers Hyderabad,Rajasthan Royals,Sunrisers Hyderabad Won by 1 runs,242.0,260,False,False,INCLUDED,None
+31269,2193,IPL 2024,T20,2024,2024-05-03,Mumbai Indians,Kolkata Knight Riders,Kolkata Knight Riders Won by 24 runs,8.0,243,False,False,INCLUDED,None
+31270,2193,IPL 2024,T20,2024,2024-05-04,Royal Challengers Bengaluru,Gujarat Titans,Royal Challengers Bengaluru Won by 4 wickets,5.0,204,False,False,INCLUDED,None
+31271,2193,IPL 2024,T20,2024,2024-05-05,Punjab Kings,Chennai Super Kings,Chennai Super Kings Won by 28 runs,1.0,249,False,False,INCLUDED,None
+31272,2193,IPL 2024,T20,2024,2024-05-05,Lucknow Super Giants,Kolkata Knight Riders,Kolkata Knight Riders Won by 98 runs,8.0,232,False,False,INCLUDED,None
+31273,2193,IPL 2024,T20,2024,2024-05-06,Mumbai Indians,Sunrisers Hyderabad,Mumbai Indians Won by 7 wickets,2.0,239,False,False,INCLUDED,None
+31274,2193,IPL 2024,T20,2024,2024-05-07,Delhi Capitals,Rajasthan Royals,Delhi Capitals Won by 20 runs,7.0,252,False,False,INCLUDED,None
+31275,2193,IPL 2024,T20,2024,2024-05-08,Sunrisers Hyderabad,Lucknow Super Giants,Sunrisers Hyderabad Won by 10 wickets,242.0,183,False,False,INCLUDED,None
+31276,2193,IPL 2024,T20,2024,2024-05-09,Punjab Kings,Royal Challengers Bengaluru,Royal Challengers Bengaluru Won by 60 runs,5.0,232,False,False,INCLUDED,None
+31277,2193,IPL 2024,T20,2024,2024-05-10,Gujarat Titans,Chennai Super Kings,Gujarat Titans Won by 35 runs,3508.0,249,False,False,INCLUDED,None
+31278,2193,IPL 2024,T20,2024,2024-05-11,Kolkata Knight Riders,Mumbai Indians,Kolkata Knight Riders Won by 18 runs,8.0,201,False,False,INCLUDED,None
+31279,2193,IPL 2024,T20,2024,2024-05-12,Chennai Super Kings,Rajasthan Royals,Chennai Super Kings Won by 5 wickets,1.0,239,False,False,INCLUDED,None
+31280,2193,IPL 2024,T20,2024,2024-05-12,Royal Challengers Bengaluru,Delhi Capitals,Royal Challengers Bengaluru Won by 47 runs,5.0,247,False,False,INCLUDED,None
+31281,2193,IPL 2024,T20,2024,2024-05-13,Gujarat Titans,Kolkata Knight Riders,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+31282,2193,IPL 2024,T20,2024,2024-05-14,Delhi Capitals,Lucknow Super Giants,Delhi Capitals Won by 19 runs,7.0,253,False,False,INCLUDED,None
+31283,2193,IPL 2024,T20,2024,2024-05-15,Rajasthan Royals,Punjab Kings,Punjab Kings Won by 5 wickets,4.0,235,False,False,INCLUDED,None
+31284,2193,IPL 2024,T20,2024,2024-05-16,Sunrisers Hyderabad,Gujarat Titans,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+31285,2193,IPL 2024,T20,2024,2024-05-17,Mumbai Indians,Lucknow Super Giants,Lucknow Super Giants Won by 18 runs,3509.0,259,False,False,INCLUDED,None
+31286,2193,IPL 2024,T20,2024,2024-05-18,Royal Challengers Bengaluru,Chennai Super Kings,Royal Challengers Bengaluru Won by 27 runs,5.0,253,False,False,INCLUDED,None
+31287,2193,IPL 2024,T20,2024,2024-05-19,Sunrisers Hyderabad,Punjab Kings,Sunrisers Hyderabad Won by 4 wickets,242.0,247,False,False,INCLUDED,None
+31288,2193,IPL 2024,T20,2024,2024-05-19,Rajasthan Royals,Kolkata Knight Riders,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+31289,2193,IPL 2024,T20,2024,2024-05-21,Kolkata Knight Riders,Sunrisers Hyderabad,Kolkata Knight Riders Won by 8 wickets,8.0,208,False,False,INCLUDED,None
+31290,2193,IPL 2024,T20,2024,2024-05-22,Rajasthan Royals,Royal Challengers Bengaluru,Rajasthan Royals Won by 4 wickets,3.0,241,False,False,INCLUDED,None
+31291,2193,IPL 2024,T20,2024,2024-05-24,Sunrisers Hyderabad,Rajasthan Royals,Sunrisers Hyderabad Won by 36 runs,242.0,251,False,False,INCLUDED,None
+31292,2193,IPL 2024,T20,2024,2024-05-26,Kolkata Knight Riders,Sunrisers Hyderabad,Kolkata Knight Riders Won by 8 wickets,8.0,184,False,False,INCLUDED,None
+28957,2229,Zimbabwe in Sri Lanka T20I Series 2024,T20I,2024,2024-01-14,Sri Lanka,Zimbabwe,Sri Lanka Won By 3 Wickets,27.0,245,False,False,INCLUDED,None
+28958,2229,Zimbabwe in Sri Lanka T20I Series 2024,T20I,2024,2024-01-16,Sri Lanka,Zimbabwe,Zimbabwe Won by 4 Wickets,72.0,249,False,False,INCLUDED,None
+28959,2229,Zimbabwe in Sri Lanka T20I Series 2024,T20I,2024,2024-01-18,Sri Lanka,Zimbabwe,Sri Lanka Won by 9 Wickets,27.0,150,False,False,INCLUDED,None
+29924,2267,Afghanistan in Sri Lanka T20I Series 2024,T20I,2024,2024-02-17,Sri Lanka,Afghanistan,Sri Lanka Won by 4 runs,27.0,244,False,False,INCLUDED,None
+29925,2267,Afghanistan in Sri Lanka T20I Series 2024,T20I,2024,2024-02-19,Sri Lanka,Afghanistan,Sri Lanka Won by 72 Runs,27.0,232,False,False,INCLUDED,None
+29926,2267,Afghanistan in Sri Lanka T20I Series 2024,T20I,2024,2024-02-21,Sri Lanka,Afghanistan,Afghanistan won by 3 runs,78.0,251,False,False,INCLUDED,None
+30728,2269,Afghanistan v Ireland T20I Series 2024,T20I,2024,2024-03-15,Afghanistan,Ireland,Ireland won by 38 runs,23.0,241,False,False,INCLUDED,None
+30729,2269,Afghanistan v Ireland T20I Series 2024,T20I,2024,2024-03-17,Afghanistan,Ireland,Afghanistan Won By 10Runs,78.0,249,False,False,INCLUDED,None
+30730,2269,Afghanistan v Ireland T20I Series 2024,T20I,2024,2024-03-18,Afghanistan,Ireland,Afghanistan won by 57 runs,78.0,233,False,False,INCLUDED,None
+30341,2305,Sri Lanka in Bangladesh T20I Series 2024,T20I,2024,2024-03-04,Bangladesh,Sri Lanka,Sri Lanka won by 3 runs,27.0,263,False,False,INCLUDED,None
+30342,2305,Sri Lanka in Bangladesh T20I Series 2024,T20I,2024,2024-03-06,Bangladesh,Sri Lanka,Bangladesh won by 8 wickets,21.0,241,False,False,INCLUDED,None
+30343,2305,Sri Lanka in Bangladesh T20I Series 2024,T20I,2024,2024-03-09,Bangladesh,Sri Lanka,Sri Lanka won by 28 runs,27.0,247,False,False,INCLUDED,None
+31707,2350,New Zealand in Pakistan T20I Series 2024,T20I,2024,2024-04-18,Pakistan,New Zealand,No Result,,2,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+31708,2350,New Zealand in Pakistan T20I Series 2024,T20I,2024,2024-04-20,Pakistan,New Zealand,Pakistan Won by 7 wickets,25.0,184,False,False,INCLUDED,None
+31709,2350,New Zealand in Pakistan T20I Series 2024,T20I,2024,2024-04-21,Pakistan,New Zealand,New Zealand Won by 7 wickets,17.0,243,False,False,INCLUDED,None
+31710,2350,New Zealand in Pakistan T20I Series 2024,T20I,2024,2024-04-25,Pakistan,New Zealand,New Zealand Won by 4 runs,17.0,260,False,False,INCLUDED,None
+31711,2350,New Zealand in Pakistan T20I Series 2024,T20I,2024,2024-04-27,Pakistan,New Zealand,Pakistan Won by 9 runs,25.0,254,False,False,INCLUDED,None
+32610,2354,Pakistan in England T20I Series 2024,T20I,2024,2024-05-22,England,Pakistan,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+32611,2354,Pakistan in England T20I Series 2024,T20I,2024,2024-05-25,England,Pakistan,England Won by 23 runs,22.0,242,False,False,INCLUDED,None
+32612,2354,Pakistan in England T20I Series 2024,T20I,2024,2024-05-28,England,Pakistan,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+32613,2354,Pakistan in England T20I Series 2024,T20I,2024,2024-05-30,England,Pakistan,England Won by 7 wickets,22.0,219,False,False,INCLUDED,None
+32132,2371,Zimbabwe in Bangladesh T20I Series 2024,T20I,2024,2024-05-03,Bangladesh,Zimbabwe,Bangladesh Won by 8 wickets,21.0,219,False,False,INCLUDED,None
+32133,2371,Zimbabwe in Bangladesh T20I Series 2024,T20I,2024,2024-05-05,Bangladesh,Zimbabwe,Bangladesh Won by 6 wickets,21.0,238,False,False,INCLUDED,None
+32134,2371,Zimbabwe in Bangladesh T20I Series 2024,T20I,2024,2024-05-07,Bangladesh,Zimbabwe,Bangladesh Won by 9 runs,21.0,254,False,False,INCLUDED,None
+32135,2371,Zimbabwe in Bangladesh T20I Series 2024,T20I,2024,2024-05-10,Bangladesh,Zimbabwe,Bangladesh Won by 5 runs,21.0,246,False,False,INCLUDED,None
+32136,2371,Zimbabwe in Bangladesh T20I Series 2024,T20I,2024,2024-05-12,Bangladesh,Zimbabwe,Zimbabwe Won by 8 wickets,72.0,241,False,False,INCLUDED,None
+33803,2372,India in Zimbabwe T20I Series 2024,T20I,2024,2024-07-06,Zimbabwe,India,Zimbabwe Won by 13 runs,72.0,243,False,False,INCLUDED,None
+33804,2372,India in Zimbabwe T20I Series 2024,T20I,2024,2024-07-07,Zimbabwe,India,India Won by 100 runs,18.0,243,False,False,INCLUDED,None
+33805,2372,India in Zimbabwe T20I Series 2024,T20I,2024,2024-07-10,Zimbabwe,India,India Won by 23 runs,18.0,244,False,False,INCLUDED,None
+33806,2372,India in Zimbabwe T20I Series 2024,T20I,2024,2024-07-13,Zimbabwe,India,India Won by 10 wickets,18.0,220,False,False,INCLUDED,None
+33807,2372,India in Zimbabwe T20I Series 2024,T20I,2024,2024-07-14,Zimbabwe,India,India Won by 42 runs,18.0,243,False,False,INCLUDED,None
+37354,2387,Pakistan in Australia T20I Series 2024,T20I,2024,2024-11-14,Australia,Pakistan,Australia Won by 29 runs,20.0,86,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+37355,2387,Pakistan in Australia T20I Series 2024,T20I,2024,2024-11-16,Australia,Pakistan,Australia Won by 13 runs,20.0,250,False,False,INCLUDED,None
+37356,2387,Pakistan in Australia T20I Series 2024,T20I,2024,2024-11-18,Australia,Pakistan,Australia Won by 7 wickets,20.0,184,False,False,INCLUDED,None
+32290,2395,Pakistan in Ireland T20I series 2024,T20I,2024,2024-05-10,Ireland,Pakistan,Ireland Won by 5 wickets,23.0,251,False,False,INCLUDED,None
+32291,2395,Pakistan in Ireland T20I series 2024,T20I,2024,2024-05-12,Ireland,Pakistan,Pakistan Won by 7 wickets,25.0,228,False,False,INCLUDED,None
+32292,2395,Pakistan in Ireland T20I series 2024,T20I,2024,2024-05-14,Ireland,Pakistan,Pakistan Won by 6 wickets,25.0,234,False,False,INCLUDED,None
+32620,2398,Netherlands Tri-Nation T20I Series 2024,T20I,2024,2024-05-18,Netherlands,Scotland,Netherlands Won by 41 runs,24.0,237,False,False,INCLUDED,None
+32621,2398,Netherlands Tri-Nation T20I Series 2024,T20I,2024,2024-05-19,Netherlands,Ireland,Ireland Won by 1 runs,23.0,249,False,False,INCLUDED,None
+32622,2398,Netherlands Tri-Nation T20I Series 2024,T20I,2024,2024-05-20,Ireland,Scotland,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+32623,2398,Netherlands Tri-Nation T20I Series 2024,T20I,2024,2024-05-22,Scotland,Netherlands,Scotland Won by 71 runs,26.0,219,False,False,INCLUDED,None
+32624,2398,Netherlands Tri-Nation T20I Series 2024,T20I,2024,2024-05-23,Ireland,Scotland,Ireland Won by 5 wickets,23.0,243,False,False,INCLUDED,None
+32625,2398,Netherlands Tri-Nation T20I Series 2024,T20I,2024,2024-05-24,Netherlands,Ireland,Ireland Won by 3 runs,23.0,243,False,False,INCLUDED,None
+38795,2442,Pakistan in South Africa T20I Series 2024,T20I,2024,2024-12-10,South Africa,Pakistan,South Africa Won by 11 runs,19.0,251,False,False,INCLUDED,None
+38796,2442,Pakistan in South Africa T20I Series 2024,T20I,2024,2024-12-13,South Africa,Pakistan,South Africa Won by 7 wickets,19.0,255,False,False,INCLUDED,None
+38797,2442,Pakistan in South Africa T20I Series 2024,T20I,2024,2024-12-14,South Africa,Pakistan,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+32617,2452,South Africa in West Indies T20I Series [May 2024] 2024,T20I,2024,2024-05-24,West Indies,South Africa,West Indies Won by 28 runs,28.0,248,False,False,INCLUDED,None
+32618,2452,South Africa in West Indies T20I Series [May 2024] 2024,T20I,2024,2024-05-26,West Indies,South Africa,West Indies Won by 16 runs,28.0,255,False,False,INCLUDED,None
+32619,2452,South Africa in West Indies T20I Series [May 2024] 2024,T20I,2024,2024-05-27,West Indies,South Africa,West Indies Won by 8 wickets,28.0,211,False,False,INCLUDED,None
+36096,2453,South Africa in West Indies T20I Series 2024,T20I,2024,2024-08-24,West Indies,South Africa,West Indies Won by 7 wickets,28.0,241,False,False,INCLUDED,None
+36097,2453,South Africa in West Indies T20I Series 2024,T20I,2024,2024-08-26,West Indies,South Africa,West Indies Won by 30 runs,28.0,247,False,False,INCLUDED,None
+36098,2453,South Africa in West Indies T20I Series 2024,T20I,2024,2024-08-28,West Indies,South Africa,West Indies Won by 8 wickets (DLS),28.0,141,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+37349,2455,England in West Indies T20I Series 2024,T20I,2024,2024-11-10,West Indies,England,England Won by 8 wickets,22.0,229,False,False,INCLUDED,None
+37350,2455,England in West Indies T20I Series 2024,T20I,2024,2024-11-11,West Indies,England,England Won by 7 wickets,22.0,226,False,False,INCLUDED,None
+37351,2455,England in West Indies T20I Series 2024,T20I,2024,2024-11-15,West Indies,England,England Won by 3 wickets,22.0,244,False,False,INCLUDED,None
+37352,2455,England in West Indies T20I Series 2024,T20I,2024,2024-11-17,West Indies,England,West Indies Won by 5 wickets,28.0,244,False,False,INCLUDED,None
+37353,2455,England in West Indies T20I Series 2024,T20I,2024,2024-11-18,West Indies,England,No Result,,30,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+38842,2457,Bangladesh in West Indies T20I Series 2024,T20I,2024,2024-12-16,West Indies,Bangladesh,Bangladesh Won by 7 runs,21.0,251,False,False,INCLUDED,None
+38843,2457,Bangladesh in West Indies T20I Series 2024,T20I,2024,2024-12-18,West Indies,Bangladesh,Bangladesh Won by 27 runs,21.0,239,False,False,INCLUDED,None
+38844,2457,Bangladesh in West Indies T20I Series 2024,T20I,2024,2024-12-20,West Indies,Bangladesh,Bangladesh Won by 80 runs,21.0,228,False,False,INCLUDED,None
+37276,2512,Bangladesh in India T20I Series 2024,T20I,2024,2024-10-06,India,Bangladesh,India Won by 7 wickets,18.0,193,False,False,INCLUDED,None
+37277,2512,Bangladesh in India T20I Series 2024,T20I,2024,2024-10-09,India,Bangladesh,India Won by 86 runs,18.0,248,False,False,INCLUDED,None
+37278,2512,Bangladesh in India T20I Series 2024,T20I,2024,2024-10-12,India,Bangladesh,India Won by 133 runs,18.0,253,False,False,INCLUDED,None
+40036,2513,England in India T20I Series 2025,T20I,2025,2025-01-22,India,England,India Won by 7 wickets,18.0,203,False,False,INCLUDED,None
+40037,2513,England in India T20I Series 2025,T20I,2025,2025-01-25,India,England,India Won by 2 wickets,18.0,243,False,False,INCLUDED,None
+40038,2513,England in India T20I Series 2025,T20I,2025,2025-01-28,India,England,England Won by 26 runs,22.0,251,False,False,INCLUDED,None
+40039,2513,England in India T20I Series 2025,T20I,2025,2025-01-31,India,England,India Won by 15 runs,18.0,246,False,False,INCLUDED,None
+40040,2513,England in India T20I Series 2025,T20I,2025,2025-02-02,India,England,India Won by 150 runs,18.0,188,False,False,INCLUDED,None
+34427,2542,India in Sri Lanka T20I Series 2024,T20I,2024,2024-07-27,Sri Lanka,India,India Won by 43 runs,18.0,242,False,False,INCLUDED,None
+34428,2542,India in Sri Lanka T20I Series 2024,T20I,2024,2024-07-28,Sri Lanka,India,India Won by 7 wickets(D/L Method),18.0,168,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+34429,2542,India in Sri Lanka T20I Series 2024,T20I,2024,2024-07-30,Sri Lanka,India,India Tied with Srilanka (India Won the Super Over by 2 wickets),18.0,257,True,False,INCLUDED,None
+36562,2548,Australia in England T20I Series 2024,T20I,2024,2024-09-11,England,Australia,Australia Won by 28 runs,20.0,245,False,False,INCLUDED,None
+36563,2548,Australia in England T20I Series 2024,T20I,2024,2024-09-13,England,Australia,England Won by 3 wickets,22.0,244,False,False,INCLUDED,None
+36564,2548,Australia in England T20I Series 2024,T20I,2024,2024-09-15,England,Australia,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+36559,2561,Australia in Scotland T20I Series 2024,T20I,2024,2024-09-04,Scotland,Australia,Australia Won by 7 wickets,20.0,182,False,False,INCLUDED,None
+36560,2561,Australia in Scotland T20I Series 2024,T20I,2024,2024-09-06,Scotland,Australia,Australia Won by 70 runs,20.0,228,False,False,INCLUDED,None
+36561,2561,Australia in Scotland T20I Series 2024,T20I,2024,2024-09-07,Scotland,Australia,Australia Won by 6 wickets,20.0,225,False,False,INCLUDED,None
+37014,2562,Ireland v South Africa T20I Series 2024,T20I,2024,2024-09-27,Ireland,South Africa,South Africa Won by 8 wickets,19.0,239,False,False,INCLUDED,None
+37015,2562,Ireland v South Africa T20I Series 2024,T20I,2024,2024-09-29,Ireland,South Africa,Ireland Won by 10 runs,23.0,258,False,False,INCLUDED,None
+35423,2605,Netherlands Tri-Nation T20I Series [Aug 2024] 2024,T20I,2024,2024-08-23,Netherlands,Canada,Netherlands Won by 5 wickets,24.0,231,False,False,INCLUDED,None
+35424,2605,Netherlands Tri-Nation T20I Series [Aug 2024] 2024,T20I,2024,2024-08-24,Canada,United States Of America,No Result,,125,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+35425,2605,Netherlands Tri-Nation T20I Series [Aug 2024] 2024,T20I,2024,2024-08-25,Netherlands,United States Of America,Netherlands Won by 102 runs,24.0,217,False,False,INCLUDED,None
+35427,2605,Netherlands Tri-Nation T20I Series [Aug 2024] 2024,T20I,2024,2024-08-26,Netherlands,Canada,Canada Won by 8 runs,89.0,252,False,False,INCLUDED,None
+35428,2605,Netherlands Tri-Nation T20I Series [Aug 2024] 2024,T20I,2024,2024-08-27,Canada,United States Of America,United States Of America Won by 20 runs,315.0,244,False,False,INCLUDED,None
+35429,2605,Netherlands Tri-Nation T20I Series [Aug 2024] 2024,T20I,2024,2024-08-28,Netherlands,United States Of America,Netherlands Won by 4 runs,24.0,237,False,False,INCLUDED,None
+36199,2626,West Indies in England T20I Series 2025,T20I,2025,2025-06-06,England,West Indies,England Won by 21 runs,22.0,267,False,False,INCLUDED,None
+36200,2626,West Indies in England T20I Series 2025,T20I,2025,2025-06-08,England,West Indies,England Won by 4 wickets,22.0,245,False,False,INCLUDED,None
+36201,2626,West Indies in England T20I Series 2025,T20I,2025,2025-06-10,England,West Indies,England Won by 37 runs,22.0,252,False,False,INCLUDED,None
+36208,2628,South Africa in England T20I Series 2025,T20I,2025,2025-09-10,England,South Africa,South Africa Won by 14 runs(DLS method),19.0,80,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+36209,2628,South Africa in England T20I Series 2025,T20I,2025,2025-09-12,England,South Africa,England Won by 146 runs,22.0,232,False,False,INCLUDED,None
+36210,2628,South Africa in England T20I Series 2025,T20I,2025,2025-09-14,England,South Africa,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+37553,2692,West Indies in Sri Lanka T20I Series 2024,T20I,2024,2024-10-13,Sri Lanka,West Indies,West Indies Won by 5 wickets,28.0,246,False,False,INCLUDED,None
+37554,2692,West Indies in Sri Lanka T20I Series 2024,T20I,2024,2024-10-15,Sri Lanka,West Indies,Sri Lanka Won by 73 runs,27.0,225,False,False,INCLUDED,None
+37555,2692,West Indies in Sri Lanka T20I Series 2024,T20I,2024,2024-10-17,Sri Lanka,West Indies,Sri Lanka Won by 9 wickets,27.0,234,False,False,INCLUDED,None
+37894,2716,New Zealand in Sri Lanka T20I Series 2024,T20I,2024,2024-11-09,Sri Lanka,New Zealand,Sri Lanka Won by 4 wickets,27.0,239,False,False,INCLUDED,None
+37895,2716,New Zealand in Sri Lanka T20I Series 2024,T20I,2024,2024-11-10,Sri Lanka,New Zealand,New Zealand Won by 5 runs,17.0,246,False,False,INCLUDED,None
+37940,2718,India in South Africa T20I Series 2024,T20I,2024,2024-11-08,South Africa,India,India Won by 61 runs,18.0,241,False,False,INCLUDED,None
+37941,2718,India in South Africa T20I Series 2024,T20I,2024,2024-11-10,South Africa,India,South Africa Won by 3 wickets,19.0,246,False,False,INCLUDED,None
+37942,2718,India in South Africa T20I Series 2024,T20I,2024,2024-11-13,South Africa,India,India Won by 11 runs,18.0,254,False,False,INCLUDED,None
+37943,2718,India in South Africa T20I Series 2024,T20I,2024,2024-11-15,South Africa,India,India Won by 135 runs,18.0,249,False,False,INCLUDED,None
+37926,2722,Pakistan in Zimbabwe T20I Series 2024,T20I,2024,2024-12-01,Zimbabwe,Pakistan,Pakistan Won by 57 runs,25.0,217,False,False,INCLUDED,None
+37927,2722,Pakistan in Zimbabwe T20I Series 2024,T20I,2024,2024-12-03,Zimbabwe,Pakistan,Pakistan Won by 10 wickets,25.0,110,False,False,INCLUDED,None
+37928,2722,Pakistan in Zimbabwe T20I Series 2024,T20I,2024,2024-12-05,Zimbabwe,Pakistan,Zimbabwe Won by 2 wickets,72.0,247,False,False,INCLUDED,None
+40694,2725,IPL 2025,T20,2025,2025-03-22,Kolkata Knight Riders,Royal Challengers Bengaluru,Royal Challengers Bengaluru Won by 7 wickets,5.0,223,False,False,INCLUDED,None
+40695,2725,IPL 2025,T20,2025,2025-03-23,Sunrisers Hyderabad,Rajasthan Royals,Sunrisers Hyderabad Won by 44 runs,242.0,262,False,False,INCLUDED,None
+40696,2725,IPL 2025,T20,2025,2025-03-23,Chennai Super Kings,Mumbai Indians,Chennai Super Kings Won by 4 wickets,1.0,243,False,False,INCLUDED,None
+40697,2725,IPL 2025,T20,2025,2025-03-24,Delhi Capitals,Lucknow Super Giants,Delhi Capitals Won by 1 wickets,7.0,246,False,False,INCLUDED,None
+40698,2725,IPL 2025,T20,2025,2025-03-25,Gujarat Titans,Punjab Kings,Punjab Kings Won by 11 runs,4.0,254,False,False,INCLUDED,None
+40699,2725,IPL 2025,T20,2025,2025-03-26,Rajasthan Royals,Kolkata Knight Riders,Kolkata Knight Riders Won by 8 wickets,8.0,234,False,False,INCLUDED,None
+40700,2725,IPL 2025,T20,2025,2025-03-27,Sunrisers Hyderabad,Lucknow Super Giants,Lucknow Super Giants Won by 5 wickets,3509.0,233,False,False,INCLUDED,None
+40701,2725,IPL 2025,T20,2025,2025-03-28,Chennai Super Kings,Royal Challengers Bengaluru,Royal Challengers Bengaluru Won by 50 runs,5.0,250,False,False,INCLUDED,None
+40702,2725,IPL 2025,T20,2025,2025-03-29,Gujarat Titans,Mumbai Indians,Gujarat Titans Won by 36 runs,3508.0,257,False,False,INCLUDED,None
+40703,2725,IPL 2025,T20,2025,2025-03-30,Delhi Capitals,Sunrisers Hyderabad,Delhi Capitals Won by 7 wickets,7.0,217,False,False,INCLUDED,None
+40704,2725,IPL 2025,T20,2025,2025-03-30,Rajasthan Royals,Chennai Super Kings,Rajasthan Royals Won by 6 runs,3.0,250,False,False,INCLUDED,None
+40705,2725,IPL 2025,T20,2025,2025-03-31,Mumbai Indians,Kolkata Knight Riders,Mumbai Indians Won by 8 wickets,2.0,182,False,False,INCLUDED,None
+40706,2725,IPL 2025,T20,2025,2025-04-01,Lucknow Super Giants,Punjab Kings,Punjab Kings Won by 8 wickets,4.0,225,False,False,INCLUDED,None
+40707,2725,IPL 2025,T20,2025,2025-04-02,Royal Challengers Bengaluru,Gujarat Titans,Gujarat Titans Won by 8 wickets,3508.0,231,False,False,INCLUDED,None
+40708,2725,IPL 2025,T20,2025,2025-04-03,Kolkata Knight Riders,Sunrisers Hyderabad,Kolkata Knight Riders Won by 80 runs,8.0,228,False,False,INCLUDED,None
+40709,2725,IPL 2025,T20,2025,2025-04-04,Lucknow Super Giants,Mumbai Indians,Lucknow Super Giants Won by 12 runs,3509.0,252,False,False,INCLUDED,None
+40710,2725,IPL 2025,T20,2025,2025-04-05,Chennai Super Kings,Delhi Capitals,Delhi Capitals Won by 25 runs,7.0,251,False,False,INCLUDED,None
+40711,2725,IPL 2025,T20,2025,2025-04-05,Punjab Kings,Rajasthan Royals,Rajasthan Royals Won by 50 runs,3.0,253,False,False,INCLUDED,None
+40712,2725,IPL 2025,T20,2025,2025-04-08,Kolkata Knight Riders,Lucknow Super Giants,Lucknow Super Giants Won by 4 runs,3509.0,264,False,False,INCLUDED,None
+40713,2725,IPL 2025,T20,2025,2025-04-06,Sunrisers Hyderabad,Gujarat Titans,Gujarat Titans Won by 7 wickets,3508.0,225,False,False,INCLUDED,None
+40714,2725,IPL 2025,T20,2025,2025-04-07,Mumbai Indians,Royal Challengers Bengaluru,Royal Challengers Bengaluru Won by 12 runs,5.0,253,False,False,INCLUDED,None
+40715,2725,IPL 2025,T20,2025,2025-04-08,Punjab Kings,Chennai Super Kings,Punjab Kings Won by 18 runs,4.0,253,False,False,INCLUDED,None
+40716,2725,IPL 2025,T20,2025,2025-04-09,Gujarat Titans,Rajasthan Royals,Gujarat Titans Won by 58 runs,3508.0,260,False,False,INCLUDED,None
+40717,2725,IPL 2025,T20,2025,2025-04-10,Royal Challengers Bengaluru,Delhi Capitals,Delhi Capitals Won by 6 wickets,7.0,236,False,False,INCLUDED,None
+40718,2725,IPL 2025,T20,2025,2025-04-11,Chennai Super Kings,Kolkata Knight Riders,Kolkata Knight Riders Won by 8 wickets,8.0,189,False,False,INCLUDED,None
+40719,2725,IPL 2025,T20,2025,2025-04-12,Lucknow Super Giants,Gujarat Titans,Lucknow Super Giants Won by 6 wickets,3509.0,249,False,False,INCLUDED,None
+40720,2725,IPL 2025,T20,2025,2025-04-12,Sunrisers Hyderabad,Punjab Kings,Sunrisers Hyderabad Won by 8 wickets,242.0,248,False,False,INCLUDED,None
+40721,2725,IPL 2025,T20,2025,2025-04-13,Rajasthan Royals,Royal Challengers Bengaluru,Royal Challengers Bengaluru Won by 9 wickets,5.0,233,False,False,INCLUDED,None
+40722,2725,IPL 2025,T20,2025,2025-04-13,Delhi Capitals,Mumbai Indians,Mumbai Indians Won by 12 runs,2.0,243,False,False,INCLUDED,None
+40723,2725,IPL 2025,T20,2025,2025-04-14,Lucknow Super Giants,Chennai Super Kings,Chennai Super Kings Won by 5 wickets,1.0,254,False,False,INCLUDED,None
+40724,2725,IPL 2025,T20,2025,2025-04-15,Punjab Kings,Kolkata Knight Riders,Punjab Kings Won by 16 runs,4.0,188,False,False,INCLUDED,None
+40725,2725,IPL 2025,T20,2025,2025-04-16,Delhi Capitals,Rajasthan Royals,Delhi Capitals Tied with Rajasthan Royals (DC won the Super Over),7.0,262,True,False,INCLUDED,None
+40726,2725,IPL 2025,T20,2025,2025-04-17,Mumbai Indians,Sunrisers Hyderabad,Mumbai Indians Won by 4 wickets,2.0,242,False,False,INCLUDED,None
+40727,2725,IPL 2025,T20,2025,2025-04-18,Royal Challengers Bengaluru,Punjab Kings,Punjab Kings Won by 5 wickets,4.0,160,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+40728,2725,IPL 2025,T20,2025,2025-04-19,Gujarat Titans,Delhi Capitals,Gujarat Titans Won by 7 wickets,3508.0,250,False,False,INCLUDED,None
+40729,2725,IPL 2025,T20,2025,2025-04-19,Rajasthan Royals,Lucknow Super Giants,Lucknow Super Giants Won by 2 runs,3509.0,246,False,False,INCLUDED,None
+40730,2725,IPL 2025,T20,2025,2025-04-20,Punjab Kings,Royal Challengers Bengaluru,Royal Challengers Bengaluru Won by 7 wickets,5.0,237,False,False,INCLUDED,None
+40731,2725,IPL 2025,T20,2025,2025-04-20,Mumbai Indians,Chennai Super Kings,Mumbai Indians Won by 9 wickets,2.0,228,False,False,INCLUDED,None
+40732,2725,IPL 2025,T20,2025,2025-04-21,Kolkata Knight Riders,Gujarat Titans,Gujarat Titans Won by 39 runs,3508.0,249,False,False,INCLUDED,None
+40733,2725,IPL 2025,T20,2025,2025-04-22,Lucknow Super Giants,Delhi Capitals,Delhi Capitals Won by 8 wickets,7.0,231,False,False,INCLUDED,None
+40734,2725,IPL 2025,T20,2025,2025-04-23,Sunrisers Hyderabad,Mumbai Indians,Mumbai Indians Won by 7 wickets,2.0,218,False,False,INCLUDED,None
+40735,2725,IPL 2025,T20,2025,2025-04-24,Royal Challengers Bengaluru,Rajasthan Royals,Royal Challengers Bengaluru Won by 11 runs,5.0,253,False,False,INCLUDED,None
+40736,2725,IPL 2025,T20,2025,2025-04-25,Chennai Super Kings,Sunrisers Hyderabad,Sunrisers Hyderabad Won by 5 wickets,242.0,244,False,False,INCLUDED,None
+40737,2725,IPL 2025,T20,2025,2025-04-26,Kolkata Knight Riders,Punjab Kings,No Result,,130,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+40738,2725,IPL 2025,T20,2025,2025-04-27,Mumbai Indians,Lucknow Super Giants,Mumbai Indians Won by 54 runs,2.0,251,False,False,INCLUDED,None
+40739,2725,IPL 2025,T20,2025,2025-04-27,Delhi Capitals,Royal Challengers Bengaluru,Royal Challengers Bengaluru Won by 6 wickets,5.0,238,False,False,INCLUDED,None
+40740,2725,IPL 2025,T20,2025,2025-04-28,Rajasthan Royals,Gujarat Titans,Rajasthan Royals Won by 8 wickets,3.0,227,False,False,INCLUDED,None
+40741,2725,IPL 2025,T20,2025,2025-04-29,Delhi Capitals,Kolkata Knight Riders,Kolkata Knight Riders Won by 14 runs,8.0,257,False,False,INCLUDED,None
+40742,2725,IPL 2025,T20,2025,2025-04-30,Chennai Super Kings,Punjab Kings,Punjab Kings Won by 4 wickets,4.0,249,False,False,INCLUDED,None
+40743,2725,IPL 2025,T20,2025,2025-05-01,Rajasthan Royals,Mumbai Indians,Mumbai Indians Won by 100 runs,2.0,226,False,False,INCLUDED,None
+40744,2725,IPL 2025,T20,2025,2025-05-02,Gujarat Titans,Sunrisers Hyderabad,Gujarat Titans Won by 38 runs,3508.0,250,False,False,INCLUDED,None
+40745,2725,IPL 2025,T20,2025,2025-05-03,Royal Challengers Bengaluru,Chennai Super Kings,Royal Challengers Bengaluru Won by 2 runs,5.0,246,False,False,INCLUDED,None
+40746,2725,IPL 2025,T20,2025,2025-05-04,Kolkata Knight Riders,Rajasthan Royals,Kolkata Knight Riders Won by 1 run,8.0,252,False,False,INCLUDED,None
+40747,2725,IPL 2025,T20,2025,2025-05-04,Punjab Kings,Lucknow Super Giants,Punjab Kings Won by 37 runs,4.0,253,False,False,INCLUDED,None
+40748,2725,IPL 2025,T20,2025,2025-05-05,Sunrisers Hyderabad,Delhi Capitals,No Result,,123,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+40749,2725,IPL 2025,T20,2025,2025-05-06,Mumbai Indians,Gujarat Titans,Gujarat Titans Won by 3 wickets (DLS Method),3508.0,244,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+40750,2725,IPL 2025,T20,2025,2025-05-07,Kolkata Knight Riders,Chennai Super Kings,Chennai Super Kings Won by 2 wickets,1.0,244,False,False,INCLUDED,None
+40751,2725,IPL 2025,T20,2025,2025-05-08,Punjab Kings,Delhi Capitals,No Result,,63,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+40752,2725,IPL 2025,T20,2025,2025-05-27,Lucknow Super Giants,Royal Challengers Bengaluru,Royal Challengers Bengaluru Won by 6 wickets,5.0,244,False,False,INCLUDED,None
+40753,2725,IPL 2025,T20,2025,2025-05-25,Sunrisers Hyderabad,Kolkata Knight Riders,Sunrisers Hyderabad Won by 110 runs,242.0,247,False,False,INCLUDED,None
+40754,2725,IPL 2025,T20,2025,2025-05-26,Punjab Kings,Mumbai Indians,Punjab Kings Won by 7 wickets,4.0,245,False,False,INCLUDED,None
+40755,2725,IPL 2025,T20,2025,2025-05-18,Delhi Capitals,Gujarat Titans,Gujarat Titans Won by 10 wickets,3508.0,241,False,False,INCLUDED,None
+40756,2725,IPL 2025,T20,2025,2025-05-20,Chennai Super Kings,Rajasthan Royals,Rajasthan Royals Won by 6 wickets,3.0,236,False,False,INCLUDED,None
+40757,2725,IPL 2025,T20,2025,2025-05-23,Royal Challengers Bengaluru,Sunrisers Hyderabad,Sunrisers Hyderabad Won by 42 runs,242.0,247,False,False,INCLUDED,None
+40758,2725,IPL 2025,T20,2025,2025-05-22,Gujarat Titans,Lucknow Super Giants,Lucknow Super Giants Won by 33 runs,3509.0,254,False,False,INCLUDED,None
+40759,2725,IPL 2025,T20,2025,2025-05-21,Mumbai Indians,Delhi Capitals,Mumbai Indians Won by 59 runs,2.0,232,False,False,INCLUDED,None
+40760,2725,IPL 2025,T20,2025,2025-05-18,Rajasthan Royals,Punjab Kings,Punjab Kings Won by 10 runs,4.0,248,False,False,INCLUDED,None
+40761,2725,IPL 2025,T20,2025,2025-05-17,Royal Challengers Bengaluru,Kolkata Knight Riders,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+40762,2725,IPL 2025,T20,2025,2025-05-25,Gujarat Titans,Chennai Super Kings,Chennai Super Kings Won by 83 runs,1.0,242,False,False,INCLUDED,None
+40763,2725,IPL 2025,T20,2025,2025-05-19,Lucknow Super Giants,Sunrisers Hyderabad,Sunrisers Hyderabad Won by 6 wickets,242.0,250,False,False,INCLUDED,None
+40764,2725,IPL 2025,T20,2025,2025-05-29,Punjab Kings,Royal Challengers Bengaluru,Royal Challengers Bengaluru Won by 8 wickets,5.0,147,False,False,INCLUDED,None
+40765,2725,IPL 2025,T20,2025,2025-05-30,Gujarat Titans,Mumbai Indians,Mumbai Indians Won by 20 runs,2.0,248,False,False,INCLUDED,None
+40766,2725,IPL 2025,T20,2025,2025-06-01,Punjab Kings,Mumbai Indians,Punjab Kings Won by 5 wickets,4.0,244,False,False,INCLUDED,None
+40767,2725,IPL 2025,T20,2025,2025-06-03,Royal Challengers Bengaluru,Punjab Kings,Royal Challengers Bengaluru Won by 6 runs,5.0,252,False,False,INCLUDED,None
+43057,2725,IPL 2025,T20,2025,2025-05-24,Delhi Capitals,Punjab Kings,Delhi Capitals Won by 6 wickets,7.0,249,False,False,INCLUDED,None
+38626,2753,Afghanistan in Zimbabwe T20I Series 2024,T20I,2024,2024-12-09,Zimbabwe,Afghanistan,Zimbabwe Won by 4 wickets,72.0,254,False,False,INCLUDED,None
+38627,2753,Afghanistan in Zimbabwe T20I Series 2024,T20I,2024,2024-12-11,Zimbabwe,Afghanistan,Afghanistan Won by 50 runs,78.0,233,False,False,INCLUDED,None
+38628,2753,Afghanistan in Zimbabwe T20I Series 2024,T20I,2024,2024-12-12,Zimbabwe,Afghanistan,Afghanistan Won by 3 wickets,78.0,253,False,False,INCLUDED,None
+38632,2755,Sri Lanka in New Zealand T20I Series 2024/25,T20I,2024/25,2024-12-28,New Zealand,Sri Lanka,New Zealand Won by 8 runs,17.0,250,False,False,INCLUDED,None
+38633,2755,Sri Lanka in New Zealand T20I Series 2024/25,T20I,2024/25,2024-12-30,New Zealand,Sri Lanka,New Zealand Won by 45 runs,17.0,251,False,False,INCLUDED,None
+38634,2755,Sri Lanka in New Zealand T20I Series 2024/25,T20I,2024/25,2025-01-02,New Zealand,Sri Lanka,Sri Lanka Won by 7 runs,27.0,253,False,False,INCLUDED,None
+39808,2793,Pakistan in New Zealand T20I Series 2025,T20I,2025,2025-03-16,New Zealand,Pakistan,New Zealand Won by 9 wickets,17.0,177,False,False,INCLUDED,None
+39809,2793,Pakistan in New Zealand T20I Series 2025,T20I,2025,2025-03-18,New Zealand,Pakistan,New Zealand Won by 5 wickets,17.0,176,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+39810,2793,Pakistan in New Zealand T20I Series 2025,T20I,2025,2025-03-21,New Zealand,Pakistan,Pakistan Won by 9 wickets,25.0,224,False,False,INCLUDED,None
+39811,2793,Pakistan in New Zealand T20I Series 2025,T20I,2025,2025-03-23,New Zealand,Pakistan,New Zealand Won by 115 runs,17.0,234,False,False,INCLUDED,None
+39812,2793,Pakistan in New Zealand T20I Series 2025,T20I,2025,2025-03-26,New Zealand,Pakistan,New Zealand Won by 8 wickets,17.0,189,False,False,INCLUDED,None
+39983,2801,Ireland in Zimbabwe T20I Series 2025,T20I,2025,2025-02-22,Zimbabwe,Ireland,No Result,,56,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+39984,2801,Ireland in Zimbabwe T20I Series 2025,T20I,2025,2025-02-23,Zimbabwe,Ireland,Zimbabwe Won by 3 wickets,72.0,243,False,False,INCLUDED,None
+39985,2801,Ireland in Zimbabwe T20I Series 2025,T20I,2025,2025-02-25,Zimbabwe,Ireland,No Result,,113,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+41502,2873,West Indies in Ireland T20I Series 2025,T20I,2025,2025-06-12,Ireland,West Indies,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+41503,2873,West Indies in Ireland T20I Series 2025,T20I,2025,2025-06-14,Ireland,West Indies,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+41504,2873,West Indies in Ireland T20I Series 2025,T20I,2025,2025-06-15,Ireland,West Indies,West Indies Won by 62 runs,28.0,257,False,False,INCLUDED,None
+41505,2874,Australia in West Indies T20I Series 2025,T20I,2025,2025-07-20,West Indies,Australia,Australia Won by 3 wickets,20.0,238,False,False,INCLUDED,None
+41506,2874,Australia in West Indies T20I Series 2025,T20I,2025,2025-07-22,West Indies,Australia,Australia Won by 8 wickets,20.0,224,False,False,INCLUDED,None
+41507,2874,Australia in West Indies T20I Series 2025,T20I,2025,2025-07-25,West Indies,Australia,Australia Won By 6 Wickets,20.0,231,False,False,INCLUDED,None
+41508,2874,Australia in West Indies T20I Series 2025,T20I,2025,2025-07-26,West Indies,Australia,Australia Won by 3 wickets,20.0,261,False,False,INCLUDED,None
+41509,2874,Australia in West Indies T20I Series 2025,T20I,2025,2025-07-28,West Indies,Australia,Australia Won by 3 wickets,20.0,231,False,False,INCLUDED,None
+41510,2875,Pakistan in West Indies T20I Series 2025,T20I,2025,2025-07-31,West Indies,Pakistan,Pakistan Won by 14 runs,25.0,256,False,False,INCLUDED,None
+41511,2875,Pakistan in West Indies T20I Series 2025,T20I,2025,2025-08-02,West Indies,Pakistan,West Indies Won by 2 wickets,28.0,252,False,False,INCLUDED,None
+41512,2875,Pakistan in West Indies T20I Series 2025,T20I,2025,2025-08-03,West Indies,Pakistan,Pakistan Won by 13 runs,25.0,255,False,False,INCLUDED,None
+41849,2906,West Indies in South Africa T20I Series 2026,T20I,2026,2026-01-27,South Africa,West Indies,South Africa Won by 9 wickets,19.0,237,False,False,INCLUDED,None
+41850,2906,West Indies in South Africa T20I Series 2026,T20I,2026,2026-01-29,South Africa,West Indies,South Africa Won by 7 wickets,19.0,238,False,False,INCLUDED,None
+41851,2906,West Indies in South Africa T20I Series 2026,T20I,2026,2026-02-01,South Africa,West Indies,West Indies Won by 6 runs(DLS Method),28.0,121,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+41969,2912,South Africa in Australia T20I Series 2025,T20I,2025,2025-08-10,Australia,South Africa,Australia Won by 17 runs,20.0,251,False,False,INCLUDED,None
+41970,2912,South Africa in Australia T20I Series 2025,T20I,2025,2025-08-12,Australia,South Africa,South Africa Won by 53 runs,19.0,242,False,False,INCLUDED,None
+41971,2912,South Africa in Australia T20I Series 2025,T20I,2025,2025-08-16,Australia,South Africa,Australia Won by 2 wickets,20.0,246,False,False,INCLUDED,None
+41975,2915,India in Australia T20I Series 2025,T20I,2025,2025-10-29,Australia,India,No Result,,60,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+41976,2915,India in Australia T20I Series 2025,T20I,2025,2025-10-31,Australia,India,Australia Won by 4 wickets,20.0,196,False,False,INCLUDED,None
+41977,2915,India in Australia T20I Series 2025,T20I,2025,2025-11-02,Australia,India,India Won by 5 wickets,18.0,236,False,False,INCLUDED,None
+41978,2915,India in Australia T20I Series 2025,T20I,2025,2025-11-06,Australia,India,India Won by 48 runs,18.0,237,False,False,INCLUDED,None
+41979,2915,India in Australia T20I Series 2025,T20I,2025,2025-11-08,Australia,India,No Result,,29,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+42027,2921,South Africa in India T20I Series 2025,T20I,2025,2025-12-09,India,South Africa,India Won by 101 runs,18.0,201,False,False,INCLUDED,None
+42028,2921,South Africa in India T20I Series 2025,T20I,2025,2025-12-11,India,South Africa,South Africa Won by 51 runs,19.0,251,False,False,INCLUDED,None
+42029,2921,South Africa in India T20I Series 2025,T20I,2025,2025-12-14,India,South Africa,India Won by 7 wickets,18.0,217,False,False,INCLUDED,None
+42030,2921,South Africa in India T20I Series 2025,T20I,2025,2025-12-17,India,South Africa,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+42031,2921,South Africa in India T20I Series 2025,T20I,2025,2025-12-19,India,South Africa,India Won by 30 runs,18.0,256,False,False,INCLUDED,None
+42742,2973,Bangladesh in Pakistan T20I Series 2025,T20I,2025,2025-05-28,Pakistan,Bangladesh,Pakistan Won by 37 runs,25.0,241,False,False,INCLUDED,None
+42743,2973,Bangladesh in Pakistan T20I Series 2025,T20I,2025,2025-05-30,Pakistan,Bangladesh,Pakistan Won by 57 runs,25.0,240,False,False,INCLUDED,None
+42744,2973,Bangladesh in Pakistan T20I Series 2025,T20I,2025,2025-06-01,Pakistan,Bangladesh,Pakistan Won by 7 wickets,25.0,231,False,False,INCLUDED,None
+42783,2975,Bangladesh in United Arab Emirates T20I Series 2025,T20I,2025,2025-05-17,United Arab Emirates,Bangladesh,Bangladesh Won by 27 runs,21.0,251,False,False,INCLUDED,None
+42784,2975,Bangladesh in United Arab Emirates T20I Series 2025,T20I,2025,2025-05-19,United Arab Emirates,Bangladesh,United Arab Emirates Won by 2 wickets,272.0,254,False,False,INCLUDED,None
+43171,2975,Bangladesh in United Arab Emirates T20I Series 2025,T20I,2025,2025-05-21,United Arab Emirates,Bangladesh,United Arab Emirates Won by 7 wickets,272.0,247,False,False,INCLUDED,None
+43592,3020,Bangladesh in Sri Lanka T20I Series 2025,T20I,2025,2025-07-10,Sri Lanka,Bangladesh,Sri Lanka Won by 7 wickets,27.0,235,False,False,INCLUDED,None
+43594,3020,Bangladesh in Sri Lanka T20I Series 2025,T20I,2025,2025-07-13,Sri Lanka,Bangladesh,Bangladesh Won by 83 runs,21.0,218,False,False,INCLUDED,None
+43595,3020,Bangladesh in Sri Lanka T20I Series 2025,T20I,2025,2025-07-16,Sri Lanka,Bangladesh,Bangladesh Won by 8 wickets,21.0,222,False,False,INCLUDED,None
+44265,3074,Pakistan in Bangladesh T20I Series 2025,T20I,2025,2025-07-20,Bangladesh,Pakistan,Bangladesh Won by 7 wickets,21.0,215,False,False,INCLUDED,None
+44266,3074,Pakistan in Bangladesh T20I Series 2025,T20I,2025,2025-07-22,Bangladesh,Pakistan,Bangladesh Won by 8 runs,21.0,242,False,False,INCLUDED,None
+44267,3074,Pakistan in Bangladesh T20I Series 2025,T20I,2025,2025-07-24,Bangladesh,Pakistan,Pakistan Won by 74 runs,25.0,233,False,False,INCLUDED,None
+45390,3126,India in England T20I Series 2026,T20I,2026,2026-07-01,England,India,No Result,,122,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+45391,3126,India in England T20I Series 2026,T20I,2026,2026-07-04,England,India,England Won by 4 wickets,22.0,246,False,False,INCLUDED,None
+45392,3126,India in England T20I Series 2026,T20I,2026,2026-07-07,England,India,England Won by 125 runs,22.0,195,False,False,INCLUDED,None
+45393,3126,India in England T20I Series 2026,T20I,2026,2026-07-09,England,India,England Won by 9 wickets,22.0,213,False,False,INCLUDED,None
+45394,3126,India in England T20I Series 2026,T20I,2026,2026-07-11,England,India,England Won by 56 runs,22.0,256,False,False,INCLUDED,None
+45489,3128,Sri Lanka in England T20I Series 2026,T20I,2026,2026-09-15,England,Sri Lanka,England Won by 119 runs,22.0,248,False,False,INCLUDED,None
+45490,3128,Sri Lanka in England T20I Series 2026,T20I,2026,2026-09-17,England,Sri Lanka,England Won by 6 wickets,22.0,200,False,False,INCLUDED,None
+45491,3128,Sri Lanka in England T20I Series 2026,T20I,2026,2026-09-19,England,Sri Lanka,England Won by 8 wickets,22.0,184,False,False,INCLUDED,None
+45495,3133,Asia Cup 2025,T20I,2025,2025-09-09,Afghanistan,Hong Kong,Afghanistan Won by 94 runs,78.0,253,False,False,INCLUDED,None
+45496,3133,Asia Cup 2025,T20I,2025,2025-09-10,India,United Arab Emirates,India Won by 9 wickets,18.0,111,False,False,INCLUDED,None
+45497,3133,Asia Cup 2025,T20I,2025,2025-09-11,Bangladesh,Hong Kong,Bangladesh Won by 7 wickets,21.0,238,False,False,INCLUDED,None
+45498,3133,Asia Cup 2025,T20I,2025,2025-09-12,Pakistan,Oman,Pakistan Won by 93 runs,25.0,225,False,False,INCLUDED,None
+45499,3133,Asia Cup 2025,T20I,2025,2025-09-13,Bangladesh,Sri Lanka,Sri Lanka Won by 6 wickets,27.0,220,False,False,INCLUDED,None
+45500,3133,Asia Cup 2025,T20I,2025,2025-09-14,India,Pakistan,India Won by 7 wickets,18.0,219,False,False,INCLUDED,None
+45501,3133,Asia Cup 2025,T20I,2025,2025-09-15,United Arab Emirates,Oman,United Arab Emirates Won by 42 runs,272.0,247,False,False,INCLUDED,None
+45502,3133,Asia Cup 2025,T20I,2025,2025-09-15,Sri Lanka,Hong Kong,Sri Lanka Won by 4 wickets,27.0,239,False,False,INCLUDED,None
+45503,3133,Asia Cup 2025,T20I,2025,2025-09-16,Bangladesh,Afghanistan,Bangladesh Won by 8 runs,21.0,245,False,False,INCLUDED,None
+45504,3133,Asia Cup 2025,T20I,2025,2025-09-17,Pakistan,United Arab Emirates,Pakistan Won by 41 runs,25.0,238,False,False,INCLUDED,None
+45505,3133,Asia Cup 2025,T20I,2025,2025-09-18,Sri Lanka,Afghanistan,Sri Lanka Won by 6 wickets,27.0,240,False,False,INCLUDED,None
+45506,3133,Asia Cup 2025,T20I,2025,2025-09-19,India,Oman,India Won by 21 runs,18.0,252,False,False,INCLUDED,None
+45507,3133,Asia Cup 2025,T20I,2025,2025-09-20,Bangladesh,Sri Lanka,Bangladesh Won by 4 wickets,21.0,243,False,False,INCLUDED,None
+45508,3133,Asia Cup 2025,T20I,2025,2025-09-21,India,Pakistan,India Won by 6 wickets,18.0,245,False,False,INCLUDED,None
+45509,3133,Asia Cup 2025,T20I,2025,2025-09-23,Pakistan,Sri Lanka,Pakistan Won by 5 wickets,25.0,234,False,False,INCLUDED,None
+45510,3133,Asia Cup 2025,T20I,2025,2025-09-24,Bangladesh,India,India Won by 41 runs,18.0,245,False,False,INCLUDED,None
+45511,3133,Asia Cup 2025,T20I,2025,2025-09-25,Bangladesh,Pakistan,Pakistan Won by 11 runs,25.0,244,False,False,INCLUDED,None
+45512,3133,Asia Cup 2025,T20I,2025,2025-09-26,India,Sri Lanka,India won the Super Over(Match Tied),18.0,260,True,False,INCLUDED,None
+45513,3133,Asia Cup 2025,T20I,2025,2025-09-28,India,Pakistan,India Won by 5 wickets,18.0,239,False,False,INCLUDED,None
+45851,3159,United Arab Emirates T20I Tri-Series 2025,T20I,2025,2025-08-29,Afghanistan,Pakistan,Pakistan Won by 39 runs,25.0,247,False,False,INCLUDED,None
+45852,3159,United Arab Emirates T20I Tri-Series 2025,T20I,2025,2025-08-30,United Arab Emirates,Pakistan,Pakistan Won by 31 runs,25.0,250,False,False,INCLUDED,None
+45853,3159,United Arab Emirates T20I Tri-Series 2025,T20I,2025,2025-09-01,United Arab Emirates,Afghanistan,Afghanistan Won by 38 runs,78.0,252,False,False,INCLUDED,None
+45854,3159,United Arab Emirates T20I Tri-Series 2025,T20I,2025,2025-09-02,Pakistan,Afghanistan,Afghanistan Won by 18 runs,78.0,248,False,False,INCLUDED,None
+45855,3159,United Arab Emirates T20I Tri-Series 2025,T20I,2025,2025-09-04,Pakistan,United Arab Emirates,Pakistan Won by 31 runs,25.0,244,False,False,INCLUDED,None
+45856,3159,United Arab Emirates T20I Tri-Series 2025,T20I,2025,2025-09-05,Afghanistan,United Arab Emirates,Afghanistan Won by 4 runs,78.0,256,False,False,INCLUDED,None
+45857,3159,United Arab Emirates T20I Tri-Series 2025,T20I,2025,2025-09-07,Afghanistan,Pakistan,Pakistan Won by 75 runs,25.0,224,False,False,INCLUDED,None
+45903,3162,Sri Lanka in Zimbabwe T20I Series 2025,T20I,2025,2025-09-03,Zimbabwe,Sri Lanka,Sri Lanka Won by 4 wickets,27.0,246,False,False,INCLUDED,None
+45904,3162,Sri Lanka in Zimbabwe T20I Series 2025,T20I,2025,2025-09-06,Zimbabwe,Sri Lanka,Zimbabwe Won by 5 wickets,72.0,195,False,False,INCLUDED,None
+45905,3162,Sri Lanka in Zimbabwe T20I Series 2025,T20I,2025,2025-09-07,Zimbabwe,Sri Lanka,Sri Lanka Won by 8 wickets,27.0,238,False,False,INCLUDED,None
+45906,3163,Netherlands in Bangladesh T20I Series 2025,T20I,2025,2025-08-30,Bangladesh,Netherlands,Bangladesh Won by 8 wickets,21.0,208,False,False,INCLUDED,None
+45907,3163,Netherlands in Bangladesh T20I Series 2025,T20I,2025,2025-09-01,Bangladesh,Netherlands,Bangladesh Won by 9 wickets,21.0,194,False,False,INCLUDED,None
+45908,3163,Netherlands in Bangladesh T20I Series 2025,T20I,2025,2025-09-03,Bangladesh,Netherlands,No Result,,114,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+46007,3174,England in Ireland T20I series 2025,T20I,2025,2025-09-17,Ireland,England,England Won by 4 wickets,22.0,236,False,False,INCLUDED,None
+46008,3174,England in Ireland T20I series 2025,T20I,2025,2025-09-19,Ireland,England,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+46009,3174,England in Ireland T20I series 2025,T20I,2025,2025-09-21,Ireland,England,England Won by 6 wickets,22.0,231,False,False,INCLUDED,None
+46249,3190,Nepal v West Indies T20I Series 2025,T20I,2025,2025-09-27,Nepal,West Indies,Nepal Won by 19 runs,282.0,254,False,False,INCLUDED,None
+46250,3190,Nepal v West Indies T20I Series 2025,T20I,2025,2025-09-28,Nepal,West Indies,Nepal Won by 90 runs,282.0,234,False,False,INCLUDED,None
+46251,3190,Nepal v West Indies T20I Series 2025,T20I,2025,2025-09-30,Nepal,West Indies,West Indies Won by 10 wickets,28.0,201,False,False,INCLUDED,None
+46310,3197,Australia in New Zealand T20I Series 2025,T20I,2025,2025-10-01,Australia,New Zealand,Australia Won by 6 wickets,20.0,230,False,False,INCLUDED,None
+46311,3197,Australia in New Zealand T20I Series 2025,T20I,2025,2025-10-03,Australia,New Zealand,No Result,,13,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+46312,3197,Australia in New Zealand T20I Series 2025,T20I,2025,2025-10-04,Australia,New Zealand,Australia Won by 3 wickets,20.0,234,False,False,INCLUDED,None
+46740,3223,South Africa in Pakistan T20I Series 2025,T20I,2025,2025-10-28,Pakistan,South Africa,South Africa Won by 55 runs,19.0,248,False,False,INCLUDED,None
+46741,3223,South Africa in Pakistan T20I Series 2025,T20I,2025,2025-10-31,Pakistan,South Africa,Pakistan Won by 9 wickets,25.0,200,False,False,INCLUDED,None
+46742,3223,South Africa in Pakistan T20I Series 2025,T20I,2025,2025-11-01,Pakistan,South Africa,Pakistan Won by 4 wickets,25.0,245,False,False,INCLUDED,None
+46747,3226,England in New Zealand T20I Series 2025,T20I,2025,2025-10-18,New Zealand,England,No Result,,124,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+46748,3226,England in New Zealand T20I Series 2025,T20I,2025,2025-10-20,New Zealand,England,England Won by 65 runs,22.0,242,False,False,INCLUDED,None
+46749,3226,England in New Zealand T20I Series 2025,T20I,2025,2025-10-23,New Zealand,England,No Result,,25,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+46753,3228,Afghanistan v Bangladesh T20I Series 2025,T20I,2025,2025-10-02,Afghanistan,Bangladesh,Bangladesh Won by 4 wickets,21.0,233,False,False,INCLUDED,None
+46754,3228,Afghanistan v Bangladesh T20I Series 2025,T20I,2025,2025-10-03,Afghanistan,Bangladesh,Bangladesh Won by 2 wickets,21.0,238,False,False,INCLUDED,None
+46755,3228,Afghanistan v Bangladesh T20I Series 2025,T20I,2025,2025-10-05,Afghanistan,Bangladesh,Bangladesh Won by 6 wickets,21.0,242,False,False,INCLUDED,None
+46940,3241,West Indies in Bangladesh T20I Series 2025,T20I,2025,2025-10-27,Bangladesh,West Indies,West Indies Won by 16 runs,28.0,248,False,False,INCLUDED,None
+46941,3241,West Indies in Bangladesh T20I Series 2025,T20I,2025,2025-10-30,Bangladesh,West Indies,West Indies Won by 14 runs,28.0,247,False,False,INCLUDED,None
+46942,3241,West Indies in Bangladesh T20I Series 2025,T20I,2025,2025-11-01,Bangladesh,West Indies,West Indies Won by 5 wickets,28.0,227,False,False,INCLUDED,None
+47241,3251,Ireland in Bangladesh T20I Series 2025,T20I,2025,2025-11-27,Bangladesh,Ireland,Ireland Won by 39 runs,23.0,251,False,False,INCLUDED,None
+47242,3251,Ireland in Bangladesh T20I Series 2025,T20I,2025,2025-11-29,Bangladesh,Ireland,Bangladesh Won by 4 wickets,21.0,247,False,False,INCLUDED,None
+47243,3251,Ireland in Bangladesh T20I Series 2025,T20I,2025,2025-12-02,Bangladesh,Ireland,Bangladesh Won by 8 wickets,21.0,207,False,False,INCLUDED,None
+47260,3254,Afghanistan in Zimbabwe T20I Series 2025,T20I,2025,2025-10-29,Zimbabwe,Afghanistan,Afghanistan Won by 53 runs,78.0,225,False,False,INCLUDED,None
+47261,3254,Afghanistan in Zimbabwe T20I Series 2025,T20I,2025,2025-10-31,Zimbabwe,Afghanistan,Afghanistan Won by 7 wickets,78.0,227,False,False,INCLUDED,None
+47262,3254,Afghanistan in Zimbabwe T20I Series 2025,T20I,2025,2025-11-02,Zimbabwe,Afghanistan,Afghanistan Won by 9 runs,78.0,250,False,False,INCLUDED,None
+47965,3282,West Indies in New Zealand T20I Series 2025,T20I,2025,2025-11-05,New Zealand,West Indies,West Indies Won by 7 runs,28.0,252,False,False,INCLUDED,None
+47966,3282,West Indies in New Zealand T20I Series 2025,T20I,2025,2025-11-06,New Zealand,West Indies,New Zealand Won by 3 runs,17.0,255,False,False,INCLUDED,None
+47967,3282,West Indies in New Zealand T20I Series 2025,T20I,2025,2025-11-09,New Zealand,West Indies,New Zealand Won by 9 runs,17.0,247,False,False,INCLUDED,None
+47968,3282,West Indies in New Zealand T20I Series 2025,T20I,2025,2025-11-10,New Zealand,West Indies,No Result,,41,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+47969,3282,West Indies in New Zealand T20I Series 2025,T20I,2025,2025-11-13,New Zealand,West Indies,New Zealand Won by 8 wickets,17.0,214,False,False,INCLUDED,None
+47976,3288,Pakistan T20I Tri-Series 2025,T20I,2025,2025-11-17,Pakistan,Zimbabwe,Pakistan Won by 5 wickets,25.0,243,False,False,INCLUDED,None
+47977,3288,Pakistan T20I Tri-Series 2025,T20I,2025,2025-11-19,Sri Lanka,Zimbabwe,Zimbabwe Won by 67 runs,72.0,247,False,False,INCLUDED,None
+47978,3288,Pakistan T20I Tri-Series 2025,T20I,2025,2025-11-22,Pakistan,Sri Lanka,Pakistan Won by 7 wickets,25.0,218,False,False,INCLUDED,None
+47979,3288,Pakistan T20I Tri-Series 2025,T20I,2025,2025-11-23,Pakistan,Zimbabwe,Pakistan Won by 69 runs,25.0,241,False,False,INCLUDED,None
+47980,3288,Pakistan T20I Tri-Series 2025,T20I,2025,2025-11-25,Sri Lanka,Zimbabwe,Sri Lanka Won by 9 wickets,27.0,227,False,False,INCLUDED,None
+47981,3288,Pakistan T20I Tri-Series 2025,T20I,2025,2025-11-27,Pakistan,Sri Lanka,Sri Lanka Won by 6 runs,27.0,255,False,False,INCLUDED,None
+47982,3288,Pakistan T20I Tri-Series 2025,T20I,2025,2025-11-29,Pakistan,Sri Lanka,Pakistan Won by 6 wickets,25.0,234,False,False,INCLUDED,None
+50125,3298,IPL 2026,T20,2026,2026-03-28,Royal Challengers Bengaluru,Sunrisers Hyderabad,Royal Challengers Bengaluru Won by 6 wickets,5.0,225,False,False,INCLUDED,None
+50126,3298,IPL 2026,T20,2026,2026-03-29,Mumbai Indians,Kolkata Knight Riders,Mumbai Indians Won by 6 wickets,2.0,247,False,False,INCLUDED,None
+50127,3298,IPL 2026,T20,2026,2026-03-30,Rajasthan Royals,Chennai Super Kings,Rajasthan Royals Won by 8 wickets,3.0,199,False,False,INCLUDED,None
+50128,3298,IPL 2026,T20,2026,2026-03-31,Punjab Kings,Gujarat Titans,Punjab Kings Won by 3 wickets,4.0,250,False,False,INCLUDED,None
+50129,3298,IPL 2026,T20,2026,2026-04-01,Lucknow Super Giants,Delhi Capitals,Delhi Capitals Won by 6 wickets,7.0,229,False,False,INCLUDED,None
+50130,3298,IPL 2026,T20,2026,2026-04-02,Kolkata Knight Riders,Sunrisers Hyderabad,Sunrisers Hyderabad Won by 65 runs,242.0,231,False,False,INCLUDED,None
+50131,3298,IPL 2026,T20,2026,2026-04-03,Chennai Super Kings,Punjab Kings,Punjab Kings Won by 5 wickets,4.0,251,False,False,INCLUDED,None
+50132,3298,IPL 2026,T20,2026,2026-04-04,Delhi Capitals,Mumbai Indians,Delhi Capitals Won by 6 wickets,7.0,237,False,False,INCLUDED,None
+50133,3298,IPL 2026,T20,2026,2026-04-04,Gujarat Titans,Rajasthan Royals,Rajasthan Royals Won by 6 runs,3.0,253,False,False,INCLUDED,None
+50134,3298,IPL 2026,T20,2026,2026-04-05,Sunrisers Hyderabad,Lucknow Super Giants,Lucknow Super Giants Won by 5 wickets,3509.0,242,False,False,INCLUDED,None
+50135,3298,IPL 2026,T20,2026,2026-04-05,Royal Challengers Bengaluru,Chennai Super Kings,Royal Challengers Bengaluru Won by 43 runs,5.0,247,False,False,INCLUDED,None
+50136,3298,IPL 2026,T20,2026,2026-04-06,Kolkata Knight Riders,Punjab Kings,No Result,,22,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+50137,3298,IPL 2026,T20,2026,2026-04-07,Rajasthan Royals,Mumbai Indians,Rajasthan Royals Won by 27 runs,3.0,144,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+50138,3298,IPL 2026,T20,2026,2026-04-08,Delhi Capitals,Gujarat Titans,Gujarat Titans Won by 1 run,3508.0,254,False,False,INCLUDED,None
+50139,3298,IPL 2026,T20,2026,2026-04-09,Kolkata Knight Riders,Lucknow Super Giants,Lucknow Super Giants Won by 3 wickets,3509.0,253,False,False,INCLUDED,None
+50140,3298,IPL 2026,T20,2026,2026-04-10,Rajasthan Royals,Royal Challengers Bengaluru,Rajasthan Royals Won by 6 wickets,3.0,233,False,False,INCLUDED,None
+50141,3298,IPL 2026,T20,2026,2026-04-11,Punjab Kings,Sunrisers Hyderabad,Punjab Kings Won by 6 wickets,4.0,250,False,False,INCLUDED,None
+50142,3298,IPL 2026,T20,2026,2026-04-11,Chennai Super Kings,Delhi Capitals,Chennai Super Kings Won by 23 runs,1.0,252,False,False,INCLUDED,None
+50143,3298,IPL 2026,T20,2026,2026-04-12,Lucknow Super Giants,Gujarat Titans,Gujarat Titans Won by 7 wickets,3508.0,237,False,False,INCLUDED,None
+50144,3298,IPL 2026,T20,2026,2026-04-12,Mumbai Indians,Royal Challengers Bengaluru,Royal Challengers Bengaluru Won by 18 runs,5.0,262,False,False,INCLUDED,None
+50342,3298,IPL 2026,T20,2026,2026-04-13,Sunrisers Hyderabad,Rajasthan Royals,Sunrisers Hyderabad Won by 57 runs,242.0,251,False,False,INCLUDED,None
+50343,3298,IPL 2026,T20,2026,2026-04-14,Chennai Super Kings,Kolkata Knight Riders,Chennai Super Kings Won by 32 runs,1.0,255,False,False,INCLUDED,None
+50344,3298,IPL 2026,T20,2026,2026-04-15,Royal Challengers Bengaluru,Lucknow Super Giants,Royal Challengers Bengaluru Won by 5 wickets,5.0,216,False,False,INCLUDED,None
+50345,3298,IPL 2026,T20,2026,2026-04-16,Mumbai Indians,Punjab Kings,Punjab Kings Won by 7 wickets,4.0,233,False,False,INCLUDED,None
+50346,3298,IPL 2026,T20,2026,2026-04-17,Gujarat Titans,Kolkata Knight Riders,Gujarat Titans Won by 5 wickets,3508.0,249,False,False,INCLUDED,None
+50347,3298,IPL 2026,T20,2026,2026-04-18,Royal Challengers Bengaluru,Delhi Capitals,Delhi Capitals Won by 6 wickets,7.0,251,False,False,INCLUDED,None
+50348,3298,IPL 2026,T20,2026,2026-04-18,Sunrisers Hyderabad,Chennai Super Kings,Sunrisers Hyderabad Won by 10 runs,242.0,257,False,False,INCLUDED,None
+50349,3298,IPL 2026,T20,2026,2026-04-19,Kolkata Knight Riders,Rajasthan Royals,Kolkata Knight Riders Won by 4 wickets,8.0,256,False,False,INCLUDED,None
+50350,3298,IPL 2026,T20,2026,2026-04-19,Punjab Kings,Lucknow Super Giants,Punjab Kings Won by 54 runs,4.0,253,False,False,INCLUDED,None
+50351,3298,IPL 2026,T20,2026,2026-04-20,Gujarat Titans,Mumbai Indians,Mumbai Indians Won by 99 runs,2.0,224,False,False,INCLUDED,None
+50352,3298,IPL 2026,T20,2026,2026-04-21,Sunrisers Hyderabad,Delhi Capitals,Sunrisers Hyderabad Won by 47 runs,242.0,255,False,False,INCLUDED,None
+50353,3298,IPL 2026,T20,2026,2026-04-22,Lucknow Super Giants,Rajasthan Royals,Rajasthan Royals Won by 40 runs,3.0,237,False,False,INCLUDED,None
+50354,3298,IPL 2026,T20,2026,2026-04-23,Mumbai Indians,Chennai Super Kings,Chennai Super Kings Won by 103 runs,1.0,247,False,False,INCLUDED,None
+50355,3298,IPL 2026,T20,2026,2026-04-24,Royal Challengers Bengaluru,Gujarat Titans,Royal Challengers Bengaluru Won by 5 wickets,5.0,239,False,False,INCLUDED,None
+50356,3298,IPL 2026,T20,2026,2026-04-25,Delhi Capitals,Punjab Kings,Punjab Kings Won by 6 wickets,4.0,253,False,False,INCLUDED,None
+50357,3298,IPL 2026,T20,2026,2026-04-25,Rajasthan Royals,Sunrisers Hyderabad,Sunrisers Hyderabad Won by 5 wickets,242.0,246,False,False,INCLUDED,None
+50358,3298,IPL 2026,T20,2026,2026-04-26,Chennai Super Kings,Gujarat Titans,Gujarat Titans Won by 8 wickets,3508.0,228,False,False,INCLUDED,None
+50359,3298,IPL 2026,T20,2026,2026-04-26,Lucknow Super Giants,Kolkata Knight Riders,Kolkata Knight Riders Won by Super over (Match Tied),8.0,256,True,False,INCLUDED,None
+50360,3298,IPL 2026,T20,2026,2026-04-27,Delhi Capitals,Royal Challengers Bengaluru,Royal Challengers Bengaluru Won by 9 wickets,5.0,142,False,False,INCLUDED,None
+50361,3298,IPL 2026,T20,2026,2026-04-28,Punjab Kings,Rajasthan Royals,Rajasthan Royals Won by 6 wickets,3.0,242,False,False,INCLUDED,None
+50362,3298,IPL 2026,T20,2026,2026-04-29,Mumbai Indians,Sunrisers Hyderabad,Sunrisers Hyderabad Won by 6 wickets,242.0,247,False,False,INCLUDED,None
+50363,3298,IPL 2026,T20,2026,2026-04-30,Gujarat Titans,Royal Challengers Bengaluru,Gujarat Titans Won by 4 wickets,3508.0,217,False,False,INCLUDED,None
+50364,3298,IPL 2026,T20,2026,2026-05-01,Rajasthan Royals,Delhi Capitals,Delhi Capitals Won by 7 wickets,7.0,249,False,False,INCLUDED,None
+50365,3298,IPL 2026,T20,2026,2026-05-02,Chennai Super Kings,Mumbai Indians,Chennai Super Kings Won by 8 wickets,1.0,234,False,False,INCLUDED,None
+50366,3298,IPL 2026,T20,2026,2026-05-03,Sunrisers Hyderabad,Kolkata Knight Riders,Kolkata Knight Riders Won by 7 wickets,8.0,235,False,False,INCLUDED,None
+50367,3298,IPL 2026,T20,2026,2026-05-03,Gujarat Titans,Punjab Kings,Gujarat Titans Won by 4 wickets,3508.0,248,False,False,INCLUDED,None
+50368,3298,IPL 2026,T20,2026,2026-05-04,Mumbai Indians,Lucknow Super Giants,Mumbai Indians Won by 6 wickets,2.0,246,False,False,INCLUDED,None
+50369,3298,IPL 2026,T20,2026,2026-05-05,Delhi Capitals,Chennai Super Kings,Chennai Super Kings Won by 8 wickets,1.0,230,False,False,INCLUDED,None
+50370,3298,IPL 2026,T20,2026,2026-05-06,Sunrisers Hyderabad,Punjab Kings,Sunrisers Hyderabad Won by 33 runs,242.0,254,False,False,INCLUDED,None
+50371,3298,IPL 2026,T20,2026,2026-05-07,Lucknow Super Giants,Royal Challengers Bengaluru,Lucknow Super Giants Won by 9 runs (DLS method),3509.0,241,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+50372,3298,IPL 2026,T20,2026,2026-05-08,Delhi Capitals,Kolkata Knight Riders,Kolkata Knight Riders Won by 8 wickets,8.0,208,False,False,INCLUDED,None
+50373,3298,IPL 2026,T20,2026,2026-05-09,Rajasthan Royals,Gujarat Titans,Gujarat Titans Won by 77 runs,3508.0,234,False,False,INCLUDED,None
+50374,3298,IPL 2026,T20,2026,2026-05-10,Chennai Super Kings,Lucknow Super Giants,Chennai Super Kings Won by 5 wickets,1.0,250,False,False,INCLUDED,None
+50375,3298,IPL 2026,T20,2026,2026-05-10,Royal Challengers Bengaluru,Mumbai Indians,Royal Challengers Bengaluru Won by 2 wickets,5.0,254,False,False,INCLUDED,None
+50376,3298,IPL 2026,T20,2026,2026-05-11,Punjab Kings,Delhi Capitals,Delhi Capitals Won by 3 wickets,7.0,252,False,False,INCLUDED,None
+50377,3298,IPL 2026,T20,2026,2026-05-12,Gujarat Titans,Sunrisers Hyderabad,Gujarat Titans Won by 82 runs,3508.0,216,False,False,INCLUDED,None
+50378,3298,IPL 2026,T20,2026,2026-05-13,Royal Challengers Bengaluru,Kolkata Knight Riders,Royal Challengers Bengaluru Won by 6 wickets,5.0,246,False,False,INCLUDED,None
+50379,3298,IPL 2026,T20,2026,2026-05-14,Punjab Kings,Mumbai Indians,Mumbai Indians Won by 6 wickets,2.0,249,False,False,INCLUDED,None
+50380,3298,IPL 2026,T20,2026,2026-05-15,Lucknow Super Giants,Chennai Super Kings,Lucknow Super Giants Won by 7 wickets,3509.0,230,False,False,INCLUDED,None
+50381,3298,IPL 2026,T20,2026,2026-05-16,Kolkata Knight Riders,Gujarat Titans,Kolkata Knight Riders Won by 29 runs,8.0,252,False,False,INCLUDED,None
+50382,3298,IPL 2026,T20,2026,2026-05-17,Punjab Kings,Royal Challengers Bengaluru,Royal Challengers Bengaluru Won by 23 runs,5.0,254,False,False,INCLUDED,None
+50383,3298,IPL 2026,T20,2026,2026-05-17,Delhi Capitals,Rajasthan Royals,Delhi Capitals Won by 5 wickets,7.0,249,False,False,INCLUDED,None
+50384,3298,IPL 2026,T20,2026,2026-05-18,Chennai Super Kings,Sunrisers Hyderabad,Sunrisers Hyderabad Won by 5 wickets,242.0,249,False,False,INCLUDED,None
+50385,3298,IPL 2026,T20,2026,2026-05-19,Rajasthan Royals,Lucknow Super Giants,Rajasthan Royals Won by 7 wickets,3.0,251,False,False,INCLUDED,None
+50386,3298,IPL 2026,T20,2026,2026-05-20,Kolkata Knight Riders,Mumbai Indians,Kolkata Knight Riders Won by 4 wickets,8.0,241,False,False,INCLUDED,None
+50387,3298,IPL 2026,T20,2026,2026-05-21,Gujarat Titans,Chennai Super Kings,Gujarat Titans Won by 89 runs,3508.0,215,False,False,INCLUDED,None
+50388,3298,IPL 2026,T20,2026,2026-05-22,Sunrisers Hyderabad,Royal Challengers Bengaluru,Sunrisers Hyderabad Won by 55 runs,242.0,258,False,False,INCLUDED,None
+50389,3298,IPL 2026,T20,2026,2026-05-23,Lucknow Super Giants,Punjab Kings,Punjab Kings Won by 7 wickets,4.0,239,False,False,INCLUDED,None
+50390,3298,IPL 2026,T20,2026,2026-05-24,Mumbai Indians,Rajasthan Royals,Rajasthan Royals Won by 30 runs,3.0,251,False,False,INCLUDED,None
+50391,3298,IPL 2026,T20,2026,2026-05-24,Kolkata Knight Riders,Delhi Capitals,Delhi Capitals Won by 40 runs,7.0,245,False,False,INCLUDED,None
+50942,3298,IPL 2026,T20,2026,2026-05-26,Royal Challengers Bengaluru,Gujarat Titans,Royal Challengers Bengaluru Won by 92 runs,5.0,249,False,False,INCLUDED,None
+50943,3298,IPL 2026,T20,2026,2026-05-27,Sunrisers Hyderabad,Rajasthan Royals,Rajasthan Royals Won by 47 runs,3.0,252,False,False,INCLUDED,None
+50944,3298,IPL 2026,T20,2026,2026-05-29,Gujarat Titans,Rajasthan Royals,Gujarat Titans Won by 7 wickets,3508.0,241,False,False,INCLUDED,None
+50945,3298,IPL 2026,T20,2026,2026-05-31,Royal Challengers Bengaluru,Gujarat Titans,Royal Challengers Bengaluru Won by 5 wickets,5.0,233,False,False,INCLUDED,None
+48466,3313,Ireland in United Arab Emirates T20I Series 2026,T20I,2026,2026-01-29,United Arab Emirates,Ireland,Ireland Won by 57 runs,23.0,244,False,False,INCLUDED,None
+48467,3313,Ireland in United Arab Emirates T20I Series 2026,T20I,2026,2026-01-31,United Arab Emirates,Ireland,Ireland Won by 30 runs,23.0,250,False,False,INCLUDED,None
+48512,3317,Pakistan in Sri Lanka T20I Series 2026,T20I,2026,2026-01-07,Sri Lanka,Pakistan,Pakistan Won by 6 wickets,25.0,219,False,False,INCLUDED,None
+48513,3317,Pakistan in Sri Lanka T20I Series 2026,T20I,2026,2026-01-10,Sri Lanka,Pakistan,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+48514,3317,Pakistan in Sri Lanka T20I Series 2026,T20I,2026,2026-01-12,Sri Lanka,Pakistan,Sri Lanka Won by 14 runs,27.0,157,False,False,INCLUDED,None
+48591,3329,New Zealand in India T20I Series 2026,T20I,2026,2026-01-21,India,New Zealand,India Won by 48 runs,18.0,252,False,False,INCLUDED,None
+48592,3329,New Zealand in India T20I Series 2026,T20I,2026,2026-01-23,India,New Zealand,India Won by 7 wickets,18.0,227,False,False,INCLUDED,None
+48593,3329,New Zealand in India T20I Series 2026,T20I,2026,2026-01-25,India,New Zealand,India Won by 8 wickets,18.0,183,False,False,INCLUDED,None
+48594,3329,New Zealand in India T20I Series 2026,T20I,2026,2026-01-28,India,New Zealand,New Zealand Won by 50 runs,17.0,238,False,False,INCLUDED,None
+48595,3329,New Zealand in India T20I Series 2026,T20I,2026,2026-01-31,India,New Zealand,India Won by 46 runs,18.0,248,False,False,INCLUDED,None
+48596,3331,Afghanistan v West Indies T20I Series 2026,T20I,2026,2026-01-19,Afghanistan,West Indies,Afghanistan Won by 38 runs,78.0,253,False,False,INCLUDED,None
+48597,3331,Afghanistan v West Indies T20I Series 2026,T20I,2026,2026-01-21,Afghanistan,West Indies,Afghanistan Won by 39 runs,78.0,241,False,False,INCLUDED,None
+48598,3331,Afghanistan v West Indies T20I Series 2026,T20I,2026,2026-01-22,Afghanistan,West Indies,West Indies Won by 13 runs,28.0,248,False,False,INCLUDED,None
+48610,3334,England in Sri Lanka T20I Series 2026,T20I,2026,2026-01-30,Sri Lanka,England,England Won by 11 runs (DLS method),22.0,194,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+48611,3334,England in Sri Lanka T20I Series 2026,T20I,2026,2026-02-01,Sri Lanka,England,England Won by 6 wickets(DLS Method),22.0,233,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+48612,3334,England in Sri Lanka T20I Series 2026,T20I,2026,2026-02-03,Sri Lanka,England,England Won by 12 runs,22.0,241,False,False,INCLUDED,None
+48915,3358,Australia in Pakistan T20I Series 2026,T20I,2026,2026-01-29,Pakistan,Australia,Pakistan Won by 22 runs,25.0,250,False,False,INCLUDED,None
+48916,3358,Australia in Pakistan T20I Series 2026,T20I,2026,2026-01-31,Pakistan,Australia,Pakistan Won by 90 runs,25.0,217,False,False,INCLUDED,None
+48917,3358,Australia in Pakistan T20I Series 2026,T20I,2026,2026-02-01,Pakistan,Australia,Pakistan Won by 111 runs,25.0,227,False,False,INCLUDED,None
+49736,3395,South Africa in New Zealand T20I Series 2026,T20I,2026,2026-03-15,New Zealand,South Africa,South Africa Won by 7 wickets,19.0,196,False,False,INCLUDED,None
+49737,3395,South Africa in New Zealand T20I Series 2026,T20I,2026,2026-03-17,New Zealand,South Africa,New Zealand Won by 68 runs,17.0,223,False,False,INCLUDED,None
+49738,3395,South Africa in New Zealand T20I Series 2026,T20I,2026,2026-03-20,New Zealand,South Africa,New Zealand Won by 8 wickets,17.0,226,False,False,INCLUDED,None
+49739,3395,South Africa in New Zealand T20I Series 2026,T20I,2026,2026-03-22,New Zealand,South Africa,South Africa Won by 19 runs,19.0,238,False,False,INCLUDED,None
+49740,3395,South Africa in New Zealand T20I Series 2026,T20I,2026,2026-03-25,New Zealand,South Africa,South Africa Won by 33 runs,19.0,251,False,False,INCLUDED,None
+50188,3433,New Zealand in Bangladesh T20I Series 2026,T20I,2026,2026-04-27,Bangladesh,New Zealand,Bangladesh Won by 6 wickets,21.0,241,False,False,INCLUDED,None
+50189,3433,New Zealand in Bangladesh T20I Series 2026,T20I,2026,2026-04-29,Bangladesh,New Zealand,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+50190,3433,New Zealand in Bangladesh T20I Series 2026,T20I,2026,2026-05-02,Bangladesh,New Zealand,New Zealand Won by 6 wickets (DLS Method),17.0,161,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+50340,3446,India in Ireland T20I Series 2026,T20I,2026,2026-06-26,Ireland,India,Ireland Won by 34 runs,23.0,247,False,False,INCLUDED,None
+50341,3446,India in Ireland T20I Series 2026,T20I,2026,2026-06-28,Ireland,India,Ireland Won by 1 run,23.0,249,False,False,INCLUDED,None
+50404,3450,West Indies in India T20I Series 2026,T20I,2026,2026-10-06,India,West Indies,India Won by 8 wickets,18.0,205,False,False,INCLUDED,None
+50405,3450,West Indies in India T20I Series 2026,T20I,2026,2026-10-09,India,West Indies,West Indies Won by 6 wickets,28.0,243,False,False,INCLUDED,None
+50406,3450,West Indies in India T20I Series 2026,T20I,2026,2026-10-11,India,West Indies,India Won by 14 runs,18.0,251,False,False,INCLUDED,None
+50407,3450,West Indies in India T20I Series 2026,T20I,2026,2026-10-14,India,West Indies,West Indies Won by 24 runs,28.0,260,False,False,INCLUDED,None
+50408,3450,West Indies in India T20I Series 2026,T20I,2026,2026-10-17,India,West Indies,No Result,,55,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+50503,3464,Sri Lanka in West Indies T20I Series 2026,T20I,2026,2026-06-12,West Indies,Sri Lanka,West Indies Won by 7 wickets,28.0,244,False,False,INCLUDED,None
+50504,3464,Sri Lanka in West Indies T20I Series 2026,T20I,2026,2026-06-14,West Indies,Sri Lanka,Sri Lanka Won by 37 runs,27.0,239,False,False,INCLUDED,None
+50505,3464,Sri Lanka in West Indies T20I Series 2026,T20I,2026,2026-06-15,West Indies,Sri Lanka,West Indies Won by 5 wickets,28.0,251,False,False,INCLUDED,None
+50507,3465,India in Zimbabwe T20I Series 2026,T20I,2026,2026-07-23,Zimbabwe,India,India Won by 7 wickets,18.0,215,False,False,INCLUDED,None
+50508,3465,India in Zimbabwe T20I Series 2026,T20I,2026,2026-07-25,Zimbabwe,India,India Won by 90 runs,18.0,235,False,False,INCLUDED,None
+50509,3465,India in Zimbabwe T20I Series 2026,T20I,2026,2026-07-26,Zimbabwe,India,India Won by 35 runs,18.0,260,False,False,INCLUDED,None
+50597,3482,Australia in Bangladesh T20I Series 2026,T20I,2026,2026-06-17,Bangladesh,Australia,Australia Won by 4 wickets,20.0,228,False,False,INCLUDED,None
+50598,3482,Australia in Bangladesh T20I Series 2026,T20I,2026,2026-06-19,Bangladesh,Australia,Australia Won by 7 runs,20.0,249,False,False,INCLUDED,None
+50599,3482,Australia in Bangladesh T20I Series 2026,T20I,2026,2026-06-21,Bangladesh,Australia,Australia Won by 7 wickets,20.0,192,False,False,INCLUDED,None
+51383,3568,Bangladesh in Zimbabwe T20I Series 2026,T20I,2026,2026-07-15,Zimbabwe,Bangladesh,Zimbabwe Won by 32 runs,72.0,247,False,False,INCLUDED,None
+51384,3568,Bangladesh in Zimbabwe T20I Series 2026,T20I,2026,2026-07-17,Zimbabwe,Bangladesh,Bangladesh Won by 34 runs,21.0,248,False,False,INCLUDED,None
+51385,3568,Bangladesh in Zimbabwe T20I Series 2026,T20I,2026,2026-07-19,Zimbabwe,Bangladesh,Bangladesh Won by 4 wickets,21.0,243,False,False,INCLUDED,None
+54210,3690,India in New Zealand T20I Series 2026,T20I,2026,2026-10-22,New Zealand,India,India Won by 4 wickets,18.0,254,False,False,INCLUDED,None
+54211,3690,India in New Zealand T20I Series 2026,T20I,2026,2026-10-24,New Zealand,India,India Won by 4 wickets,18.0,254,False,False,INCLUDED,None
+54212,3690,India in New Zealand T20I Series 2026,T20I,2026,2026-10-27,New Zealand,India,India Won by 6 wickets,18.0,212,False,False,INCLUDED,None
+54213,3690,India in New Zealand T20I Series 2026,T20I,2026,2026-10-30,New Zealand,India,New Zealand Won by 87 runs,17.0,253,False,False,INCLUDED,None
+54214,3690,India in New Zealand T20I Series 2026,T20I,2026,2026-11-01,New Zealand,India,New Zealand Won by 7 wickets,17.0,236,False,False,INCLUDED,None
+54408,3713,Afghanistan vs India in India T20I Series 2026,T20I,2026,2026-09-13,Afghanistan,India,India Won by 7 wickets,18.0,216,False,False,INCLUDED,None
+54409,3713,Afghanistan vs India in India T20I Series 2026,T20I,2026,2026-09-15,Afghanistan,India,India Won by 7 wickets,18.0,213,False,False,INCLUDED,None
+54410,3713,Afghanistan vs India in India T20I Series 2026,T20I,2026,2026-09-17,Afghanistan,India,India Won by 127 runs,18.0,211,False,False,INCLUDED,None
+54711,3739,India in Japan T20I Match 2026,T20I,2026,2026-09-22,Japan,India,India Won by 2 runs,18.0,64,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+55078,3765,Sri Lanka in Pakistan T20I Series 2026,T20I,2026,2026-10-09,Pakistan,Sri Lanka,Pakistan Won by 4 wickets,25.0,242,False,False,INCLUDED,None
+55079,3765,Sri Lanka in Pakistan T20I Series 2026,T20I,2026,2026-10-11,Pakistan,Sri Lanka,Pakistan Won by 82 runs,25.0,247,False,False,INCLUDED,None
+55080,3765,Sri Lanka in Pakistan T20I Series 2026,T20I,2026,2026-10-13,Pakistan,Sri Lanka,Sri Lanka Won by 8 wickets,27.0,229,False,False,INCLUDED,None
+55559,3787,Afghanistan v Zimbabwe T20I Series 2026,T20I,2026,2026-10-27,Afghanistan,Zimbabwe,Afghanistan Won by 37 runs,78.0,248,False,False,INCLUDED,None
+55560,3787,Afghanistan v Zimbabwe T20I Series 2026,T20I,2026,2026-10-29,Afghanistan,Zimbabwe,Afghanistan Won by 19 runs,78.0,254,False,False,INCLUDED,None
+55561,3787,Afghanistan v Zimbabwe T20I Series 2026,T20I,2026,2026-11-01,Afghanistan,Zimbabwe,Afghanistan Won by 7 wickets,78.0,147,False,False,INCLUDED,None

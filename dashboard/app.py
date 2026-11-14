@@ -1,4 +1,4 @@
-"""SupeRR Intelligence - Professional Cricket Pressure Analytics Platform.
+"""SupeRR Intelligence V3 - Joint Performance, Pressure Intelligence & Rajasthan Royals Player-Fit Platform.
 
 Rajasthan Royals SupeRR Selector Season 2 Hackathon
 Professional Cricket Pressure Reliability Analytics & Squad Scouting Platform.
@@ -19,7 +19,7 @@ import plotly.graph_objects as go
 
 # ── PAGE CONFIGURATION ──────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="SupeRR Intelligence | Rajasthan Royals Analytics",
+    page_title="SupeRR Intelligence V3 | Rajasthan Royals Analytics",
     page_icon="👑",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -102,6 +102,32 @@ st.markdown("""
         font-weight: 600;
     }
     
+    /* Tag Styling */
+    .tag-strong {
+        background-color: #DCFCE7;
+        color: #166534;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+    }
+    .tag-conditional {
+        background-color: #FEF9C3;
+        color: #854D0E;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+    }
+    .tag-low {
+        background-color: #F1F5F9;
+        color: #475569;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+    }
+    
     /* Navigation Sidebar */
     [data-testid="stSidebar"] {
         background-color: #F8FAFC;
@@ -118,516 +144,599 @@ st.markdown("""
 
 # ── DATA PATHS & CACHED LOADERS ─────────────────────────────────────────────
 DATA_DIR = PROJECT_ROOT / "data"
-OUTPUTS_DIR = DATA_DIR / "outputs"
-REPORTS_DIR = DATA_DIR / "reports"
+OUTPUTS_V3 = DATA_DIR / "outputs" / "v3"
+REPORTS_V3 = DATA_DIR / "reports" / "v3"
+REF_DIR = DATA_DIR / "reference"
 
 @st.cache_data
-def load_all_analytics_data():
-    """Load all computed rankings, classifications, and validation datasets."""
-    top_bat = pd.read_csv(OUTPUTS_DIR / "FINAL_TOP_10_BATTERS.csv")
-    top_bowl = pd.read_csv(OUTPUTS_DIR / "FINAL_TOP_10_BOWLERS.csv")
-    all_bat = pd.read_csv(OUTPUTS_DIR / "ALL_BATTER_RANKINGS.csv")
-    all_bowl = pd.read_csv(OUTPUTS_DIR / "ALL_BOWLER_RANKINGS.csv")
-    low_bat = pd.read_csv(OUTPUTS_DIR / "LOWER_ORDER_PRESSURE_IMPACT.csv")
-    em_bowl = pd.read_csv(OUTPUTS_DIR / "EMERGING_AND_PART_TIME_BOWLERS.csv")
-    roles = pd.read_csv(OUTPUTS_DIR / "PLAYER_ROLE_CLASSIFICATION.csv")
-    aliases = pd.read_csv(OUTPUTS_DIR / "PLAYER_NAME_ALIASES.csv")
-    press_val = pd.read_csv(OUTPUTS_DIR / "PRESSURE_MODEL_VALIDATION.csv")
-    sens_df = pd.read_csv(OUTPUTS_DIR / "PRI_SENSITIVITY_ANALYSIS.csv")
-    elig_df = pd.read_csv(OUTPUTS_DIR / "PLAYER_ELIGIBILITY_REPORT.csv")
-    cons_df = pd.read_csv(OUTPUTS_DIR / "match_consistency_analysis.csv")
-    return {
-        'top_bat': top_bat,
-        'top_bowl': top_bowl,
-        'all_bat': all_bat,
-        'all_bowl': all_bowl,
-        'low_bat': low_bat,
-        'em_bowl': em_bowl,
-        'roles': roles,
-        'aliases': aliases,
-        'press_val': press_val,
-        'sens_df': sens_df,
-        'elig_df': elig_df,
-        'cons_df': cons_df,
-    }
+def load_v3_data():
+    """Load all V3 versioned outputs and reference datasets."""
+    files = {}
+    try:
+        files['top_bat'] = pd.read_csv(OUTPUTS_V3 / "TOP_10_BATTERS.csv")
+        files['top_bowl'] = pd.read_csv(OUTPUTS_V3 / "TOP_10_BOWLERS.csv")
+        files['all_bat'] = pd.read_csv(OUTPUTS_V3 / "ALL_BATTER_METRICS.csv")
+        files['all_bowl'] = pd.read_csv(OUTPUTS_V3 / "ALL_BOWLER_METRICS.csv")
+        files['roles'] = pd.read_csv(OUTPUTS_V3 / "player_roles.csv")
+        files['eligibility'] = pd.read_csv(OUTPUTS_V3 / "PLAYER_ELIGIBILITY.csv")
+        
+        # RR 2026 Data
+        files['rr_matches'] = pd.read_csv(OUTPUTS_V3 / "rr_2026_matches.csv")
+        files['rr_bat'] = pd.read_csv(OUTPUTS_V3 / "rr_2026_batting_stats.csv")
+        files['rr_bowl'] = pd.read_csv(OUTPUTS_V3 / "rr_2026_bowling_stats.csv")
+        files['rr_phase'] = pd.read_csv(OUTPUTS_V3 / "rr_2026_phase_analysis.csv")
+        files['rr_contrib'] = pd.read_csv(OUTPUTS_V3 / "rr_2026_player_contribution.csv")
+        files['rr_strengths'] = pd.read_csv(OUTPUTS_V3 / "rr_2026_team_strengths.csv")
+        files['rr_weaknesses'] = pd.read_csv(OUTPUTS_V3 / "rr_2026_team_weaknesses.csv")
+        files['rr_provenance'] = pd.read_csv(OUTPUTS_V3 / "rr_2026_data_provenance.csv")
+        
+        # RR Strategy
+        files['rr_required_roles'] = pd.read_csv(OUTPUTS_V3 / "RR_REQUIRED_ROLES.csv")
+        files['rr_player_fit'] = pd.read_csv(OUTPUTS_V3 / "RR_PLAYER_FIT.csv")
+        files['rr_retention'] = pd.read_csv(OUTPUTS_V3 / "RR_RETENTION_SCENARIOS.csv")
+        files['rr_budget'] = pd.read_csv(OUTPUTS_V3 / "RR_AUCTION_BUDGET_SCENARIOS.csv")
+        
+        # Reference
+        files['user_brief'] = pd.read_csv(REF_DIR / "rr_2026_user_brief.csv")
+        files['auction_assumptions'] = pd.read_csv(REF_DIR / "rr_2027_auction_assumptions.csv")
+        files['cohort_manifest'] = pd.read_csv(REPORTS_V3 / "MATCH_COHORT_MANIFEST.csv")
+    except Exception as e:
+        st.error(f"Error loading V3 data files: {e}")
+    return files
 
-data = load_all_analytics_data()
+data = load_v3_data()
 
 # ── TOP EXECUTIVE BANNER ────────────────────────────────────────────────────
 st.markdown("""
 <div class="rr-header">
-    <div class="rr-title">SupeRR Intelligence</div>
-    <div class="rr-subtitle">Pressure Reliability Analytics & Evidence-Based Player Scouting Platform</div>
-    <div class="rr-badge">Rajasthan Royals • SupeRR Selector Season 2 • Official Dossier</div>
+    <div class="rr-title">SupeRR Intelligence V3</div>
+    <div class="rr-subtitle">Joint Performance, Pressure Intelligence & Rajasthan Royals Player-Fit Platform</div>
+    <div class="rr-badge">Rajasthan Royals • SupeRR Selector Season 2 • Production Release</div>
 </div>
 """, unsafe_allow_html=True)
 
-# ── 4-SECTION SIDEBAR NAVIGATION ───────────────────────────────────────────
+# ── 5-SECTION SIDEBAR NAVIGATION (STRICT ORDER) ─────────────────────────────
 with st.sidebar:
     st.markdown("### 👑 Analytics Navigation")
     section = st.radio(
         "Select Analytical Section:",
         [
-            "1. Pressure Intelligence Overview",
-            "2. Batter Intelligence (Primary & Lower-Order)",
-            "3. Bowler Intelligence (Primary & Emerging)",
-            "4. Methodology, Science & Data Quality",
+            "Section 1: Universal Player Intelligence",
+            "Section 2: Rajasthan Royals 2026 Analysis",
+            "Section 3: RR Team Requirements",
+            "Section 4: RR Player Fit & Auction Strategy",
+            "Section 5: Data & Model Transparency",
         ],
         index=0
     )
     st.markdown("---")
-    st.markdown("### 📋 Dataset Scope")
-    st.caption("**Scope:** IPL & Men's T20I (2022–2026)")
-    st.caption("**Deliveries:** 193,988 regular deliveries")
-    st.caption("**Matches:** 853 (837 with ball-by-ball)")
-    st.caption("**Super Overs:** Quarantined (26 deliveries)")
-    st.caption("**Extras Codebook:** Categorical enum (Codes 1–7)")
+    st.markdown("### 📋 Platform Metadata")
+    st.caption("**Framework:** V3 Joint Performance & Pressure")
+    st.caption("**Universal Roster:** 1,118 Players Classified")
+    st.caption("**RR 2026 Data:** 16 Matches (3,788 Balls)")
+    st.caption("**Auction Horizon:** IPL 2027 Mini-Auction")
     st.markdown("---")
-    st.caption("Rajasthan Royals Hackathon Analytics Suite")
+    st.caption("Developed for Rajasthan Royals SupeRR Selector")
 
 
 # ════════════════════════════════════════════════════════════════════════════
-# SECTION 1: PRESSURE INTELLIGENCE OVERVIEW
+# SECTION 1 — UNIVERSAL PLAYER INTELLIGENCE
 # ════════════════════════════════════════════════════════════════════════════
-if section == "1. Pressure Intelligence Overview":
-    st.markdown("## 📊 Pressure Intelligence Overview")
+if section == "Section 1: Universal Player Intelligence":
+    st.markdown("## 🌐 Section 1: Universal Player Intelligence")
     st.markdown("""
-    **Executive Mandate:** Build a data-driven system that measures how batters and bowlers perform in high-pressure match situations compared with their usual performance levels, identifying the players who deliver most consistently when it matters.
+    **Analytical Framework:** Universal performance modeling across all 837 matches (IPL & T20I 2022–2026).
+    Evaluates individual player performance under pre-delivery pressure benchmarked against unconstrained normal baselines.
+    Features **strict role gating**: batters are limited to `BAT_SPECIALIST` and `BAT_PRIMARY_AR`; bowlers are limited to `BOWL_SPECIALIST` and `BOWL_PRIMARY_AR`.
     """)
 
-    # Key Headline Statistics
-    c1, c2, c3, c4 = st.columns(4)
-    with c1:
-        st.markdown("""
-        <div class="metric-card">
-            <div class="metric-lbl">Total Deliveries Audited</div>
-            <div class="metric-val">193,988</div>
-            <div class="metric-sub">837 T20 Matches Audited</div>
-        </div>
-        """, unsafe_allow_html=True)
-    with c2:
-        st.markdown("""
-        <div class="metric-card">
-            <div class="metric-lbl">Batting Crisis Balls</div>
-            <div class="metric-val">15,464</div>
-            <div class="metric-sub">7.97% High/Extreme Pressure</div>
-        </div>
-        """, unsafe_allow_html=True)
-    with c3:
-        st.markdown("""
-        <div class="metric-card">
-            <div class="metric-lbl">Bowling Defensive Balls</div>
-            <div class="metric-val">101,935</div>
-            <div class="metric-sub">52.55% High/Extreme Pressure</div>
-        </div>
-        """, unsafe_allow_html=True)
-    with c4:
-        st.markdown("""
-        <div class="metric-card">
-            <div class="metric-lbl">Audited Player Roster</div>
-            <div class="metric-val">1,118</div>
-            <div class="metric-sub">Classified by Empirical Role</div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    st.markdown("---")
-
-    # Top 5 Batters & Top 5 Bowlers Executive Comparison
-    st.markdown("### 🏆 Top 5 Pressure Reliability Leaders")
-    col_bat, col_bowl = st.columns(2)
-
-    with col_bat:
-        st.markdown("#### 🏏 Top 5 Batters (Positions 1–7)")
-        top5_bat = data['top_bat'].head(5)[['rank', 'canonical_display_name', 'primary_role', 'crisis_sr', 'sr_maintenance', 'batting_pri']]
-        top5_bat.columns = ['Rank', 'Player Name', 'Role', 'Crisis SR', 'Maint.', 'Batting PRI']
-        st.dataframe(top5_bat.style.format({'Crisis SR': '{:.1f}', 'Maint.': '{:.2f}x', 'Batting PRI': '{:.2f}'}), use_container_width=True, hide_index=True)
-
-    with col_bowl:
-        st.markdown("#### 🎯 Top 5 Bowlers (Frontline, 120+ Balls)")
-        top5_bowl = data['top_bowl'].head(5)[['rank', 'canonical_display_name', 'primary_role', 'crisis_wicket_rate', 'crisis_dot_pct', 'bowling_pri']]
-        top5_bowl.columns = ['Rank', 'Player Name', 'Role', 'Crisis WR%', 'Crisis Dot%', 'Bowling PRI']
-        st.dataframe(top5_bowl.style.format({'Crisis WR%': '{:.1f}%', 'Crisis Dot%': '{:.1f}%', 'Bowling PRI': '{:.2f}'}), use_container_width=True, hide_index=True)
-
-    st.markdown("---")
-
-    # Plotly Overview Chart: PRI Distribution of Top 10 Batters & Bowlers
-    st.markdown("### 📈 PRI Benchmark Comparison (Top 10 Batters vs Top 10 Bowlers)")
-    
-    chart_bat = data['top_bat'].head(10)[['canonical_display_name', 'batting_pri']].rename(
-        columns={'canonical_display_name': 'Player', 'batting_pri': 'PRI'}
-    ).assign(Discipline='Batting (Crisis)')
-    
-    chart_bowl = data['top_bowl'].head(10)[['canonical_display_name', 'bowling_pri']].rename(
-        columns={'canonical_display_name': 'Player', 'bowling_pri': 'PRI'}
-    ).assign(Discipline='Bowling (Defensive)')
-    
-    combined_chart = pd.concat([chart_bat, chart_bowl], ignore_index=True)
-
-    fig = px.bar(
-        combined_chart,
-        x='Player',
-        y='PRI',
-        color='Discipline',
-        barmode='group',
-        color_discrete_map={'Batting (Crisis)': '#EA1A85', 'Bowling (Defensive)': '#0B1B3D'},
-        title="Top 10 Pressure Reliability Index (PRI) by Discipline",
-        height=400,
-    )
-    fig.update_layout(
-        plot_bgcolor="#FFFFFF",
-        paper_bgcolor="#FFFFFF",
-        font=dict(family="sans-serif", size=12, color="#0F172A"),
-        xaxis=dict(tickangle=-30),
-        yaxis=dict(range=[50, 100], title="PRI (0 to 100)"),
-        margin=dict(l=40, r=40, t=50, b=80),
-    )
-    st.plotly_chart(fig, use_container_width=True)
-
-
-# ════════════════════════════════════════════════════════════════════════════
-# SECTION 2: BATTER INTELLIGENCE
-# ════════════════════════════════════════════════════════════════════════════
-elif section == "2. Batter Intelligence (Primary & Lower-Order)":
-    st.markdown("## 🏏 Batter Pressure Intelligence")
-    st.markdown("""
-    **Analytical Framework:** Evaluates batting crisis performance (wickets fallen, cluster collapse, new batter vulnerability, death overs) against each batter's own normal baseline.
-    Separates regular top/middle-order batters (Positions 1–7) from lower-order impact contributors (Positions 8–11).
-    """)
-
-    b_tab1, b_tab2, b_tab3, b_tab4 = st.tabs([
-        "🏆 Primary Top 10 Batters (Positions 1–7)",
-        "⚡ Lower-Order Pressure Impact (Specialist Bowlers/Tail)",
-        "📋 All-Role Batting Leaderboard (Full Transparency)",
-        "🔍 Batter Deep-Dive Profile & Scatter Analysis"
+    u_tab1, u_tab2, u_tab3, u_tab4, u_tab5, u_tab6 = st.tabs([
+        "🏏 Top 10 Batters Under Pressure",
+        "🎯 Top 10 Bowlers Under Pressure",
+        "📊 Player Performance Breakdown",
+        "🏷️ Role Classification & Eligibility",
+        "📐 Pressure Methodology & Models",
+        "🔬 Reliability & Uncertainty (Bootstrap CIs)"
     ])
 
-    with b_tab1:
-        st.markdown("### 🏆 Official Primary Top 10 Batters Under Crisis Pressure")
-        st.caption("Criteria: Minimum 40 crisis balls, 120 total balls, 5 crisis matches, and regular batting order (Positions 1–7).")
+    # 1. Top 10 Batters
+    with u_tab1:
+        st.markdown("### 🏏 Universal Top 10 Batters Under Pressure")
+        st.caption("Eligibility: ≥40 crisis balls, ≥120 total balls, ≥5 crisis matches, ≥30 normal balls. Role: BAT_SPECIALIST or BAT_PRIMARY_AR.")
         
-        disp_bat = data['top_bat'][[
-            'rank', 'canonical_display_name', 'primary_role', 'modal_batting_position',
-            'crisis_balls', 'crisis_matches', 'crisis_sr', 'norm_sr', 'sr_maintenance',
-            'consistency_score', 'batting_pri'
-        ]].copy()
-        disp_bat.columns = ['Rank', 'Player Name', 'Role', 'Modal Pos', 'Crisis Balls', 'Matches', 'Crisis SR', 'Normal SR', 'Maint. Ratio', 'Consistency', 'Batting PRI']
-        
-        st.dataframe(
-            disp_bat.style.format({
-                'Crisis SR': '{:.1f}',
-                'Normal SR': '{:.1f}',
-                'Maint. Ratio': '{:.2f}x',
-                'Consistency': '{:.2f}',
-                'Batting PRI': '{:.2f}',
-                'Crisis Balls': '{:.0f}',
-                'Matches': '{:.0f}',
-            }),
-            use_container_width=True,
-            hide_index=True
-        )
+        if 'top_bat' in data and not data['top_bat'].empty:
+            tb_disp = data['top_bat'][[
+                'rank', 'player_name', 'v3_role', 'crisis_balls', 'crisis_matches',
+                'crisis_sr', 'norm_sr', 'sr_maintenance', 'consistency_score',
+                'ci_lower', 'ci_upper', 'batting_pri'
+            ]].copy()
+            tb_disp.columns = [
+                'Rank', 'Player Name', 'Role', 'Crisis Balls', 'Matches',
+                'Crisis SR', 'Norm SR', 'Maint. Ratio', 'Consistency',
+                '95% CI Lower', '95% CI Upper', 'Batting PRI'
+            ]
+            st.dataframe(
+                tb_disp.style.format({
+                    'Crisis SR': '{:.1f}',
+                    'Norm SR': '{:.1f}',
+                    'Maint. Ratio': '{:.2f}x',
+                    'Consistency': '{:.2f}',
+                    '95% CI Lower': '{:.1f}',
+                    '95% CI Upper': '{:.1f}',
+                    'Batting PRI': '{:.2f}',
+                    'Crisis Balls': '{:.0f}',
+                    'Matches': '{:.0f}',
+                }),
+                use_container_width=True,
+                hide_index=True
+            )
+        else:
+            st.warning("Top 10 Batters data not loaded.")
 
         st.markdown("""
         **Key Insights:**
-        - **Tilak Varma (#1, PRI 91.30):** Outstanding crisis strike rate of 196.7 vs normal 144.5 (1.36x maintenance ratio) across 18 crisis matches.
-        - **Matthew Wade (#2, PRI 74.76):** Reliable finisher with 172.0 crisis strike rate across 15 high-pressure innings.
+        - **Tilak Varma (#1, PRI 91.30):** Outstanding crisis strike rate of 196.7 vs 144.5 normal (1.36x maintenance ratio) across 18 matches, 95% CI [158.2, 235.0].
+        - **Matthew Wade (#2, PRI 74.76):** High-leverage finishing specialist with 172.0 crisis strike rate across 15 matches.
         - **MS Dhoni (#5, PRI 66.20):** Deepest crisis sample in the cohort (133 crisis balls across 35 matches), striking at 154.9 under collapse conditions.
+        - **Gated Exclusion:** Tailenders (e.g., Gudakesh Motie, Akeal Hosein) are excluded from the batting leaderboard because their role is `BOWL_SPECIALIST`.
         """)
 
-    with b_tab2:
-        st.markdown("### ⚡ Lower-Order Pressure Impact Leaderboard")
-        st.caption("Specialist bowlers and lower-order batters (modal position 8–11) who deliver clutch boundary hitting under collapse.")
+    # 2. Top 10 Bowlers
+    with u_tab2:
+        st.markdown("### 🎯 Universal Top 10 Bowlers Under Pressure")
+        st.caption("Eligibility: ≥120 defensive crisis balls, ≥120 total balls, ≥5 crisis matches, ≥30 normal balls. Role: BOWL_SPECIALIST or BOWL_PRIMARY_AR.")
         
-        low_disp = data['low_bat'].head(15)[[
-            'lower_order_rank', 'canonical_display_name', 'primary_role', 'modal_batting_position',
-            'crisis_balls', 'crisis_sr', 'norm_sr', 'sr_maintenance', 'batting_pri', 'eligibility_status'
-        ]].copy()
-        low_disp.columns = ['Rank', 'Player Name', 'Primary Role', 'Modal Pos', 'Crisis Balls', 'Crisis SR', 'Norm SR', 'Maint.', 'Batting PRI', 'Status']
-        
-        st.dataframe(
-            low_disp.style.format({
-                'Crisis SR': '{:.1f}',
-                'Norm SR': '{:.1f}',
-                'Maint.': '{:.2f}x',
-                'Batting PRI': '{:.2f}',
-                'Crisis Balls': '{:.0f}',
-            }),
-            use_container_width=True,
-            hide_index=True
-        )
-
-        st.info("""
-        **Methodology Note:**
-        Specialist bowlers like **Gudakesh Motie** (modal pos 9, 47 crisis balls, 170.2 SR) and **Akeal Hosein** (modal pos 10, 114 crisis balls, 136.0 SR) are tracked here. 
-        Because tailenders only bat when earlier wickets have fallen, their exposure is 100% crisis-skewed; separating them preserves statistical fairness for frontline top-seven batters while honoring their clutch hitting.
-        """)
-
-    with b_tab3:
-        st.markdown("### 📋 All-Role Batting Leaderboard (Unrestricted)")
-        st.caption("All 824 evaluated batters across all roles. Use filters to inspect full data transparency.")
-
-        all_b_filter = data['all_bat'].copy()
-        role_opts = ['All'] + sorted(all_b_filter['primary_role'].dropna().unique().tolist())
-        selected_role = st.selectbox("Filter by Role:", role_opts, key="bat_role_sel")
-        
-        if selected_role != 'All':
-            all_b_filter = all_b_filter[all_b_filter['primary_role'] == selected_role]
-
-        st.dataframe(
-            all_b_filter[[
-                'overall_rank', 'canonical_display_name', 'primary_role', 'modal_batting_position',
-                'total_balls', 'crisis_balls', 'crisis_sr', 'norm_sr', 'sr_maintenance', 'batting_pri', 'eligibility_status'
-            ]].rename(columns={
-                'overall_rank': 'Rank',
-                'canonical_display_name': 'Player',
-                'primary_role': 'Role',
-                'modal_batting_position': 'Pos',
-                'total_balls': 'Total Balls',
-                'crisis_balls': 'Crisis Balls',
-                'crisis_sr': 'Crisis SR',
-                'norm_sr': 'Norm SR',
-                'sr_maintenance': 'Maint.',
-                'batting_pri': 'Batting PRI',
-                'eligibility_status': 'Status'
-            }).head(50),
-            use_container_width=True,
-            hide_index=True
-        )
-
-    with b_tab4:
-        st.markdown("### 🔍 Batter Deep-Dive: Crisis vs Normal Maintenance")
-        
-        el_bat = data['all_bat'][data['all_bat']['eligibility_status'] == 'ELIGIBLE'].copy()
-        
-        fig_scatter = px.scatter(
-            el_bat,
-            x='norm_sr',
-            y='crisis_sr',
-            size='crisis_balls',
-            color='primary_role',
-            hover_name='canonical_display_name',
-            hover_data=['modal_batting_position', 'batting_pri', 'sr_maintenance'],
-            title="Crisis Strike Rate vs Normal Strike Rate (Eligible Batters, Bubble Size = Crisis Balls)",
-            labels={'norm_sr': 'Normal Baseline Strike Rate', 'crisis_sr': 'Crisis Pressure Strike Rate'},
-            height=500,
-        )
-        # Add 1.0 parity diagonal
-        fig_scatter.add_shape(
-            type="line", line=dict(dash='dash', color='#94A3B8', width=1.5),
-            x0=80, y0=80, x1=210, y1=210
-        )
-        fig_scatter.update_layout(
-            plot_bgcolor="#FFFFFF",
-            paper_bgcolor="#FFFFFF",
-            font=dict(family="sans-serif", size=12, color="#0F172A"),
-        )
-        st.plotly_chart(fig_scatter, use_container_width=True)
-        st.caption("Dotted line indicates parity (1.0x maintenance). Players above the line elevate their scoring rate under pressure.")
-
-
-# ════════════════════════════════════════════════════════════════════════════
-# SECTION 3: BOWLER INTELLIGENCE
-# ════════════════════════════════════════════════════════════════════════════
-elif section == "3. Bowler Intelligence (Primary & Emerging)":
-    st.markdown("## 🎯 Bowler Defensive Pressure Intelligence")
-    st.markdown("""
-    **Analytical Framework:** Evaluates defensive bowling pressure (opponent having wickets in hand, death overs, powerplay field restrictions, opponent boundary momentum) on dot retention and Empirical Bayes shrunk wicket probability.
-    Separates frontline regular bowlers (min 120 crisis balls) from part-time and emerging bowlers.
-    """)
-
-    bw_tab1, bw_tab2, bw_tab3, bw_tab4 = st.tabs([
-        "🏆 Primary Top 10 Bowlers (Frontline, 120+ Balls)",
-        "⚡ Emerging & Part-Time Bowlers (Sub-120 Balls)",
-        "📋 All-Role Bowling Leaderboard (Full Transparency)",
-        "🔍 Bowler Deep-Dive: Control & Wicket Rate Analysis"
-    ])
-
-    with bw_tab1:
-        st.markdown("### 🏆 Official Primary Top 10 Bowlers Under Defensive Pressure")
-        st.caption("Criteria: Minimum 120 crisis legal deliveries, 5 crisis matches, and frontline bowling profile.")
-        
-        disp_bowl = data['top_bowl'][[
-            'rank', 'canonical_display_name', 'primary_role', 'crisis_balls',
-            'crisis_matches', 'crisis_wicket_rate', 'norm_wicket_rate', 'crisis_dot_pct',
-            'consistency_score', 'bowling_pri'
-        ]].copy()
-        disp_bowl.columns = ['Rank', 'Player Name', 'Role', 'Crisis Balls', 'Matches', 'Crisis WR%', 'Norm WR%', 'Crisis Dot%', 'Consistency', 'Bowling PRI']
-        
-        st.dataframe(
-            disp_bowl.style.format({
-                'Crisis WR%': '{:.1f}%',
-                'Norm WR%': '{:.1f}%',
-                'Crisis Dot%': '{:.1f}%',
-                'Consistency': '{:.2f}',
-                'Bowling PRI': '{:.2f}',
-                'Crisis Balls': '{:.0f}',
-                'Matches': '{:.0f}',
-            }),
-            use_container_width=True,
-            hide_index=True
-        )
+        if 'top_bowl' in data and not data['top_bowl'].empty:
+            tw_disp = data['top_bowl'][[
+                'rank', 'player_name', 'v3_role', 'crisis_balls', 'crisis_matches',
+                'crisis_dot_pct', 'norm_dot_pct', 'dot_maintenance', 'consistency_score',
+                'ci_lower', 'ci_upper', 'bowling_pri'
+            ]].copy()
+            tw_disp.columns = [
+                'Rank', 'Player Name', 'Role', 'Crisis Balls', 'Matches',
+                'Crisis Dot%', 'Norm Dot%', 'Dot Maint.', 'Consistency',
+                '95% CI Lower', '95% CI Upper', 'Bowling PRI'
+            ]
+            st.dataframe(
+                tw_disp.style.format({
+                    'Crisis Dot%': '{:.1f}%',
+                    'Norm Dot%': '{:.1f}%',
+                    'Dot Maint.': '{:.2f}x',
+                    'Consistency': '{:.2f}',
+                    '95% CI Lower': '{:.1f}%',
+                    '95% CI Upper': '{:.1f}%',
+                    'Bowling PRI': '{:.2f}',
+                    'Crisis Balls': '{:.0f}',
+                    'Matches': '{:.0f}',
+                }),
+                use_container_width=True,
+                hide_index=True
+            )
+        else:
+            st.warning("Top 10 Bowlers data not loaded.")
 
         st.markdown("""
         **Key Insights:**
-        - **Mark Adair (#1, PRI 86.16):** Massive workload of 483 defensive pressure deliveries across 40 matches with 6.6% crisis wicket rate and 37.1% dot ball retention.
-        - **Craig Young (#2, PRI 86.10):** Exceptional crisis wicket-taking capability (9.0% crisis WR) across 289 high-pressure balls.
-        - **Trent Boult (#5, PRI 76.46):** Premier tournament workhorse with 879 defensive pressure deliveries across 70 matches, maintaining 36.7% dot balls.
+        - **Craig Young (#1, PRI 86.12):** 289 defensive pressure deliveries across 23 matches, 36.3% dot ball retention and 9.0% crisis wicket rate.
+        - **Mark Adair (#2, PRI 84.60):** Enormous workload of 483 defensive pressure deliveries across 40 matches with 1.48x dot maintenance.
+        - **Trent Boult (#5, PRI 77.14):** Premier tournament spearhead with 879 defensive pressure balls across 70 matches, maintaining 36.7% dot balls.
+        - **Gated Exclusion:** Part-time bowlers (e.g., Harry Tector) are excluded from the bowling leaderboard because their role is `BAT_PRIMARY_AR`.
         """)
 
-    with bw_tab2:
-        st.markdown("### ⚡ Emerging & Part-Time Bowlers Leaderboard")
-        st.caption("Bowlers with 40–119 defensive crisis deliveries or batting all-rounders who bowl in high-leverage situations.")
-        
-        em_disp = data['em_bowl'].head(15)[[
-            'emerging_rank', 'canonical_display_name', 'primary_role', 'crisis_balls',
-            'crisis_wicket_rate', 'norm_wicket_rate', 'crisis_dot_pct', 'bowling_pri', 'eligibility_status'
-        ]].copy()
-        em_disp.columns = ['Rank', 'Player Name', 'Role', 'Crisis Balls', 'Crisis WR%', 'Norm WR%', 'Crisis Dot%', 'Bowling PRI', 'Status']
-        
-        st.dataframe(
-            em_disp.style.format({
-                'Crisis WR%': '{:.1f}%',
-                'Norm WR%': '{:.1f}%',
-                'Crisis Dot%': '{:.1f}%',
-                'Bowling PRI': '{:.2f}',
-                'Crisis Balls': '{:.0f}',
-            }),
-            use_container_width=True,
-            hide_index=True
-        )
+    # 3. Performance Breakdown
+    with u_tab3:
+        st.markdown("### 📊 Player Performance Deep-Dive")
+        col_s1, col_s2 = st.columns(2)
+        with col_s1:
+            if 'all_bat' in data and not data['all_bat'].empty:
+                el_bat = data['all_bat'][data['all_bat']['sample_eligible'] == True].copy()
+                fig_b = px.scatter(
+                    el_bat,
+                    x='norm_sr',
+                    y='crisis_sr',
+                    size='crisis_balls',
+                    color='v3_role',
+                    hover_name='player_name',
+                    hover_data=['crisis_matches', 'batting_pri'],
+                    title="Batters: Crisis Strike Rate vs Normal Baseline",
+                    labels={'norm_sr': 'Normal Baseline Strike Rate', 'crisis_sr': 'Crisis Strike Rate'},
+                    height=450
+                )
+                fig_b.add_shape(type="line", line=dict(dash='dash', color='#94A3B8'), x0=80, y0=80, x1=210, y1=210)
+                st.plotly_chart(fig_b, use_container_width=True)
 
-        st.info("""
-        **Methodology Note:**
-        Players like **Harry Tector** (Ireland middle-order batter / part-time spin bowler, 54 crisis balls, 9.3% WR) and **Krishnappa Gowtham** (67 crisis balls, 7.5% WR) are tracked here.
-        Setting the frontline threshold to 120 crisis legal deliveries guarantees that the Primary Top 10 consists strictly of genuine frontline bowlers who carry substantial tactical workloads.
+        with col_s2:
+            if 'all_bowl' in data and not data['all_bowl'].empty:
+                el_bowl = data['all_bowl'][data['all_bowl']['sample_eligible'] == True].copy()
+                fig_w = px.scatter(
+                    el_bowl,
+                    x='norm_dot_pct',
+                    y='crisis_dot_pct',
+                    size='crisis_balls',
+                    color='v3_role',
+                    hover_name='player_name',
+                    hover_data=['crisis_matches', 'bowling_pri'],
+                    title="Bowlers: Crisis Dot% vs Normal Baseline",
+                    labels={'norm_dot_pct': 'Normal Baseline Dot %', 'crisis_dot_pct': 'Crisis Dot %'},
+                    height=450
+                )
+                fig_w.add_shape(type="line", line=dict(dash='dash', color='#94A3B8'), x0=15, y0=15, x1=50, y1=50)
+                st.plotly_chart(fig_w, use_container_width=True)
+
+    # 4. Role Classification & Eligibility
+    with u_tab4:
+        st.markdown("### 🏷️ Five-State Role Classification & Eligibility Audit")
+        if 'roles' in data and not data['roles'].empty:
+            rc1, rc2, rc3 = st.columns(3)
+            with rc1:
+                st.metric("Total Players Classified", f"{len(data['roles']):,}")
+            with rc2:
+                st.metric("Eligible for Bat Leaderboard", f"{data['roles']['eligible_for_bat_leaderboard'].sum():,}")
+            with rc3:
+                st.metric("Eligible for Bowl Leaderboard", f"{data['roles']['eligible_for_bowl_leaderboard'].sum():,}")
+
+            role_dist = data['roles']['v3_role'].value_counts().reset_index()
+            role_dist.columns = ['V3 Role', 'Player Count']
+            fig_r = px.bar(role_dist, x='V3 Role', y='Player Count', color='V3 Role', title="Roster Distribution Across 5 Mutually Exclusive Roles")
+            st.plotly_chart(fig_r, use_container_width=True)
+
+            st.dataframe(data['roles'].head(25), use_container_width=True, hide_index=True)
+
+    # 5. Pressure Methodology
+    with u_tab5:
+        st.markdown("### 📐 Dual Pre-Delivery Pressure Models")
+        st.markdown("""
+        **Zero Target Leakage Guarantee:** All situational features are observable strictly *before* the delivery is bowled.
+        
+        - **Batting Crisis Score (0 to 10):**
+          - Wickets fallen before delivery (0 to 3.5 pts)
+          - Recent 12-ball cluster collapse (0 to 2.0 pts)
+          - Batter novelty in first 5 balls faced (0 to 1.5 pts)
+          - Dot-ball stagnation in last 12 balls (0 to 1.5 pts)
+          - Innings phase multiplier: Death = 1.25x, Middle = 1.0x, Powerplay = 0.95x
+        
+        - **Bowling Defensive Pressure Score (0 to 10):**
+          - Opponent wickets in hand (0.2 to 3.0 pts)
+          - Phase leverage / field restrictions: Death = 3.0, Powerplay = 2.0, Middle = 1.0
+          - Opponent boundary momentum in last 12 balls (0 to 2.5 pts)
+          - Strike-rotation / lack-of-dots pressure (0 to 1.5 pts)
         """)
 
-    with bw_tab3:
-        st.markdown("### 📋 All-Role Bowling Leaderboard (Unrestricted)")
-        st.caption("All 596 evaluated bowlers. Use filters to inspect complete ranking data.")
-
-        all_bw_filter = data['all_bowl'].copy()
-        bw_role_opts = ['All'] + sorted(all_bw_filter['primary_role'].dropna().unique().tolist())
-        selected_bw_role = st.selectbox("Filter by Role:", bw_role_opts, key="bw_role_sel")
-        
-        if selected_bw_role != 'All':
-            all_bw_filter = all_bw_filter[all_bw_filter['primary_role'] == selected_bw_role]
-
-        st.dataframe(
-            all_bw_filter[[
-                'overall_rank', 'canonical_display_name', 'primary_role', 'total_legal_balls',
-                'crisis_balls', 'crisis_wicket_rate', 'crisis_dot_pct', 'bowling_pri', 'eligibility_status'
-            ]].rename(columns={
-                'overall_rank': 'Rank',
-                'canonical_display_name': 'Player',
-                'primary_role': 'Role',
-                'total_legal_balls': 'Total Balls',
-                'crisis_balls': 'Crisis Balls',
-                'crisis_wicket_rate': 'Crisis WR%',
-                'crisis_dot_pct': 'Crisis Dot%',
-                'bowling_pri': 'Bowling PRI',
-                'eligibility_status': 'Status'
-            }).head(50),
-            use_container_width=True,
-            hide_index=True
-        )
-
-    with bw_tab4:
-        st.markdown("### 🔍 Bowler Deep-Dive: Dot Retention vs Wicket Threat")
-        
-        el_bowl = data['all_bowl'][data['all_bowl']['eligibility_status'] == 'ELIGIBLE'].copy()
-        
-        fig_bw_scatter = px.scatter(
-            el_bowl,
-            x='crisis_dot_pct',
-            y='crisis_wicket_rate',
-            size='crisis_balls',
-            color='primary_role',
-            hover_name='canonical_display_name',
-            hover_data=['crisis_matches', 'bowling_pri'],
-            title="Crisis Wicket Rate vs Crisis Dot Ball % (Eligible Bowlers, Bubble Size = Crisis Balls)",
-            labels={'crisis_dot_pct': 'Crisis Dot Ball %', 'crisis_wicket_rate': 'Crisis Wicket Rate (%)'},
-            height=500,
-        )
-        fig_bw_scatter.update_layout(
-            plot_bgcolor="#FFFFFF",
-            paper_bgcolor="#FFFFFF",
-            font=dict(family="sans-serif", size=12, color="#0F172A"),
-        )
-        st.plotly_chart(fig_bw_scatter, use_container_width=True)
+    # 6. Reliability & Uncertainty
+    with u_tab6:
+        st.markdown("### 🔬 Statistical Reliability & Bootstrap Uncertainty")
+        st.markdown("""
+        **Match-Clustered Resampling:** 500 bootstrap iterations per player resampling entire match clusters to preserve intra-match serial dependence.
+        """)
+        if 'top_bat' in data and not data['top_bat'].empty:
+            st.markdown("#### Batter 95% Confidence Intervals (Crisis Strike Rate)")
+            fig_ci = go.Figure()
+            for _, r in data['top_bat'].head(10).iterrows():
+                fig_ci.add_trace(go.Scatter(
+                    x=[r['ci_lower'], r['crisis_sr'], r['ci_upper']],
+                    y=[r['player_name'], r['player_name'], r['player_name']],
+                    mode='lines+markers',
+                    marker=dict(size=[6, 12, 6], color=['#EA1A85', '#0B1B3D', '#EA1A85']),
+                    line=dict(color='#0B1B3D', width=2),
+                    name=r['player_name'],
+                    showlegend=False
+                ))
+            fig_ci.update_layout(title="Top 10 Batters: Point Estimate and 95% Match-Clustered Bootstrap CI", xaxis_title="Crisis Strike Rate", height=400)
+            st.plotly_chart(fig_ci, use_container_width=True)
 
 
 # ════════════════════════════════════════════════════════════════════════════
-# SECTION 4: METHODOLOGY, SCIENCE & DATA QUALITY
+# SECTION 2 — RAJASTHAN ROYALS 2026 ANALYSIS
 # ════════════════════════════════════════════════════════════════════════════
-elif section == "4. Methodology, Science & Data Quality":
-    st.markdown("## 🧠 Methodology, Scientific Modeling & Data Governance")
+elif section == "Section 2: Rajasthan Royals 2026 Analysis":
+    st.markdown("## 🏰 Section 2: Rajasthan Royals IPL 2026 Season Analysis")
     st.markdown("""
-    **Core Objective:** Complete reproducibility, statistical rigor, and defensible cricket engineering for the Rajasthan Royals hackathon.
+    **Empirical Season Review:** Grounded in all 16 matches (14 league matches, Eliminator victory, Qualifier 2) and 3,788 ball-by-ball delivery records in IPL 2026.
     """)
 
-    m_tab1, m_tab2, m_tab3, m_tab4 = st.tabs([
-        "📐 Dual Pressure Formulation",
-        "🧮 PRI Formula & Empirical Bayes",
-        "⚖️ Sensitivity Analysis (5 Weight Configs)",
-        "🛡️ Data Governance & Quarantines"
+    rr_tab1, rr_tab2, rr_tab3, rr_tab4, rr_tab5 = st.tabs([
+        "🏆 RR Season Overview & Results",
+        "🏏 RR Batting Performance",
+        "🎯 RR Bowling Performance",
+        "👥 Player Contribution Breakdown",
+        "⚖️ Empirical Strengths & Weaknesses"
     ])
 
-    with m_tab1:
-        st.markdown("### 📐 Dual Independent Pressure Models")
-        st.markdown("""
-        In professional cricket analytics, **batting crisis and bowling pressure are fundamentally different tactical states**:
-        - **Batting Crisis (0–10 scale):** Wickets fallen before delivery (0–3.5), recent 12-ball cluster collapse (0–2.0), batter entry vulnerability (0–1.5), dot stagnation (0–1.5), multiplied by death-over leverage (1.25x).
-        - **Bowling Defensive Pressure (0–10 scale):** Opponent resource depth (wickets in hand: 8–10 wkts = 3.0), innings phase (Death = 3.0, Powerplay = 2.0), opponent boundary momentum in last 12 legal balls (0–2.5), low dot pressure (0–1.5).
+    with rr_tab1:
+        st.markdown("### 🏆 Tournament Campaign Overview")
+        c1, c2, c3, c4 = st.columns(4)
+        with c1:
+            st.markdown("""<div class="metric-card"><div class="metric-lbl">Overall Finish</div><div class="metric-val">3rd Place</div><div class="metric-sub">Playoff Qualifier</div></div>""", unsafe_allow_html=True)
+        with c2:
+            st.markdown("""<div class="metric-card"><div class="metric-lbl">League Stage Record</div><div class="metric-val">8 Wins / 14 Matches</div><div class="metric-sub">4th in Standings</div></div>""", unsafe_allow_html=True)
+        with c3:
+            st.markdown("""<div class="metric-card"><div class="metric-lbl">Eliminator</div><div class="metric-val">Won by 47 runs</div><div class="metric-sub">vs Sunrisers Hyderabad</div></div>""", unsafe_allow_html=True)
+        with c4:
+            st.markdown("""<div class="metric-card"><div class="metric-lbl">Qualifier 2</div><div class="metric-val">Lost by 7 wkts</div><div class="metric-sub">vs Gujarat Titans</div></div>""", unsafe_allow_html=True)
+
+        st.markdown("---")
+        st.markdown("#### 📅 Match-by-Match Results (16 Games)")
+        if 'rr_matches' in data and not data['rr_matches'].empty:
+            st.dataframe(data['rr_matches'], use_container_width=True, hide_index=True)
+
+    with rr_tab2:
+        st.markdown("### 🏏 RR Batting Aggregates (IPL 2026)")
+        if 'rr_bat' in data and not data['rr_bat'].empty:
+            b_disp = data['rr_bat'][[
+                'player_name', 'matches_appeared', 'innings_batted', 'runs', 'balls_faced',
+                'batting_average', 'strike_rate', 'sixes', 'pp_sr', 'middle_sr', 'death_sr'
+            ]].copy()
+            b_disp.columns = ['Player', 'Matches', 'Innings', 'Runs', 'Balls', 'Average', 'SR', 'Sixes', 'PP SR', 'Middle SR', 'Death SR']
+            st.dataframe(
+                b_disp.style.format({
+                    'Average': lambda x: f"{x:.2f}" if pd.notna(x) else "—",
+                    'SR': '{:.2f}',
+                    'PP SR': '{:.2f}',
+                    'Middle SR': '{:.2f}',
+                    'Death SR': '{:.2f}',
+                }),
+                use_container_width=True,
+                hide_index=True
+            )
+
+            st.info("""
+            **Reconciliation Confirmation:**
+            - **Vaibhav Sooryavanshi:** 776 runs, average 48.50, strike rate 237.31, 72 sixes (Orange Cap & MVP).
+            - **Dhruv Jurel:** 515 runs, average 32.19, strike rate 154.65.
+            - **Yashasvi Jaiswal:** 427 runs, average 30.50, strike rate 152.50.
+            - **Donovan Ferreira:** 317 runs, average 35.22, strike rate 179.10.
+            - **Riyan Parag:** 309 runs, average 23.77, strike rate 157.65.
+            - **Ravindra Jadeja:** 266 runs, average 66.50, strike rate 135.03.
+            """)
+
+    with rr_tab3:
+        st.markdown("### 🎯 RR Bowling Aggregates (IPL 2026)")
+        if 'rr_bowl' in data and not data['rr_bowl'].empty:
+            bw_disp = data['rr_bowl'][[
+                'player_name', 'matches_appeared', 'overs', 'bowler_creditable_wickets',
+                'dot_balls', 'dot_ball_pct', 'bowling_strike_rate', 'pp_wickets', 'middle_wickets', 'death_wickets',
+                'economy_rate_status'
+            ]].copy()
+            bw_disp.columns = ['Player', 'Matches', 'Overs', 'Wickets (Bowler)', 'Dots', 'Dot %', 'Strike Rate', 'PP Wkts', 'Mid Wkts', 'Death Wkts', 'Economy Status']
+            st.dataframe(
+                bw_disp.style.format({
+                    'Dot %': '{:.1f}%',
+                    'Strike Rate': lambda x: f"{x:.1f}" if pd.notna(x) else "—",
+                }),
+                use_container_width=True,
+                hide_index=True
+            )
+
+            st.info("""
+            **Reconciliation Confirmation (Bowler-Creditable Wickets):**
+            - **Jofra Archer:** 25 wickets (3rd on Purple Cap leaderboard).
+            - **Brijesh Sharma:** 14 wickets in 13 matches (uncapped breakthrough).
+            - **Nandre Burger:** 14 wickets in 13 matches.
+            - **Ravi Bishnoi:** 11 wickets in 9 matches.
+            - **Ravindra Jadeja:** 10 wickets in 12 matches.
+            - **Sandeep Sharma:** 5 wickets in 6 matches.
+            - **Tushar Deshpande:** 4 wickets in 7 matches.
+            - *Note on Bowling Economy:* Quarantined from derived totals due to categorical extras representation; user-provided economy figures preserved under reference files.
+            """)
+
+    with rr_tab4:
+        st.markdown("### 👥 Player Contribution Share & Salary Efficiency")
+        if 'rr_contrib' in data and not data['rr_contrib'].empty:
+            st.dataframe(data['rr_contrib'], use_container_width=True, hide_index=True)
+
+    with rr_tab5:
+        st.markdown("### ⚖️ Empirical Strengths & Weaknesses")
+        col_st, col_wk = st.columns(2)
+        with col_st:
+            st.markdown("#### ✅ Validated Team Strengths")
+            if 'rr_strengths' in data and not data['rr_strengths'].empty:
+                st.dataframe(data['rr_strengths'], use_container_width=True, hide_index=True)
+        with col_wk:
+            st.markdown("#### ⚠️ Validated Team Weaknesses")
+            if 'rr_weaknesses' in data and not data['rr_weaknesses'].empty:
+                st.dataframe(data['rr_weaknesses'], use_container_width=True, hide_index=True)
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# SECTION 3 — RR TEAM REQUIREMENTS
+# ════════════════════════════════════════════════════════════════════════════
+elif section == "Section 3: RR Team Requirements":
+    st.markdown("## 🎯 Section 3: Rajasthan Royals Team Requirements & Squad Gaps")
+    st.markdown("""
+    **Governing Rule:** Derived *exclusively* from the Phase 12 empirical season analysis.
+    Identifies the exact tactical deficiencies that RR must solve in the IPL 2027 recruitment window.
+    """)
+
+    if 'rr_required_roles' in data and not data['rr_required_roles'].empty:
+        st.dataframe(data['rr_required_roles'], use_container_width=True, hide_index=True)
+
+        st.markdown("---")
+        st.markdown("### 🔍 In-Depth Gap Evaluations")
         
-        Both models operate strictly on **pre-delivery context** to guarantee zero target leakage.
+        c1, c2 = st.columns(2)
+        with c1:
+            st.markdown("""
+            #### 1. Indian Frontline Fast Bowler (CRITICAL — Priority 1)
+            - **Why Needed:** Tushar Deshpande and Sandeep Sharma managed only 9 wickets across 13 appearances, leaking high boundary rates.
+            - **Current Cover:** Deshpande (₹6.5 Cr) and Sandeep (₹4.0 Cr).
+            - **Target Allocation:** ₹10.0 – ₹13.0 Cr.
+            - **Profile Required:** 140+ kph Indian pacer capable of taking the new ball and executing death overs.
+            """)
+            
+            st.markdown("""
+            #### 2. Overseas Death-Over Specialist (CRITICAL — Priority 2)
+            - **Why Needed:** Nandre Burger is a new-ball enforcer; RR had no secondary death bowler to pair with Jofra Archer in overs 16–20.
+            - **Current Cover:** Burger (₹3.5 Cr) and Adam Milne (₹2.4 Cr, 1 match).
+            - **Target Allocation:** ₹8.0 – ₹11.0 Cr.
+            - **Profile Required:** Elite slinger or yorker specialist with low CVaR tail risk.
+            """)
+
+        with c2:
+            st.markdown("""
+            #### 3. Economical Middle-Over Spinner (IMPORTANT — Priority 3)
+            - **Why Needed:** Ravi Bishnoi was benched in 7 matches due to team balance; attack lacked an economical finger spinner to choke scoring rate.
+            - **Current Cover:** Bishnoi (₹7.2 Cr) and Jadeja (₹14.0 Cr).
+            - **Target Allocation:** ₹3.0 – ₹5.0 Cr.
+            - **Profile Required:** Left-arm orthodox finger spinner or mystery spinner.
+            """)
+
+            st.markdown("""
+            #### 4. Domestic Lower-Order Finisher (IMPORTANT — Priority 4)
+            - **Why Needed:** Shimron Hetmyer scored only 78 runs in 8 matches (₹11.0 Cr). Signing a domestic finisher frees the overseas slot for an elite pacer.
+            - **Current Cover:** Shubham Dubey (₹80 L) and Donovan Ferreira (overseas).
+            - **Target Allocation:** ₹2.0 – ₹3.0 Cr.
+            - **Profile Required:** Indian power hitter for overs 16–20 striking at 170+ SR.
+            """)
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# SECTION 4 — RR PLAYER FIT AND AUCTION STRATEGY
+# ════════════════════════════════════════════════════════════════════════════
+elif section == "Section 4: RR Player Fit & Auction Strategy":
+    st.markdown("## 💰 Section 4: RR Player Fit & Auction Strategy (IPL 2027)")
+    st.markdown("""
+    **Governing Principle:** Candidate players are evaluated *strictly against the 4 verified squad requirements* established in Section 3.
+    Universal rankings remain 100% separate from RR-specific fit suitability.
+    """)
+
+    af_tab1, af_tab2, af_tab3, af_tab4 = st.tabs([
+        "🎯 Player Fit Evaluation Matrix",
+        "⚖️ Candidate-by-Candidate Comparisons",
+        "💼 Retention, Purse & Release Scenarios",
+        "📋 Final Auction Game Plan & Strongest XI"
+    ])
+
+    with af_tab1:
+        st.markdown("### 🎯 Watchlist Candidates Evaluated Against RR Gaps")
+        if 'rr_player_fit' in data and not data['rr_player_fit'].empty:
+            pf_disp = data['rr_player_fit'][[
+                'player_name', 'target_gap', 'primary_role', 'is_overseas',
+                'estimated_price_range', 'recommendation_category', 'fit_reasoning'
+            ]].copy()
+            st.dataframe(pf_disp, use_container_width=True, hide_index=True)
+
+    with af_tab2:
+        st.markdown("### ⚖️ Head-to-Head Candidate Comparisons by Role Gap")
+        gap_choice = st.selectbox(
+            "Select Target Role Gap to Inspect Candidates:",
+            [
+                "Indian Frontline Fast Bowler",
+                "Overseas Death-Over Specialist",
+                "Economical Middle-Over Spinner",
+                "Domestic Lower-Order Finisher"
+            ]
+        )
+        if 'rr_player_fit' in data and not data['rr_player_fit'].empty:
+            sub_fit = data['rr_player_fit'][data['rr_player_fit']['target_gap'] == gap_choice]
+            for _, cand in sub_fit.iterrows():
+                with st.expander(f"{cand['player_name']} — {cand['recommendation_category']} ({cand['estimated_price_range']})"):
+                    st.markdown(f"**Primary Role:** {cand['primary_role']} | **Overseas Slot:** {'Yes' if cand['is_overseas'] else 'No'}")
+                    st.markdown(f"**Key Phase:** {cand['key_phase']}")
+                    st.markdown(f"**Historical Evidence:** {cand['historical_evidence']}")
+                    st.markdown(f"**Strengths:** {cand['strengths']}")
+                    st.markdown(f"**Weaknesses & Injury Risk:** {cand['weaknesses']} (Risk: {cand['injury_risk']})")
+                    st.markdown(f"**Expected Role in XI:** {cand['expected_role_xi']}")
+                    st.markdown(f"**Tactical Fit Rationale:** {cand['fit_reasoning']}")
+
+    with af_tab3:
+        st.markdown("### 💼 Retention & Purse Arithmetic Scenarios")
+        st.markdown("""
+        **Purse Formula:**
+        $$\\text{Available Purse} = \\text{Carried Purse (₹2.65 Cr)} + \\sum \\text{Freed Salaries (₹24.95 Cr)} + \\text{Cap Increase Scenario}$$
         """)
-
-        st.dataframe(data['press_val'], use_container_width=True, hide_index=True)
-
-    with m_tab2:
-        st.markdown("### 🧮 Pressure Reliability Index (PRI) Formulation")
-        st.latex(r"\text{PRI} = 100 \times \left( 0.35 M_{\text{norm}} + 0.35 A_{\text{norm}} + 0.20 C_{\text{norm}} + 0.10 S_{\text{norm}} \right)")
         
-        st.markdown("""
-        1. **Performance Maintenance ($M$, 35%):** Ratio of pressure performance to unconstrained normal baseline ($\text{SR}_{\text{crisis}}/\text{SR}_{\text{norm}}$ for batters; $\text{Dot}_{\text{crisis}}/\text{Dot}_{\text{norm}}$ for bowlers). Capped at [0.5, 1.5] to prevent small-sample anomalies.
-        2. **Absolute Pressure Capability ($A$, 35%):** Shrunk via **Empirical Bayes**:
-           - **Batting:** Normal-Normal conjugate shrinkage ($K=25.0$) shrinking individual strike rates towards the population mean based on delivery volume.
-           - **Bowling:** Beta-Binomial conjugate shrinkage with Method-of-Moments prior estimation for event rates (wicket rate).
-        3. **Exposure-Adjusted Consistency ($C$, 20%):** Exponential dispersion formula:
-        """)
-        st.latex(r"\text{Consistency}_i = \exp(-\text{CV}_i) \cdot \sqrt{\frac{m_i}{m_i + 3}}")
-        st.markdown("""
-        Continuous in $(0, 1]$, non-zero, and rewards sustained multi-match reliability.
-        4. **Sample Confidence ($S$, 10%):** Logarithmic exposure score: $\min(1.0, \ln(1+n)/\ln(1+250))$.
+        c1, c2 = st.columns(2)
+        with c1:
+            st.markdown("#### 📋 Candidate Release Actions")
+            if 'rr_retention' in data and not data['rr_retention'].empty:
+                st.dataframe(data['rr_retention'], use_container_width=True, hide_index=True)
+        with c2:
+            st.markdown("#### 📊 Auction Budget Scenarios")
+            if 'rr_budget' in data and not data['rr_budget'].empty:
+                st.dataframe(data['rr_budget'], use_container_width=True, hide_index=True)
+
+        st.warning("""
+        **Contract Conflict Flag:** Dasun Shanaka was a temporary replacement for Sam Curran (groin injury). 
+        RR management must clarify Curran's medical status before 17 November 2026. Curran and Shanaka cannot both be retained permanently under IPL regulations.
         """)
 
-    with m_tab3:
-        st.markdown("### ⚖️ Sensitivity Analysis Across 5 Weight Configurations")
-        st.markdown("""
-        To prove mathematical robustness, rankings were recomputed across 5 distinct weighting schemes:
-        - **Balanced Default:** 35% M, 35% A, 20% C, 10% S
-        - **Maintenance Heavy:** 50% M, 25% A, 15% C, 10% S
-        - **Absolute Heavy:** 25% M, 50% A, 15% C, 10% S
-        - **Consistency Heavy:** 30% M, 30% A, 30% C, 10% S
-        - **Equal Weights:** 25% M, 25% A, 25% C, 25% S
-        """)
+    with af_tab4:
+        st.markdown("### 📋 Final Auction Strategy & Projected Strongest XI (2027)")
         
-        st.dataframe(data['sens_df'].head(20), use_container_width=True, hide_index=True)
-        st.caption("Spearman rank correlations across configurations exceed 0.88 for batters and 0.91 for bowlers, demonstrating high stability.")
+        col_strat, col_xi = st.columns(2)
+        with col_strat:
+            st.markdown("""
+            #### 🎯 4-Step Auction Execution Strategy
+            1. **Step 1 (Indian Pacer):** Aggressively pursue **Prasidh Krishna** or **Avesh Khan** up to ₹10.50 Cr. Securing an Indian frontline pacer to partner Archer is the primary prerequisite.
+            2. **Step 2 (Overseas Death Bowler):** Bid for **Matheesha Pathirana** up to ₹9.50 Cr. If bidding exceeds ₹11.00 Cr, immediately pivot to **Nuwan Thushara** at ₹4.50–₹5.50 Cr.
+            3. **Step 3 (Middle Spinner):** Secure **R Sai Kishore** at ₹3.50–₹4.50 Cr for elite left-arm finger spin control.
+            4. **Step 4 (Domestic Finisher):** Sign **Ashutosh Sharma** at ₹2.50–₹3.50 Cr to cement the No. 6/7 finishing role, allowing the overseas slot to remain with Pathirana.
+            """)
 
-    with m_tab4:
-        st.markdown("### 🛡️ Data Governance & Engineering Audits")
+        with col_xi:
+            st.markdown("""
+            #### 👑 Projected Strongest Rajasthan Royals Playing XI (2027)
+            1. **Yashasvi Jaiswal** (LHB, Top-Order)
+            2. **Vaibhav Sooryavanshi** (LHB, Top-Order)
+            3. **Dhruv Jurel** (RHB, Wicketkeeper)
+            4. **Riyan Parag** (RHB, Captain)
+            5. **Donovan Ferreira** ✈️ (RHB, Finisher)
+            6. **Ashutosh Sharma** (RHB, Finisher)
+            7. **Ravindra Jadeja** (LHB, Left-Arm Orthodox)
+            8. **R Sai Kishore** / **Ravi Bishnoi** (Spin)
+            9. **Jofra Archer** ✈️ (Right-Arm Fast)
+            10. **Prasidh Krishna** / **Avesh Khan** (Right-Arm Fast)
+            11. **Matheesha Pathirana** ✈️ / **Nuwan Thushara** ✈️ (Right-Arm Sling)
+            *Tactical Impact Sub:* **Brijesh Sharma** (Spin) / **Nandre Burger** ✈️ (Pace)
+            """)
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# SECTION 5 — DATA AND MODEL TRANSPARENCY
+# ════════════════════════════════════════════════════════════════════════════
+elif section == "Section 5: Data & Model Transparency":
+    st.markdown("## 🛡️ Section 5: Data & Model Transparency")
+    st.markdown("""
+    **Governance Disclosure:** Full data provenance, model validation status, and strict quarantine documentation.
+    """)
+
+    dt_tab1, dt_tab2, dt_tab3 = st.tabs([
+        "📋 Match Cohort & Provenance",
+        "✅ Model Validation Status",
+        "🚫 Quarantined Metrics & Known Limitations"
+    ])
+
+    with dt_tab1:
+        st.markdown("### 📋 Match Cohort Manifest (853 Matches Audited)")
+        if 'cohort_manifest' in data and not data['cohort_manifest'].empty:
+            cm = data['cohort_manifest']
+            st.metric("Total Source Matches", f"{len(cm)}")
+            st.caption("Included: 790 matches | Excluded (no BBB): 16 matches | Quarantined Abandoned: 24 | Flagged DLS: 23")
+            st.dataframe(cm.head(50), use_container_width=True, hide_index=True)
+
+    with dt_tab2:
+        st.markdown("### ✅ V3 Model Validation Status Matrix")
+        model_matrix = [
+            {'Model': 'Dual Pre-Delivery Pressure Model', 'Type': 'Ex-Ante Proxy', 'Validation Split': 'Chronological Match', 'Leakage': 'Zero', 'Status': 'PRODUCTION_VALIDATED'},
+            {'Model': 'Five-State Role Classifier', 'Type': 'Empirical Classification', 'Validation Split': 'Multi-Season Workload', 'Leakage': 'Zero', 'Status': 'PRODUCTION_VALIDATED'},
+            {'Model': 'Hierarchical Joint Model', 'Type': 'Ridge Regression', 'Validation Split': 'Chronological Match', 'Leakage': 'Zero', 'Status': 'RESEARCH_VALIDATED'},
+            {'Model': 'Discrete-Time Hazard Model', 'Type': 'Logistic Regression', 'Validation Split': 'Chronological Match', 'Leakage': 'Zero', 'Status': 'PRODUCTION_VALIDATED'},
+            {'Model': 'Bowling Tail-Risk / CVaR', 'Type': 'Extreme Value Theory', 'Validation Split': 'Over-Level Distribution', 'Leakage': 'Zero', 'Status': 'PRODUCTION_VALIDATED'},
+            {'Model': 'LightGBM Challenger', 'Type': 'Gradient Boosted Trees', 'Validation Split': 'Chronological Match', 'Leakage': 'Zero', 'Status': 'CHALLENGER_BENCHMARK'},
+            {'Model': 'Match-Clustered Bootstrap', 'Type': 'Non-Parametric Resampling', 'Validation Split': 'Cluster Match Bootstrap', 'Leakage': 'Zero', 'Status': 'PRODUCTION_VALIDATED'},
+        ]
+        st.dataframe(pd.DataFrame(model_matrix), use_container_width=True, hide_index=True)
+
+    with dt_tab3:
+        st.markdown("### 🚫 Quarantined Metrics & Limitations")
         st.markdown("""
-        1. **`extras1_runs` is Categorical, NOT a Run Count:** Integer codes (1: Overstep, 2: wide, 3: legbyes, 4: byes, 5: other, 6: None, 7: Penalty) represent an enumeration codebook. **Never summed as runs.**
-        2. **Score-Dependent Metrics Quarantined:** Because total extras semantics remain unconfirmed, derived team scores, required run rates, and bowler economy rates are quarantined to maintain 100% scientific defensibility.
-        3. **Dismissal Attribution:** 571 run outs, 6 retired outs, and 2 obstructing-the-field events excluded from bowler wickets. Stumpings on wide balls are properly attributed.
-        4. **Boundary Reconciliation:** 23 flagged boundary discrepancies reconciled via verified boolean flags.
-        5. **Super Overs Quarantined:** 26 deliveries across Innings 3 & 4 quarantined from 20-over tactical ratings.
+        1. **`extras1_runs` is Categorical (Codes 1–7):** Never summed as runs.
+        2. **Bowling Economy Quarantined:** Because total delivery runs conceded cannot be verified without codebook extras runs, dynamic economy rates are quarantined. User-provided economy figures are preserved as reference data only.
+        3. **Dynamic Required Run Rate (RRR) Quarantined:** Dynamic RRR and chase win probability dependent on reconstructed cumulative scores remain quarantined.
+        4. **Super Overs Quarantined:** Innings 3 & 4 (26 balls) segregated from standard 20-over tactical ratings.
+        5. **Non-Bowler Dismissals Excluded:** 573 Run Outs, 6 Retired Outs, and 2 Obstructing the field are excluded from bowler wicket tallies.
         """)
-
-        st.markdown("#### 📋 Player Eligibility Audit Table")
-        st.dataframe(data['elig_df'].head(30), use_container_width=True, hide_index=True)
 
 # ── FOOTER ──────────────────────────────────────────────────────────────────
 st.markdown("---")
-st.caption("SupeRR Intelligence • Rajasthan Royals SupeRR Selector Season 2 • Built with Statistical Rigor & Scientific Defensibility")
+st.caption("SupeRR Intelligence V3 • Rajasthan Royals SupeRR Selector Season 2 • Built with Statistical Rigor & Scientific Defensibility")

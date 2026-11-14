@@ -1,0 +1,1119 @@
+player_id,player_name,v3_role,role_confidence,modal_order,mean_order,top7_ratio,balls_faced,legal_balls_bowled,wickets,is_wicketkeeper,match_count,eligible_for_bat_leaderboard,eligible_for_bowl_leaderboard,role_evidence
+6281,Abhishek Sharma,BAT_PRIMARY_AR,HIGH,2,1.65,1.0,2251,427,13,False,134,True,False,"Top 7 regular (pos 2) with dual high workload: 2251 balls faced, 427 bowled."
+3605,Aiden Markram,BAT_PRIMARY_AR,HIGH,4,3.24,1.0,1673,397,13,False,108,True,False,"Top 7 regular (pos 4) with dual high workload: 1673 balls faced, 397 bowled."
+1318,Andre Russell,BAT_PRIMARY_AR,HIGH,6,6.37,0.897,733,754,62,False,79,True,False,"Top 7 regular (pos 6) with dual high workload: 733 balls faced, 754 bowled."
+332,Angelo Mathews,BAT_PRIMARY_AR,MEDIUM,6,6.33,1.0,150,110,7,False,9,True,False,Top/middle order batter (pos 6) with supporting bowling: 110 bowled.
+6460,Ayush Badoni,BAT_PRIMARY_AR,MEDIUM,6,5.62,0.955,836,41,4,False,70,True,False,Top/middle order batter (pos 6) with supporting bowling: 41 bowled.
+6985,Bas de Leede,BAT_PRIMARY_AR,MEDIUM,4,4.0,1.0,163,72,4,False,6,True,False,Top/middle order batter (pos 4) with supporting bowling: 72 bowled.
+8638,Basil Hameed,BAT_PRIMARY_AR,HIGH,6,5.89,1.0,139,138,7,False,10,True,False,"Top 7 regular (pos 6) with dual high workload: 139 balls faced, 138 bowled."
+34522,Brandon McMullen,BAT_PRIMARY_AR,MEDIUM,3,3.0,1.0,96,50,1,False,7,True,False,Top/middle order batter (pos 3) with supporting bowling: 50 bowled.
+24017,Brian Bennett,BAT_PRIMARY_AR,HIGH,1,1.95,1.0,793,132,7,False,44,True,False,"Top 7 regular (pos 1) with dual high workload: 793 balls faced, 132 bowled."
+5939,Cameron Green,BAT_PRIMARY_AR,HIGH,4,4.02,1.0,1072,756,34,False,71,True,False,"Top 7 regular (pos 4) with dual high workload: 1072 balls faced, 756 bowled."
+4895,Charith Asalanka,BAT_PRIMARY_AR,HIGH,5,4.58,1.0,739,161,7,False,65,True,False,"Top 7 regular (pos 5) with dual high workload: 739 balls faced, 161 bowled."
+8654,Cooper Connolly,BAT_PRIMARY_AR,MEDIUM,3,4.5,0.885,363,114,3,False,33,True,False,Top/middle order batter (pos 3) with supporting bowling: 114 bowled.
+7094,Curtis Campher,BAT_PRIMARY_AR,HIGH,5,5.35,1.0,526,396,9,False,45,True,False,"Top 7 regular (pos 5) with dual high workload: 526 balls faced, 396 bowled."
+4106,Daryl Mitchell,BAT_PRIMARY_AR,MEDIUM,5,4.42,0.987,1150,80,4,False,77,True,False,Top/middle order batter (pos 5) with supporting bowling: 80 bowled.
+2436,Dasun Shanaka,BAT_PRIMARY_AR,HIGH,6,6.19,0.877,777,531,27,False,91,True,False,"Top 7 regular (pos 6) with dual high workload: 777 balls faced, 531 bowled."
+3648,Deepak Hooda,BAT_PRIMARY_AR,HIGH,3,4.82,0.935,797,131,7,False,72,True,False,"Top 7 regular (pos 3) with dual high workload: 797 balls faced, 131 bowled."
+2407,Dhananjaya de Silva,BAT_PRIMARY_AR,MEDIUM,4,3.69,1.0,199,81,5,False,19,True,False,Top/middle order batter (pos 4) with supporting bowling: 81 bowled.
+8182,Dunith Wellalage,BAT_PRIMARY_AR,MEDIUM,6,6.12,0.909,343,109,3,False,69,True,False,Top/middle order batter (pos 6) with supporting bowling: 109 bowled.
+1101,George Dockrell,BAT_PRIMARY_AR,HIGH,6,6.0,0.956,498,186,8,False,49,True,False,"Top 7 regular (pos 6) with dual high workload: 498 balls faced, 186 bowled."
+838,Glenn Maxwell,BAT_PRIMARY_AR,HIGH,4,4.17,1.0,958,639,29,False,94,True,False,"Top 7 regular (pos 4) with dual high workload: 958 balls faced, 639 bowled."
+4853,Glenn Phillips,BAT_PRIMARY_AR,MEDIUM,4,4.39,1.0,1093,113,5,False,93,True,False,Top/middle order batter (pos 4) with supporting bowling: 113 bowled.
+2214,Gulbadin Naib,BAT_PRIMARY_AR,MEDIUM,4,5.0,0.85,202,54,2,False,28,True,False,Top/middle order batter (pos 4) with supporting bowling: 54 bowled.
+3330,Hardik Pandya,BAT_PRIMARY_AR,HIGH,5,5.03,1.0,1924,1826,84,False,139,True,False,"Top 7 regular (pos 5) with dual high workload: 1924 balls faced, 1826 bowled."
+4812,Harry Tector,BAT_PRIMARY_AR,HIGH,4,3.68,1.0,828,230,11,False,50,True,False,"Top 7 regular (pos 4) with dual high workload: 828 balls faced, 230 bowled."
+3056,Iftikhar Ahmed,BAT_PRIMARY_AR,HIGH,5,5.69,0.949,455,186,6,False,41,True,False,"Top 7 regular (pos 5) with dual high workload: 455 balls faced, 186 bowled."
+23311,Jacob Bethell,BAT_PRIMARY_AR,MEDIUM,3,3.35,1.0,453,87,8,False,59,True,False,Top/middle order batter (pos 3) with supporting bowling: 87 bowled.
+7927,Janak Prakash,BAT_PRIMARY_AR,MEDIUM,4,4.67,1.0,81,54,5,False,3,True,False,Top/middle order batter (pos 4) with supporting bowling: 54 bowled.
+3323,Jimmy Neesham,BAT_PRIMARY_AR,HIGH,6,6.13,0.962,421,526,34,False,60,True,False,"Top 7 regular (pos 6) with dual high workload: 421 balls faced, 526 bowled."
+4686,Joshua Clarkson,BAT_PRIMARY_AR,MEDIUM,7,6.85,0.769,114,49,6,False,21,True,False,Top/middle order batter (pos 7) with supporting bowling: 49 bowled.
+4904,Kamindu Mendis,BAT_PRIMARY_AR,HIGH,4,5.12,1.0,594,150,5,False,74,True,False,"Top 7 regular (pos 4) with dual high workload: 594 balls faced, 150 bowled."
+5808,Karim Janat,BAT_PRIMARY_AR,HIGH,7,5.77,0.967,238,156,9,False,44,True,False,"Top 7 regular (pos 7) with dual high workload: 238 balls faced, 156 bowled."
+4111,Khushdil Shah,BAT_PRIMARY_AR,MEDIUM,5,6.0,0.909,206,60,3,False,37,True,False,Top/middle order batter (pos 5) with supporting bowling: 60 bowled.
+494,Kieron Pollard,BAT_PRIMARY_AR,HIGH,5,5.68,1.0,212,185,8,False,19,True,False,"Top 7 regular (pos 5) with dual high workload: 212 balls faced, 185 bowled."
+3383,Kinchit Shah,BAT_PRIMARY_AR,MEDIUM,4,5.0,1.0,87,54,3,False,8,True,False,Top/middle order batter (pos 4) with supporting bowling: 54 bowled.
+2416,Kyle Mayers,BAT_PRIMARY_AR,HIGH,2,1.79,1.0,756,140,2,False,62,True,False,"Top 7 regular (pos 2) with dual high workload: 756 balls faced, 140 bowled."
+6671,Lalit Yadav,BAT_PRIMARY_AR,HIGH,6,6.05,0.8,217,204,6,False,32,True,False,"Top 7 regular (pos 6) with dual high workload: 217 balls faced, 204 bowled."
+4391,Liam Livingstone,BAT_PRIMARY_AR,HIGH,4,4.85,0.986,994,594,32,False,102,True,False,"Top 7 regular (pos 4) with dual high workload: 994 balls faced, 594 bowled."
+2639,Marcus Stoinis,BAT_PRIMARY_AR,HIGH,5,5.37,0.981,1247,747,44,False,111,True,False,"Top 7 regular (pos 5) with dual high workload: 1247 balls faced, 747 bowled."
+3727,Matthew Short,BAT_PRIMARY_AR,HIGH,1,2.97,1.0,420,151,9,False,54,True,False,"Top 7 regular (pos 1) with dual high workload: 420 balls faced, 151 bowled."
+3282,Mehidy Hasan Miraz,BAT_PRIMARY_AR,HIGH,7,4.6,1.0,265,234,14,False,31,True,False,"Top 7 regular (pos 7) with dual high workload: 265 balls faced, 234 bowled."
+818,Mitchell Marsh,BAT_PRIMARY_AR,HIGH,3,2.09,1.0,1724,295,19,False,95,True,False,"Top 7 regular (pos 3) with dual high workload: 1724 balls faced, 295 bowled."
+1596,Moeen Ali,BAT_PRIMARY_AR,HIGH,6,5.44,0.877,755,806,45,False,87,True,False,"Top 7 regular (pos 6) with dual high workload: 755 balls faced, 806 bowled."
+1107,Mohammad Nabi,BAT_PRIMARY_AR,HIGH,6,5.88,0.897,663,680,28,False,64,True,False,"Top 7 regular (pos 6) with dual high workload: 663 balls faced, 680 bowled."
+4780,Mohammad Saif Hassan,BAT_PRIMARY_AR,MEDIUM,1,2.0,1.0,453,99,3,False,27,True,False,Top/middle order batter (pos 1) with supporting bowling: 99 bowled.
+37052,Naman Dhir,BAT_PRIMARY_AR,HIGH,7,5.53,0.957,515,124,5,False,54,True,False,"Top 7 regular (pos 7) with dual high workload: 515 balls faced, 124 bowled."
+4246,Nitish Rana,BAT_PRIMARY_AR,MEDIUM,3,3.82,1.0,861,101,3,False,70,True,False,Top/middle order batter (pos 3) with supporting bowling: 101 bowled.
+8221,Nitish Reddy,BAT_PRIMARY_AR,HIGH,4,5.61,0.929,672,567,27,False,71,True,False,"Top 7 regular (pos 4) with dual high workload: 672 balls faced, 567 bowled."
+4854,Rachin Ravindra,BAT_PRIMARY_AR,HIGH,2,3.33,0.958,582,132,5,False,69,True,False,"Top 7 regular (pos 2) with dual high workload: 582 balls faced, 132 bowled."
+3926,Rahul Tewatia,BAT_PRIMARY_AR,MEDIUM,6,6.22,0.961,524,49,0,False,79,True,False,Top/middle order batter (pos 6) with supporting bowling: 49 bowled.
+20006,Ramandeep Singh,BAT_PRIMARY_AR,MEDIUM,7,7.27,0.585,211,76,8,False,56,True,False,Top/middle order batter (pos 7) with supporting bowling: 76 bowled.
+6423,Riyan Parag,BAT_PRIMARY_AR,HIGH,4,4.73,1.0,1086,260,10,False,88,True,False,"Top 7 regular (pos 4) with dual high workload: 1086 balls faced, 260 bowled."
+7120,Rohit Paudel,BAT_PRIMARY_AR,MEDIUM,3,3.0,1.0,64,42,1,False,3,True,False,Top/middle order batter (pos 3) with supporting bowling: 42 bowled.
+4986,Rovman Powell,BAT_PRIMARY_AR,MEDIUM,5,5.42,0.965,1559,73,2,False,141,True,False,Top/middle order batter (pos 5) with supporting bowling: 73 bowled.
+2463,Ryan Burl,BAT_PRIMARY_AR,HIGH,5,5.45,0.977,706,318,18,False,45,True,False,"Top 7 regular (pos 5) with dual high workload: 706 balls faced, 318 bowled."
+7690,Saim Ayub,BAT_PRIMARY_AR,HIGH,2,2.11,1.0,880,510,26,False,67,True,False,"Top 7 regular (pos 2) with dual high workload: 880 balls faced, 510 bowled."
+3489,Salman Agha,BAT_PRIMARY_AR,MEDIUM,4,4.27,1.0,698,108,4,False,52,True,False,Top/middle order batter (pos 4) with supporting bowling: 108 bowled.
+1541,Sean Williams,BAT_PRIMARY_AR,HIGH,5,4.07,1.0,157,162,5,False,18,True,False,"Top 7 regular (pos 5) with dual high workload: 157 balls faced, 162 bowled."
+7472,Shahbaz Ahmed,BAT_PRIMARY_AR,HIGH,6,6.7,0.7,435,536,18,False,73,True,False,"Top 7 regular (pos 6) with dual high workload: 435 balls faced, 536 bowled."
+499,Shakib Al Hasan,BAT_PRIMARY_AR,HIGH,3,4.33,1.0,327,340,19,False,18,True,False,"Top 7 regular (pos 3) with dual high workload: 327 balls faced, 340 bowled."
+7903,Shamim Hossain,BAT_PRIMARY_AR,MEDIUM,6,6.26,0.905,395,91,2,False,46,True,False,Top/middle order batter (pos 6) with supporting bowling: 91 bowled.
+2756,Shashank Singh,BAT_PRIMARY_AR,MEDIUM,6,5.98,0.981,560,90,5,False,56,True,False,Top/middle order batter (pos 6) with supporting bowling: 90 bowled.
+4755,Shivam Dube,BAT_PRIMARY_AR,HIGH,6,5.35,0.966,1544,469,29,False,131,True,False,"Top 7 regular (pos 6) with dual high workload: 1544 balls faced, 469 bowled."
+2984,Sikandar Raza,BAT_PRIMARY_AR,HIGH,4,4.49,0.965,1002,1092,43,False,68,True,False,"Top 7 regular (pos 4) with dual high workload: 1002 balls faced, 1092 bowled."
+2213,Soumya Sarkar,BAT_PRIMARY_AR,MEDIUM,2,2.21,1.0,201,42,2,False,30,True,False,Top/middle order batter (pos 2) with supporting bowling: 42 bowled.
+7625,Suryansh Shedge,BAT_PRIMARY_AR,MEDIUM,7,6.67,0.733,112,60,0,False,42,True,False,Top/middle order batter (pos 7) with supporting bowling: 60 bowled.
+7897,Tilak Varma,BAT_PRIMARY_AR,MEDIUM,5,4.5,1.0,2418,61,3,False,138,True,False,Top/middle order batter (pos 5) with supporting bowling: 61 bowled.
+20702,Tristan Stubbs,BAT_PRIMARY_AR,MEDIUM,6,5.46,0.987,1082,48,3,False,82,True,False,Top/middle order batter (pos 6) with supporting bowling: 48 bowled.
+7544,Venkatesh Iyer,BAT_PRIMARY_AR,MEDIUM,3,3.89,0.935,943,49,2,False,75,True,False,Top/middle order batter (pos 3) with supporting bowling: 49 bowled.
+7912,Vikramjit Singh,BAT_PRIMARY_AR,MEDIUM,3,2.75,1.0,137,45,4,False,12,True,False,Top/middle order batter (pos 3) with supporting bowling: 45 bowled.
+4823,Washington Sundar,BAT_PRIMARY_AR,HIGH,8,6.4,0.676,637,790,39,False,118,True,False,"Top 7 regular (pos 8) with dual high workload: 637 balls faced, 790 bowled."
+4867,Wesley Madhevere,BAT_PRIMARY_AR,MEDIUM,1,3.27,1.0,427,96,4,False,32,True,False,Top/middle order batter (pos 1) with supporting bowling: 96 bowled.
+6272,William Jacks,BAT_PRIMARY_AR,HIGH,3,4.02,1.0,697,414,23,False,83,True,False,"Top 7 regular (pos 3) with dual high workload: 697 balls faced, 414 bowled."
+2972,Yasim Murtaza,BAT_PRIMARY_AR,HIGH,2,3.25,1.0,169,192,5,False,8,True,False,"Top 7 regular (pos 2) with dual high workload: 169 balls faced, 192 bowled."
+29075,Aadil Ansari,BAT_SPECIALIST,MEDIUM,7,7.0,1.0,10,36,4,False,3,True,False,"Specialist batter at pos 7 (Top7: 100.0%), 10 balls faced, only 36 bowled."
+3871,Aamir Kaleem,BAT_SPECIALIST,MEDIUM,2,1.67,1.0,59,48,5,False,3,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 59 balls faced, only 48 bowled."
+250,Aaron Finch,BAT_SPECIALIST,HIGH,1,2.0,1.0,346,0,0,False,21,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 346 balls faced, only 0 bowled."
+32399,Aaron Johnson,BAT_SPECIALIST,MEDIUM,1,1.0,1.0,49,0,0,False,4,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 49 balls faced, only 0 bowled."
+7634,Aaron Jones,BAT_SPECIALIST,MEDIUM,4,4.0,1.0,40,18,2,False,4,True,False,"Specialist batter at pos 4 (Top7: 100.0%), 40 balls faced, only 18 bowled."
+20163,Aasif Sheikh,BAT_SPECIALIST,MEDIUM,2,2.0,1.0,51,0,0,False,3,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 51 balls faced, only 0 bowled."
+6922,Abdul Samad,BAT_SPECIALIST,HIGH,7,6.67,1.0,68,0,0,False,18,True,False,"Specialist batter at pos 7 (Top7: 100.0%), 68 balls faced, only 0 bowled."
+7446,Abdul Samad,BAT_SPECIALIST,HIGH,7,6.4,0.958,424,9,0,False,56,True,False,"Specialist batter at pos 7 (Top7: 95.8%), 424 balls faced, only 9 bowled."
+48616,Abdul Saqlain,BAT_SPECIALIST,MEDIUM,6,8.0,0.667,21,68,4,False,9,True,False,"Specialist batter at pos 6 (Top7: 66.7%), 21 balls faced, only 68 bowled."
+4494,Abhinav Manohar,BAT_SPECIALIST,HIGH,7,6.33,0.926,235,0,0,False,45,True,False,"Specialist batter at pos 7 (Top7: 92.6%), 235 balls faced, only 0 bowled."
+19714,Abishek Porel,BAT_SPECIALIST,HIGH,3,3.83,0.889,529,0,0,False,47,True,False,"Specialist batter at pos 3 (Top7: 88.9%), 529 balls faced, only 0 bowled."
+15551,Ackeem Auguste,BAT_SPECIALIST,HIGH,4,3.7,1.0,125,0,0,False,14,True,False,"Specialist batter at pos 4 (Top7: 100.0%), 125 balls faced, only 0 bowled."
+5882,Afif Hossain,BAT_SPECIALIST,HIGH,4,4.86,1.0,361,30,1,False,23,True,False,"Specialist batter at pos 4 (Top7: 100.0%), 361 balls faced, only 30 bowled."
+3373,Aizaz Khan,BAT_SPECIALIST,MEDIUM,5,5.62,0.875,48,123,5,False,8,True,False,"Specialist batter at pos 5 (Top7: 87.5%), 48 balls faced, only 123 bowled."
+167,Ajinkya Rahane,BAT_SPECIALIST,HIGH,3,2.41,1.0,1025,0,0,False,63,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 1025 balls faced, only 0 bowled."
+1183,Alex Hales,BAT_SPECIALIST,HIGH,2,2.0,1.0,152,0,0,False,9,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 152 balls faced, only 0 bowled."
+6574,Alick Athanaze,BAT_SPECIALIST,HIGH,2,1.73,1.0,264,6,0,False,20,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 264 balls faced, only 6 bowled."
+8726,Alishan Sharafu,BAT_SPECIALIST,HIGH,1,2.64,1.0,224,1,0,False,12,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 224 balls faced, only 1 bowled."
+20894,Aman Khan,BAT_SPECIALIST,HIGH,7,7.17,0.667,104,6,0,False,26,True,False,"Specialist batter at pos 7 (Top7: 66.7%), 104 balls faced, only 6 bowled."
+535,Ambati Rayudu,BAT_SPECIALIST,HIGH,4,5.38,0.897,337,0,0,False,29,True,False,"Specialist batter at pos 4 (Top7: 89.7%), 337 balls faced, only 0 bowled."
+6739,Amir Jangoo,BAT_SPECIALIST,HIGH,1,2.29,1.0,135,0,0,False,19,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 135 balls faced, only 0 bowled."
+2218,Anamul Haque,BAT_SPECIALIST,HIGH,2,2.29,1.0,94,0,0,False,10,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 94 balls faced, only 0 bowled."
+3627,Andile Phehlukwayo,BAT_SPECIALIST,MEDIUM,7,6.86,1.0,41,144,10,False,7,True,False,"Specialist batter at pos 7 (Top7: 100.0%), 41 balls faced, only 144 bowled."
+492,Andre Fletcher,BAT_SPECIALIST,HIGH,5,4.33,1.0,39,0,0,True,9,True,False,Wicketkeeper with 39 balls faced vs 0 balls bowled.
+3954,Andrew Balbirnie,BAT_SPECIALIST,HIGH,1,1.41,1.0,569,0,0,False,33,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 569 balls faced, only 0 bowled."
+5877,Andries Gous,BAT_SPECIALIST,MEDIUM,2,2.5,1.0,57,0,0,False,4,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 57 balls faced, only 0 bowled."
+26906,Angkrish Raghuvanshi,BAT_SPECIALIST,HIGH,3,4.71,0.829,608,0,0,False,43,True,False,"Specialist batter at pos 3 (Top7: 82.9%), 608 balls faced, only 0 bowled."
+47370,Aniket Verma,BAT_SPECIALIST,HIGH,5,6.08,0.958,196,0,0,False,29,True,False,"Specialist batter at pos 5 (Top7: 95.8%), 196 balls faced, only 0 bowled."
+6514,Anil Nidamanuru,BAT_SPECIALIST,MEDIUM,3,4.5,1.0,43,0,0,False,8,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 43 balls faced, only 0 bowled."
+4817,Anmolpreet Singh,BAT_SPECIALIST,HIGH,1,2.0,1.0,101,0,0,False,23,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 101 balls faced, only 0 bowled."
+3802,Anshuman Rath,BAT_SPECIALIST,MEDIUM,2,2.0,1.0,52,0,0,False,3,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 52 balls faced, only 0 bowled."
+6467,Anuj Rawat,BAT_SPECIALIST,HIGH,2,4.64,0.864,266,0,0,False,64,True,False,"Specialist batter at pos 2 (Top7: 86.4%), 266 balls faced, only 0 bowled."
+34466,Arafat Minhas,BAT_SPECIALIST,MEDIUM,7,7.5,0.5,46,42,1,False,9,True,False,"Specialist batter at pos 7 (Top7: 50.0%), 46 balls faced, only 42 bowled."
+7931,Aritra Dutta,BAT_SPECIALIST,HIGH,1,1.33,1.0,62,0,0,False,3,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 62 balls faced, only 0 bowled."
+42845,Arshin Kulkarni,BAT_SPECIALIST,MEDIUM,2,2.0,1.0,33,0,0,False,42,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 33 balls faced, only 0 bowled."
+7929,Aryaman Sunil Uchil,BAT_SPECIALIST,MEDIUM,6,7.0,0.667,17,42,1,False,3,True,False,"Specialist batter at pos 6 (Top7: 66.7%), 17 balls faced, only 42 bowled."
+34546,Aryan Bisht,BAT_SPECIALIST,MEDIUM,6,7.5,0.5,32,0,0,False,3,True,False,"Specialist batter at pos 6 (Top7: 50.0%), 32 balls faced, only 0 bowled."
+8719,Aryan Lakra,BAT_SPECIALIST,MEDIUM,3,4.0,1.0,43,18,1,False,4,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 43 balls faced, only 18 bowled."
+27469,Aryansh Sharma,BAT_SPECIALIST,HIGH,1,2.17,1.0,129,0,0,True,15,True,False,Wicketkeeper with 129 balls faced vs 0 balls bowled.
+8101,Ashutosh Sharma,BAT_SPECIALIST,HIGH,7,7.06,0.75,334,0,0,False,43,True,False,"Specialist batter at pos 7 (Top7: 75.0%), 334 balls faced, only 0 bowled."
+2892,Asif Ali,BAT_SPECIALIST,HIGH,6,6.4,0.933,78,0,0,False,15,True,False,"Specialist batter at pos 6 (Top7: 93.3%), 78 balls faced, only 0 bowled."
+8301,Asif Khan,BAT_SPECIALIST,HIGH,4,4.62,1.0,200,0,0,False,13,True,False,"Specialist batter at pos 4 (Top7: 100.0%), 200 balls faced, only 0 bowled."
+6466,Atharwa Taide,BAT_SPECIALIST,HIGH,1,2.0,1.0,177,1,0,False,35,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 177 balls faced, only 1 bowled."
+8014,Avi Dixit,BAT_SPECIALIST,MEDIUM,4,5.67,1.0,32,0,0,False,3,True,False,"Specialist batter at pos 4 (Top7: 100.0%), 32 balls faced, only 0 bowled."
+4902,Avishka Fernando,BAT_SPECIALIST,HIGH,3,3.4,1.0,62,0,0,False,20,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 62 balls faced, only 0 bowled."
+48504,Ayush Mhatre,BAT_SPECIALIST,HIGH,3,2.23,1.0,240,0,0,False,14,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 240 balls faced, only 0 bowled."
+6783,Azam Khan,BAT_SPECIALIST,HIGH,6,5.4,1.0,58,0,0,True,12,True,False,Wicketkeeper with 58 balls faced vs 0 balls bowled.
+3451,Baba Indrajith,BAT_SPECIALIST,MEDIUM,1,2.0,1.0,30,0,0,True,3,True,False,Wicketkeeper with 30 balls faced vs 0 balls bowled.
+2485,Babar Azam,BAT_SPECIALIST,HIGH,2,2.42,1.0,1181,0,0,False,57,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 1181 balls faced, only 0 bowled."
+3377,Babar Hayat,BAT_SPECIALIST,HIGH,3,3.0,1.0,165,0,0,False,8,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 165 balls faced, only 0 bowled."
+7566,Ben Curran,BAT_SPECIALIST,MEDIUM,2,2.0,1.0,40,0,0,False,9,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 40 balls faced, only 0 bowled."
+2379,Ben Duckett,BAT_SPECIALIST,HIGH,4,3.15,1.0,337,0,0,False,29,True,False,"Specialist batter at pos 4 (Top7: 100.0%), 337 balls faced, only 0 bowled."
+3539,Ben McDermott,BAT_SPECIALIST,HIGH,2,2.12,1.0,138,0,0,False,11,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 138 balls faced, only 0 bowled."
+1195,Ben Stokes,BAT_SPECIALIST,MEDIUM,4,4.0,1.0,44,30,1,False,5,True,False,"Specialist batter at pos 4 (Top7: 100.0%), 44 balls faced, only 30 bowled."
+55747,Benjamin Calitz,BAT_SPECIALIST,HIGH,5,5.5,1.0,81,0,0,False,10,True,False,"Specialist batter at pos 5 (Top7: 100.0%), 81 balls faced, only 0 bowled."
+49027,Bevon Jacobs,BAT_SPECIALIST,HIGH,5,5.23,1.0,189,0,0,False,43,True,False,"Specialist batter at pos 5 (Top7: 100.0%), 189 balls faced, only 0 bowled."
+2003,Bhanuka Rajapaksa,BAT_SPECIALIST,HIGH,3,4.38,1.0,421,0,0,False,37,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 421 balls faced, only 0 bowled."
+3639,Brandon King,BAT_SPECIALIST,HIGH,1,1.15,1.0,1135,0,0,False,73,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 1135 balls faced, only 0 bowled."
+4871,Brandon Mavuta,BAT_SPECIALIST,MEDIUM,7,8.0,0.5,15,42,2,False,12,True,False,"Specialist batter at pos 7 (Top7: 50.0%), 15 balls faced, only 42 bowled."
+985,Brendan Taylor,BAT_SPECIALIST,HIGH,3,3.14,1.0,59,0,0,True,10,True,False,Wicketkeeper with 59 balls faced vs 0 balls bowled.
+25534,Chad Bowes,BAT_SPECIALIST,HIGH,1,1.67,1.0,156,0,0,False,11,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 156 balls faced, only 0 bowled."
+7702,Chamindu Wickramasinghe,BAT_SPECIALIST,MEDIUM,7,7.4,0.6,35,42,1,False,14,True,False,"Specialist batter at pos 7 (Top7: 60.0%), 35 balls faced, only 42 bowled."
+6035,Chirag Suri,BAT_SPECIALIST,HIGH,2,2.0,1.0,103,0,0,False,5,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 103 balls faced, only 0 bowled."
+24812,Chris Greaves,BAT_SPECIALIST,MEDIUM,7,7.5,0.5,28,54,3,False,7,True,False,"Specialist batter at pos 7 (Top7: 50.0%), 28 balls faced, only 54 bowled."
+21781,Clive Madande,BAT_SPECIALIST,HIGH,7,6.73,0.885,298,0,0,True,39,True,False,Wicketkeeper with 298 balls faced vs 0 balls bowled.
+28970,Connor Esterhuizen,BAT_SPECIALIST,HIGH,2,2.8,1.0,137,0,0,False,18,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 137 balls faced, only 0 bowled."
+1116,Craig Ervine,BAT_SPECIALIST,HIGH,2,2.6,1.0,245,0,0,False,18,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 245 balls faced, only 0 bowled."
+8311,Dan Mousley,BAT_SPECIALIST,MEDIUM,7,7.25,0.75,6,54,2,False,8,True,False,"Specialist batter at pos 7 (Top7: 75.0%), 6 balls faced, only 54 bowled."
+4684,Dane Cleaver,BAT_SPECIALIST,HIGH,3,3.27,1.0,149,0,0,True,15,True,False,Wicketkeeper with 149 balls faced vs 0 balls bowled.
+2351,Danushka Gunathilaka,BAT_SPECIALIST,HIGH,2,2.86,1.0,117,5,0,False,13,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 117 balls faced, only 5 bowled."
+6433,Darwish Rasooli,BAT_SPECIALIST,HIGH,4,4.52,0.952,307,0,0,False,25,True,False,"Specialist batter at pos 4 (Top7: 95.2%), 307 balls faced, only 0 bowled."
+1077,David Miller,BAT_SPECIALIST,HIGH,5,5.26,0.977,1280,0,0,False,103,True,False,"Specialist batter at pos 5 (Top7: 97.7%), 1280 balls faced, only 0 bowled."
+220,David Warner,BAT_SPECIALIST,HIGH,1,1.49,1.0,1117,0,0,False,51,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 1117 balls faced, only 0 bowled."
+728,Dawid Malan,BAT_SPECIALIST,HIGH,3,3.05,1.0,457,0,0,False,22,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 457 balls faced, only 0 bowled."
+4793,Dean Foxcroft,BAT_SPECIALIST,HIGH,3,4.71,1.0,101,12,0,False,10,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 101 balls faced, only 12 bowled."
+6314,Devdutt Padikkal,BAT_SPECIALIST,HIGH,3,3.26,1.0,998,0,0,False,69,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 998 balls faced, only 0 bowled."
+1941,Devon Conway,BAT_SPECIALIST,HIGH,2,1.98,0.985,1486,0,0,False,90,True,False,"Specialist batter at pos 2 (Top7: 98.5%), 1486 balls faced, only 0 bowled."
+1810,Devon Thomas,BAT_SPECIALIST,HIGH,3,4.25,1.0,50,0,0,True,8,True,False,Wicketkeeper with 50 balls faced vs 0 balls bowled.
+25213,Dewald Brevis,BAT_SPECIALIST,HIGH,4,4.27,1.0,630,3,1,False,60,True,False,"Specialist batter at pos 4 (Top7: 100.0%), 630 balls faced, only 3 bowled."
+7260,Dhruv Jurel,BAT_SPECIALIST,HIGH,5,5.11,0.952,798,0,0,True,76,True,False,Wicketkeeper with 798 balls faced vs 0 balls bowled.
+46929,Dian Forrester,BAT_SPECIALIST,HIGH,5,5.4,1.0,77,6,0,False,8,True,False,"Specialist batter at pos 5 (Top7: 100.0%), 77 balls faced, only 6 bowled."
+7001,Dilon Heyliger,BAT_SPECIALIST,MEDIUM,7,8.0,0.5,20,54,3,False,4,True,False,"Specialist batter at pos 7 (Top7: 50.0%), 20 balls faced, only 54 bowled."
+43250,Dilpreet Singh Bajwa,BAT_SPECIALIST,MEDIUM,2,2.5,1.0,53,0,0,False,4,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 53 balls faced, only 0 bowled."
+1100,Dinesh Chandimal,BAT_SPECIALIST,HIGH,5,4.67,1.0,75,0,0,False,18,True,False,"Specialist batter at pos 5 (Top7: 100.0%), 75 balls faced, only 0 bowled."
+143,Dinesh Karthik,BAT_SPECIALIST,HIGH,6,6.12,0.971,639,6,0,True,68,True,False,Wicketkeeper with 639 balls faced vs 6 balls bowled.
+6664,Dion Myers,BAT_SPECIALIST,HIGH,3,3.3,1.0,340,12,0,False,30,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 340 balls faced, only 12 bowled."
+4881,Dipendra Airee,BAT_SPECIALIST,MEDIUM,6,7.0,0.5,19,36,2,False,3,True,False,"Specialist batter at pos 6 (Top7: 50.0%), 19 balls faced, only 36 bowled."
+31513,Ethan Dsouza,BAT_SPECIALIST,MEDIUM,3,4.75,0.75,29,6,0,False,10,True,False,"Specialist batter at pos 3 (Top7: 75.0%), 29 balls faced, only 6 bowled."
+2573,Evin Lewis,BAT_SPECIALIST,HIGH,1,2.2,1.0,275,0,0,False,30,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 275 balls faced, only 0 bowled."
+3272,Fabian Allen,BAT_SPECIALIST,MEDIUM,7,7.53,0.533,48,179,5,False,22,True,False,"Specialist batter at pos 7 (Top7: 53.3%), 48 balls faced, only 179 bowled."
+88,Faf du Plessis,BAT_SPECIALIST,HIGH,2,1.84,1.0,1276,0,0,False,60,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 1276 balls faced, only 0 bowled."
+2921,Fakhar Zaman,BAT_SPECIALIST,HIGH,3,3.35,1.0,863,0,0,False,61,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 863 balls faced, only 0 bowled."
+4847,Finn Allen,BAT_SPECIALIST,HIGH,1,1.5,1.0,834,0,0,False,59,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 834 balls faced, only 0 bowled."
+4102,George Munsey,BAT_SPECIALIST,HIGH,1,1.0,1.0,98,0,0,False,7,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 98 balls faced, only 0 bowled."
+24803,Gulshan Jha,BAT_SPECIALIST,MEDIUM,4,5.0,1.0,34,0,0,False,3,True,False,"Specialist batter at pos 4 (Top7: 100.0%), 34 balls faced, only 0 bowled."
+7338,Haider Ali,BAT_SPECIALIST,HIGH,3,4.1,1.0,74,0,0,False,10,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 74 balls faced, only 0 bowled."
+27137,Hammad Mirza,BAT_SPECIALIST,HIGH,3,3.0,1.0,63,0,0,False,3,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 63 balls faced, only 0 bowled."
+2887,Harmeet Singh,BAT_SPECIALIST,MEDIUM,7,6.25,1.0,28,96,4,False,4,True,False,"Specialist batter at pos 7 (Top7: 100.0%), 28 balls faced, only 96 bowled."
+1040,Harpreet Bhatia,BAT_SPECIALIST,HIGH,5,5.4,0.8,93,0,0,False,17,True,False,"Specialist batter at pos 5 (Top7: 80.0%), 93 balls faced, only 0 bowled."
+6280,Harry Brook,BAT_SPECIALIST,HIGH,5,4.18,1.0,889,0,0,False,62,True,False,"Specialist batter at pos 5 (Top7: 100.0%), 889 balls faced, only 0 bowled."
+7755,Harsh Thaker,BAT_SPECIALIST,MEDIUM,4,5.0,1.0,57,48,2,False,4,True,False,"Specialist batter at pos 4 (Top7: 100.0%), 57 balls faced, only 48 bowled."
+27380,Harshit Kaushik,BAT_SPECIALIST,MEDIUM,6,5.88,1.0,47,60,0,False,9,True,False,"Specialist batter at pos 6 (Top7: 100.0%), 47 balls faced, only 60 bowled."
+49003,Hasan Nawaz,BAT_SPECIALIST,HIGH,5,4.39,1.0,324,0,0,False,36,True,False,"Specialist batter at pos 5 (Top7: 100.0%), 324 balls faced, only 0 bowled."
+26839,Haseebullah Khan,BAT_SPECIALIST,MEDIUM,1,3.67,1.0,30,0,0,False,11,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 30 balls faced, only 0 bowled."
+7152,Hazratullah Zazai,BAT_SPECIALIST,HIGH,1,1.19,1.0,245,0,0,False,18,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 245 balls faced, only 0 bowled."
+4260,Heinrich Klaasen,BAT_SPECIALIST,HIGH,5,4.75,1.0,1417,0,0,True,78,True,False,Wicketkeeper with 1417 balls faced vs 0 balls bowled.
+6526,Himmat Singh,BAT_SPECIALIST,HIGH,7,7.0,0.889,69,0,0,False,28,True,False,"Specialist batter at pos 7 (Top7: 88.9%), 69 balls faced, only 0 bowled."
+3038,Hussain Talat,BAT_SPECIALIST,MEDIUM,5,5.2,1.0,54,36,3,False,21,True,False,"Specialist batter at pos 5 (Top7: 100.0%), 54 balls faced, only 36 bowled."
+6448,Ibrahim Zadran,BAT_SPECIALIST,HIGH,3,2.6,1.0,1126,0,0,False,47,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 1126 balls faced, only 0 bowled."
+24779,Ijaz Ahmadzai,BAT_SPECIALIST,HIGH,7,7.0,0.833,81,6,0,False,12,True,False,"Specialist batter at pos 7 (Top7: 83.3%), 81 balls faced, only 6 bowled."
+24887,Innocent Kaia,BAT_SPECIALIST,HIGH,2,1.9,1.0,165,6,0,False,16,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 165 balls faced, only 6 bowled."
+4117,Ishan Kishan,BAT_SPECIALIST,HIGH,3,2.35,0.992,2411,1,0,True,127,True,False,Wicketkeeper with 2411 balls faced vs 1 balls bowled.
+21791,J Gumbie,BAT_SPECIALIST,HIGH,1,1.0,1.0,52,0,0,True,6,True,False,Wicketkeeper with 52 balls faced vs 0 balls bowled.
+7341,Jake McGurk,BAT_SPECIALIST,HIGH,1,1.7,1.0,279,0,0,False,40,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 279 balls faced, only 0 bowled."
+4773,Jaker Ali Anik,BAT_SPECIALIST,HIGH,6,5.79,0.949,512,0,0,False,44,True,False,"Specialist batter at pos 6 (Top7: 94.9%), 512 balls faced, only 0 bowled."
+1210,James Vince,BAT_SPECIALIST,HIGH,3,3.0,1.0,86,0,0,False,5,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 86 balls faced, only 0 bowled."
+7044,Jamie Smith,BAT_SPECIALIST,HIGH,1,3.0,1.0,67,0,0,False,10,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 67 balls faced, only 0 bowled."
+26519,Janith Liyanage,BAT_SPECIALIST,HIGH,5,6.0,1.0,136,8,0,False,15,True,False,"Specialist batter at pos 5 (Top7: 100.0%), 136 balls faced, only 8 bowled."
+4438,Jasdeep Singh,BAT_SPECIALIST,MEDIUM,7,8.5,0.25,20,90,4,False,4,True,False,"Specialist batter at pos 7 (Top7: 25.0%), 20 balls faced, only 90 bowled."
+1187,Jason Roy,BAT_SPECIALIST,HIGH,1,1.21,1.0,386,0,0,False,19,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 386 balls faced, only 0 bowled."
+3635,Jason Smith,BAT_SPECIALIST,HIGH,6,5.22,1.0,69,0,0,False,13,True,False,"Specialist batter at pos 6 (Top7: 100.0%), 69 balls faced, only 0 bowled."
+3858,Jatinder Singh,BAT_SPECIALIST,MEDIUM,1,1.33,1.0,46,0,0,False,3,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 46 balls faced, only 0 bowled."
+37201,Jewel Andrew,BAT_SPECIALIST,HIGH,2,2.0,1.0,96,0,0,False,24,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 96 balls faced, only 0 bowled."
+26988,Jitenkumar Ramanandi,BAT_SPECIALIST,MEDIUM,6,7.0,0.5,14,48,4,False,3,True,False,"Specialist batter at pos 6 (Top7: 50.0%), 14 balls faced, only 48 bowled."
+3916,Jitesh Sharma,BAT_SPECIALIST,HIGH,6,5.76,0.976,829,0,0,True,107,True,False,Wicketkeeper with 829 balls faced vs 0 balls bowled.
+26795,Joel Davies,BAT_SPECIALIST,MEDIUM,7,7.0,1.0,14,48,4,False,3,True,False,"Specialist batter at pos 7 (Top7: 100.0%), 14 balls faced, only 48 bowled."
+7978,Johnathan Campbell,BAT_SPECIALIST,HIGH,6,5.67,1.0,101,0,0,False,12,True,False,"Specialist batter at pos 6 (Top7: 100.0%), 101 balls faced, only 0 bowled."
+1327,Johnson Charles,BAT_SPECIALIST,HIGH,2,2.26,1.0,410,0,0,False,35,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 410 balls faced, only 0 bowled."
+1205,Jonny Bairstow,BAT_SPECIALIST,HIGH,2,2.3,1.0,673,0,0,False,39,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 673 balls faced, only 0 bowled."
+7744,Jordan Cox,BAT_SPECIALIST,HIGH,7,5.22,1.0,74,0,0,False,38,True,False,"Specialist batter at pos 7 (Top7: 100.0%), 74 balls faced, only 0 bowled."
+813,Jos Buttler,BAT_SPECIALIST,HIGH,2,2.35,1.0,2829,0,0,True,131,True,False,Wicketkeeper with 2829 balls faced vs 0 balls bowled.
+4736,Josh Inglis,BAT_SPECIALIST,HIGH,3,3.5,0.984,904,0,0,True,80,True,False,Wicketkeeper with 904 balls faced vs 0 balls bowled.
+6395,Josh Philippe,BAT_SPECIALIST,MEDIUM,2,4.86,1.0,46,0,0,False,16,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 46 balls faced, only 0 bowled."
+953,KL Rahul,BAT_SPECIALIST,HIGH,2,1.92,0.987,2018,0,0,True,77,True,False,Wicketkeeper with 2018 balls faced vs 0 balls bowled.
+7049,Kamil Mishara,BAT_SPECIALIST,HIGH,3,2.55,1.0,407,6,0,False,29,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 407 balls faced, only 6 bowled."
+28185,Kamil Pooran,BAT_SPECIALIST,MEDIUM,2,2.0,1.0,40,0,0,False,5,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 40 balls faced, only 0 bowled."
+1568,Kane Williamson,BAT_SPECIALIST,HIGH,3,2.81,0.962,535,0,0,False,38,True,False,"Specialist batter at pos 3 (Top7: 96.2%), 535 balls faced, only 0 bowled."
+46137,Kartik Sharma,BAT_SPECIALIST,HIGH,4,4.91,1.0,216,0,0,False,14,True,False,"Specialist batter at pos 4 (Top7: 100.0%), 216 balls faced, only 0 bowled."
+930,Karun Nair,BAT_SPECIALIST,HIGH,3,3.31,1.0,151,0,0,False,32,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 151 balls faced, only 0 bowled."
+6565,Katene Clarke,BAT_SPECIALIST,MEDIUM,1,1.5,1.0,48,0,0,False,8,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 48 balls faced, only 0 bowled."
+4830,Keacy Carty,BAT_SPECIALIST,HIGH,3,5.0,0.875,72,0,0,False,20,True,False,"Specialist batter at pos 3 (Top7: 87.5%), 72 balls faced, only 0 bowled."
+4838,Keemo Paul,BAT_SPECIALIST,MEDIUM,7,7.5,0.667,29,90,9,False,8,True,False,"Specialist batter at pos 7 (Top7: 66.7%), 29 balls faced, only 90 bowled."
+37879,Khawaja Nafay,BAT_SPECIALIST,HIGH,6,5.6,1.0,39,0,0,True,8,True,False,Wicketkeeper with 39 balls faced vs 0 balls bowled.
+3672,Kusal Mendis,BAT_SPECIALIST,HIGH,2,2.31,1.0,1327,0,0,True,70,True,False,Wicketkeeper with 1327 balls faced vs 0 balls bowled.
+1481,Kusal Perera,BAT_SPECIALIST,HIGH,3,3.32,1.0,570,0,0,False,42,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 570 balls faced, only 0 bowled."
+4882,Kushal Bhurtel,BAT_SPECIALIST,MEDIUM,1,1.0,1.0,44,49,5,False,3,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 44 balls faced, only 49 bowled."
+7924,Kushal Malla,BAT_SPECIALIST,MEDIUM,4,3.33,1.0,51,0,0,False,3,True,False,"Specialist batter at pos 4 (Top7: 100.0%), 51 balls faced, only 0 bowled."
+19309,Lahiru Udara,BAT_SPECIALIST,HIGH,1,1.67,1.0,95,0,0,False,6,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 95 balls faced, only 0 bowled."
+43798,Lhuan Pretorius,BAT_SPECIALIST,HIGH,3,3.9,0.9,77,0,0,False,29,True,False,"Specialist batter at pos 3 (Top7: 90.0%), 77 balls faced, only 0 bowled."
+2671,Liton Das,BAT_SPECIALIST,HIGH,3,2.26,1.0,1139,0,0,True,67,True,False,Wicketkeeper with 1139 balls faced vs 0 balls bowled.
+3772,Logan van Beek,BAT_SPECIALIST,MEDIUM,7,7.0,1.0,32,132,10,False,6,True,False,"Specialist batter at pos 7 (Top7: 100.0%), 32 balls faced, only 132 bowled."
+4814,Lorcan Tucker,BAT_SPECIALIST,HIGH,3,3.5,1.0,666,0,0,True,47,True,False,Wicketkeeper with 666 balls faced vs 0 balls bowled.
+3782,M Shahrukh Khan,BAT_SPECIALIST,HIGH,7,6.21,0.887,410,18,1,False,68,True,False,"Specialist batter at pos 7 (Top7: 88.7%), 410 balls faced, only 18 bowled."
+8,MS Dhoni,BAT_SPECIALIST,HIGH,8,6.97,0.621,463,0,0,True,72,True,False,Wicketkeeper with 463 balls faced vs 0 balls bowled.
+26843,Maaz Sadaqat,BAT_SPECIALIST,HIGH,3,3.0,1.0,83,0,0,False,3,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 83 balls faced, only 0 bowled."
+4821,Mahipal Lomror,BAT_SPECIALIST,HIGH,5,5.52,0.966,222,30,0,False,50,True,False,"Specialist batter at pos 5 (Top7: 96.6%), 222 balls faced, only 30 bowled."
+1039,Mandeep Singh,BAT_SPECIALIST,MEDIUM,3,2.67,1.0,39,0,0,False,6,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 39 balls faced, only 0 bowled."
+198,Manish Pandey,BAT_SPECIALIST,HIGH,3,4.77,1.0,371,0,0,False,60,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 371 balls faced, only 0 bowled."
+3374,Mark Chapman,BAT_SPECIALIST,HIGH,5,4.34,1.0,873,6,0,False,65,True,False,"Specialist batter at pos 5 (Top7: 100.0%), 873 balls faced, only 6 bowled."
+3689,Mark Watt,BAT_SPECIALIST,MEDIUM,7,7.33,0.667,58,125,7,False,7,True,False,"Specialist batter at pos 7 (Top7: 66.7%), 58 balls faced, only 125 bowled."
+274,Martin Guptill,BAT_SPECIALIST,HIGH,1,1.22,1.0,158,0,0,False,9,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 158 balls faced, only 0 bowled."
+6342,Matthew Breetzke,BAT_SPECIALIST,HIGH,3,3.43,1.0,148,0,0,False,42,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 148 balls faced, only 0 bowled."
+3415,Matthew Cross,BAT_SPECIALIST,HIGH,5,5.0,1.0,110,0,0,True,7,True,False,Wicketkeeper with 110 balls faced vs 0 balls bowled.
+3986,Matthew Renshaw,BAT_SPECIALIST,HIGH,4,4.33,1.0,108,36,3,False,6,True,False,"Specialist batter at pos 4 (Top7: 100.0%), 108 balls faced, only 36 bowled."
+796,Matthew Wade,BAT_SPECIALIST,HIGH,7,5.47,1.0,427,0,0,True,50,True,False,Wicketkeeper with 427 balls faced vs 0 balls bowled.
+4412,Max ODowd,BAT_SPECIALIST,HIGH,2,1.67,1.0,199,30,1,False,13,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 199 balls faced, only 30 bowled."
+992,Mayank Agarwal,BAT_SPECIALIST,HIGH,1,2.42,1.0,491,0,0,False,45,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 491 balls faced, only 0 bowled."
+25501,Meet Bhavsar,BAT_SPECIALIST,MEDIUM,1,1.33,1.0,38,0,0,False,3,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 38 balls faced, only 0 bowled."
+3361,Michael Leask,BAT_SPECIALIST,MEDIUM,6,6.0,1.0,59,30,2,False,7,True,False,"Specialist batter at pos 6 (Top7: 100.0%), 59 balls faced, only 30 bowled."
+42811,Michael Levitt,BAT_SPECIALIST,HIGH,1,1.0,1.0,203,0,0,False,8,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 203 balls faced, only 0 bowled."
+4876,Milton Shumba,BAT_SPECIALIST,HIGH,6,6.57,0.714,63,12,1,False,12,True,False,"Specialist batter at pos 6 (Top7: 71.4%), 63 balls faced, only 12 bowled."
+19894,Mitchell Hay,BAT_SPECIALIST,HIGH,6,6.18,0.909,68,0,0,True,15,True,False,Wicketkeeper with 68 balls faced vs 0 balls bowled.
+19781,Mitchell Owen,BAT_SPECIALIST,HIGH,6,5.81,1.0,123,30,2,False,40,True,False,"Specialist batter at pos 6 (Top7: 100.0%), 123 balls faced, only 30 bowled."
+8741,Mohammad Haris,BAT_SPECIALIST,HIGH,3,3.81,0.935,340,0,0,True,31,True,False,Wicketkeeper with 340 balls faced vs 0 balls bowled.
+8652,Mohammad Ishaq,BAT_SPECIALIST,HIGH,5,4.71,1.0,72,0,0,False,21,True,False,"Specialist batter at pos 5 (Top7: 100.0%), 72 balls faced, only 0 bowled."
+507,Mohammad Mahmudullah,BAT_SPECIALIST,HIGH,5,5.31,1.0,262,39,3,False,16,True,False,"Specialist batter at pos 5 (Top7: 100.0%), 262 balls faced, only 39 bowled."
+4974,Mohammad Nadeem,BAT_SPECIALIST,MEDIUM,4,6.0,0.5,7,24,1,False,3,True,False,"Specialist batter at pos 4 (Top7: 50.0%), 7 balls faced, only 24 bowled."
+3024,Mohammad Rizwan,BAT_SPECIALIST,HIGH,1,1.38,1.0,1152,0,0,True,43,True,False,Wicketkeeper with 1152 balls faced vs 0 balls bowled.
+6645,Mohammad Sheikh,BAT_SPECIALIST,HIGH,1,2.0,1.0,61,0,0,False,10,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 61 balls faced, only 0 bowled."
+15269,Mohammed Aslam,BAT_SPECIALIST,MEDIUM,5,6.67,0.667,39,48,0,False,3,True,False,"Specialist batter at pos 5 (Top7: 66.7%), 39 balls faced, only 48 bowled."
+7915,Monank Patel,BAT_SPECIALIST,MEDIUM,1,1.0,1.0,37,0,0,False,4,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 37 balls faced, only 0 bowled."
+8739,Muhammad Irfan,BAT_SPECIALIST,HIGH,6,5.4,1.0,140,0,0,False,24,True,False,"Specialist batter at pos 6 (Top7: 100.0%), 140 balls faced, only 0 bowled."
+22565,Muhammad Waseem,BAT_SPECIALIST,HIGH,2,1.65,1.0,459,18,0,False,20,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 459 balls faced, only 18 bowled."
+39374,Muhammad Zohaib,BAT_SPECIALIST,HIGH,1,2.2,1.0,147,0,0,False,12,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 147 balls faced, only 0 bowled."
+45749,Mukul Choudhary,BAT_SPECIALIST,HIGH,7,6.6,1.0,120,0,0,False,14,True,False,"Specialist batter at pos 7 (Top7: 100.0%), 120 balls faced, only 0 bowled."
+2533,Najibullah Zadran,BAT_SPECIALIST,HIGH,5,5.17,0.957,306,0,0,False,23,True,False,"Specialist batter at pos 5 (Top7: 95.7%), 306 balls faced, only 0 bowled."
+5608,Narayan Jagadeesan,BAT_SPECIALIST,HIGH,2,2.25,1.0,118,0,0,True,8,True,False,Wicketkeeper with 118 balls faced vs 0 balls bowled.
+3280,Nazmul Hossain Shanto,BAT_SPECIALIST,HIGH,3,3.03,1.0,510,12,0,False,34,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 510 balls faced, only 12 bowled."
+7059,Nehal Wadhera,BAT_SPECIALIST,HIGH,5,5.42,0.933,560,17,0,False,60,True,False,"Specialist batter at pos 5 (Top7: 93.3%), 560 balls faced, only 17 bowled."
+17413,Neil Rock,BAT_SPECIALIST,MEDIUM,5,5.0,1.0,59,0,0,False,12,True,False,"Specialist batter at pos 5 (Top7: 100.0%), 59 balls faced, only 0 bowled."
+7002,Nicholas Kirton,BAT_SPECIALIST,HIGH,3,3.5,1.0,109,6,0,False,4,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 109 balls faced, only 6 bowled."
+3125,Nicholas Pooran,BAT_SPECIALIST,HIGH,3,4.1,1.0,1973,0,0,True,118,True,False,Wicketkeeper with 1973 balls faced vs 0 balls bowled.
+4695,Nick Kelly,BAT_SPECIALIST,HIGH,4,4.0,1.0,88,0,0,False,8,True,False,"Specialist batter at pos 4 (Top7: 100.0%), 88 balls faced, only 0 bowled."
+8093,Nikhil Chaudhary,BAT_SPECIALIST,MEDIUM,6,6.0,1.0,19,42,2,False,3,True,False,"Specialist batter at pos 6 (Top7: 100.0%), 19 balls faced, only 42 bowled."
+26830,Nishant Kumar Sindhu,BAT_SPECIALIST,MEDIUM,4,4.75,1.0,50,0,0,False,46,True,False,"Specialist batter at pos 4 (Top7: 100.0%), 50 balls faced, only 0 bowled."
+3382,Nizakat Khan,BAT_SPECIALIST,HIGH,1,2.25,1.0,188,0,0,False,8,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 188 balls faced, only 0 bowled."
+42810,Noah Croes,BAT_SPECIALIST,MEDIUM,6,6.33,1.0,53,0,0,False,7,True,False,"Specialist batter at pos 6 (Top7: 100.0%), 53 balls faced, only 0 bowled."
+2680,Nurul Hasan,BAT_SPECIALIST,HIGH,6,6.22,0.957,238,0,0,False,38,True,False,"Specialist batter at pos 6 (Top7: 95.7%), 238 balls faced, only 0 bowled."
+7911,Oliver Hairs,BAT_SPECIALIST,MEDIUM,2,2.0,1.0,50,0,0,False,7,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 50 balls faced, only 0 bowled."
+6440,Omair Yousuf,BAT_SPECIALIST,MEDIUM,1,1.75,1.0,41,0,0,False,14,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 41 balls faced, only 0 bowled."
+39991,Parveen Kumar,BAT_SPECIALIST,MEDIUM,6,9.0,0.333,8,48,2,False,3,True,False,"Specialist batter at pos 6 (Top7: 33.3%), 8 balls faced, only 48 bowled."
+7901,Parvez Emon,BAT_SPECIALIST,HIGH,2,2.22,1.0,517,0,0,False,46,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 517 balls faced, only 0 bowled."
+6931,Pathum Nissanka,BAT_SPECIALIST,HIGH,1,1.09,1.0,1632,0,0,False,79,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 1632 balls faced, only 0 bowled."
+443,Paul Stirling,BAT_SPECIALIST,HIGH,1,1.34,1.0,527,0,0,False,44,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 527 balls faced, only 0 bowled."
+7704,Pavan Rathnayake,BAT_SPECIALIST,HIGH,4,4.75,1.0,60,12,2,False,14,True,False,"Specialist batter at pos 4 (Top7: 100.0%), 60 balls faced, only 12 bowled."
+5553,Phil Salt,BAT_SPECIALIST,HIGH,1,1.39,1.0,1643,0,0,True,109,True,False,Wicketkeeper with 1643 balls faced vs 0 balls bowled.
+7216,Prabhsimran Singh,BAT_SPECIALIST,HIGH,2,1.82,1.0,1134,0,0,True,64,True,False,Wicketkeeper with 1134 balls faced vs 0 balls bowled.
+45966,Prashant Veer,BAT_SPECIALIST,HIGH,7,7.33,0.833,67,12,0,False,14,True,False,"Specialist batter at pos 7 (Top7: 83.3%), 67 balls faced, only 12 bowled."
+5029,Prerak Mankad,BAT_SPECIALIST,HIGH,3,4.33,0.833,73,0,0,False,20,True,False,"Specialist batter at pos 3 (Top7: 83.3%), 73 balls faced, only 0 bowled."
+5928,Prithvi Shaw,BAT_SPECIALIST,HIGH,1,1.23,1.0,391,0,0,False,46,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 391 balls faced, only 0 bowled."
+6487,Priyam Garg,BAT_SPECIALIST,MEDIUM,1,2.75,1.0,56,0,0,False,4,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 56 balls faced, only 0 bowled."
+25669,Priyansh Arya,BAT_SPECIALIST,HIGH,1,1.03,1.0,471,0,0,False,32,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 471 balls faced, only 0 bowled."
+35506,Quentin Sampson,BAT_SPECIALIST,MEDIUM,6,6.0,1.0,50,0,0,False,11,True,False,"Specialist batter at pos 6 (Top7: 100.0%), 50 balls faced, only 0 bowled."
+2101,Quinton de Kock,BAT_SPECIALIST,HIGH,1,1.3,1.0,1262,0,0,True,87,True,False,Wicketkeeper with 1262 balls faced vs 0 balls bowled.
+6674,Rahmanullah Gurbaz,BAT_SPECIALIST,HIGH,1,1.45,1.0,1123,0,0,True,93,True,False,Wicketkeeper with 1123 balls faced vs 0 balls bowled.
+26646,Rahul Chopra,BAT_SPECIALIST,HIGH,4,4.27,1.0,154,0,0,True,12,True,False,Wicketkeeper with 154 balls faced vs 0 balls bowled.
+1440,Rahul Tripathi,BAT_SPECIALIST,HIGH,3,2.98,1.0,713,0,0,False,77,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 713 balls faced, only 0 bowled."
+26834,Raj Bawa,BAT_SPECIALIST,MEDIUM,7,6.75,0.75,32,24,2,False,30,True,False,"Specialist batter at pos 7 (Top7: 75.0%), 32 balls faced, only 24 bowled."
+5039,Rajat Patidar,BAT_SPECIALIST,HIGH,4,3.89,1.0,918,0,0,False,55,True,False,"Specialist batter at pos 4 (Top7: 100.0%), 918 balls faced, only 0 bowled."
+2930,Rassie van der Dussen,BAT_SPECIALIST,HIGH,4,4.29,1.0,311,0,0,False,24,True,False,"Specialist batter at pos 4 (Top7: 100.0%), 311 balls faced, only 0 bowled."
+15274,Ravija Sandaruwan,BAT_SPECIALIST,MEDIUM,2,1.67,1.0,46,0,0,False,3,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 46 balls faced, only 0 bowled."
+2650,Raymon Reifer,BAT_SPECIALIST,MEDIUM,4,6.0,0.667,41,30,1,False,3,True,False,"Specialist batter at pos 4 (Top7: 66.7%), 41 balls faced, only 30 bowled."
+768,Reeza Hendricks,BAT_SPECIALIST,HIGH,2,1.69,1.0,835,23,0,False,39,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 835 balls faced, only 23 bowled."
+1649,Regis Chakabva,BAT_SPECIALIST,HIGH,1,2.8,1.0,52,0,0,True,5,True,False,Wicketkeeper with 52 balls faced vs 0 balls bowled.
+3832,Rezza Gaznavi,BAT_SPECIALIST,MEDIUM,3,3.0,1.0,41,0,0,False,3,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 41 balls faced, only 0 bowled."
+418,Richard Berrington,BAT_SPECIALIST,HIGH,4,4.0,1.0,80,0,0,False,7,True,False,"Specialist batter at pos 4 (Top7: 100.0%), 80 balls faced, only 0 bowled."
+772,Rilee Rossouw,BAT_SPECIALIST,HIGH,3,3.42,1.0,417,0,0,False,32,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 417 balls faced, only 0 bowled."
+4708,Rinku Singh,BAT_SPECIALIST,HIGH,6,5.74,0.971,1285,10,3,False,117,True,False,"Specialist batter at pos 6 (Top7: 97.1%), 1285 balls faced, only 10 bowled."
+4703,Rishabh Pant,BAT_SPECIALIST,HIGH,4,4.11,0.988,1240,0,0,True,82,True,False,Wicketkeeper with 1240 balls faced vs 0 balls bowled.
+1617,Rishi Dhawan,BAT_SPECIALIST,MEDIUM,7,8.46,0.385,52,174,7,False,26,True,False,"Specialist batter at pos 7 (Top7: 38.5%), 52 balls faced, only 174 bowled."
+7406,Rizwan CP,BAT_SPECIALIST,HIGH,4,5.0,1.0,102,0,0,False,5,True,False,"Specialist batter at pos 4 (Top7: 100.0%), 102 balls faced, only 0 bowled."
+169,Robin Uthappa,BAT_SPECIALIST,HIGH,2,2.75,1.0,171,0,0,False,12,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 171 balls faced, only 0 bowled."
+126,Rohit Sharma,BAT_SPECIALIST,HIGH,2,1.55,1.0,1619,0,0,False,97,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 1619 balls faced, only 0 bowled."
+4372,Rony Talukder,BAT_SPECIALIST,HIGH,2,2.0,1.0,143,0,0,False,10,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 143 balls faced, only 0 bowled."
+17432,Ross Adair,BAT_SPECIALIST,HIGH,2,2.0,1.0,287,0,0,False,25,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 287 balls faced, only 0 bowled."
+8771,Rubin Hermann,BAT_SPECIALIST,HIGH,3,4.0,1.0,82,0,0,False,8,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 82 balls faced, only 0 bowled."
+6059,Ruturaj Gaikwad,BAT_SPECIALIST,HIGH,2,1.83,1.0,1822,0,0,False,82,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 1822 balls faced, only 0 bowled."
+22187,Ryan Klein,BAT_SPECIALIST,HIGH,6,7.83,0.5,65,24,1,False,6,True,False,"Specialist batter at pos 6 (Top7: 50.0%), 65 balls faced, only 24 bowled."
+4007,Ryan Rickelton,BAT_SPECIALIST,HIGH,1,1.64,1.0,856,0,0,True,51,True,False,Wicketkeeper with 856 balls faced vs 0 balls bowled.
+2210,Sabbir Rahman,BAT_SPECIALIST,MEDIUM,2,2.0,1.0,36,6,0,False,4,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 36 balls faced, only 6 bowled."
+3669,Sadeera Samarawickrama,BAT_SPECIALIST,HIGH,4,4.56,0.889,163,0,0,False,9,True,False,"Specialist batter at pos 4 (Top7: 88.9%), 163 balls faced, only 0 bowled."
+3091,Sahibzada Farhan,BAT_SPECIALIST,HIGH,1,1.37,1.0,814,0,0,False,49,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 814 balls faced, only 0 bowled."
+48575,Sahil Parakh,BAT_SPECIALIST,MEDIUM,3,2.5,1.0,33,0,0,False,14,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 33 balls faced, only 0 bowled."
+23450,Sai Sudharsan,BAT_SPECIALIST,HIGH,1,1.88,1.0,1686,0,0,False,64,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 1686 balls faced, only 0 bowled."
+30927,Saiteja Mukkamalla,BAT_SPECIALIST,MEDIUM,2,2.0,1.0,43,0,0,False,4,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 43 balls faced, only 0 bowled."
+25679,Salil Arora,BAT_SPECIALIST,HIGH,6,6.21,1.0,98,0,0,False,15,True,False,"Specialist batter at pos 6 (Top7: 100.0%), 98 balls faced, only 0 bowled."
+1924,Sam Billings,BAT_SPECIALIST,HIGH,6,4.92,1.0,181,0,0,True,12,True,False,Wicketkeeper with 181 balls faced vs 0 balls bowled.
+8238,Sameer Rizvi,BAT_SPECIALIST,HIGH,4,5.16,0.96,293,0,0,False,43,True,False,"Specialist batter at pos 4 (Top7: 96.0%), 293 balls faced, only 0 bowled."
+2258,Sanju Samson,BAT_SPECIALIST,HIGH,1,2.63,0.992,2232,0,0,True,150,True,False,Wicketkeeper with 2232 balls faced vs 0 balls bowled.
+3645,Sarfaraz Khan,BAT_SPECIALIST,HIGH,5,4.5,0.944,224,0,0,False,24,True,False,"Specialist batter at pos 5 (Top7: 94.4%), 224 balls faced, only 0 bowled."
+15280,Sayed Monib,BAT_SPECIALIST,MEDIUM,6,8.33,0.333,24,66,3,False,3,True,False,"Specialist batter at pos 6 (Top7: 33.3%), 24 balls faced, only 66 bowled."
+6881,Scott Edwards,BAT_SPECIALIST,HIGH,4,4.31,1.0,176,0,0,True,13,True,False,Wicketkeeper with 176 balls faced vs 0 balls bowled.
+8647,Sediqullah Atal,BAT_SPECIALIST,HIGH,3,2.47,1.0,529,0,0,False,34,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 529 balls faced, only 0 bowled."
+35122,Shah Faisal,BAT_SPECIALIST,MEDIUM,5,6.67,0.667,15,72,5,False,3,True,False,"Specialist batter at pos 5 (Top7: 66.7%), 15 balls faced, only 72 bowled."
+3543,Shahidullah Kamal,BAT_SPECIALIST,HIGH,5,6.0,0.833,65,30,2,False,9,True,False,"Specialist batter at pos 5 (Top7: 83.3%), 65 balls faced, only 30 bowled."
+4369,Shai Hope,BAT_SPECIALIST,HIGH,2,2.68,1.0,1105,0,0,True,70,True,False,Wicketkeeper with 1105 balls faced vs 0 balls bowled.
+26913,Shaik Rasheed,BAT_SPECIALIST,HIGH,1,1.2,1.0,63,0,0,False,28,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 63 balls faced, only 0 bowled."
+2661,Shamarh Brooks,BAT_SPECIALIST,HIGH,2,2.38,1.0,150,0,0,False,8,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 150 balls faced, only 0 bowled."
+3097,Shan Masood,BAT_SPECIALIST,HIGH,3,3.5,1.0,176,0,0,False,12,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 176 balls faced, only 0 bowled."
+24381,Shariz Ahmad,BAT_SPECIALIST,MEDIUM,5,7.0,0.6,34,36,2,False,9,True,False,"Specialist batter at pos 5 (Top7: 60.0%), 34 balls faced, only 36 bowled."
+15629,Shayan Jahangir,BAT_SPECIALIST,MEDIUM,5,5.75,1.0,47,0,0,False,4,True,False,"Specialist batter at pos 5 (Top7: 100.0%), 47 balls faced, only 0 bowled."
+6725,Sherfane Rutherford,BAT_SPECIALIST,HIGH,5,5.2,1.0,818,18,1,False,97,True,False,"Specialist batter at pos 5 (Top7: 100.0%), 818 balls faced, only 18 bowled."
+142,Shikhar Dhawan,BAT_SPECIALIST,HIGH,2,1.8,1.0,757,0,0,False,39,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 757 balls faced, only 0 bowled."
+3297,Shimron Hetmyer,BAT_SPECIALIST,HIGH,5,5.2,0.971,1249,0,0,False,125,True,False,"Specialist batter at pos 5 (Top7: 97.1%), 1249 balls faced, only 0 bowled."
+15279,Shiraz Khan,BAT_SPECIALIST,MEDIUM,5,7.0,0.667,14,66,4,False,3,True,False,"Specialist batter at pos 5 (Top7: 66.7%), 14 balls faced, only 66 bowled."
+3647,Shreyas Iyer,BAT_SPECIALIST,HIGH,4,3.69,1.0,1865,8,0,False,107,True,False,"Specialist batter at pos 4 (Top7: 100.0%), 1865 balls faced, only 8 bowled."
+8408,Shreyas Movva,BAT_SPECIALIST,MEDIUM,5,5.0,1.0,82,0,0,True,4,True,False,Wicketkeeper with 82 balls faced vs 0 balls bowled.
+25139,Shubham Dubey,BAT_SPECIALIST,HIGH,7,7.35,0.75,143,0,0,False,46,True,False,"Specialist batter at pos 7 (Top7: 75.0%), 143 balls faced, only 0 bowled."
+6288,Shubman Gill,BAT_SPECIALIST,HIGH,2,1.96,1.0,2711,0,0,False,118,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 2711 balls faced, only 0 bowled."
+39640,Sineth Jayawardena,BAT_SPECIALIST,MEDIUM,2,2.0,1.0,47,0,0,False,3,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 47 balls faced, only 0 bowled."
+223,Steven Smith,BAT_SPECIALIST,HIGH,4,3.67,1.0,184,0,0,False,17,True,False,"Specialist batter at pos 4 (Top7: 100.0%), 184 balls faced, only 0 bowled."
+7409,Sundeep Jora,BAT_SPECIALIST,HIGH,5,5.67,1.0,60,0,0,False,3,True,False,"Specialist batter at pos 5 (Top7: 100.0%), 60 balls faced, only 0 bowled."
+1699,Suryakumar Yadav,BAT_SPECIALIST,HIGH,4,3.68,0.993,2761,6,2,False,148,True,False,"Specialist batter at pos 4 (Top7: 99.3%), 2761 balls faced, only 6 bowled."
+8085,Suyash Prabhudessai,BAT_SPECIALIST,HIGH,5,6.0,1.0,106,0,0,False,25,True,False,"Specialist batter at pos 5 (Top7: 100.0%), 106 balls faced, only 0 bowled."
+8600,Tadiwanashe Marumani,BAT_SPECIALIST,HIGH,2,2.6,1.0,433,0,0,True,44,True,False,Wicketkeeper with 433 balls faced vs 0 balls bowled.
+6486,Tanush Kotian,BAT_SPECIALIST,MEDIUM,2,2.0,1.0,31,0,0,False,16,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 31 balls faced, only 0 bowled."
+7900,Tanzid Hasan,BAT_SPECIALIST,HIGH,1,1.57,1.0,910,0,0,False,50,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 910 balls faced, only 0 bowled."
+21790,Tashinga Musekiwa,BAT_SPECIALIST,HIGH,7,6.9,0.952,208,0,0,False,22,True,False,"Specialist batter at pos 7 (Top7: 95.2%), 208 balls faced, only 0 bowled."
+7355,Tayyab Tahir,BAT_SPECIALIST,HIGH,5,4.44,1.0,104,0,0,False,9,True,False,"Specialist batter at pos 5 (Top7: 100.0%), 104 balls faced, only 0 bowled."
+2361,Temba Bavuma,BAT_SPECIALIST,HIGH,2,1.7,1.0,98,0,0,False,10,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 98 balls faced, only 0 bowled."
+6396,Tim David,BAT_SPECIALIST,HIGH,6,5.77,0.946,1226,6,0,False,120,True,False,"Specialist batter at pos 6 (Top7: 94.6%), 1226 balls faced, only 6 bowled."
+28967,Tim Robinson,BAT_SPECIALIST,HIGH,1,1.79,1.0,420,0,0,False,38,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 420 balls faced, only 0 bowled."
+3700,Tim Seifert,BAT_SPECIALIST,HIGH,1,1.74,1.0,760,0,0,True,61,True,False,Wicketkeeper with 760 balls faced vs 0 balls bowled.
+17419,Tim Tector,BAT_SPECIALIST,HIGH,2,3.29,0.857,81,0,0,False,10,True,False,"Specialist batter at pos 2 (Top7: 85.7%), 81 balls faced, only 0 bowled."
+7046,Tinashe Kamunhukamwe,BAT_SPECIALIST,HIGH,1,1.6,1.0,74,0,0,False,5,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 74 balls faced, only 0 bowled."
+6273,Tom Banton,BAT_SPECIALIST,HIGH,5,4.42,1.0,274,0,0,False,31,True,False,"Specialist batter at pos 5 (Top7: 100.0%), 274 balls faced, only 0 bowled."
+3967,Tom Kohler,BAT_SPECIALIST,MEDIUM,2,2.0,1.0,54,0,0,False,16,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 54 balls faced, only 0 bowled."
+2246,Tom Latham,BAT_SPECIALIST,HIGH,1,2.17,1.0,242,0,0,True,16,True,False,Wicketkeeper with 242 balls faced vs 0 balls bowled.
+7894,Tony Munyonga,BAT_SPECIALIST,HIGH,6,5.93,1.0,141,0,0,False,16,True,False,"Specialist batter at pos 6 (Top7: 100.0%), 141 balls faced, only 0 bowled."
+4784,Tony de Zorzi,BAT_SPECIALIST,HIGH,1,2.0,1.0,91,0,0,False,8,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 91 balls faced, only 0 bowled."
+6651,Towhid Hridoy,BAT_SPECIALIST,HIGH,4,4.2,1.0,932,2,0,False,61,True,False,"Specialist batter at pos 4 (Top7: 100.0%), 932 balls faced, only 2 bowled."
+2367,Travis Head,BAT_SPECIALIST,HIGH,2,1.72,0.985,1129,16,1,False,73,True,False,"Specialist batter at pos 2 (Top7: 98.5%), 1129 balls faced, only 16 bowled."
+6457,Urvil Patel,BAT_SPECIALIST,HIGH,3,3.1,1.0,96,0,0,False,17,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 96 balls faced, only 0 bowled."
+3544,Usman Ghani,BAT_SPECIALIST,HIGH,2,3.5,0.875,125,0,0,False,8,True,False,"Specialist batter at pos 2 (Top7: 87.5%), 125 balls faced, only 0 bowled."
+20327,Usman Khan,BAT_SPECIALIST,HIGH,4,4.46,0.962,321,0,0,True,36,True,False,Wicketkeeper with 321 balls faced vs 0 balls bowled.
+15271,Usmangani Ibrahim Patel,BAT_SPECIALIST,MEDIUM,4,4.33,1.0,38,0,0,True,3,True,False,Wicketkeeper with 38 balls faced vs 0 balls bowled.
+50284,Vaibhav Sooryavanshi,BAT_SPECIALIST,HIGH,2,1.9,1.0,578,0,0,False,54,True,False,"Specialist batter at pos 2 (Top7: 100.0%), 578 balls faced, only 0 bowled."
+2877,Vijay Shankar,BAT_SPECIALIST,HIGH,5,4.84,0.935,386,9,0,False,46,True,False,"Specialist batter at pos 5 (Top7: 93.5%), 386 balls faced, only 9 bowled."
+47,Virat Kohli,BAT_SPECIALIST,HIGH,1,1.88,1.0,2456,6,0,False,93,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 2456 balls faced, only 6 bowled."
+4211,Vishnu Vinod,BAT_SPECIALIST,MEDIUM,6,6.5,0.75,39,0,0,False,40,True,False,"Specialist batter at pos 6 (Top7: 75.0%), 39 balls faced, only 0 bowled."
+20989,Vivrant Sharma,BAT_SPECIALIST,MEDIUM,1,7.33,0.333,47,19,0,False,3,True,False,"Specialist batter at pos 1 (Top7: 33.3%), 47 balls faced, only 19 bowled."
+8637,Vriitya Aravind,BAT_SPECIALIST,HIGH,3,3.25,1.0,103,0,0,True,8,True,False,Wicketkeeper with 103 balls faced vs 0 balls bowled.
+2523,Will Young,BAT_SPECIALIST,HIGH,3,2.75,1.0,176,0,0,False,12,True,False,"Specialist batter at pos 3 (Top7: 100.0%), 176 balls faced, only 0 bowled."
+109,Wriddhiman Saha,BAT_SPECIALIST,HIGH,1,1.0,1.0,661,0,0,True,42,True,False,Wicketkeeper with 661 balls faced vs 0 balls bowled.
+6819,Yashasvi Jaiswal,BAT_SPECIALIST,HIGH,1,1.08,1.0,1872,7,0,False,99,True,False,"Specialist batter at pos 1 (Top7: 100.0%), 1872 balls faced, only 7 bowled."
+5839,Yasir Ali Chowdhury,BAT_SPECIALIST,HIGH,5,5.78,1.0,117,0,0,False,9,True,False,"Specialist batter at pos 5 (Top7: 100.0%), 117 balls faced, only 0 bowled."
+45457,Zach Lion Cachet,BAT_SPECIALIST,MEDIUM,5,5.0,1.0,48,70,4,False,4,True,False,"Specialist batter at pos 5 (Top7: 100.0%), 48 balls faced, only 70 bowled."
+8005,Zawar Farid,BAT_SPECIALIST,MEDIUM,7,6.6,0.8,50,78,2,False,5,True,False,"Specialist batter at pos 7 (Top7: 80.0%), 50 balls faced, only 78 bowled."
+19012,Zeeshan Ali,BAT_SPECIALIST,HIGH,1,4.88,0.75,94,0,0,True,8,True,False,Wicketkeeper with 94 balls faced vs 0 balls bowled.
+6398,Aaron Hardie,BOWL_PRIMARY_AR,HIGH,7,6.44,0.778,142,272,15,False,43,False,True,Top 7 regular but higher bowling workload: 272 bowled vs 142 faced.
+7699,Abbas Afridi,BOWL_PRIMARY_AR,HIGH,8,8.67,0.167,98,400,38,False,31,False,True,Lower order (pos 8) with high bowling (400b) and significant lower-order runs (98b).
+479,Adil Rashid,BOWL_PRIMARY_AR,HIGH,10,9.65,0.0,119,1324,72,False,71,False,True,Lower order (pos 10) with high bowling (1324b) and significant lower-order runs (119b).
+2417,Akeal Hosein,BOWL_PRIMARY_AR,HIGH,10,9.34,0.1,223,1693,79,False,95,False,True,Lower order (pos 10) with high bowling (1693b) and significant lower-order runs (223b).
+3275,Alzarri Joseph,BOWL_PRIMARY_AR,HIGH,10,9.78,0.019,130,1155,58,False,74,False,True,Lower order (pos 10) with high bowling (1155b) and significant lower-order runs (130b).
+20005,Arshad Khan,BOWL_PRIMARY_AR,HIGH,9,8.22,0.259,99,377,18,False,52,False,True,Lower order (pos 9) with high bowling (377b) and significant lower-order runs (99b).
+6464,Arshdeep Singh,BOWL_PRIMARY_AR,HIGH,11,10.32,0.0,132,3209,194,False,167,False,True,Lower order (pos 11) with high bowling (3209b) and significant lower-order runs (132b).
+2876,Axar Patel,BOWL_PRIMARY_AR,HIGH,7,6.57,0.748,1279,2670,120,False,155,False,True,Top 7 regular but higher bowling workload: 2670 bowled vs 1279 faced.
+6676,Azmatullah Omarzai,BOWL_PRIMARY_AR,HIGH,6,6.23,0.817,665,1067,55,False,98,False,True,Top 7 regular but higher bowling workload: 1067 bowled vs 665 faced.
+5441,Barry McCarthy,BOWL_PRIMARY_AR,HIGH,9,9.24,0.0,112,621,26,False,36,False,True,Lower order (pos 9) with high bowling (621b) and significant lower-order runs (112b).
+360,Bhuvneshwar Kumar,BOWL_PRIMARY_AR,HIGH,9,9.28,0.0,169,2222,115,False,107,False,True,Lower order (pos 9) with high bowling (2222b) and significant lower-order runs (169b).
+21784,Brad Evans,BOWL_PRIMARY_AR,HIGH,8,8.05,0.048,121,439,31,False,22,False,True,Lower order (pos 8) with high bowling (439b) and significant lower-order runs (121b).
+6160,Chamika Karunaratne,BOWL_PRIMARY_AR,HIGH,8,7.71,0.286,152,336,13,False,30,False,True,Lower order (pos 8) with high bowling (336b) and significant lower-order runs (152b).
+786,Chris Jordan,BOWL_PRIMARY_AR,HIGH,8,8.15,0.111,129,552,19,False,29,False,True,Lower order (pos 8) with high bowling (552b) and significant lower-order runs (129b).
+4662,Cole McConchie,BOWL_PRIMARY_AR,MEDIUM,7,7.25,0.583,97,120,3,False,12,False,True,Batting order 7 with active bowling volume: 120 bowled.
+3629,Corbin Bosch,BOWL_PRIMARY_AR,HIGH,8,7.8,0.2,140,368,33,False,44,False,True,Lower order (pos 8) with high bowling (368b) and significant lower-order runs (140b).
+6518,Daniel Sams,BOWL_PRIMARY_AR,MEDIUM,7,7.0,0.706,75,351,16,False,17,False,True,Batting order 7 with active bowling volume: 351 bowled.
+1219,David Willey,BOWL_PRIMARY_AR,HIGH,8,7.68,0.263,98,380,17,False,20,False,True,Lower order (pos 8) with high bowling (380b) and significant lower-order runs (98b).
+27466,Dhruv Parashar,BOWL_PRIMARY_AR,MEDIUM,7,6.7,0.9,92,186,4,False,11,False,True,Batting order 7 with active bowling volume: 186 bowled.
+7052,Dunith Wellalage,BOWL_PRIMARY_AR,HIGH,8,7.83,0.333,89,255,13,False,34,False,True,Lower order (pos 8) with high bowling (255b) and significant lower-order runs (89b).
+2399,Dushmantha Chameera,BOWL_PRIMARY_AR,HIGH,9,9.17,0.0,100,1152,59,False,96,False,True,Lower order (pos 9) with high bowling (1152b) and significant lower-order runs (100b).
+2334,Dwaine Pretorius,BOWL_PRIMARY_AR,MEDIUM,7,6.4,0.6,82,308,17,False,15,False,True,Batting order 7 with active bowling volume: 308 bowled.
+5189,Faheem Ashraf,BOWL_PRIMARY_AR,HIGH,8,7.86,0.162,204,442,26,False,40,False,True,Lower order (pos 8) with high bowling (442b) and significant lower-order runs (204b).
+7741,Gareth Delany,BOWL_PRIMARY_AR,HIGH,7,6.35,0.85,296,552,29,False,46,False,True,Top 7 regular but higher bowling workload: 552 bowled vs 296 faced.
+4229,George Linde,BOWL_PRIMARY_AR,HIGH,7,7.0,0.833,140,283,14,False,33,False,True,Top 7 regular but higher bowling workload: 283 bowled vs 140 faced.
+6628,Gerald Coetzee,BOWL_PRIMARY_AR,HIGH,8,8.72,0.0,103,594,35,False,57,False,True,Lower order (pos 8) with high bowling (594b) and significant lower-order runs (103b).
+3276,Gudakesh Motie,BOWL_PRIMARY_AR,HIGH,9,8.78,0.15,145,738,34,False,51,False,True,Lower order (pos 9) with high bowling (738b) and significant lower-order runs (145b).
+7364,Haris Rauf,BOWL_PRIMARY_AR,HIGH,10,9.94,0.0,104,1027,76,False,62,False,True,Lower order (pos 10) with high bowling (1027b) and significant lower-order runs (104b).
+7325,Harpreet Brar,BOWL_PRIMARY_AR,HIGH,9,8.8,0.098,136,667,32,False,64,False,True,Lower order (pos 9) with high bowling (667b) and significant lower-order runs (136b).
+2261,Harshal Patel,BOWL_PRIMARY_AR,HIGH,8,8.84,0.099,145,1654,96,False,92,False,True,Lower order (pos 8) with high bowling (1654b) and significant lower-order runs (145b).
+29888,Harshit Rana,BOWL_PRIMARY_AR,HIGH,10,9.6,0.104,147,902,56,False,79,False,True,Lower order (pos 10) with high bowling (902b) and significant lower-order runs (147b).
+3578,Imad Wasim,BOWL_PRIMARY_AR,HIGH,6,6.5,0.857,161,246,15,False,17,False,True,Top 7 regular but higher bowling workload: 246 bowled vs 161 faced.
+2526,Ish Sodhi,BOWL_PRIMARY_AR,HIGH,9,9.14,0.0,133,1175,63,False,67,False,True,Lower order (pos 9) with high bowling (1175b) and significant lower-order runs (133b).
+2382,Jamie Overton,BOWL_PRIMARY_AR,HIGH,7,7.5,0.5,146,498,36,False,55,False,True,Top 7 regular but higher bowling workload: 498 bowled vs 146 faced.
+2633,Jason Holder,BOWL_PRIMARY_AR,HIGH,8,7.15,0.562,447,1929,109,False,97,False,True,Top 7 regular but higher bowling workload: 1929 bowled vs 447 faced.
+3298,Jofra Archer,BOWL_PRIMARY_AR,HIGH,9,8.66,0.071,145,1261,71,False,68,False,True,Lower order (pos 9) with high bowling (1261b) and significant lower-order runs (145b).
+3628,Kagiso Rabada,BOWL_PRIMARY_AR,HIGH,10,9.32,0.014,141,1534,86,False,83,False,True,Lower order (pos 10) with high bowling (1534b) and significant lower-order runs (141b).
+1944,Keshav Maharaj,BOWL_PRIMARY_AR,HIGH,9,9.07,0.0,90,598,32,False,54,False,True,Lower order (pos 9) with high bowling (598b) and significant lower-order runs (90b).
+4219,Krunal Pandya,BOWL_PRIMARY_AR,HIGH,8,6.35,0.676,656,1257,56,False,75,False,True,Top 7 regular but higher bowling workload: 1257 bowled vs 656 faced.
+3644,Kuldeep Yadav,BOWL_PRIMARY_AR,HIGH,9,9.4,0.0,201,1914,118,False,112,False,True,Lower order (pos 9) with high bowling (1914b) and significant lower-order runs (201b).
+22134,Luke Jongwe,BOWL_PRIMARY_AR,HIGH,8,7.95,0.2,124,335,19,False,23,False,True,Lower order (pos 8) with high bowling (335b) and significant lower-order runs (124b).
+5837,Mahedi Hasan,BOWL_PRIMARY_AR,HIGH,7,7.17,0.643,253,914,50,False,61,False,True,Top 7 regular but higher bowling workload: 914 bowled vs 253 faced.
+19316,Maheesh Theekshana,BOWL_PRIMARY_AR,HIGH,9,9.59,0.0,203,2265,93,False,120,False,True,Lower order (pos 9) with high bowling (2265b) and significant lower-order runs (203b).
+7808,Marco Jansen,BOWL_PRIMARY_AR,HIGH,8,7.68,0.339,277,1319,58,False,83,False,True,Lower order (pos 8) with high bowling (1319b) and significant lower-order runs (277b).
+5379,Mark Adair,BOWL_PRIMARY_AR,HIGH,8,7.85,0.275,277,847,56,False,45,False,True,Lower order (pos 8) with high bowling (847b) and significant lower-order runs (277b).
+8295,Matthew Forde,BOWL_PRIMARY_AR,HIGH,9,8.04,0.261,114,409,20,False,41,False,True,Lower order (pos 9) with high bowling (409b) and significant lower-order runs (114b).
+6512,Michael Bracewell,BOWL_PRIMARY_AR,HIGH,7,6.18,0.96,350,678,39,False,55,False,True,Top 7 regular but higher bowling workload: 678 bowled vs 350 faced.
+4101,Mitchell Santner,BOWL_PRIMARY_AR,HIGH,7,7.13,0.593,540,1737,86,False,105,False,True,Top 7 regular but higher bowling workload: 1737 bowled vs 540 faced.
+2490,Mohammad Nawaz,BOWL_PRIMARY_AR,HIGH,7,6.55,0.849,497,1004,65,False,54,False,True,Top 7 regular but higher bowling workload: 1004 bowled vs 497 faced.
+8380,Mohammad Rishad Hossain,BOWL_PRIMARY_AR,HIGH,8,8.4,0.2,165,1018,61,False,57,False,True,Lower order (pos 8) with high bowling (1018b) and significant lower-order runs (165b).
+3281,Mosaddek Hossain,BOWL_PRIMARY_AR,MEDIUM,7,6.46,0.923,113,159,11,False,15,False,True,Batting order 7 with active bowling volume: 159 bowled.
+7967,Noor Ahmad,BOWL_PRIMARY_AR,HIGH,9,9.47,0.0,114,1467,83,False,86,False,True,Lower order (pos 9) with high bowling (1467b) and significant lower-order runs (114b).
+4840,Odean Smith,BOWL_PRIMARY_AR,HIGH,7,7.84,0.44,133,384,25,False,25,False,True,Top 7 regular but higher bowling workload: 384 bowled vs 133 faced.
+1758,Patrick Cummins,BOWL_PRIMARY_AR,HIGH,8,8.13,0.111,247,1216,61,False,62,False,True,Lower order (pos 8) with high bowling (1216b) and significant lower-order runs (247b).
+5866,Patrick Kruger,BOWL_PRIMARY_AR,MEDIUM,7,6.86,1.0,60,116,8,False,13,False,True,Batting order 7 with active bowling volume: 116 bowled.
+4779,Pieter Willem Mulder,BOWL_PRIMARY_AR,MEDIUM,6,4.73,0.909,112,114,8,False,27,False,True,Batting order 6 with active bowling volume: 114 bowled.
+305,R Ashwin,BOWL_PRIMARY_AR,HIGH,7,6.89,0.613,317,1404,46,False,68,False,True,Top 7 regular but higher bowling workload: 1404 bowled vs 317 faced.
+6161,Rahul Chahar,BOWL_PRIMARY_AR,HIGH,9,9.95,0.0,92,794,32,False,69,False,True,Lower order (pos 9) with high bowling (794b) and significant lower-order runs (92b).
+4722,Rashid Khan,BOWL_PRIMARY_AR,HIGH,8,7.63,0.328,507,2747,153,False,126,False,True,Lower order (pos 8) with high bowling (2747b) and significant lower-order runs (507b).
+7503,Ravi Bishnoi,BOWL_PRIMARY_AR,HIGH,9,9.7,0.0,105,2330,123,False,137,False,True,Lower order (pos 9) with high bowling (2330b) and significant lower-order runs (105b).
+152,Ravindra Jadeja,BOWL_PRIMARY_AR,HIGH,7,6.01,0.961,958,1396,58,False,78,False,True,Top 7 regular but higher bowling workload: 1396 bowled vs 958 faced.
+6726,Romario Shepherd,BOWL_PRIMARY_AR,HIGH,7,7.41,0.58,687,1539,85,False,123,False,True,Top 7 regular but higher bowling workload: 1539 bowled vs 687 faced.
+2687,Roston Chase,BOWL_PRIMARY_AR,HIGH,4,5.88,0.765,511,836,35,False,56,False,True,Top 7 regular but higher bowling workload: 836 bowled vs 511 faced.
+4409,Sam Curran,BOWL_PRIMARY_AR,HIGH,6,5.79,0.974,858,1354,62,False,93,False,True,Top 7 regular but higher bowling workload: 1354 bowled vs 858 faced.
+4926,Shadab Khan,BOWL_PRIMARY_AR,HIGH,6,6.44,0.767,332,832,36,False,47,False,True,Top 7 regular but higher bowling workload: 832 bowled vs 332 faced.
+6355,Shaheen Afridi,BOWL_PRIMARY_AR,HIGH,9,8.46,0.104,183,991,65,False,58,False,True,Lower order (pos 9) with high bowling (991b) and significant lower-order runs (183b).
+2847,Shardul Thakur,BOWL_PRIMARY_AR,HIGH,8,8.24,0.259,216,971,54,False,68,False,True,Lower order (pos 8) with high bowling (971b) and significant lower-order runs (216b).
+781,Sunil Narine,BOWL_PRIMARY_AR,HIGH,2,5.16,0.618,511,1533,66,False,72,False,True,Top 7 regular but higher bowling workload: 1533 bowled vs 511 faced.
+7905,Tanzim Sakib,BOWL_PRIMARY_AR,HIGH,9,8.91,0.094,163,680,36,False,46,False,True,Lower order (pos 9) with high bowling (680b) and significant lower-order runs (163b).
+2681,Taskin Ahmed,BOWL_PRIMARY_AR,HIGH,10,9.13,0.043,92,1041,67,False,56,False,True,Lower order (pos 10) with high bowling (1041b) and significant lower-order runs (92b).
+403,Umesh Yadav,BOWL_PRIMARY_AR,HIGH,9,9.48,0.0,90,558,28,False,36,False,True,Lower order (pos 9) with high bowling (558b) and significant lower-order runs (90b).
+46066,Vipraj Nigam,BOWL_PRIMARY_AR,HIGH,8,7.74,0.421,89,288,12,False,30,False,True,Lower order (pos 8) with high bowling (288b) and significant lower-order runs (89b).
+4900,Wanindu Hasaranga,BOWL_PRIMARY_AR,HIGH,7,7.36,0.549,468,2035,133,False,104,False,True,Top 7 regular but higher bowling workload: 2035 bowled vs 468 faced.
+4639,Wellington Masakadza,BOWL_PRIMARY_AR,HIGH,8,8.84,0.0,151,480,15,False,46,False,True,Lower order (pos 8) with high bowling (480b) and significant lower-order runs (151b).
+5738,Xavier Bartlett,BOWL_PRIMARY_AR,HIGH,9,8.81,0.0,90,626,29,False,61,False,True,Lower order (pos 9) with high bowling (626b) and significant lower-order runs (90b).
+19145,Aamer Jamal,BOWL_SPECIALIST,MEDIUM,9,8.25,0.25,22,72,2,False,4,False,True,Frontline bowler (pos 9) with 72 legal balls bowled.
+27464,Aayan Afzal Khan,BOWL_SPECIALIST,MEDIUM,8,7.6,0.4,63,102,6,False,5,False,True,Frontline bowler (pos 8) with 102 legal balls bowled.
+56685,Abdullah Ahmadzai,BOWL_SPECIALIST,HIGH,10,10.2,0.0,9,192,15,False,22,False,True,Frontline bowler (pos 10) with 192 legal balls bowled.
+5979,Abrar Ahmed,BOWL_SPECIALIST,HIGH,11,10.92,0.0,11,764,46,False,55,False,True,Frontline bowler (pos 11) with 764 legal balls bowled.
+1487,Adam Milne,BOWL_SPECIALIST,HIGH,8,8.29,0.107,56,545,35,False,49,False,True,Frontline bowler (pos 8) with 545 legal balls bowled.
+2636,Adam Zampa,BOWL_SPECIALIST,HIGH,10,10.17,0.0,52,1152,71,False,60,False,True,Frontline bowler (pos 10) with 1152 legal balls bowled.
+7709,Ainsley Ndlovu,BOWL_SPECIALIST,MEDIUM,9,10.0,0.0,32,66,2,False,5,False,True,Frontline bowler (pos 9) with 66 legal balls bowled.
+7473,Akash Deep,BOWL_SPECIALIST,HIGH,11,9.93,0.0,14,278,10,False,36,False,True,Frontline bowler (pos 11) with 278 legal balls bowled.
+8177,Akash Madhwal,BOWL_SPECIALIST,HIGH,12,11.65,0.0,14,353,23,False,44,False,True,Frontline bowler (pos 12) with 353 legal balls bowled.
+7896,Akash Singh,BOWL_SPECIALIST,HIGH,12,11.55,0.0,0,223,13,False,51,False,True,Frontline bowler (pos 12) with 223 legal balls bowled.
+31835,Akshay Roopak Puri,BOWL_SPECIALIST,MEDIUM,11,10.67,0.0,5,60,4,False,3,False,True,Frontline bowler (pos 11) with 60 legal balls bowled.
+32862,Allah Ghazanfar,BOWL_SPECIALIST,HIGH,10,10.87,0.0,11,305,16,False,43,False,True,Frontline bowler (pos 10) with 305 legal balls bowled.
+158,Amit Mishra,BOWL_SPECIALIST,HIGH,12,10.38,0.125,30,126,8,False,21,False,True,Frontline bowler (pos 12) with 126 legal balls bowled.
+25216,Andile Simelane,BOWL_SPECIALIST,MEDIUM,8,8.33,0.0,35,108,5,False,17,False,True,Frontline bowler (pos 8) with 108 legal balls bowled.
+3299,Andrew Tye,BOWL_SPECIALIST,MEDIUM,10,10.0,0.0,0,66,2,False,3,False,True,Frontline bowler (pos 10) with 66 legal balls bowled.
+3595,Andy McBrine,BOWL_SPECIALIST,MEDIUM,8,8.5,0.0,8,72,2,False,9,False,True,Frontline bowler (pos 8) with 72 legal balls bowled.
+7270,Anrich Nortje,BOWL_SPECIALIST,HIGH,10,9.88,0.0,67,841,36,False,81,False,True,Frontline bowler (pos 10) with 841 legal balls bowled.
+27964,Anshul Kamboj,BOWL_SPECIALIST,HIGH,9,9.44,0.0,52,491,31,False,42,False,True,Frontline bowler (pos 9) with 491 legal balls bowled.
+6284,Anukul Roy,BOWL_SPECIALIST,HIGH,9,8.12,0.2,64,311,13,False,50,False,True,Frontline bowler (pos 9) with 311 legal balls bowled.
+7060,Arjun Tendulkar,BOWL_SPECIALIST,MEDIUM,8,9.67,0.0,14,98,4,False,48,False,True,Frontline bowler (pos 8) with 98 legal balls bowled.
+22188,Aryan Dutt,BOWL_SPECIALIST,HIGH,9,8.43,0.143,44,141,5,False,11,False,True,Frontline bowler (pos 9) with 141 legal balls bowled.
+28018,Ashok Sharma,BOWL_SPECIALIST,HIGH,10,9.88,0.0,4,175,7,False,34,False,True,Frontline bowler (pos 10) with 175 legal balls bowled.
+2364,Ashton Agar,BOWL_SPECIALIST,HIGH,8,5.83,0.333,47,144,4,False,6,False,True,Frontline bowler (pos 8) with 144 legal balls bowled.
+8634,Ashwani Kumar,BOWL_SPECIALIST,HIGH,12,11.5,0.0,6,184,17,False,30,False,True,Frontline bowler (pos 12) with 184 legal balls bowled.
+4901,Asitha Fernando,BOWL_SPECIALIST,HIGH,10,10.29,0.0,5,120,4,False,19,False,True,Frontline bowler (pos 10) with 120 legal balls bowled.
+19020,Ateeq Iqbal,BOWL_SPECIALIST,MEDIUM,11,11.0,0.0,3,63,3,False,4,False,True,Frontline bowler (pos 11) with 63 legal balls bowled.
+8141,Auqib Nabi,BOWL_SPECIALIST,MEDIUM,8,9.2,0.0,4,78,0,False,14,False,True,Frontline bowler (pos 8) with 78 legal balls bowled.
+3653,Avesh Khan,BOWL_SPECIALIST,HIGH,10,9.94,0.0,57,1673,86,False,93,False,True,Frontline bowler (pos 10) with 1673 legal balls bowled.
+19125,Ayush Shukla,BOWL_SPECIALIST,HIGH,10,9.14,0.286,7,138,9,False,7,False,True,Frontline bowler (pos 10) with 138 legal balls bowled.
+4276,Basil Thampi,BOWL_SPECIALIST,MEDIUM,11,10.8,0.0,0,96,5,False,5,False,True,Frontline bowler (pos 11) with 96 legal balls bowled.
+3641,Ben Dwarshuis,BOWL_SPECIALIST,HIGH,8,8.14,0.0,70,325,23,False,35,False,True,Frontline bowler (pos 8) with 325 legal balls bowled.
+6515,Benjamin Lister,BOWL_SPECIALIST,HIGH,11,10.62,0.0,6,245,11,False,15,False,True,Frontline bowler (pos 11) with 245 legal balls bowled.
+4856,Benjamin Sears,BOWL_SPECIALIST,HIGH,11,10.42,0.0,33,453,30,False,29,False,True,Frontline bowler (pos 11) with 453 legal balls bowled.
+4815,Benjamin White,BOWL_SPECIALIST,HIGH,11,10.73,0.045,14,390,18,False,31,False,True,Frontline bowler (pos 11) with 390 legal balls bowled.
+3664,Binura Fernando,BOWL_SPECIALIST,HIGH,10,9.88,0.0,25,342,14,False,35,False,True,Frontline bowler (pos 10) with 342 legal balls bowled.
+4636,Bjorn Fortuin,BOWL_SPECIALIST,HIGH,8,8.08,0.154,56,210,8,False,13,False,True,Frontline bowler (pos 8) with 210 legal balls bowled.
+5892,Blair Tickner,BOWL_SPECIALIST,HIGH,11,10.64,0.0,5,215,16,False,18,False,True,Frontline bowler (pos 11) with 215 legal balls bowled.
+6523,Blessing Muzarabani,BOWL_SPECIALIST,HIGH,10,10.46,0.0,43,821,46,False,57,False,True,Frontline bowler (pos 10) with 821 legal balls bowled.
+30925,Bradley Currie,BOWL_SPECIALIST,MEDIUM,11,11.0,0.0,9,108,8,False,7,False,True,Frontline bowler (pos 11) with 108 legal balls bowled.
+67036,Brijesh Sharma,BOWL_SPECIALIST,HIGH,11,11.0,0.0,4,277,14,False,16,False,True,Frontline bowler (pos 11) with 277 legal balls bowled.
+6097,Brydon Carse,BOWL_SPECIALIST,HIGH,8,8.36,0.143,37,269,20,False,27,False,True,Frontline bowler (pos 8) with 269 legal balls bowled.
+3686,CB Sole,BOWL_SPECIALIST,MEDIUM,9,9.0,0.0,22,97,8,False,7,False,True,Frontline bowler (pos 9) with 97 legal balls bowled.
+6772,Chetan Sakariya,BOWL_SPECIALIST,HIGH,10,10.0,0.0,6,132,6,False,35,False,True,Frontline bowler (pos 10) with 132 legal balls bowled.
+1171,Chris Woakes,BOWL_SPECIALIST,HIGH,8,7.64,0.364,48,164,11,False,24,False,True,Frontline bowler (pos 8) with 164 legal balls bowled.
+3720,Craig Young,BOWL_SPECIALIST,HIGH,10,9.74,0.0,30,466,36,False,33,False,True,Frontline bowler (pos 10) with 466 legal balls bowled.
+27743,DT Doram,BOWL_SPECIALIST,HIGH,11,10.56,0.0,6,192,9,False,11,False,True,Frontline bowler (pos 11) with 192 legal balls bowled.
+6489,Darshan Nalkande,BOWL_SPECIALIST,MEDIUM,11,10.0,0.167,12,84,6,False,32,False,True,Frontline bowler (pos 11) with 84 legal balls bowled.
+1813,Deepak Chahar,BOWL_SPECIALIST,HIGH,9,9.06,0.021,65,917,45,False,62,False,True,Frontline bowler (pos 9) with 917 legal balls bowled.
+58134,Digvesh Rathi,BOWL_SPECIALIST,HIGH,11,10.26,0.0,8,547,19,False,28,False,True,Frontline bowler (pos 11) with 547 legal balls bowled.
+7689,Dilshan Madushanka,BOWL_SPECIALIST,HIGH,11,10.74,0.0,12,362,16,False,35,False,True,Frontline bowler (pos 11) with 362 legal balls bowled.
+6797,Dominic Drakes,BOWL_SPECIALIST,HIGH,8,8.86,0.143,12,126,4,False,7,False,True,Frontline bowler (pos 8) with 126 legal balls bowled.
+27504,Dushan Hemantha,BOWL_SPECIALIST,MEDIUM,8,8.0,0.0,19,68,4,False,8,False,True,Frontline bowler (pos 8) with 68 legal balls bowled.
+161,Dwayne Bravo,BOWL_SPECIALIST,HIGH,8,8.4,0.0,24,209,16,False,10,False,True,Frontline bowler (pos 8) with 209 legal balls bowled.
+5844,Ebadot Hossain,BOWL_SPECIALIST,MEDIUM,11,10.67,0.0,0,73,6,False,3,False,True,Frontline bowler (pos 11) with 73 legal balls bowled.
+5750,Ehsan Khan,BOWL_SPECIALIST,HIGH,9,8.25,0.25,17,186,12,False,8,False,True,Frontline bowler (pos 9) with 186 legal balls bowled.
+21780,Ernest Masuku,BOWL_SPECIALIST,MEDIUM,10,10.0,0.0,6,60,5,False,3,False,True,Frontline bowler (pos 10) with 60 legal balls bowled.
+39657,Eshan Malinga,BOWL_SPECIALIST,HIGH,11,10.72,0.0,38,808,49,False,51,False,True,Frontline bowler (pos 11) with 808 legal balls bowled.
+19147,Faraz Akram,BOWL_SPECIALIST,MEDIUM,8,8.5,0.167,55,99,1,False,14,False,True,Frontline bowler (pos 8) with 99 legal balls bowled.
+4201,Fareed Malik,BOWL_SPECIALIST,HIGH,10,10.24,0.0,20,309,23,False,28,False,True,Frontline bowler (pos 10) with 309 legal balls bowled.
+7240,FazalHaq Farooqi,BOWL_SPECIALIST,HIGH,11,10.92,0.0,45,1027,46,False,82,False,True,Frontline bowler (pos 11) with 1027 legal balls bowled.
+22137,Fionn Hand,BOWL_SPECIALIST,HIGH,9,9.18,0.0,37,136,6,False,14,False,True,Frontline bowler (pos 9) with 136 legal balls bowled.
+17424,Graham Hume,BOWL_SPECIALIST,HIGH,9,9.5,0.0,29,188,11,False,18,False,True,Frontline bowler (pos 9) with 188 legal balls bowled.
+23467,Gurjapneet Singh,BOWL_SPECIALIST,HIGH,12,11.25,0.0,0,151,4,False,22,False,True,Frontline bowler (pos 12) with 151 legal balls bowled.
+7008,Gus Atkinson,BOWL_SPECIALIST,MEDIUM,8,9.25,0.0,23,65,6,False,11,False,True,Frontline bowler (pos 8) with 65 legal balls bowled.
+28756,Haider Ali,BOWL_SPECIALIST,HIGH,9,8.42,0.167,39,270,15,False,12,False,True,Frontline bowler (pos 9) with 270 legal balls bowled.
+7201,Haroon Arshad,BOWL_SPECIALIST,MEDIUM,8,8.8,0.0,18,73,1,False,8,False,True,Frontline bowler (pos 8) with 73 legal balls bowled.
+25138,Harsh Dubey,BOWL_SPECIALIST,HIGH,8,9.36,0.0,9,192,13,False,22,False,True,Frontline bowler (pos 8) with 192 legal balls bowled.
+3623,Hasan Ali,BOWL_SPECIALIST,HIGH,9,8.88,0.0,19,160,12,False,20,False,True,Frontline bowler (pos 9) with 160 legal balls bowled.
+6643,Hasan Mahmud,BOWL_SPECIALIST,HIGH,10,10.25,0.0,46,396,22,False,27,False,True,Frontline bowler (pos 10) with 396 legal balls bowled.
+3622,Hayden Walsh,BOWL_SPECIALIST,HIGH,11,10.0,0.111,15,186,7,False,14,False,True,Frontline bowler (pos 11) with 186 legal balls bowled.
+6025,Henry Shipley,BOWL_SPECIALIST,MEDIUM,9,9.4,0.0,2,78,2,False,5,False,True,Frontline bowler (pos 9) with 78 legal balls bowled.
+27959,Hrithik Shokeen,BOWL_SPECIALIST,HIGH,9,8.31,0.231,65,204,5,False,13,False,True,Frontline bowler (pos 9) with 204 legal balls bowled.
+27516,Ihsanullah Ihsanullah,BOWL_SPECIALIST,MEDIUM,11,11.0,0.0,8,91,6,False,4,False,True,Frontline bowler (pos 11) with 91 legal balls bowled.
+28,Ishant Sharma,BOWL_SPECIALIST,HIGH,11,11.17,0.0,8,423,24,False,54,False,True,Frontline bowler (pos 11) with 423 legal balls bowled.
+22920,Jacob Duffy,BOWL_SPECIALIST,HIGH,11,10.5,0.023,31,877,62,False,56,False,True,Frontline bowler (pos 11) with 877 legal balls bowled.
+2852,Jagadeesha Suchith,BOWL_SPECIALIST,MEDIUM,8,7.6,0.2,8,108,7,False,5,False,True,Frontline bowler (pos 8) with 108 legal balls bowled.
+47724,Jahandad Khan,BOWL_SPECIALIST,MEDIUM,8,8.11,0.222,34,108,7,False,14,False,True,Frontline bowler (pos 8) with 108 legal balls bowled.
+2054,Jason Behrendorff,BOWL_SPECIALIST,HIGH,10,10.25,0.0,11,438,25,False,20,False,True,Frontline bowler (pos 10) with 438 legal balls bowled.
+2933,Jasprit Bumrah,BOWL_SPECIALIST,HIGH,11,10.39,0.0,31,1709,85,False,89,False,True,Frontline bowler (pos 11) with 1709 legal balls bowled.
+8326,Jayden Seales,BOWL_SPECIALIST,HIGH,11,10.67,0.0,6,180,7,False,20,False,True,Frontline bowler (pos 11) with 180 legal balls bowled.
+1071,Jaydev Unadkat,BOWL_SPECIALIST,HIGH,10,10.0,0.033,73,575,29,False,54,False,True,Frontline bowler (pos 10) with 575 legal balls bowled.
+36553,Jediah Blades,BOWL_SPECIALIST,MEDIUM,11,10.83,0.0,13,119,6,False,11,False,True,Frontline bowler (pos 11) with 119 legal balls bowled.
+4460,Jeffrey Vandersay,BOWL_SPECIALIST,HIGH,8,8.8,0.0,23,120,2,False,16,False,True,Frontline bowler (pos 8) with 120 legal balls bowled.
+4505,Jhye Richardson,BOWL_SPECIALIST,HIGH,9,9.0,0.0,22,120,6,False,18,False,True,Frontline bowler (pos 9) with 120 legal balls bowled.
+830,Josh Hazlewood,BOWL_SPECIALIST,HIGH,11,10.76,0.0,39,1477,98,False,75,False,True,Frontline bowler (pos 11) with 1477 legal balls bowled.
+6196,Josh Tongue,BOWL_SPECIALIST,HIGH,11,10.8,0.0,0,121,8,False,11,False,True,Frontline bowler (pos 11) with 121 legal balls bowled.
+4807,Joshua Little,BOWL_SPECIALIST,HIGH,11,10.75,0.0,19,780,45,False,54,False,True,Frontline bowler (pos 11) with 780 legal balls bowled.
+25809,Juanoy Drysdale,BOWL_SPECIALIST,MEDIUM,11,11.0,0.0,2,60,2,False,4,False,True,Frontline bowler (pos 11) with 60 legal balls bowled.
+8009,Junaid Siddique,BOWL_SPECIALIST,HIGH,10,9.73,0.0,38,331,27,False,15,False,True,Frontline bowler (pos 10) with 331 legal balls bowled.
+6591,KM Asif,BOWL_SPECIALIST,MEDIUM,11,10.75,0.0,2,85,3,False,4,False,True,Frontline bowler (pos 11) with 85 legal balls bowled.
+7756,Kaleem Sana,BOWL_SPECIALIST,MEDIUM,10,9.75,0.0,4,67,4,False,4,False,True,Frontline bowler (pos 10) with 67 legal balls bowled.
+286,Kane Richardson,BOWL_SPECIALIST,HIGH,10,9.78,0.0,1,198,15,False,9,False,True,Frontline bowler (pos 10) with 198 legal balls bowled.
+395,Karn Sharma,BOWL_SPECIALIST,HIGH,9,9.91,0.0,21,363,23,False,38,False,True,Frontline bowler (pos 9) with 363 legal balls bowled.
+8639,Kartik Meiyappan,BOWL_SPECIALIST,MEDIUM,9,9.5,0.0,15,96,6,False,4,False,True,Frontline bowler (pos 9) with 96 legal balls bowled.
+8530,Kartik Tyagi,BOWL_SPECIALIST,HIGH,11,10.4,0.0,16,421,20,False,33,False,True,Frontline bowler (pos 11) with 421 legal balls bowled.
+4947,Kasun Rajitha,BOWL_SPECIALIST,MEDIUM,10,10.0,0.0,9,108,4,False,5,False,True,Frontline bowler (pos 10) with 108 legal balls bowled.
+4816,Khaleel Ahmed,BOWL_SPECIALIST,HIGH,11,11.18,0.0,5,1203,62,False,60,False,True,Frontline bowler (pos 11) with 1203 legal balls bowled.
+5977,Khary Pierre,BOWL_SPECIALIST,HIGH,9,9.83,0.0,15,120,4,False,11,False,True,Frontline bowler (pos 9) with 120 legal balls bowled.
+914,Krishnappa Gowtham,BOWL_SPECIALIST,HIGH,8,7.75,0.167,38,180,8,False,25,False,True,Frontline bowler (pos 8) with 180 legal balls bowled.
+7545,Kuldeep Sen,BOWL_SPECIALIST,HIGH,9,10.08,0.0,3,241,14,False,59,False,True,Frontline bowler (pos 9) with 241 legal balls bowled.
+7574,Kumar Kartikeya Singh,BOWL_SPECIALIST,HIGH,10,10.44,0.0,17,282,12,False,40,False,True,Frontline bowler (pos 10) with 282 legal balls bowled.
+26663,Kwena Maphaka,BOWL_SPECIALIST,HIGH,10,10.12,0.0,25,308,15,False,58,False,True,Frontline bowler (pos 10) with 308 legal balls bowled.
+3697,Kyle Jamieson,BOWL_SPECIALIST,HIGH,9,9.07,0.0,68,629,34,False,56,False,True,Frontline bowler (pos 9) with 629 legal balls bowled.
+46378,Kyle Klein,BOWL_SPECIALIST,HIGH,8,8.25,0.125,39,164,14,False,11,False,True,Frontline bowler (pos 8) with 164 legal balls bowled.
+4903,Lahiru Kumara,BOWL_SPECIALIST,MEDIUM,11,11.0,0.0,0,71,7,False,3,False,True,Frontline bowler (pos 11) with 71 legal balls bowled.
+722,Liam Dawson,BOWL_SPECIALIST,HIGH,8,8.44,0.04,48,415,25,False,27,False,True,Frontline bowler (pos 8) with 415 legal balls bowled.
+25011,Liam Mccarthy,BOWL_SPECIALIST,MEDIUM,8,8.33,0.0,24,66,1,False,4,False,True,Frontline bowler (pos 8) with 66 legal balls bowled.
+2483,Lizaad Williams,BOWL_SPECIALIST,HIGH,10,10.07,0.0,21,259,16,False,24,False,True,Frontline bowler (pos 10) with 259 legal balls bowled.
+4692,Lockie Ferguson,BOWL_SPECIALIST,HIGH,11,10.0,0.0,30,1084,59,False,89,False,True,Frontline bowler (pos 11) with 1084 legal balls bowled.
+3660,Luke Wood,BOWL_SPECIALIST,HIGH,11,10.5,0.0,8,326,19,False,55,False,True,Frontline bowler (pos 11) with 326 legal balls bowled.
+4641,Lungi Ngidi,BOWL_SPECIALIST,HIGH,10,10.28,0.0,62,800,47,False,64,False,True,Frontline bowler (pos 10) with 800 legal balls bowled.
+4790,Lutho Sipamla,BOWL_SPECIALIST,MEDIUM,11,10.4,0.0,14,110,6,False,14,False,True,Frontline bowler (pos 11) with 110 legal balls bowled.
+56830,Madhav Tiwari,BOWL_SPECIALIST,MEDIUM,8,8.0,0.2,12,66,4,False,29,False,True,Frontline bowler (pos 8) with 66 legal balls bowled.
+6237,Manimaran Siddharth,BOWL_SPECIALIST,HIGH,12,11.22,0.0,0,186,9,False,42,False,True,Frontline bowler (pos 12) with 186 legal balls bowled.
+2985,Mark Wood,BOWL_SPECIALIST,HIGH,11,10.64,0.0,20,282,27,False,18,False,True,Frontline bowler (pos 11) with 282 legal balls bowled.
+8661,Matheesha Pathirana,BOWL_SPECIALIST,HIGH,12,10.76,0.0,32,1135,82,False,89,False,True,Frontline bowler (pos 12) with 1135 legal balls bowled.
+27390,Matiullah Khan,BOWL_SPECIALIST,MEDIUM,10,10.33,0.0,5,60,3,False,6,False,True,Frontline bowler (pos 10) with 60 legal balls bowled.
+3174,Matt Henry,BOWL_SPECIALIST,HIGH,10,9.38,0.0,28,622,27,False,57,False,True,Frontline bowler (pos 10) with 622 legal balls bowled.
+22471,Matthew Humphreys,BOWL_SPECIALIST,HIGH,10,9.57,0.071,11,305,19,False,18,False,True,Frontline bowler (pos 10) with 305 legal balls bowled.
+6350,Matthew Kuhnemann,BOWL_SPECIALIST,HIGH,10,10.0,0.0,12,121,2,False,22,False,True,Frontline bowler (pos 10) with 121 legal balls bowled.
+4716,Mayank Dagar,BOWL_SPECIALIST,HIGH,9,9.62,0.0,1,137,2,False,18,False,True,Frontline bowler (pos 9) with 137 legal balls bowled.
+6683,Mayank Markande,BOWL_SPECIALIST,HIGH,10,10.27,0.0,13,433,20,False,57,False,True,Frontline bowler (pos 10) with 433 legal balls bowled.
+27960,Mayank Yadav,BOWL_SPECIALIST,HIGH,11,10.77,0.0,12,494,26,False,51,False,True,Frontline bowler (pos 11) with 494 legal balls bowled.
+829,Mitchell Starc,BOWL_SPECIALIST,HIGH,9,8.98,0.0,30,810,53,False,57,False,True,Frontline bowler (pos 9) with 810 legal balls bowled.
+24346,Mohamed Shafeeq,BOWL_SPECIALIST,MEDIUM,9,10.0,0.0,6,63,2,False,3,False,True,Frontline bowler (pos 9) with 63 legal balls bowled.
+470,Mohammad Amir,BOWL_SPECIALIST,HIGH,10,10.38,0.0,4,146,5,False,10,False,True,Frontline bowler (pos 10) with 146 legal balls bowled.
+7935,Mohammad Ghazanfar,BOWL_SPECIALIST,MEDIUM,9,10.0,0.0,4,108,4,False,8,False,True,Frontline bowler (pos 9) with 108 legal balls bowled.
+6677,Mohammad Hasnain,BOWL_SPECIALIST,HIGH,10,10.4,0.0,13,223,8,False,15,False,True,Frontline bowler (pos 10) with 223 legal balls bowled.
+6506,Mohammad Imran Randhawa,BOWL_SPECIALIST,MEDIUM,8,7.33,0.333,12,72,6,False,3,False,True,Frontline bowler (pos 8) with 72 legal balls bowled.
+38855,Mohammad Saifuddin,BOWL_SPECIALIST,HIGH,8,8.32,0.273,78,442,26,False,36,False,True,Frontline bowler (pos 8) with 442 legal balls bowled.
+7696,Mohammad Wasim,BOWL_SPECIALIST,HIGH,9,9.19,0.0,30,355,17,False,44,False,True,Frontline bowler (pos 9) with 355 legal balls bowled.
+1566,Mohammed Shami,BOWL_SPECIALIST,HIGH,11,10.11,0.0,46,1279,69,False,66,False,True,Frontline bowler (pos 11) with 1279 legal balls bowled.
+5944,Mohammed Siraj,BOWL_SPECIALIST,HIGH,10,10.48,0.0,72,1810,86,False,84,False,True,Frontline bowler (pos 10) with 1810 legal balls bowled.
+2878,Mohit Sharma,BOWL_SPECIALIST,HIGH,11,10.62,0.0,19,651,42,False,43,False,True,Frontline bowler (pos 11) with 651 legal balls bowled.
+6669,Mohsin Khan,BOWL_SPECIALIST,HIGH,11,10.26,0.0,28,654,38,False,42,False,True,Frontline bowler (pos 11) with 654 legal balls bowled.
+42548,Muhammad Jawadullah,BOWL_SPECIALIST,HIGH,11,10.44,0.0,10,206,13,False,14,False,True,Frontline bowler (pos 11) with 206 legal balls bowled.
+29080,Muhammad Khan,BOWL_SPECIALIST,MEDIUM,8,7.5,0.25,12,97,9,False,10,False,True,Frontline bowler (pos 8) with 97 legal balls bowled.
+28655,Muhammad Rohid,BOWL_SPECIALIST,MEDIUM,11,10.67,0.0,3,112,4,False,9,False,True,Frontline bowler (pos 11) with 112 legal balls bowled.
+6450,Mujeeb Ur Rahman,BOWL_SPECIALIST,HIGH,9,9.47,0.026,70,820,48,False,60,False,True,Frontline bowler (pos 9) with 820 legal balls bowled.
+7250,Mukesh Choudhary,BOWL_SPECIALIST,HIGH,11,10.75,0.0,8,483,25,False,55,False,True,Frontline bowler (pos 11) with 483 legal balls bowled.
+5041,Mukesh Kumar,BOWL_SPECIALIST,HIGH,11,11.03,0.0,23,1152,62,False,72,False,True,Frontline bowler (pos 11) with 1152 legal balls bowled.
+5034,Murugan Ashwin,BOWL_SPECIALIST,HIGH,8,8.8,0.0,14,199,9,False,10,False,True,Frontline bowler (pos 8) with 199 legal balls bowled.
+4373,Mustafizur Rahman,BOWL_SPECIALIST,HIGH,11,10.39,0.028,59,1576,79,False,87,False,True,Frontline bowler (pos 11) with 1576 legal balls bowled.
+37939,Nahid Rana,BOWL_SPECIALIST,MEDIUM,11,11.0,0.0,5,95,8,False,15,False,True,Frontline bowler (pos 11) with 95 legal balls bowled.
+7312,Nandre Burger,BOWL_SPECIALIST,HIGH,9,10.09,0.0,30,442,22,False,46,False,True,Frontline bowler (pos 9) with 442 legal balls bowled.
+17911,Nangeyalia Kharote,BOWL_SPECIALIST,MEDIUM,8,8.33,0.0,11,66,5,False,12,False,True,Frontline bowler (pos 8) with 66 legal balls bowled.
+8049,Naseem Shah,BOWL_SPECIALIST,HIGH,10,9.61,0.0,49,576,26,False,43,False,True,Frontline bowler (pos 10) with 576 legal balls bowled.
+4658,Nasum Ahmed,BOWL_SPECIALIST,HIGH,9,9.1,0.065,78,600,25,False,53,False,True,Frontline bowler (pos 9) with 600 legal balls bowled.
+7920,Nathan Ellis,BOWL_SPECIALIST,HIGH,9,9.65,0.0,57,917,58,False,76,False,True,Frontline bowler (pos 9) with 917 legal balls bowled.
+4857,Nathan Smith,BOWL_SPECIALIST,MEDIUM,8,8.0,0.0,7,103,6,False,23,False,True,Frontline bowler (pos 8) with 103 legal balls bowled.
+4288,Navdeep Saini,BOWL_SPECIALIST,MEDIUM,8,9.5,0.0,2,91,6,False,34,False,True,Frontline bowler (pos 8) with 91 legal balls bowled.
+5809,Naveen ul Haq,BOWL_SPECIALIST,HIGH,10,9.89,0.0,67,789,52,False,46,False,True,Frontline bowler (pos 10) with 789 legal balls bowled.
+47403,Newman Nyamhuri,BOWL_SPECIALIST,MEDIUM,9,8.8,0.0,21,83,5,False,19,False,True,Frontline bowler (pos 9) with 83 legal balls bowled.
+7227,Nijat Masood,BOWL_SPECIALIST,MEDIUM,11,10.67,0.0,5,67,4,False,3,False,True,Frontline bowler (pos 11) with 67 legal balls bowled.
+5547,Nosthush Kenjige,BOWL_SPECIALIST,MEDIUM,9,9.5,0.0,13,78,2,False,4,False,True,Frontline bowler (pos 9) with 78 legal balls bowled.
+25128,Nqabayomzi Peter,BOWL_SPECIALIST,HIGH,9,9.33,0.0,20,162,7,False,17,False,True,Frontline bowler (pos 9) with 162 legal balls bowled.
+50062,Nqobani Mokoena,BOWL_SPECIALIST,MEDIUM,10,10.0,0.0,21,63,3,False,5,False,True,Frontline bowler (pos 10) with 63 legal balls bowled.
+19312,Nuwan Thushara,BOWL_SPECIALIST,HIGH,11,11.16,0.0,20,780,36,False,87,False,True,Frontline bowler (pos 11) with 780 legal balls bowled.
+4837,Obed McCoy,BOWL_SPECIALIST,HIGH,11,10.16,0.0,43,646,40,False,37,False,True,Frontline bowler (pos 11) with 646 legal balls bowled.
+8805,Ottneil Baartman,BOWL_SPECIALIST,HIGH,11,10.62,0.0,35,323,23,False,26,False,True,Frontline bowler (pos 11) with 323 legal balls bowled.
+2997,Paul van Meekeren,BOWL_SPECIALIST,HIGH,10,9.8,0.0,18,187,11,False,11,False,True,Frontline bowler (pos 10) with 187 legal balls bowled.
+23,Piyush Chawla,BOWL_SPECIALIST,HIGH,10,9.41,0.037,37,576,33,False,30,False,True,Frontline bowler (pos 10) with 576 legal balls bowled.
+25132,Praful Hinge,BOWL_SPECIALIST,HIGH,10,10.86,0.0,9,159,14,False,15,False,True,Frontline bowler (pos 10) with 159 legal balls bowled.
+6932,Pramod Madushan,BOWL_SPECIALIST,MEDIUM,11,10.2,0.0,3,97,9,False,8,False,True,Frontline bowler (pos 11) with 97 legal balls bowled.
+4489,Prasidh Krishna,BOWL_SPECIALIST,HIGH,10,10.83,0.0,22,1175,69,False,68,False,True,Frontline bowler (pos 10) with 1175 legal balls bowled.
+58246,Prince Yadav,BOWL_SPECIALIST,HIGH,11,10.61,0.0,39,710,31,False,48,False,True,Frontline bowler (pos 11) with 710 legal balls bowled.
+6359,Raghu Sharma,BOWL_SPECIALIST,MEDIUM,12,11.83,0.0,0,90,1,False,20,False,True,Frontline bowler (pos 12) with 90 legal balls bowled.
+8298,Ramon Simmonds,BOWL_SPECIALIST,MEDIUM,11,11.0,0.0,2,78,6,False,9,False,True,Frontline bowler (pos 11) with 78 legal balls bowled.
+7327,Rasikh Salam,BOWL_SPECIALIST,HIGH,12,10.71,0.0,38,464,29,False,48,False,True,Frontline bowler (pos 12) with 464 legal balls bowled.
+2315,Reece Topley,BOWL_SPECIALIST,HIGH,11,10.59,0.0,21,615,31,False,61,False,True,Frontline bowler (pos 11) with 615 legal balls bowled.
+24475,Rehan Ahmed,BOWL_SPECIALIST,HIGH,9,8.23,0.154,45,210,13,False,44,False,True,Frontline bowler (pos 9) with 210 legal balls bowled.
+5562,Richard Gleeson,BOWL_SPECIALIST,HIGH,11,10.67,0.0,6,195,11,False,22,False,True,Frontline bowler (pos 11) with 195 legal balls bowled.
+4874,Richard Ngarava,BOWL_SPECIALIST,HIGH,10,10.0,0.0,62,846,41,False,44,False,True,Frontline bowler (pos 10) with 846 legal balls bowled.
+5940,Riley Meredith,BOWL_SPECIALIST,HIGH,11,10.93,0.0,3,310,16,False,22,False,True,Frontline bowler (pos 11) with 310 legal balls bowled.
+6995,Saad Zafar,BOWL_SPECIALIST,MEDIUM,9,9.25,0.0,39,72,6,False,4,False,True,Frontline bowler (pos 9) with 72 legal balls bowled.
+5577,Sai Kishore,BOWL_SPECIALIST,HIGH,9,9.43,0.0,16,465,33,False,51,False,True,Frontline bowler (pos 9) with 465 legal balls bowled.
+35318,Sakib Hussain,BOWL_SPECIALIST,HIGH,11,10.91,0.0,7,253,15,False,31,False,True,Frontline bowler (pos 11) with 253 legal balls bowled.
+20704,Salman Mirza,BOWL_SPECIALIST,HIGH,10,10.07,0.0,5,328,21,False,31,False,True,Frontline bowler (pos 10) with 328 legal balls bowled.
+2411,Sandeep Sharma,BOWL_SPECIALIST,HIGH,11,10.59,0.0,11,965,39,False,60,False,True,Frontline bowler (pos 11) with 965 legal balls bowled.
+2863,Sandeep Warrier,BOWL_SPECIALIST,MEDIUM,12,11.8,0.0,0,67,6,False,14,False,True,Frontline bowler (pos 12) with 67 legal balls bowled.
+4499,Saqib Mahmood,BOWL_SPECIALIST,HIGH,10,10.36,0.0,33,229,17,False,29,False,True,Frontline bowler (pos 10) with 229 legal balls bowled.
+28021,Saurabh Dubey,BOWL_SPECIALIST,MEDIUM,10,11.5,0.0,2,77,5,False,14,False,True,Frontline bowler (pos 10) with 77 legal balls bowled.
+1389,Sean Abbott,BOWL_SPECIALIST,HIGH,8,8.68,0.045,37,444,30,False,34,False,True,Frontline bowler (pos 8) with 444 legal balls bowled.
+773,Shadley Van Schalkwyk,BOWL_SPECIALIST,MEDIUM,8,7.5,0.25,14,90,7,False,4,False,True,Frontline bowler (pos 8) with 90 legal balls bowled.
+19530,Shahnawaz Dhani,BOWL_SPECIALIST,HIGH,11,11.0,0.0,6,170,6,False,9,False,True,Frontline bowler (pos 11) with 170 legal balls bowled.
+3613,Shakeel Ahmed,BOWL_SPECIALIST,MEDIUM,10,9.67,0.0,33,60,0,False,3,False,True,Frontline bowler (pos 10) with 60 legal balls bowled.
+47050,Shamar Joseph,BOWL_SPECIALIST,HIGH,10,10.38,0.0,29,475,31,False,62,False,True,Frontline bowler (pos 10) with 475 legal balls bowled.
+4842,Shamar Springer,BOWL_SPECIALIST,HIGH,9,9.0,0.0,69,198,16,False,25,False,True,Frontline bowler (pos 9) with 198 legal balls bowled.
+3550,Sharafuddin Ashraf,BOWL_SPECIALIST,MEDIUM,8,7.75,0.25,21,114,5,False,18,False,True,Frontline bowler (pos 8) with 114 legal balls bowled.
+1772,Sheldon Cottrell,BOWL_SPECIALIST,HIGH,11,10.27,0.0,0,216,10,False,11,False,True,Frontline bowler (pos 11) with 216 legal balls bowled.
+6286,Shivam Mavi,BOWL_SPECIALIST,HIGH,8,8.75,0.0,25,218,12,False,24,False,True,Frontline bowler (pos 8) with 218 legal balls bowled.
+56817,Shivang Kumar,BOWL_SPECIALIST,HIGH,9,8.92,0.0,46,234,9,False,15,False,True,Frontline bowler (pos 9) with 234 legal balls bowled.
+7344,Shoriful Islam,BOWL_SPECIALIST,HIGH,10,9.9,0.0,79,791,41,False,61,False,True,Frontline bowler (pos 10) with 791 legal balls bowled.
+3469,Shreyas Gopal,BOWL_SPECIALIST,MEDIUM,9,9.0,0.0,7,60,4,False,43,False,True,Frontline bowler (pos 9) with 60 legal balls bowled.
+7533,Simarjeet Singh,BOWL_SPECIALIST,HIGH,9,10.14,0.0,15,240,11,False,34,False,True,Frontline bowler (pos 9) with 240 legal balls bowled.
+4235,Sisanda Magala,BOWL_SPECIALIST,MEDIUM,9,9.25,0.0,5,72,4,False,4,False,True,Frontline bowler (pos 9) with 72 legal balls bowled.
+24473,Sonny Baker,BOWL_SPECIALIST,MEDIUM,11,11.0,0.0,0,95,6,False,14,False,True,Frontline bowler (pos 11) with 95 legal balls bowled.
+6354,Spencer Johnson,BOWL_SPECIALIST,HIGH,11,10.52,0.0,13,438,24,False,53,False,True,Frontline bowler (pos 11) with 438 legal balls bowled.
+34485,Sufiyan Muqeem,BOWL_SPECIALIST,HIGH,11,10.59,0.0,23,344,23,False,38,False,True,Frontline bowler (pos 11) with 344 legal balls bowled.
+36982,Suyash Sharma,BOWL_SPECIALIST,HIGH,12,11.38,0.0,0,803,27,False,59,False,True,Frontline bowler (pos 12) with 803 legal balls bowled.
+1701,Swapnil Singh,BOWL_SPECIALIST,MEDIUM,8,8.89,0.111,25,102,6,False,49,False,True,Frontline bowler (pos 8) with 102 legal balls bowled.
+4265,T Natarajan,BOWL_SPECIALIST,HIGH,12,11.0,0.02,2,1052,53,False,69,False,True,Frontline bowler (pos 12) with 1052 legal balls bowled.
+4237,Tabraiz Shamsi,BOWL_SPECIALIST,HIGH,11,10.81,0.0,7,310,17,False,19,False,True,Frontline bowler (pos 11) with 310 legal balls bowled.
+8424,Tanveer Sangha,BOWL_SPECIALIST,HIGH,11,11.0,0.0,4,168,10,False,12,False,True,Frontline bowler (pos 11) with 168 legal balls bowled.
+6389,Tanvir Islam,BOWL_SPECIALIST,MEDIUM,10,9.83,0.0,16,102,4,False,16,False,True,Frontline bowler (pos 10) with 102 legal balls bowled.
+1159,Tendai Chatara,BOWL_SPECIALIST,HIGH,11,10.9,0.0,24,217,11,False,11,False,True,Frontline bowler (pos 11) with 217 legal balls bowled.
+19902,Tim Pringle,BOWL_SPECIALIST,HIGH,8,8.14,0.143,37,132,8,False,9,False,True,Frontline bowler (pos 8) with 132 legal balls bowled.
+278,Tim Southee,BOWL_SPECIALIST,HIGH,10,9.78,0.0,51,827,55,False,37,False,True,Frontline bowler (pos 10) with 827 legal balls bowled.
+33969,Tinotenda Maposa,BOWL_SPECIALIST,HIGH,9,9.17,0.0,45,178,4,False,22,False,True,Frontline bowler (pos 9) with 178 legal balls bowled.
+2320,Trent Boult,BOWL_SPECIALIST,HIGH,8,9.15,0.0,79,1543,73,False,80,False,True,Frontline bowler (pos 8) with 1543 legal balls bowled.
+28915,Trevor Gwandu,BOWL_SPECIALIST,HIGH,11,10.4,0.0,26,151,9,False,14,False,True,Frontline bowler (pos 11) with 151 legal balls bowled.
+6806,Tushar Deshpande,BOWL_SPECIALIST,HIGH,10,10.36,0.0,24,1039,54,False,67,False,True,Frontline bowler (pos 10) with 1039 legal balls bowled.
+2304,Tymal Mills,BOWL_SPECIALIST,HIGH,10,10.17,0.0,13,230,10,False,12,False,True,Frontline bowler (pos 10) with 230 legal balls bowled.
+25048,Umran Malik,BOWL_SPECIALIST,HIGH,11,10.65,0.0,18,564,38,False,61,False,True,Frontline bowler (pos 11) with 564 legal balls bowled.
+3077,Usama Mir,BOWL_SPECIALIST,HIGH,9,9.4,0.0,7,120,5,False,9,False,True,Frontline bowler (pos 9) with 120 legal balls bowled.
+3033,Usman Qadir,BOWL_SPECIALIST,MEDIUM,8,8.4,0.0,7,96,5,False,5,False,True,Frontline bowler (pos 8) with 96 legal balls bowled.
+52338,Usman Tariq,BOWL_SPECIALIST,MEDIUM,11,10.67,0.0,0,64,8,False,13,False,True,Frontline bowler (pos 11) with 64 legal balls bowled.
+8746,Vaibhav Arora,BOWL_SPECIALIST,HIGH,10,10.3,0.0,27,866,47,False,54,False,True,Frontline bowler (pos 10) with 866 legal balls bowled.
+6256,Varun Chakravarthy,BOWL_SPECIALIST,HIGH,11,10.79,0.0,49,2128,134,False,113,False,True,Frontline bowler (pos 11) with 2128 legal balls bowled.
+48557,Vignesh Puthur,BOWL_SPECIALIST,MEDIUM,12,12.0,0.0,0,72,6,False,26,False,True,Frontline bowler (pos 12) with 72 legal balls bowled.
+19315,Vijayakanth Viyaskanth,BOWL_SPECIALIST,MEDIUM,11,10.0,0.0,7,108,2,False,21,False,True,Frontline bowler (pos 11) with 108 legal balls bowled.
+7928,Vinoth Baskaran,BOWL_SPECIALIST,MEDIUM,8,8.67,0.0,9,65,6,False,3,False,True,Frontline bowler (pos 8) with 65 legal balls bowled.
+3771,Vivian Kingma,BOWL_SPECIALIST,MEDIUM,11,11.0,0.0,1,97,6,False,8,False,True,Frontline bowler (pos 11) with 97 legal balls bowled.
+4487,Vyshak Kumar,BOWL_SPECIALIST,HIGH,10,10.35,0.038,16,522,26,False,58,False,True,Frontline bowler (pos 10) with 522 legal balls bowled.
+295,Wayne Parnell,BOWL_SPECIALIST,HIGH,8,7.89,0.389,76,402,22,False,18,False,True,Frontline bowler (pos 8) with 402 legal balls bowled.
+8614,William ORourke,BOWL_SPECIALIST,HIGH,11,11.12,0.0,0,183,11,False,11,False,True,Frontline bowler (pos 11) with 183 legal balls bowled.
+7322,Yash Dayal,BOWL_SPECIALIST,HIGH,10,10.86,0.0,9,872,41,False,49,False,True,Frontline bowler (pos 10) with 872 legal balls bowled.
+41503,Yash Punja,BOWL_SPECIALIST,HIGH,12,11.75,0.0,0,180,9,False,16,False,True,Frontline bowler (pos 12) with 180 legal balls bowled.
+6287,Yash Thakur,BOWL_SPECIALIST,HIGH,12,10.92,0.0,0,528,32,False,62,False,True,Frontline bowler (pos 12) with 528 legal balls bowled.
+31107,Yasin Patel,BOWL_SPECIALIST,MEDIUM,11,10.67,0.0,7,72,4,False,3,False,True,Frontline bowler (pos 11) with 72 legal balls bowled.
+8580,Yudhvir Singh,BOWL_SPECIALIST,HIGH,9,9.56,0.0,16,138,8,False,47,False,True,Frontline bowler (pos 9) with 138 legal balls bowled.
+1612,Yuzvendra Chahal,BOWL_SPECIALIST,HIGH,11,11.04,0.0,10,2138,123,False,107,False,True,Frontline bowler (pos 11) with 2138 legal balls bowled.
+6503,Zahoor Khan,BOWL_SPECIALIST,HIGH,11,10.8,0.0,2,120,4,False,5,False,True,Frontline bowler (pos 11) with 120 legal balls bowled.
+29066,Zakary Foulkes,BOWL_SPECIALIST,HIGH,9,8.58,0.0,66,365,20,False,47,False,True,Frontline bowler (pos 9) with 365 legal balls bowled.
+25030,Zaman Khan,BOWL_SPECIALIST,HIGH,11,10.6,0.0,9,189,7,False,14,False,True,Frontline bowler (pos 11) with 189 legal balls bowled.
+4824,Zeeshan Ansari,BOWL_SPECIALIST,HIGH,11,10.8,0.0,0,204,6,False,29,False,True,Frontline bowler (pos 11) with 204 legal balls bowled.
+4458,AHT Donald,UNRESOLVED,LOW,2,2.0,1.0,24,0,0,False,3,False,False,"Insufficient sample: 3 matches, 24 total deliveries."
+6263,Aaditya AVaradarajan,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,4,False,False,"Insufficient sample: 4 matches, 0 total deliveries."
+4880,Aarif Sheikh,UNRESOLVED,LOW,6,6.0,1.0,3,0,0,False,3,False,False,"Insufficient sample: 3 matches, 3 total deliveries."
+39672,Aarya Desai,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+20802,Abdul Basith,UNRESOLVED,LOW,8,8.0,0.0,1,0,0,False,1,False,False,"Insufficient sample: 1 matches, 1 total deliveries."
+8032,Abdul Malik,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+33441,Abdul Rahman Bhadelia,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+6441,Abdullah Shafique,UNRESOLVED,LOW,3,3.33,1.0,16,0,0,False,3,False,False,"Insufficient sample: 3 matches, 16 total deliveries."
+17918,Abdullah Tarakhail,UNRESOLVED,LOW,7,7.0,1.0,0,18,2,False,3,False,False,"Insufficient sample: 3 matches, 18 total deliveries."
+7498,Abhijeet Tomar,UNRESOLVED,LOW,2,2.0,1.0,8,0,0,False,1,False,False,"Insufficient sample: 1 matches, 8 total deliveries."
+58727,Abhinandan Singh,UNRESOLVED,LOW,10,10.33,0.0,0,58,3,False,32,False,False,"Lower order with borderline evidence: 0 faced, 58 bowled."
+24489,Abhishek Paradkar,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,4,False,False,"Insufficient sample: 4 matches, 0 total deliveries."
+8140,Abid Mangnoo,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,16,False,False,"Insufficient sample: 16 matches, 0 total deliveries."
+27462,Adhitya Shetty,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+4970,Adil Mehmood,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+19050,Adit Gorawara,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+8611,Adithya Ashok,UNRESOLVED,LOW,10,10.0,0.0,0,24,1,False,1,False,False,"Insufficient sample: 1 matches, 24 total deliveries."
+25502,Adnan Idrees,UNRESOLVED,LOW,3,3.0,1.0,6,12,1,False,2,False,False,"Insufficient sample: 2 matches, 18 total deliveries."
+33440,Adwitya Bhargava,UNRESOLVED,LOW,10,10.5,0.0,6,12,1,False,2,False,False,"Insufficient sample: 2 matches, 18 total deliveries."
+3306,Afsar Zazai,UNRESOLVED,LOW,3,3.0,1.0,24,0,0,False,1,False,False,"Insufficient sample: 1 matches, 24 total deliveries."
+7200,Aftab Hussain,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+21192,Ahan Trivedi,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+20310,Ahmed Daniyal,UNRESOLVED,LOW,10,10.0,0.0,11,42,3,False,6,False,False,"Lower order with borderline evidence: 11 faced, 42 bowled."
+3255,Ahmed Raza 1,UNRESOLVED,LOW,8,8.0,0.0,0,12,1,False,1,False,False,"Insufficient sample: 1 matches, 12 total deliveries."
+7553,Ajay Mandal,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,43,False,False,"Insufficient sample: 43 matches, 0 total deliveries."
+5071,Akash Vasisht,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+32401,Akhil Kumar,UNRESOLVED,LOW,8,8.5,0.0,12,24,0,False,3,False,False,"Lower order with borderline evidence: 12 faced, 24 bowled."
+2439,Akila Dananjaya,UNRESOLVED,LOW,9,9.0,0.0,1,36,2,False,4,False,False,"Lower order with borderline evidence: 1 faced, 36 bowled."
+31518,Akshat Raghuwanshi,UNRESOLVED,LOW,6,6.0,1.0,25,0,0,False,14,False,False,"Insufficient sample: 14 matches, 25 total deliveries."
+7354,Al Alis,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+54518,Alester Fleming,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,1,False,False,"Insufficient sample: 1 matches, 0 total deliveries."
+2750,Alex Carey,UNRESOLVED,LOW,5,5.5,1.0,28,0,0,True,8,False,False,"Insufficient sample: 8 matches, 28 total deliveries."
+16559,Alexander Patmore,UNRESOLVED,LOW,5,5.0,1.0,3,0,0,False,1,False,False,"Insufficient sample: 1 matches, 3 total deliveries."
+29862,Ali Hassan,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+4730,Ali Khan,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,4,False,False,"Insufficient sample: 4 matches, 0 total deliveries."
+27460,Ali Naseer,UNRESOLVED,LOW,7,7.0,1.0,14,36,1,False,2,False,False,"Insufficient sample: 2 matches, 50 total deliveries."
+3849,Ali Zaheer,UNRESOLVED,LOW,7,7.0,1.0,0,0,0,False,1,False,False,"Insufficient sample: 1 matches, 0 total deliveries."
+19016,Aliyaan Zahir Mohammad,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+31836,Aman Desai,UNRESOLVED,LOW,5,5.0,1.0,27,0,0,False,2,False,False,"Insufficient sample: 2 matches, 27 total deliveries."
+47523,Aman Rao Perala,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,16,False,False,"Insufficient sample: 16 matches, 0 total deliveries."
+21978,Amir Naqvi,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,5,False,False,"Insufficient sample: 5 matches, 0 total deliveries."
+23408,Amit Kumar,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,15,False,False,"Insufficient sample: 15 matches, 0 total deliveries."
+3839,Amjad Mahboob,UNRESOLVED,LOW,9,9.0,0.0,19,54,2,False,3,False,False,"Lower order with borderline evidence: 19 faced, 54 bowled."
+6202,Anantha Krishna,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+19124,Anas Khan,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+48555,Andre Siddharth,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,14,False,False,"Insufficient sample: 14 matches, 0 total deliveries."
+26832,Aneeshwar Gautam Narendra,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+3835,Anish Param,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+2869,Ankit Rajpoot,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+20114,Ansh Patel,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+8217,Ansh Tandon,UNRESOLVED,LOW,5,5.33,1.0,13,0,0,False,3,False,False,"Insufficient sample: 3 matches, 13 total deliveries."
+7910,Antonius Staal,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+25667,Anunay Singh,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+48551,Aravelly Avanish,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,14,False,False,"Insufficient sample: 14 matches, 0 total deliveries."
+3831,Arjun Mutreja,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+7575,Arpit Guleria,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+6492,Aryan Juyal,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,14,False,False,"Insufficient sample: 14 matches, 0 total deliveries."
+33439,Aryaveer Chaudhry,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+6176,Ashen Bandara,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+26922,Ashish Odedra,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+2373,Ashton Turner,UNRESOLVED,LOW,7,6.67,1.0,20,0,0,False,15,False,False,"Insufficient sample: 15 matches, 20 total deliveries."
+4325,Ashwin Hebbar,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+7279,Atharva Ankolekar,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,2,False,False,"Insufficient sample: 2 matches, 0 total deliveries."
+24754,Atif Mehmood,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+26197,Avinash Singh,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+4486,BR Sharath,UNRESOLVED,LOW,4,4.0,1.0,5,0,0,False,14,False,False,"Insufficient sample: 14 matches, 5 total deliveries."
+6675,Bahir Mehboob,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+4250,Baltej Singh,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+29833,Bashir Ahmad,UNRESOLVED,LOW,11,11.0,0.0,5,18,0,False,6,False,False,"Insufficient sample: 6 matches, 23 total deliveries."
+59853,Ben Fletcher,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+54404,Benjamin Ito,UNRESOLVED,LOW,4,4.0,1.0,8,6,1,False,1,False,False,"Insufficient sample: 1 matches, 14 total deliveries."
+1600,Benny Howell,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+2343,Beuran Hendricks,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+20694,Bhagath Varma,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+24773,Bilal Ahmad Tarin,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+21194,Bilal Akhtar,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+17898,Bilal Sami,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+15303,Bilal Tahir,UNRESOLVED,LOW,6,5.0,1.0,22,0,0,False,3,False,False,"Insufficient sample: 3 matches, 22 total deliveries."
+5561,Brad Wheal,UNRESOLVED,LOW,10,10.5,0.0,12,36,0,False,3,False,False,"Lower order with borderline evidence: 12 faced, 36 bowled."
+7710,Brandon Glover,UNRESOLVED,LOW,9,9.0,0.0,1,12,0,False,4,False,False,"Insufficient sample: 4 matches, 13 total deliveries."
+5835,Carl Mumba,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+45022,Cedric De Lange,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+3479,Chama Milind,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+47542,Charles Hinze,UNRESOLVED,LOW,8,8.0,0.0,0,12,2,False,1,False,False,"Insufficient sample: 1 matches, 12 total deliveries."
+57747,Charlie Cassell,UNRESOLVED,LOW,9,9.0,0.0,3,6,0,False,3,False,False,"Insufficient sample: 3 matches, 9 total deliveries."
+24982,Charlie Tear,UNRESOLVED,LOW,3,3.67,1.0,25,0,0,False,7,False,False,"Insufficient sample: 7 matches, 25 total deliveries."
+4221,Chris Green,UNRESOLVED,LOW,9,9.0,0.0,3,24,0,False,1,False,False,"Insufficient sample: 1 matches, 27 total deliveries."
+7914,Clayton Floyd,UNRESOLVED,LOW,8,9.5,0.0,1,36,1,False,6,False,False,"Lower order with borderline evidence: 1 faced, 36 bowled."
+17430,Conor Olphert,UNRESOLVED,LOW,11,11.0,0.0,0,30,0,False,2,False,False,"Insufficient sample: 2 matches, 30 total deliveries."
+71016,Daksh Kamra,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,14,False,False,"Insufficient sample: 14 matches, 0 total deliveries."
+6085,Dan Pascoe,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+48953,Danish Malewar,UNRESOLVED,LOW,2,2.0,1.0,5,0,0,False,14,False,False,"Insufficient sample: 14 matches, 5 total deliveries."
+8010,Darius D Silva,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+778,Darren Bravo,UNRESOLVED,LOW,4,5.75,0.75,28,0,0,False,4,False,False,"Insufficient sample: 4 matches, 28 total deliveries."
+25554,Darren Walker,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+1556,David Payne,UNRESOLVED,LOW,10,10.5,0.0,5,30,2,False,5,False,False,"Lower order with borderline evidence: 5 faced, 30 bowled."
+1045,David Wiese,UNRESOLVED,LOW,8,7.67,0.333,11,18,0,False,3,False,False,"Insufficient sample: 3 matches, 29 total deliveries."
+3637,Dayyaan Galiem,UNRESOLVED,LOW,11,11.0,0.0,0,24,2,False,2,False,False,"Insufficient sample: 2 matches, 24 total deliveries."
+41541,Declan Suzuki,UNRESOLVED,LOW,9,9.0,0.0,0,0,0,False,1,False,False,"Insufficient sample: 1 matches, 0 total deliveries."
+6101,Devang Bulsara,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+19043,Dhananjay Rao,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+3995,Donald Tiripano,UNRESOLVED,LOW,8,8.5,0.0,3,30,1,False,2,False,False,"Insufficient sample: 2 matches, 33 total deliveries."
+8763,Duan Jansen,UNRESOLVED,LOW,11,11.0,0.0,0,24,1,False,1,False,False,"Insufficient sample: 1 matches, 24 total deliveries."
+6402,Eathan Bosch,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+25507,Edson Silva,UNRESOLVED,LOW,8,6.67,0.333,47,18,0,False,3,False,False,"Lower order with borderline evidence: 47 faced, 18 bowled."
+43965,Emanjot Singh Chahal,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+478,Eoin Morgan,UNRESOLVED,LOW,5,5.5,1.0,41,0,0,False,2,False,False,"Insufficient sample: 2 matches, 41 total deliveries."
+33442,Fahad Choudhary,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+7195,Fahad Nawaz,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+18824,Faran Afzal,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+32705,Faridoon Dawoodzai,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+6226,Fred Klaassen,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,4,False,False,"Insufficient sample: 4 matches, 0 total deliveries."
+741,Garry Park,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+1233,Gary Ballance,UNRESOLVED,LOW,4,4.0,1.0,29,0,0,False,1,False,False,"Insufficient sample: 1 matches, 29 total deliveries."
+23195,Gavin Hoey,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,5,False,False,"Insufficient sample: 5 matches, 0 total deliveries."
+3683,Gavin Main,UNRESOLVED,LOW,10,10.0,0.0,1,37,2,False,4,False,False,"Lower order with borderline evidence: 1 faced, 37 bowled."
+4826,George Garton,UNRESOLVED,LOW,8,8.0,0.0,4,24,1,False,1,False,False,"Insufficient sample: 1 matches, 28 total deliveries."
+7095,Gideon Peters,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+988,Graeme Cremer,UNRESOLVED,LOW,10,10.5,0.0,4,42,2,False,7,False,False,"Lower order with borderline evidence: 4 faced, 42 bowled."
+2299,Gurkeerat Singh Mann,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+27970,Gurnoor Brar,UNRESOLVED,LOW,12,12.0,0.0,0,18,0,False,35,False,False,"Insufficient sample: 35 matches, 18 total deliveries."
+6712,Hamed Khan,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+5668,Hari Nishaanth,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+26911,Harnoor Pannu,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,32,False,False,"Insufficient sample: 32 matches, 0 total deliveries."
+34694,Haroon Shahid,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+6488,Harvik Desai,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,10,False,False,"Insufficient sample: 10 matches, 0 total deliveries."
+25369,Hashim Khalil Gurbaz,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+3260,Hashmatullah Shahidi,UNRESOLVED,LOW,3,3.0,1.0,54,0,0,False,2,False,False,"Insufficient sample: 2 matches, 54 total deliveries."
+6784,Hassan Mohammad,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+27004,Hassnain Shah,UNRESOLVED,LOW,9,9.5,0.0,5,42,1,False,3,False,False,"Lower order with borderline evidence: 5 faced, 42 bowled."
+4663,Henry Nicholls,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,2,False,False,"Insufficient sample: 2 matches, 0 total deliveries."
+36981,Himanshu Sharma,UNRESOLVED,LOW,12,12.0,0.0,0,30,0,False,16,False,False,"Lower order with borderline evidence: 0 faced, 30 bowled."
+29699,Ibrahim Takahashi,UNRESOLVED,LOW,3,3.0,1.0,3,12,1,False,1,False,False,"Insufficient sample: 1 matches, 15 total deliveries."
+3545,Ihsanullah Janat,UNRESOLVED,LOW,2,2.0,1.0,14,0,0,False,1,False,False,"Insufficient sample: 1 matches, 14 total deliveries."
+6432,Ikram Khil,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+27146,Imran Muhammad,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+34118,Irfan Taufiq,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+6048,Ishan Porel,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+6166,Jack Edwards,UNRESOLVED,LOW,8,8.0,0.0,6,12,0,False,3,False,False,"Insufficient sample: 3 matches, 18 total deliveries."
+24978,Jack Jarvis,UNRESOLVED,LOW,8,8.0,0.0,11,22,1,False,7,False,False,"Lower order with borderline evidence: 11 faced, 22 bowled."
+34957,Jafer Chohan,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,5,False,False,"Insufficient sample: 5 matches, 0 total deliveries."
+59045,Jai Moondra,UNRESOLVED,LOW,9,9.5,0.0,3,48,5,False,2,False,False,"Insufficient sample: 2 matches, 51 total deliveries."
+54476,Jake Nairn,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,1,False,False,"Insufficient sample: 1 matches, 0 total deliveries."
+24479,James Coles,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,8,False,False,"Insufficient sample: 8 matches, 0 total deliveries."
+7456,James McCollum,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+3371,Jamie Atkinson,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+27471,Jash Giyanani,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+34527,Jasper John Davidson,UNRESOLVED,LOW,10,10.0,0.0,4,6,0,False,4,False,False,"Insufficient sample: 4 matches, 10 total deliveries."
+3320,Jayant Yadav,UNRESOLVED,LOW,12,12.0,0.0,0,24,0,False,47,False,False,"Insufficient sample: 47 matches, 24 total deliveries."
+8389,Jayden Lennox,UNRESOLVED,LOW,10,10.0,0.0,0,18,1,False,8,False,False,"Insufficient sample: 8 matches, 18 total deliveries."
+33437,Jeevan Santhanam,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+3337,Jeremy Gordon,UNRESOLVED,LOW,9,10.0,0.0,0,18,0,False,4,False,False,"Insufficient sample: 4 matches, 18 total deliveries."
+7197,Jhatavedh Subramanyan,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,17,False,False,"Insufficient sample: 17 matches, 0 total deliveries."
+2531,Joe Root,UNRESOLVED,LOW,5,4.67,1.0,15,12,0,False,3,False,False,"Insufficient sample: 3 matches, 27 total deliveries."
+28911,John Masara,UNRESOLVED,LOW,11,11.0,0.0,0,6,0,False,1,False,False,"Insufficient sample: 1 matches, 6 total deliveries."
+33009,John Turner,UNRESOLVED,LOW,11,11.0,0.0,0,36,1,False,8,False,False,"Lower order with borderline evidence: 0 faced, 36 bowled."
+26728,Jordan Hermann,UNRESOLVED,LOW,6,6.0,1.0,0,0,0,False,5,False,False,"Insufficient sample: 5 matches, 0 total deliveries."
+44293,Jordan Neill,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,6,False,False,"Insufficient sample: 6 matches, 0 total deliveries."
+41863,Josh Hull,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+2293,Junaid Siddiqui,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,4,False,False,"Insufficient sample: 4 matches, 0 total deliveries."
+2418,Justin Greaves,UNRESOLVED,LOW,3,3.5,1.0,20,6,0,False,6,False,False,"Insufficient sample: 6 matches, 26 total deliveries."
+4833,Jyd Goolie,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,2,False,False,"Insufficient sample: 2 matches, 0 total deliveries."
+4080,KC Cariappa,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+4077,KL Shrijith,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,16,False,False,"Insufficient sample: 16 matches, 0 total deliveries."
+2860,KS Bharat,UNRESOLVED,LOW,1,1.5,1.0,7,0,0,False,18,False,False,"Insufficient sample: 18 matches, 7 total deliveries."
+64604,Kalhan Challu,UNRESOLVED,LOW,5,6.5,0.5,11,0,0,False,3,False,False,"Insufficient sample: 3 matches, 11 total deliveries."
+6285,Kamlesh Nagarkoti,UNRESOLVED,LOW,9,9.0,0.0,0,12,0,False,15,False,False,"Insufficient sample: 15 matches, 12 total deliveries."
+66540,Kanishk Chouhan,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,16,False,False,"Insufficient sample: 16 matches, 0 total deliveries."
+8405,Kanwarpal Tathgur,UNRESOLVED,LOW,2,2.0,1.0,8,0,0,False,4,False,False,"Insufficient sample: 4 matches, 8 total deliveries."
+4417,Karan KC,UNRESOLVED,LOW,10,9.67,0.0,2,42,2,False,3,False,False,"Lower order with borderline evidence: 2 faced, 42 bowled."
+20023,Karan Sharma,UNRESOLVED,LOW,1,2.67,1.0,25,0,0,False,3,False,False,"Insufficient sample: 3 matches, 25 total deliveries."
+27059,Karan Sonavale,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+7916,Karima Gore,UNRESOLVED,LOW,3,3.0,1.0,0,18,0,False,3,False,False,"Insufficient sample: 3 matches, 18 total deliveries."
+3040,Kashif Daud,UNRESOLVED,LOW,6,7.0,0.5,2,11,0,False,2,False,False,"Insufficient sample: 2 matches, 13 total deliveries."
+393,Kedar Jadhav,UNRESOLVED,LOW,7,7.0,1.0,10,0,0,False,2,False,False,"Insufficient sample: 2 matches, 10 total deliveries."
+34928,Kendel Fleming,UNRESOLVED,LOW,1,1.0,1.0,12,0,0,False,1,False,False,"Insufficient sample: 1 matches, 12 total deliveries."
+8662,Kevin Kasuza,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+6356,Khaled Ahmed,UNRESOLVED,LOW,11,11.0,0.0,0,24,0,False,1,False,False,"Insufficient sample: 1 matches, 24 total deliveries."
+16565,Kohei Kubota,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,1,False,False,"Insufficient sample: 1 matches, 0 total deliveries."
+62526,Krains Fuletra,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,15,False,False,"Insufficient sample: 15 matches, 0 total deliveries."
+43917,Krish Bhagat,UNRESOLVED,LOW,9,8.67,0.0,21,36,0,False,10,False,False,"Lower order with borderline evidence: 21 faced, 36 bowled."
+8623,Kristian Clarke,UNRESOLVED,LOW,8,8.0,0.0,1,24,1,False,5,False,False,"Insufficient sample: 5 matches, 25 total deliveries."
+20693,Kuldip Yadav,UNRESOLVED,LOW,10,11.0,0.0,0,42,2,False,5,False,False,"Lower order with borderline evidence: 0 faced, 42 bowled."
+6162,Kulwant Khejroliya,UNRESOLVED,LOW,12,11.75,0.0,0,58,3,False,34,False,False,"Lower order with borderline evidence: 0 faced, 58 bowled."
+8251,Kumar Kushagra,UNRESOLVED,LOW,8,6.0,0.6,21,0,0,False,50,False,False,"Insufficient sample: 50 matches, 21 total deliveries."
+35071,Kunal Rathore,UNRESOLVED,LOW,3,3.0,1.0,5,0,0,False,30,False,False,"Insufficient sample: 30 matches, 5 total deliveries."
+4870,Kundai Matigimu,UNRESOLVED,LOW,9,9.0,0.0,0,24,2,False,3,False,False,"Insufficient sample: 3 matches, 24 total deliveries."
+44491,L Manvanth Kumar,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,15,False,False,"Insufficient sample: 15 matches, 0 total deliveries."
+34929,Lachlan Lake,UNRESOLVED,LOW,2,2.0,1.0,4,0,0,False,1,False,False,"Insufficient sample: 1 matches, 4 total deliveries."
+2442,Lahiru Madushanka,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+5953,Lakshan Sandakan,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+7403,Lalit Rajbanshi,UNRESOLVED,LOW,11,11.0,0.0,0,30,2,False,3,False,False,"Lower order with borderline evidence: 0 faced, 30 bowled."
+6172,Lasith Croospulle,UNRESOLVED,LOW,3,3.0,1.0,1,0,0,False,3,False,False,"Insufficient sample: 3 matches, 1 total deliveries."
+8241,Lokesh Bam,UNRESOLVED,LOW,8,8.0,0.0,10,0,0,False,3,False,False,"Insufficient sample: 3 matches, 10 total deliveries."
+17315,Lovepreet bajwa,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+50226,Luke Watson,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+7134,Luvnith Sisodia,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,15,False,False,"Insufficient sample: 15 matches, 0 total deliveries."
+24775,M.Naveed Zadran,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+33095,Macneil Noronha,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+6644,Mahidul Ankon,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+38044,Mahli Beardman,UNRESOLVED,LOW,11,11.0,0.0,0,24,2,False,8,False,False,"Insufficient sample: 8 matches, 24 total deliveries."
+16536,Makoto Taniyama,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,1,False,False,"Insufficient sample: 1 matches, 0 total deliveries."
+2884,Manan Vohra,UNRESOLVED,LOW,1,3.0,1.0,22,0,0,False,3,False,False,"Insufficient sample: 3 matches, 22 total deliveries."
+34969,Manav Suthar,UNRESOLVED,LOW,9,10.6,0.0,2,48,2,False,46,False,False,"Lower order with borderline evidence: 2 faced, 48 bowled."
+36328,Mangesh Yadav,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,16,False,False,"Insufficient sample: 16 matches, 0 total deliveries."
+6494,Manoj Bhandage,UNRESOLVED,LOW,8,8.0,0.0,4,0,0,False,31,False,False,"Insufficient sample: 31 matches, 4 total deliveries."
+7926,Manpreet Singh,UNRESOLVED,LOW,5,5.0,1.0,15,0,0,False,1,False,False,"Insufficient sample: 1 matches, 15 total deliveries."
+4227,Marnus Labuschagne,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+21388,Martin Coetzee,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+67864,Matt Hollard,UNRESOLVED,LOW,11,11.0,0.0,0,48,6,False,2,False,False,"Insufficient sample: 2 matches, 48 total deliveries."
+17418,Matthew Foster,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+6566,Matthew John Fisher,UNRESOLVED,LOW,8,9.67,0.0,0,55,3,False,6,False,False,"Lower order with borderline evidence: 0 faced, 55 bowled."
+6297,Matthew Parkinson,UNRESOLVED,LOW,11,11.0,0.0,5,36,1,False,2,False,False,"Insufficient sample: 2 matches, 41 total deliveries."
+6926,Matty Potts,UNRESOLVED,LOW,11,11.0,0.0,0,24,2,False,6,False,False,"Insufficient sample: 6 matches, 24 total deliveries."
+41110,Mayank Kumar,UNRESOLVED,LOW,6,6.0,1.0,7,0,0,False,1,False,False,"Insufficient sample: 1 matches, 7 total deliveries."
+6461,Mayank Rawat,UNRESOLVED,LOW,8,8.0,0.0,0,0,0,False,14,False,False,"Insufficient sample: 14 matches, 0 total deliveries."
+6900,Michael Jones,UNRESOLVED,LOW,1,2.0,1.0,19,0,0,False,7,False,False,"Insufficient sample: 7 matches, 19 total deliveries."
+25541,Michael Rippon,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+8852,Mihlal Mpongwana,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,4,False,False,"Insufficient sample: 4 matches, 0 total deliveries."
+33114,Milan Rathnayake,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+3238,Milind Kumar,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,4,False,False,"Insufficient sample: 4 matches, 0 total deliveries."
+4604,Mitchell Swepson,UNRESOLVED,LOW,11,11.0,0.0,1,12,0,False,1,False,False,"Insufficient sample: 1 matches, 13 total deliveries."
+17910,Mohammad Akram,UNRESOLVED,LOW,1,2.67,1.0,9,0,0,False,3,False,False,"Insufficient sample: 3 matches, 9 total deliveries."
+3083,Mohammad Ali,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+20229,Mohammad Ali,UNRESOLVED,LOW,11,11.0,0.0,1,43,1,False,9,False,False,"Lower order with borderline evidence: 1 faced, 43 bowled."
+15275,Mohammad Amin,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+6502,Mohammad Boota,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+44003,Mohammad Ibrahim,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+47017,Mohammad Jnr,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+17919,Mohammad Saleem Safi,UNRESOLVED,LOW,10,10.0,0.0,0,19,0,False,1,False,False,"Insufficient sample: 1 matches, 19 total deliveries."
+1104,Mohammad Shahzad,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+21196,Mohammad Waheed,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+8723,Mohammed Faraazuddin,UNRESOLVED,LOW,9,8.67,0.0,8,48,2,False,3,False,False,"Lower order with borderline evidence: 8 faced, 48 bowled."
+71311,Mohd Izhar,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,14,False,False,"Insufficient sample: 14 matches, 0 total deliveries."
+36983,Mohit Rathee,UNRESOLVED,LOW,11,11.0,0.0,2,12,0,False,17,False,False,"Insufficient sample: 17 matches, 14 total deliveries."
+224,Moises Henriques,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+29558,Muhammad Arfan,UNRESOLVED,LOW,8,8.0,0.0,32,48,3,False,2,False,False,"Insufficient sample: 2 matches, 80 total deliveries."
+27373,Muhammad Farooq,UNRESOLVED,LOW,8,8.0,0.0,0,18,1,False,9,False,False,"Insufficient sample: 9 matches, 18 total deliveries."
+15278,Muhammad Kashif,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+6497,Muhammad Usman,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+3304,Munim Shahriar,UNRESOLVED,LOW,1,1.33,1.0,19,0,0,False,3,False,False,"Insufficient sample: 3 matches, 19 total deliveries."
+22189,Musa Ahmad,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,4,False,False,"Insufficient sample: 4 matches, 0 total deliveries."
+37731,Musheer Khan,UNRESOLVED,LOW,8,8.0,0.0,3,12,1,False,32,False,False,"Insufficient sample: 32 matches, 15 total deliveries."
+505,Mushfiqur Rahim,UNRESOLVED,LOW,4,4.0,1.0,9,0,0,False,2,False,False,"Insufficient sample: 2 matches, 9 total deliveries."
+2467,NP Mayavo,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+37559,Nadeem Khan,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+45965,Naman Tiwari,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,14,False,False,"Insufficient sample: 14 matches, 0 total deliveries."
+20175,Nandan Yadav,UNRESOLVED,LOW,10,10.0,0.0,2,6,1,False,3,False,False,"Insufficient sample: 3 matches, 8 total deliveries."
+3546,Nasir Jamal,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+7945,Nasrulla Rana,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+35,Nathan Bracken,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+820,Nathan Coulter Nile,UNRESOLVED,LOW,7,7.0,1.0,2,19,0,False,1,False,False,"Insufficient sample: 1 matches, 21 total deliveries."
+60609,Navin Bidaisee,UNRESOLVED,LOW,9,8.0,0.333,30,48,3,False,3,False,False,"Lower order with borderline evidence: 30 faced, 48 bowled."
+6199,Navin Param,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+4588,Navneet Dhaliwal,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,4,False,False,"Insufficient sample: 4 matches, 0 total deliveries."
+25503,Nawaf Ahmed,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+31834,Neil Anant Karnik,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+2386,Niroshan Dickwella,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+1801,Nitish Kumar,UNRESOLVED,LOW,3,4.25,1.0,20,0,0,False,4,False,False,"Insufficient sample: 4 matches, 20 total deliveries."
+1102,Noor Ali Zadran,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+66103,Noor Rahman,UNRESOLVED,LOW,4,5.0,1.0,17,0,0,False,6,False,False,"Insufficient sample: 6 matches, 17 total deliveries."
+6473,Nuwanidu Fernando,UNRESOLVED,LOW,4,4.0,1.0,12,0,0,False,9,False,False,"Insufficient sample: 9 matches, 12 total deliveries."
+25017,Olivier Elenbaas,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,4,False,False,"Insufficient sample: 4 matches, 0 total deliveries."
+2321,Olly Stone,UNRESOLVED,LOW,10,10.0,0.0,1,24,0,False,1,False,False,"Insufficient sample: 1 matches, 25 total deliveries."
+66513,Omkar Tarmale,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,15,False,False,"Insufficient sample: 15 matches, 0 total deliveries."
+5231,Oshane Thomas,UNRESOLVED,LOW,11,11.0,0.0,0,24,0,False,1,False,False,"Insufficient sample: 1 matches, 24 total deliveries."
+45381,PV Satyanarayan Raju,UNRESOLVED,LOW,11,11.5,0.0,1,24,1,False,16,False,False,"Insufficient sample: 16 matches, 25 total deliveries."
+4248,Pargat Singh,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,4,False,False,"Insufficient sample: 4 matches, 0 total deliveries."
+4251,Peter Moor,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+7909,Philippe Boissevain,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+456,Pieter Seelaar,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+147,Pradeep Sangwan,UNRESOLVED,LOW,8,8.67,0.0,5,54,3,False,3,False,False,"Lower order with borderline evidence: 5 faced, 54 bowled."
+27956,Prashant Solanki,UNRESOLVED,LOW,9,9.5,0.0,0,36,2,False,30,False,False,"Lower order with borderline evidence: 0 faced, 36 bowled."
+6038,Pratham Sing,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+2790,Praveen Dubey,UNRESOLVED,LOW,8,10.0,0.0,20,30,2,False,47,False,False,"Lower order with borderline evidence: 20 faced, 30 bowled."
+6180,Praveen Jayawickrama,UNRESOLVED,LOW,9,10.0,0.0,0,48,2,False,2,False,False,"Insufficient sample: 2 matches, 48 total deliveries."
+2359,Prenelan Subrayen,UNRESOLVED,LOW,10,10.0,0.0,0,42,2,False,8,False,False,"Lower order with borderline evidence: 0 faced, 42 bowled."
+49665,Prince Choudhary,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,14,False,False,"Insufficient sample: 14 matches, 0 total deliveries."
+19098,Pyla Avinash,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,32,False,False,"Insufficient sample: 32 matches, 0 total deliveries."
+6436,Qais Ahmad,UNRESOLVED,LOW,8,9.67,0.0,4,54,1,False,6,False,False,"Lower order with borderline evidence: 4 faced, 54 bowled."
+7692,Qasim Akram,UNRESOLVED,LOW,6,6.0,1.0,15,0,0,False,3,False,False,"Insufficient sample: 3 matches, 15 total deliveries."
+5680,R Sonu Yadav,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+63497,RS Ambrish,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,6,False,False,"Insufficient sample: 6 matches, 0 total deliveries."
+36984,Raghav Goyal,UNRESOLVED,LOW,12,12.0,0.0,0,24,0,False,1,False,False,"Insufficient sample: 1 matches, 24 total deliveries."
+2534,Rahmat Shah,UNRESOLVED,LOW,4,4.0,1.0,6,0,0,False,4,False,False,"Insufficient sample: 4 matches, 6 total deliveries."
+7194,Rahul Bhatia,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+20029,Rahul Buddhi,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+19754,Raja Khan,UNRESOLVED,LOW,9,9.0,0.0,0,24,1,False,1,False,False,"Insufficient sample: 1 matches, 24 total deliveries."
+34991,Rajan Kumar,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,15,False,False,"Insufficient sample: 15 matches, 0 total deliveries."
+19998,Rajvardhan Hangargekar,UNRESOLVED,LOW,11,11.0,0.0,0,36,3,False,30,False,False,"Lower order with borderline evidence: 0 faced, 36 bowled."
+7906,Rakibul Hasan,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+35072,Ramakrishna Ghosh,UNRESOLVED,LOW,8,8.0,0.0,0,18,1,False,23,False,False,"Insufficient sample: 23 matches, 18 total deliveries."
+28019,Ramesh Kumar,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+3673,Ramesh Mendis,UNRESOLVED,LOW,6,7.0,0.5,16,18,1,False,2,False,False,"Insufficient sample: 2 matches, 34 total deliveries."
+60700,Ravi Singh,UNRESOLVED,LOW,6,6.0,1.0,2,0,0,False,13,False,False,"Insufficient sample: 13 matches, 2 total deliveries."
+33067,Ravichandran Smaran,UNRESOLVED,LOW,7,5.67,1.0,25,0,0,False,19,False,False,"Insufficient sample: 19 matches, 25 total deliveries."
+2781,Ravikumar Samarth,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+7761,Ravinderpal Singh,UNRESOLVED,LOW,7,6.67,1.0,24,0,0,False,4,False,False,"Insufficient sample: 4 matches, 24 total deliveries."
+7003,Rayyan Pathan,UNRESOLVED,LOW,2,2.33,1.0,16,0,0,False,4,False,False,"Insufficient sample: 4 matches, 16 total deliveries."
+71727,Razaullah Razaullah,UNRESOLVED,LOW,9,9.0,0.0,1,38,1,False,3,False,False,"Lower order with borderline evidence: 1 faced, 38 bowled."
+19535,Rejaur Rahman Raja,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+29709,Reo Sakurano,UNRESOLVED,LOW,6,6.0,1.0,0,0,0,False,1,False,False,"Insufficient sample: 1 matches, 0 total deliveries."
+26861,Reuben Wilson,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,2,False,False,"Insufficient sample: 2 matches, 0 total deliveries."
+17909,Riaz Hassan,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+2983,Richmond Mutumbami,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+3651,Ricky Bhui,UNRESOLVED,LOW,3,4.0,1.0,9,0,0,False,14,False,False,"Insufficient sample: 14 matches, 9 total deliveries."
+8040,Ripal Patel,UNRESOLVED,LOW,8,7.86,0.429,46,0,0,False,7,False,False,"Lower order with borderline evidence: 46 faced, 0 bowled."
+24767,Ripon Mondol,UNRESOLVED,LOW,11,11.0,0.0,1,36,0,False,6,False,False,"Lower order with borderline evidence: 1 faced, 36 bowled."
+27987,Rishiv Joshi,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,4,False,False,"Insufficient sample: 4 matches, 0 total deliveries."
+31529,Robin Minz,UNRESOLVED,LOW,7,6.25,1.0,19,0,0,False,30,False,False,"Insufficient sample: 30 matches, 19 total deliveries."
+3253,Rohan Mustafa,UNRESOLVED,LOW,10,10.0,0.0,0,24,1,False,1,False,False,"Insufficient sample: 1 matches, 24 total deliveries."
+7925,Rohan Rangarajan,UNRESOLVED,LOW,1,1.0,1.0,11,0,0,False,1,False,False,"Insufficient sample: 1 matches, 11 total deliveries."
+31205,Ruchit Ahir,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,1,False,False,"Insufficient sample: 1 matches, 0 total deliveries."
+33443,Sabir Ali,UNRESOLVED,LOW,11,11.0,0.0,0,48,3,False,3,False,False,"Lower order with borderline evidence: 0 faced, 48 bowled."
+2862,Sachin Baby,UNRESOLVED,LOW,3,3.0,1.0,0,0,0,False,14,False,False,"Insufficient sample: 14 matches, 0 total deliveries."
+2296,Safyaan Sharif,UNRESOLVED,LOW,10,10.0,0.0,6,33,0,False,7,False,False,"Lower order with borderline evidence: 6 faced, 33 bowled."
+7155,Sahan Arachchige,UNRESOLVED,LOW,5,5.0,1.0,3,0,0,False,3,False,False,"Insufficient sample: 3 matches, 3 total deliveries."
+6774,Samarth Vyas,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+25231,Samay Shrivastava,UNRESOLVED,LOW,11,11.0,0.0,19,42,1,False,3,False,False,"Lower order with borderline evidence: 19 faced, 42 bowled."
+1109,Samiullah Shinwari,UNRESOLVED,LOW,8,8.0,0.0,0,0,0,False,1,False,False,"Insufficient sample: 1 matches, 0 total deliveries."
+8727,Sanchit Sharma,UNRESOLVED,LOW,7,7.0,1.0,5,6,0,False,2,False,False,"Insufficient sample: 2 matches, 11 total deliveries."
+4887,Sandeep Lamichhane,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+5665,Sanjay Yadav,UNRESOLVED,LOW,8,8.0,0.0,2,12,0,False,1,False,False,"Insufficient sample: 1 matches, 14 total deliveries."
+7304,Sanvir Singh,UNRESOLVED,LOW,7,7.67,0.5,21,0,0,False,19,False,False,"Insufficient sample: 19 matches, 21 total deliveries."
+6984,Saqib Zulfiqar,UNRESOLVED,LOW,7,7.0,1.0,0,12,0,False,4,False,False,"Insufficient sample: 4 matches, 12 total deliveries."
+7534,Sarthak Ranjan,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,14,False,False,"Insufficient sample: 14 matches, 0 total deliveries."
+68280,Satvik Deswal,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,16,False,False,"Insufficient sample: 16 matches, 0 total deliveries."
+27962,Saurav Chauhan,UNRESOLVED,LOW,4,5.67,0.667,15,0,0,False,15,False,False,"Insufficient sample: 15 matches, 15 total deliveries."
+8329,Scott Currie,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+6705,Scott McKechnie,UNRESOLVED,LOW,6,8.2,0.6,26,0,0,True,5,False,False,"Insufficient sample: 5 matches, 26 total deliveries."
+24217,Sebastiaan Braat,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+7140,Senuran Muthusamy,UNRESOLVED,LOW,8,8.0,0.0,9,42,1,False,5,False,False,"Lower order with borderline evidence: 9 faced, 42 bowled."
+20316,Shahab Alam,UNRESOLVED,LOW,11,11.0,0.0,1,12,0,False,3,False,False,"Insufficient sample: 3 matches, 13 total deliveries."
+1829,Shahbaz Nadeem,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+5749,Shahid Wasif,UNRESOLVED,LOW,8,8.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+31156,Shahrukh Quddus,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+6697,Shams Mulani,UNRESOLVED,LOW,9,10.0,0.0,1,30,0,False,14,False,False,"Lower order with borderline evidence: 1 faced, 30 bowled."
+6034,Shane Snater,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+344,Sheldon Jackson,UNRESOLVED,LOW,7,6.6,1.0,26,0,0,True,5,False,False,"Insufficient sample: 5 matches, 26 total deliveries."
+22515,Shiran Fernando,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+7548,Shivalik Sharma,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,14,False,False,"Insufficient sample: 14 matches, 0 total deliveries."
+56800,Shivam Shukla,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,1,False,False,"Insufficient sample: 1 matches, 0 total deliveries."
+43774,Shivam Singh,UNRESOLVED,LOW,7,7.0,1.0,3,0,0,False,14,False,False,"Insufficient sample: 14 matches, 3 total deliveries."
+5838,Shohidul Islam,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+65598,Shoma Slater,UNRESOLVED,LOW,11,11.0,0.0,0,0,0,False,1,False,False,"Insufficient sample: 1 matches, 0 total deliveries."
+28020,Shubham Garhwal,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+2872,Siddarth Kaul,UNRESOLVED,LOW,10,10.0,0.0,0,24,0,False,1,False,False,"Insufficient sample: 1 matches, 24 total deliveries."
+4983,Sikander Zulfiqar,UNRESOLVED,LOW,7,7.0,1.0,3,0,0,False,3,False,False,"Insufficient sample: 3 matches, 3 total deliveries."
+6188,Simi Singh,UNRESOLVED,LOW,9,9.5,0.0,0,12,0,False,2,False,False,"Insufficient sample: 2 matches, 12 total deliveries."
+27364,Simranjeet Kang,UNRESOLVED,LOW,8,9.33,0.0,9,51,4,False,9,False,False,"Lower order with borderline evidence: 9 faced, 51 bowled."
+2412,Smit Patel,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,4,False,False,"Insufficient sample: 4 matches, 0 total deliveries."
+49268,Sohaib Khan,UNRESOLVED,LOW,3,3.0,1.0,7,0,0,False,2,False,False,"Insufficient sample: 2 matches, 7 total deliveries."
+3775,Sompal Kami,UNRESOLVED,LOW,9,8.67,0.0,9,44,0,False,3,False,False,"Lower order with borderline evidence: 9 faced, 44 bowled."
+2996,Stephanus Myburgh,UNRESOLVED,LOW,1,1.5,1.0,28,0,0,False,2,False,False,"Insufficient sample: 2 matches, 28 total deliveries."
+4802,Stephen Doheny,UNRESOLVED,LOW,3,3.0,1.0,21,0,0,False,7,False,False,"Insufficient sample: 7 matches, 21 total deliveries."
+3882,Steven Taylor,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,4,False,False,"Insufficient sample: 4 matches, 0 total deliveries."
+6408,Subhranshu Senapati,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+3876,Sufyan Mehmood,UNRESOLVED,LOW,5,5.0,1.0,5,6,0,False,3,False,False,"Insufficient sample: 3 matches, 11 total deliveries."
+35133,Sufyan Yousuf,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+24772,Suliman Safi,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+16498,Sultan Ahmad,UNRESOLVED,LOW,8,9.0,0.0,4,45,1,False,2,False,False,"Insufficient sample: 2 matches, 49 total deliveries."
+8266,Sumit Kumar 1,UNRESOLVED,LOW,8,7.5,0.25,24,20,0,False,14,False,False,"Lower order with borderline evidence: 24 faced, 20 bowled."
+6203,Surendran Chandramohan,UNRESOLVED,LOW,2,3.67,1.0,25,0,0,False,3,False,False,"Insufficient sample: 3 matches, 25 total deliveries."
+7269,Sushant Mishra,UNRESOLVED,LOW,10,10.0,0.0,3,38,2,False,28,False,False,"Lower order with borderline evidence: 3 faced, 38 bowled."
+45989,Swastik Chikara,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,30,False,False,"Insufficient sample: 30 matches, 0 total deliveries."
+757,Sybrand Engelbrecht,UNRESOLVED,LOW,3,5.33,0.667,10,0,0,False,4,False,False,"Insufficient sample: 4 matches, 10 total deliveries."
+21777,Tafadzwa Tsiga,UNRESOLVED,LOW,7,7.0,1.0,24,0,0,False,6,False,False,"Insufficient sample: 6 matches, 24 total deliveries."
+2249,Taijul Islam,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+21787,Takudzwanashe Kaitano,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+21786,Tanaka Chivanga,UNRESOLVED,LOW,7,9.0,0.5,0,27,0,False,5,False,False,"Insufficient sample: 5 matches, 27 total deliveries."
+6654,Tanay Thyagarajan,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,14,False,False,"Insufficient sample: 14 matches, 0 total deliveries."
+6036,Tejas Baroka,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+58135,Tejasvi Dahiya,UNRESOLVED,LOW,7,7.0,1.0,15,0,0,False,14,False,False,"Insufficient sample: 14 matches, 15 total deliveries."
+6795,Terrance Hinds,UNRESOLVED,LOW,10,10.5,0.0,3,26,1,False,11,False,False,"Insufficient sample: 11 matches, 29 total deliveries."
+19307,Tharindu Rathnayake,UNRESOLVED,LOW,8,8.0,0.0,15,24,2,False,3,False,False,"Lower order with borderline evidence: 15 faced, 24 bowled."
+19892,Theo van Woerkom,UNRESOLVED,LOW,9,9.0,0.0,0,6,0,False,1,False,False,"Insufficient sample: 1 matches, 6 total deliveries."
+3144,Thomas Curran,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,15,False,False,"Insufficient sample: 15 matches, 0 total deliveries."
+5566,Tom Abell,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+4665,Tom Blundell,UNRESOLVED,LOW,2,2.0,1.0,19,0,0,False,2,False,False,"Insufficient sample: 2 matches, 19 total deliveries."
+232,Tom Cooper,UNRESOLVED,LOW,4,4.5,1.0,22,12,0,False,2,False,False,"Insufficient sample: 2 matches, 34 total deliveries."
+18206,Tom Hartley,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,7,False,False,"Insufficient sample: 7 matches, 0 total deliveries."
+3955,Tom Helm,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+26530,Treveen Mathew,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,2,False,False,"Insufficient sample: 2 matches, 0 total deliveries."
+32244,Tripurana Vijay,UNRESOLVED,LOW,10,10.0,0.0,0,12,0,False,29,False,False,"Insufficient sample: 29 matches, 12 total deliveries."
+16606,Tsuyoshi Takada,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,1,False,False,"Insufficient sample: 1 matches, 0 total deliveries."
+6919,Tyrone Kane,UNRESOLVED,LOW,7,7.0,1.0,11,0,0,False,2,False,False,"Insufficient sample: 2 matches, 11 total deliveries."
+6428,Upendra Yadav,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,17,False,False,"Insufficient sample: 17 matches, 0 total deliveries."
+21182,Utkarsh Srivastava,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,4,False,False,"Insufficient sample: 4 matches, 0 total deliveries."
+49670,Vansh Bedi,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,12,False,False,"Insufficient sample: 12 matches, 0 total deliveries."
+1028,Varun Aaron,UNRESOLVED,LOW,11,11.0,0.0,0,30,2,False,2,False,False,"Insufficient sample: 2 matches, 30 total deliveries."
+26836,Vicky Ostwal,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,30,False,False,"Insufficient sample: 30 matches, 0 total deliveries."
+8664,Victor Nyauchi,UNRESOLVED,LOW,10,10.0,0.0,3,24,3,False,1,False,False,"Insufficient sample: 1 matches, 27 total deliveries."
+31227,Vidhwath Kaverappa,UNRESOLVED,LOW,12,12.0,0.0,0,24,2,False,14,False,False,"Insufficient sample: 14 matches, 24 total deliveries."
+33438,Vihaan Maheshwar,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+43996,Vihaan Malhotra,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,16,False,False,"Insufficient sample: 16 matches, 0 total deliveries."
+33351,Vikas Puri,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+21283,Vikas Sharma,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+27071,Vinayak Shukla,UNRESOLVED,LOW,5,6.0,1.0,23,0,0,True,3,False,False,"Insufficient sample: 3 matches, 23 total deliveries."
+28908,Vincent Masekesa,UNRESOLVED,LOW,11,11.0,0.0,4,19,1,False,3,False,False,"Insufficient sample: 3 matches, 23 total deliveries."
+58864,Vishal Nishad,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,14,False,False,"Insufficient sample: 14 matches, 0 total deliveries."
+39638,Vishen Halambage,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+27391,Vishnu Sukumaran,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+43967,Vishwanath Singh,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,14,False,False,"Insufficient sample: 14 matches, 0 total deliveries."
+6449,Wafadar Momand,UNRESOLVED,LOW,11,11.0,0.0,0,31,0,False,2,False,False,"Insufficient sample: 2 matches, 31 total deliveries."
+47314,Wafiullah Tarakhil,UNRESOLVED,LOW,4,4.0,1.0,17,0,0,False,3,False,False,"Insufficient sample: 3 matches, 17 total deliveries."
+8007,Waheed Ahmed,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+21197,Wajid Shah,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+7937,Wasim Ali,UNRESOLVED,LOW,4,4.0,1.0,2,0,0,False,2,False,False,"Insufficient sample: 2 matches, 2 total deliveries."
+29706,Wataru Miyauchi,UNRESOLVED,LOW,7,7.0,1.0,0,0,0,False,1,False,False,"Insufficient sample: 1 matches, 0 total deliveries."
+5827,Wes Agar,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+1791,Wesley Barresi,UNRESOLVED,LOW,6,6.0,1.0,9,0,0,False,8,False,False,"Insufficient sample: 8 matches, 9 total deliveries."
+3462,Writtick Chatterjee,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+3135,Yannic Cariah,UNRESOLVED,LOW,10,10.0,0.0,4,36,1,False,2,False,False,"Insufficient sample: 2 matches, 40 total deliveries."
+6351,Yarra Prithviraj,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+26909,Yash Dhull,UNRESOLVED,LOW,4,5.0,1.0,23,0,0,False,18,False,False,"Insufficient sample: 18 matches, 23 total deliveries."
+26916,Yasir Mohammad,UNRESOLVED,LOW,9,10.0,0.0,9,48,1,False,4,False,False,"Lower order with borderline evidence: 9 faced, 48 bowled."
+20077,Yuvraj Chaudhary,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,14,False,False,"Insufficient sample: 14 matches, 0 total deliveries."
+3563,Zahir Khan,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+6727,Zak Crawley,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,3,False,False,"Insufficient sample: 3 matches, 0 total deliveries."
+3562,Zia-ur-Rehman Akbar,UNRESOLVED,LOW,10,10.0,0.0,0,0,0,False,0,False,False,"Insufficient sample: 0 matches, 0 total deliveries."
+7241,Ziaur Rahman,UNRESOLVED,LOW,11,11.0,0.0,0,48,5,False,3,False,False,"Lower order with borderline evidence: 0 faced, 48 bowled."
+35102,Zikria Islam,UNRESOLVED,LOW,4,5.5,1.0,10,18,0,False,3,False,False,"Insufficient sample: 3 matches, 28 total deliveries."
+36551,Zishan Motara,UNRESOLVED,LOW,10,10.0,0.0,4,6,0,False,3,False,False,"Insufficient sample: 3 matches, 10 total deliveries."
+17937,Zubaid Akbari,UNRESOLVED,LOW,3,3.0,1.0,7,0,0,False,3,False,False,"Insufficient sample: 3 matches, 7 total deliveries."
+47371,Zuhaid Zubair,UNRESOLVED,LOW,8,8.0,0.0,2,18,1,False,3,False,False,"Insufficient sample: 3 matches, 20 total deliveries."

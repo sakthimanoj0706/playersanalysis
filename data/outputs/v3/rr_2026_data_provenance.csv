@@ -1,0 +1,10 @@
+table_name,record_count,source,status
+rr_2026_matches.csv,16,matches_ipl_t20i.csv,DATASET_DERIVED
+rr_2026_batting_stats.csv,18,ball_by_ball_ipl_t20i.csv,DATASET_DERIVED
+rr_2026_bowling_stats.csv,13,ball_by_ball_ipl_t20i.csv,DATASET_DERIVED
+rr_2026_player_appearances.csv,26,playing_eleven_ipl_t20i.csv,DATASET_DERIVED
+rr_2026_phase_analysis.csv,3,ball_by_ball_ipl_t20i.csv,DATASET_DERIVED
+rr_2026_player_contribution.csv,20,ball_by_ball_ipl_t20i.csv,DATASET_DERIVED
+rr_2026_team_strengths.csv,5,Derived Season Analytics,DATASET_DERIVED
+rr_2026_team_weaknesses.csv,5,Derived Season Analytics,DATASET_DERIVED
+rr_2026_user_brief.csv,30,Project Owner Brief,USER_PROVIDED_UNVERIFIED

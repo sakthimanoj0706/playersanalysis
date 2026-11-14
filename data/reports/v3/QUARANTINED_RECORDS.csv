@@ -1,0 +1,64 @@
+match_id,comp_id,comp_name,match_format,season,match_date,home_team,away_team,result,win_team_id,deliveries_count,has_super_over,is_dls,status,quarantine_reason
+13612,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022,2022-02-11,Australia,Sri Lanka,Australia Won by 20 runs (D/L method),20.0,242,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+15410,1439,South Africa in India T20I Series 2022,T20I,2022,2022-06-19,India,South Africa,Match Abandoned,,22,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+15546,1452,Bangladesh in West Indies T20I Series 2022,T20I,2022,2022-07-02,West Indies,Bangladesh,No Result,,82,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+16754,1543,Afghanistan in Ireland T20I Series 2022,T20I,2022,2022-08-17,Ireland,Afghanistan,Ireland Won by 7 Wickets(D/L Method),23.0,134,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+17395,1584,Australia in India T20I Series 2022,T20I,2022,2022-09-23,India,Australia,India Won by 6 Wickets,18.0,97,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+17765,1611,England in Australia T20I Series 2022,T20I,2022,2022-10-14,Australia,England,No Result,,100,False,True,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+18532,1646,India in New Zealand T20I Series 2022/23,T20I,2022/23,2022-11-22,New Zealand,India,Match Tied,,179,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+20226,1715,IPL 2023,T20,2023,2023-05-03,Lucknow Super Giants,Chennai Super Kings,Match Abandoned,,118,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+21586,1715,IPL 2023,T20,2023,2023-05-29,Chennai Super Kings,Gujarat Titans,Chennai Super Kings Won by 5 wickets  (DLS method),1.0,216,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+21070,1769,Ireland in Bangladesh T20I Series 2023,T20I,2023,2023-03-27,Bangladesh,Ireland,Bangladesh Won by 22 Runs (DLS method),21.0,174,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+21071,1769,Ireland in Bangladesh T20I Series 2023,T20I,2023,2023-03-29,Bangladesh,Ireland,Bangladesh Won by 77 Runs,21.0,213,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+21406,1799,New Zealand in Pakistan T20I Series 2023,T20I,2023,2023-04-20,Pakistan,New Zealand,Match Abandoned,,118,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+28046,2047,India in South Africa T20I Series 2023,T20I,2023,2023-12-12,South Africa,India,South Africa won by 5 wickets (DLS),19.0,209,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+28333,2058,Bangladesh in New Zealand T20I Series 2023,T20I,2023,2023-12-29,New Zealand,Bangladesh,No Result,,66,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+29984,2062,Australia in New Zealand T20I Series 2024,T20I,2024,2024-02-25,New Zealand,Australia,Australia Won by 27 Runs (DLS method),20.0,129,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+31281,2193,IPL 2024,T20,2024,2024-05-13,Gujarat Titans,Kolkata Knight Riders,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+31284,2193,IPL 2024,T20,2024,2024-05-16,Sunrisers Hyderabad,Gujarat Titans,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+31288,2193,IPL 2024,T20,2024,2024-05-19,Rajasthan Royals,Kolkata Knight Riders,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+31707,2350,New Zealand in Pakistan T20I Series 2024,T20I,2024,2024-04-18,Pakistan,New Zealand,No Result,,2,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+32610,2354,Pakistan in England T20I Series 2024,T20I,2024,2024-05-22,England,Pakistan,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+32612,2354,Pakistan in England T20I Series 2024,T20I,2024,2024-05-28,England,Pakistan,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+37354,2387,Pakistan in Australia T20I Series 2024,T20I,2024,2024-11-14,Australia,Pakistan,Australia Won by 29 runs,20.0,86,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+32622,2398,Netherlands Tri-Nation T20I Series 2024,T20I,2024,2024-05-20,Ireland,Scotland,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+38797,2442,Pakistan in South Africa T20I Series 2024,T20I,2024,2024-12-14,South Africa,Pakistan,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+36098,2453,South Africa in West Indies T20I Series 2024,T20I,2024,2024-08-28,West Indies,South Africa,West Indies Won by 8 wickets (DLS),28.0,141,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+37353,2455,England in West Indies T20I Series 2024,T20I,2024,2024-11-18,West Indies,England,No Result,,30,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+34428,2542,India in Sri Lanka T20I Series 2024,T20I,2024,2024-07-28,Sri Lanka,India,India Won by 7 wickets(D/L Method),18.0,168,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+36564,2548,Australia in England T20I Series 2024,T20I,2024,2024-09-15,England,Australia,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+35424,2605,Netherlands Tri-Nation T20I Series [Aug 2024] 2024,T20I,2024,2024-08-24,Canada,United States Of America,No Result,,125,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+36208,2628,South Africa in England T20I Series 2025,T20I,2025,2025-09-10,England,South Africa,South Africa Won by 14 runs(DLS method),19.0,80,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+36210,2628,South Africa in England T20I Series 2025,T20I,2025,2025-09-14,England,South Africa,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+40727,2725,IPL 2025,T20,2025,2025-04-18,Royal Challengers Bengaluru,Punjab Kings,Punjab Kings Won by 5 wickets,4.0,160,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+40737,2725,IPL 2025,T20,2025,2025-04-26,Kolkata Knight Riders,Punjab Kings,No Result,,130,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+40748,2725,IPL 2025,T20,2025,2025-05-05,Sunrisers Hyderabad,Delhi Capitals,No Result,,123,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+40749,2725,IPL 2025,T20,2025,2025-05-06,Mumbai Indians,Gujarat Titans,Gujarat Titans Won by 3 wickets (DLS Method),3508.0,244,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+40751,2725,IPL 2025,T20,2025,2025-05-08,Punjab Kings,Delhi Capitals,No Result,,63,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+40761,2725,IPL 2025,T20,2025,2025-05-17,Royal Challengers Bengaluru,Kolkata Knight Riders,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+39809,2793,Pakistan in New Zealand T20I Series 2025,T20I,2025,2025-03-18,New Zealand,Pakistan,New Zealand Won by 5 wickets,17.0,176,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+39983,2801,Ireland in Zimbabwe T20I Series 2025,T20I,2025,2025-02-22,Zimbabwe,Ireland,No Result,,56,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+39985,2801,Ireland in Zimbabwe T20I Series 2025,T20I,2025,2025-02-25,Zimbabwe,Ireland,No Result,,113,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+41502,2873,West Indies in Ireland T20I Series 2025,T20I,2025,2025-06-12,Ireland,West Indies,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+41503,2873,West Indies in Ireland T20I Series 2025,T20I,2025,2025-06-14,Ireland,West Indies,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+41851,2906,West Indies in South Africa T20I Series 2026,T20I,2026,2026-02-01,South Africa,West Indies,West Indies Won by 6 runs(DLS Method),28.0,121,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+41975,2915,India in Australia T20I Series 2025,T20I,2025,2025-10-29,Australia,India,No Result,,60,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+41979,2915,India in Australia T20I Series 2025,T20I,2025,2025-11-08,Australia,India,No Result,,29,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+42030,2921,South Africa in India T20I Series 2025,T20I,2025,2025-12-17,India,South Africa,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+45390,3126,India in England T20I Series 2026,T20I,2026,2026-07-01,England,India,No Result,,122,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+45908,3163,Netherlands in Bangladesh T20I Series 2025,T20I,2025,2025-09-03,Bangladesh,Netherlands,No Result,,114,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+46008,3174,England in Ireland T20I series 2025,T20I,2025,2025-09-19,Ireland,England,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+46311,3197,Australia in New Zealand T20I Series 2025,T20I,2025,2025-10-03,Australia,New Zealand,No Result,,13,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+46747,3226,England in New Zealand T20I Series 2025,T20I,2025,2025-10-18,New Zealand,England,No Result,,124,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+46749,3226,England in New Zealand T20I Series 2025,T20I,2025,2025-10-23,New Zealand,England,No Result,,25,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+47968,3282,West Indies in New Zealand T20I Series 2025,T20I,2025,2025-11-10,New Zealand,West Indies,No Result,,41,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+50136,3298,IPL 2026,T20,2026,2026-04-06,Kolkata Knight Riders,Punjab Kings,No Result,,22,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+50137,3298,IPL 2026,T20,2026,2026-04-07,Rajasthan Royals,Mumbai Indians,Rajasthan Royals Won by 27 runs,3.0,144,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+50371,3298,IPL 2026,T20,2026,2026-05-07,Lucknow Super Giants,Royal Challengers Bengaluru,Lucknow Super Giants Won by 9 runs (DLS method),3509.0,241,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+48513,3317,Pakistan in Sri Lanka T20I Series 2026,T20I,2026,2026-01-10,Sri Lanka,Pakistan,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+48610,3334,England in Sri Lanka T20I Series 2026,T20I,2026,2026-01-30,Sri Lanka,England,England Won by 11 runs (DLS method),22.0,194,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+48611,3334,England in Sri Lanka T20I Series 2026,T20I,2026,2026-02-01,Sri Lanka,England,England Won by 6 wickets(DLS Method),22.0,233,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+50189,3433,New Zealand in Bangladesh T20I Series 2026,T20I,2026,2026-04-29,Bangladesh,New Zealand,Match Abandoned,,0,False,False,EXCLUDED,NO_BALL_BY_BALL_DATA
+50190,3433,New Zealand in Bangladesh T20I Series 2026,T20I,2026,2026-05-02,Bangladesh,New Zealand,New Zealand Won by 6 wickets (DLS Method),17.0,161,False,True,FLAGGED_DLS,DLS_REVISED_TARGET
+50408,3450,West Indies in India T20I Series 2026,T20I,2026,2026-10-17,India,West Indies,No Result,,55,False,False,QUARANTINED_ABANDONED,ABANDONED_OR_NO_RESULT
+54711,3739,India in Japan T20I Match 2026,T20I,2026,2026-09-22,Japan,India,India Won by 2 runs,18.0,64,False,True,FLAGGED_DLS,DLS_REVISED_TARGET

@@ -1,0 +1,22 @@
+parameter,value,currency_unit,source_type,verification_status,notes
+retention_deadline,17-Nov-2026,Date,USER_PROVIDED_UNVERIFIED,USER_PROVIDED_UNVERIFIED,IPL 2027 Retention Deadline
+mini_auction_date,16-Dec-2026,Date,USER_PROVIDED_UNVERIFIED,USER_PROVIDED_UNVERIFIED,Mini-Auction Date
+auction_location,Goa,Location,USER_PROVIDED_UNVERIFIED,USER_PROVIDED_UNVERIFIED,Auction Venue
+squad_size_current,25,Players,USER_PROVIDED_UNVERIFIED,EXTERNAL_SOURCE_VERIFIED,Full squad capacity reached
+overseas_slots_occupied,8,Slots,USER_PROVIDED_UNVERIFIED,EXTERNAL_SOURCE_VERIFIED,All 8 overseas slots filled
+carried_over_purse,2.65,Crore INR,USER_PROVIDED_UNVERIFIED,USER_PROVIDED_UNVERIFIED,Remaining purse from 2026
+possible_cap_increase,5.00,Crore INR,USER_PROVIDED_UNVERIFIED,UNVERIFIED_SCENARIO,Anticipated salary cap growth
+base_salary_cap,125.00,Crore INR,USER_PROVIDED_UNVERIFIED,EXTERNAL_SOURCE_VERIFIED,IPL 2026 Salary Cap
+expanded_salary_cap,130.00,Crore INR,USER_PROVIDED_UNVERIFIED,UNVERIFIED_SCENARIO,Potential 2027 Cap Scenario
+proposed_release_hetmyer,11.00,Crore INR,USER_PROVIDED_UNVERIFIED,USER_PROVIDED_UNVERIFIED,Release candidate 1
+proposed_release_deshpande,6.50,Crore INR,USER_PROVIDED_UNVERIFIED,USER_PROVIDED_UNVERIFIED,Release candidate 2
+proposed_release_sandeep,4.00,Crore INR,USER_PROVIDED_UNVERIFIED,USER_PROVIDED_UNVERIFIED,Release candidate 3
+proposed_release_milne,2.40,Crore INR,USER_PROVIDED_UNVERIFIED,USER_PROVIDED_UNVERIFIED,Release candidate 4
+proposed_release_sen_pretorius,1.05,Crore INR,USER_PROVIDED_UNVERIFIED,USER_PROVIDED_UNVERIFIED,Release candidates 5 & 6
+total_salary_freed,24.95,Crore INR,USER_PROVIDED_UNVERIFIED,USER_PROVIDED_UNVERIFIED,Sum of 5 candidate releases
+total_purse_scenario_base,27.60,Crore INR,USER_PROVIDED_UNVERIFIED,DERIVED_SCENARIO,Carried purse (2.65) + Freed (24.95)
+total_purse_scenario_cap_inc,32.60,Crore INR,USER_PROVIDED_UNVERIFIED,DERIVED_SCENARIO,Base scenario (27.60) + Cap increase (5.00)
+budget_target_indian_pacer,10-13,Crore INR,USER_PROVIDED_UNVERIFIED,PLANNING_RANGE,Priority 1 allocation
+budget_target_overseas_death,8-11,Crore INR,USER_PROVIDED_UNVERIFIED,PLANNING_RANGE,Priority 2 allocation
+budget_target_middle_spinner,3-5,Crore INR,USER_PROVIDED_UNVERIFIED,PLANNING_RANGE,Priority 3 allocation
+budget_target_domestic_finisher,2-3,Crore INR,USER_PROVIDED_UNVERIFIED,PLANNING_RANGE,Priority 4 allocation

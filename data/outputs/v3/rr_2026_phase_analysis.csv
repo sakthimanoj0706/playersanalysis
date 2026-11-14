@@ -1,0 +1,4 @@
+phase,overs_range,team_batting_runs,team_balls_faced,team_batting_sr,team_wickets_lost,team_boundaries_hit,team_bowling_legal_balls,team_bowler_wickets_taken,team_bowling_dot_pct
+Powerplay,1-6,1079,576,187.33,24,192,577,28,42.63
+Middle,7-15,1262,825,152.97,41,169,840,44,27.14
+Death,16-20,611,374,163.37,34,77,407,26,32.19

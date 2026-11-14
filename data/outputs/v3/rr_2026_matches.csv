@@ -1,0 +1,17 @@
+match_id,match_number,match_date,stage,stage_category,home_team,away_team,toss_win_team_id,toss_opted,result,win_team_id,is_win,man_of_the_match
+50127,3,2026-03-30,League,League Stage,Rajasthan Royals,Chennai Super Kings,3.0,Fielding,Rajasthan Royals Won by 8 wickets,3.0,True,7312
+50133,9,2026-04-04,League,League Stage,Gujarat Titans,Rajasthan Royals,3.0,Batting,Rajasthan Royals Won by 6 runs,3.0,True,7503
+50137,13,2026-04-07,League,League Stage,Rajasthan Royals,Mumbai Indians,2.0,Fielding,Rajasthan Royals Won by 27 runs,3.0,True,6819
+50140,16,2026-04-10,League,League Stage,Rajasthan Royals,Royal Challengers Bengaluru,3.0,Fielding,Rajasthan Royals Won by 6 wickets,3.0,True,50284
+50342,21,2026-04-13,League,League Stage,Sunrisers Hyderabad,Rajasthan Royals,3.0,Fielding,Sunrisers Hyderabad Won by 57 runs,242.0,False,25132
+50349,28,2026-04-19,League,League Stage,Kolkata Knight Riders,Rajasthan Royals,3.0,Batting,Kolkata Knight Riders Won by 4 wickets,8.0,False,6256
+50353,32,2026-04-22,League,League Stage,Lucknow Super Giants,Rajasthan Royals,3509.0,Fielding,Rajasthan Royals Won by 40 runs,3.0,True,152
+50357,36,2026-04-25,League,League Stage,Rajasthan Royals,Sunrisers Hyderabad,242.0,Fielding,Sunrisers Hyderabad Won by 5 wickets,242.0,False,4117
+50361,40,2026-04-28,League,League Stage,Punjab Kings,Rajasthan Royals,3.0,Fielding,Rajasthan Royals Won by 6 wickets,3.0,True,8182
+50364,43,2026-05-01,League,League Stage,Rajasthan Royals,Delhi Capitals,3.0,Batting,Delhi Capitals Won by 7 wickets,7.0,False,953
+50373,52,2026-05-09,League,League Stage,Rajasthan Royals,Gujarat Titans,3.0,Fielding,Gujarat Titans Won by 77 runs,3508.0,False,4722
+50383,62,2026-05-17,League,League Stage,Delhi Capitals,Rajasthan Royals,7.0,Fielding,Delhi Capitals Won by 5 wickets,7.0,False,829
+50385,64,2026-05-19,League,League Stage,Rajasthan Royals,Lucknow Super Giants,3.0,Fielding,Rajasthan Royals Won by 7 wickets,3.0,True,50284
+50390,69,2026-05-24,League,League Stage,Mumbai Indians,Rajasthan Royals,2.0,Fielding,Rajasthan Royals Won by 30 runs,3.0,True,0
+50943,72,2026-05-27,Eliminator,Playoffs,Sunrisers Hyderabad,Rajasthan Royals,242.0,Fielding,Rajasthan Royals Won by 47 runs,3.0,True,50284
+50944,73,2026-05-29,Qualifier,Playoffs,Gujarat Titans,Rajasthan Royals,3.0,Batting,Gujarat Titans Won by 7 wickets,3508.0,False,6288
