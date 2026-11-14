@@ -1,6 +1,6 @@
 dimension,metric,empirical_evidence,sample_size,source_label
 Death-Over Pace Defense,High Concession Rate at the Death,"Burger, Sandeep Sharma, and Tushar Deshpande struggled with execution in overs 16-20; Sandeep took only 5 wickets in 6 games; Deshpande took only 4 wickets in 7 games.",13 matches,DATASET_DERIVED
 Overseas Finisher Underperformance,Shimron Hetmyer Contract Concentration vs Output,"Hetmyer produced only 78 runs in 8 matches at SR 113.04, avg 13.00, occupying ₹11.00 Cr salary cap.",69 balls faced,DATASET_DERIVED
-Indian Fast Bowling Depth,Over-reliance on Jofra Archer,"Behind Archer (25 wkts), domestic pacers Deshpande (4 wkts) and Sandeep (5 wkts) contributed only 9 wickets combined across 13 match appearances.",42.4 overs combined,DATASET_DERIVED
+Indian Fast Bowling Depth,Over-reliance on Jofra Archer,"Behind Archer (25 wkts), domestic pacers Deshpande (4 wkts in 7 games) and Sandeep (5 wkts in 6 games) contributed only 9 wickets combined across 13 match appearances.",42.4 overs combined,DATASET_DERIVED
 Middle-Over Spin Penetration,Ravi Bishnoi Limited Exposure & Match Count,Bishnoi featured in only 9 of 16 matches (11 wickets); lacked an economical partner to choke run-flow while Jadeja took only 10 wickets in 14 matches.,156 legal balls,DATASET_DERIVED
 Injury & Replacement Instability,Sam Curran Groin Injury & Temporary Contract,"Sam Curran missed the season due to injury; replacement Dasun Shanaka produced only 63 runs in 7 games at 12.60 avg, causing overseas composition conflicts.",7 matches,CONFLICTING_STATUS
