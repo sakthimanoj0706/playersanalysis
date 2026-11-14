@@ -8,6 +8,7 @@ from src.models.v3_wicket_hazard import V3WicketHazardModel
 
 def test_wicket_hazard_evaluation():
     """Verify wicket hazard estimation produces valid probabilities and calibration metrics."""
+    np.random.seed(42)
     records = []
     for m in range(1, 15):
         for b in range(50):

@@ -20,6 +20,7 @@ import numpy as np
 import pandas as pd
 
 from src.classification.role_classifier import CANONICAL_NAME_MAP
+from src.identity.player_identity import PlayerIdentityResolver
 
 
 class V3RoleClassifier:
@@ -45,6 +46,12 @@ class V3RoleClassifier:
         mapping_df: Optional[pd.DataFrame] = None
     ) -> pd.DataFrame:
         """Classify all players in the dataset into the 5 mutually exclusive states."""
+        # 0. Canonical Player Identity Resolution
+        resolver = PlayerIdentityResolver()
+        p11_df = resolver.resolve_playing_eleven(p11_df)
+        bbb_df = resolver.resolve_deliveries(bbb_df)
+        if mapping_df is not None:
+            mapping_df = resolver.resolve_mapping(mapping_df)
         
         # 1. Batting order profile from playing eleven
         p11_valid = p11_df[p11_df['batting_order'].notna() & (p11_df['batting_order'] > 0)].copy()
@@ -124,9 +131,13 @@ class V3RoleClassifier:
         def _get_name(pid):
             if pid in CANONICAL_NAME_MAP:
                 return CANONICAL_NAME_MAP[pid]
+            res_name = resolver.resolve_name(pid)
+            if res_name and not res_name.startswith("Player_"):
+                return res_name
             return name_map.get(pid, f"Player_{pid}")
 
         master['player_name'] = master['player_id'].map(_get_name)
+        master['canonical_player_id'] = master['player_id']
 
         # 6. Apply Five-State Classification Rules
         roles = []
@@ -216,7 +227,7 @@ class V3RoleClassifier:
         master['eligible_for_bowl_leaderboard'] = master['v3_role'].isin(['BOWL_SPECIALIST', 'BOWL_PRIMARY_AR'])
 
         cols = [
-            'player_id', 'player_name', 'v3_role', 'role_confidence',
+            'player_id', 'canonical_player_id', 'player_name', 'v3_role', 'role_confidence',
             'modal_order', 'mean_order', 'top7_ratio', 'balls_faced',
             'legal_balls_bowled', 'wickets', 'is_wicketkeeper', 'match_count',
             'eligible_for_bat_leaderboard', 'eligible_for_bowl_leaderboard',

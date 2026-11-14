@@ -10,13 +10,13 @@ def test_zero_target_leakage_and_bounds():
     """Ensure pressure score stays bounded [0, 10] and is independent of future outcomes."""
     df = pd.DataFrame([
         # High batting crisis: 6 wickets down, cluster of 2 wickets, new batter (1 ball faced)
-        {'wickets_fallen_before': 6, 'wickets_in_last_12_legal_balls': 2, 'batter_balls_faced': 1, 'consecutive_dots': 3, 'dots_in_last_12_legal_balls': 8, 'innings_phase': 'death', 'runs': 6, 'is_wicket': False},
+        {'wickets_fallen_before': 6, 'batting_wickets_remaining': 4, 'wickets_in_last_12_legal_balls': 2, 'batter_balls_faced': 1, 'consecutive_dots': 3, 'dots_in_last_12_legal_balls': 8, 'boundaries_in_last_12_legal_balls': 2, 'innings_phase': 'death', 'runs': 6, 'is_wicket': False},
         # Low batting crisis: 0 wickets down, 40 balls faced
-        {'wickets_fallen_before': 0, 'wickets_in_last_12_legal_balls': 0, 'batter_balls_faced': 40, 'consecutive_dots': 0, 'dots_in_last_12_legal_balls': 2, 'innings_phase': 'powerplay', 'runs': 0, 'is_wicket': True},
+        {'wickets_fallen_before': 0, 'batting_wickets_remaining': 10, 'wickets_in_last_12_legal_balls': 0, 'batter_balls_faced': 40, 'consecutive_dots': 0, 'dots_in_last_12_legal_balls': 2, 'boundaries_in_last_12_legal_balls': 0, 'innings_phase': 'powerplay', 'runs': 0, 'is_wicket': True},
         # High bowling defensive: 9 wickets in hand, death phase, 3 boundaries in last 12
-        {'batting_wickets_remaining': 9, 'innings_phase': 'death', 'boundaries_in_last_12_legal_balls': 3, 'dots_in_last_12_legal_balls': 1, 'runs': 0, 'is_wicket': True},
+        {'wickets_fallen_before': 1, 'batting_wickets_remaining': 9, 'wickets_in_last_12_legal_balls': 0, 'batter_balls_faced': 30, 'consecutive_dots': 0, 'dots_in_last_12_legal_balls': 1, 'boundaries_in_last_12_legal_balls': 3, 'innings_phase': 'death', 'runs': 0, 'is_wicket': True},
         # Low bowling defensive: 2 wickets in hand, middle phase, 0 boundaries in last 12
-        {'batting_wickets_remaining': 2, 'innings_phase': 'middle', 'boundaries_in_last_12_legal_balls': 0, 'dots_in_last_12_legal_balls': 10, 'runs': 4, 'is_wicket': False},
+        {'wickets_fallen_before': 8, 'batting_wickets_remaining': 2, 'wickets_in_last_12_legal_balls': 0, 'batter_balls_faced': 30, 'consecutive_dots': 0, 'dots_in_last_12_legal_balls': 10, 'boundaries_in_last_12_legal_balls': 0, 'innings_phase': 'middle', 'runs': 4, 'is_wicket': False},
     ])
 
     res = V3PressureModel.apply_dual_pressure(df)

@@ -1,0 +1,101 @@
+{
+  "manifest_title": "SupeRR Intelligence V3 Universal Player Ranking Single Source of Truth",
+  "generation_timestamp_utc": "2026-11-14T15:44:47.678129Z",
+  "authoritative_artifacts": {
+    "top_10_batters_csv": "data/outputs/v3/TOP_10_BATTERS.csv",
+    "top_10_bowlers_csv": "data/outputs/v3/TOP_10_BOWLERS.csv",
+    "all_batter_metrics_csv": "data/outputs/v3/ALL_BATTER_METRICS.csv",
+    "all_bowler_metrics_csv": "data/outputs/v3/ALL_BOWLER_METRICS.csv",
+    "player_eligibility_csv": "data/outputs/v3/PLAYER_ELIGIBILITY.csv",
+    "threshold_sensitivity_csv": "data/outputs/v3/RANKING_THRESHOLD_SENSITIVITY.csv",
+    "weight_sensitivity_csv": "data/outputs/v3/RANKING_WEIGHT_SENSITIVITY.csv",
+    "player_identity_crosswalk_csv": "data/outputs/v3/PLAYER_IDENTITY_CROSSWALK.csv"
+  },
+  "source_datasets": {
+    "ball_by_ball": "data/ball_by_ball_ipl_t20i.csv",
+    "playing_eleven": "data/playing_eleven_ipl_t20i.csv",
+    "competition_mapping": "data/competition_team_player_mapping_ipl_t20i.csv",
+    "features_pressure_parquet": "data/features/ball_by_ball_with_pressure.parquet"
+  },
+  "governance": {
+    "git_baseline_commit": "537777c8436fd647a484a49cfbfa30b843c98a1c",
+    "git_branch": "fix/v3-ranking-integrity-001",
+    "ranking_script_version": "V3.1_INTEGRITY_REPAIRED",
+    "pressure_formula_version": "V3_PROVISIONAL_HEURISTIC",
+    "identity_crosswalk_version": "V3.1_CANONICAL",
+    "ranking_score_status": "PROVISIONAL_FIXED_WEIGHT_SCORE",
+    "threshold_governance": "PROVISIONAL_ELIGIBILITY_CONFIRMED",
+    "ranking_approval_status": "PROVISIONAL_RELEASE_CANDIDATE"
+  },
+  "configurations": {
+    "pri_weights": {
+      "maintenance": 0.35,
+      "absolute": 0.35,
+      "consistency": 0.2,
+      "sample": 0.1
+    },
+    "sensitivity_configs": {
+      "balanced_default": {
+        "maintenance": 0.35,
+        "absolute": 0.35,
+        "consistency": 0.2,
+        "sample": 0.1
+      },
+      "maintenance_heavy": {
+        "maintenance": 0.5,
+        "absolute": 0.25,
+        "consistency": 0.15,
+        "sample": 0.1
+      },
+      "absolute_heavy": {
+        "maintenance": 0.25,
+        "absolute": 0.5,
+        "consistency": 0.15,
+        "sample": 0.1
+      },
+      "consistency_heavy": {
+        "maintenance": 0.3,
+        "absolute": 0.3,
+        "consistency": 0.3,
+        "sample": 0.1
+      },
+      "equal_weights": {
+        "maintenance": 0.25,
+        "absolute": 0.25,
+        "consistency": 0.25,
+        "sample": 0.25
+      }
+    },
+    "default_batting_thresholds": {
+      "crisis_balls": 40,
+      "total_balls": 120,
+      "crisis_matches": 5,
+      "norm_balls": 30
+    },
+    "default_bowling_thresholds": {
+      "crisis_balls": 120,
+      "total_legal_balls": 120,
+      "crisis_matches": 5,
+      "norm_balls": 30
+    },
+    "shrinkage_configuration": {
+      "batting_method": "FIXED_K_NORMAL_SHRINKAGE",
+      "prior_k": 25.0,
+      "batting_prior_mean": 140.2,
+      "batting_prior_pop_count": 39,
+      "bowling_method": "BETA_BINOMIAL_EMPIRICAL_BAYES",
+      "bowling_prior_alpha": 5.6652,
+      "bowling_prior_beta": 94.3348,
+      "bowling_prior_mean": 5.67,
+      "bowling_prior_pop_count": 130
+    },
+    "bootstrap_configuration": {
+      "method": "MATCH_CLUSTERED_BOOTSTRAP",
+      "cluster_unit": "match_id",
+      "iterations": 2000,
+      "confidence_level": 0.95,
+      "random_state": 42,
+      "min_matches": 3
+    }
+  }
+}

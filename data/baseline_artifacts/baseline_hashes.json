@@ -1,0 +1,11 @@
+{
+  "data/outputs/v3/TOP_10_BATTERS.csv": "8fc942dd3b6f240c5517e12d2a09a8ffb4530b04f52db2fb09c3fb487e3dff62",
+  "data/outputs/v3/TOP_10_BOWLERS.csv": "03351e3563cfeab11cebca7902fc32817886f4f5916113b14514fe1ba987484e",
+  "data/outputs/v3/ALL_BATTER_METRICS.csv": "ef53bf601da9b7d7fc375d0904df6b4244df59e47bd8b4150c93d4baf608aba1",
+  "data/outputs/v3/ALL_BOWLER_METRICS.csv": "70f7a6d56c7e6b8f958fc896c17079254459e306bdfb34e571951ff91a79963b",
+  "data/outputs/v3/PLAYER_ELIGIBILITY.csv": "868a7c978c8b15ce2264ee06882f4aa0048d4c98eea3e5b23ce622d794f44a82",
+  "data/outputs/FINAL_TOP_10_BATTERS.csv": "0c859cd9d0a93717f9a014e7381ca03e14fbe8c2e524550f5ed904d1365af444",
+  "data/outputs/FINAL_TOP_10_BOWLERS.csv": "276525854074ce1ca40fe7196dc8a64b45fe6c598764946edb81e599f6db932d",
+  "data/outputs/ALL_BATTER_RANKINGS.csv": "c4381c8ee2eed0872aa58e6a206d3563e6d81d29c2107af0eaf2d203bc4c0e95",
+  "data/outputs/ALL_BOWLER_RANKINGS.csv": "0a3c7426befdd5546c6bc3aa732e361533c4aaaaf5abbc2676d49d5b9a1a0c49"
+}

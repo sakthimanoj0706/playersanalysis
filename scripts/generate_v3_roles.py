@@ -1,7 +1,13 @@
 """Generate V3 player roles on the full dataset."""
+import sys
 from pathlib import Path
 import logging
 import pandas as pd
+
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 from src.ingestion.adapters.rr_data_adapter import RRDataAdapter
 from src.classification.v3_role_classifier import V3RoleClassifier
 
