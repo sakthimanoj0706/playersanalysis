@@ -1,0 +1,13 @@
+﻿issue_id,table,field,affected_rows,details,recommended_handling
+Q01,matches.csv,match_id / ball_by_ball.csv,16,All 16 IPL/T20I matches without ball-by-ball rows are marked Match Abandoned.,Keep in match reference table; exclude from delivery/player performance calculations.
+Q02,playing_eleven.csv,match_id + team_id + player_id,35,"35 repeated keys and 40 excess rows across matches 13613, 21176 and 28962; batting_order differs.",Do not count these as separate player appearances; resolve or deduplicate with an explicit rule.
+Q03,ball_by_ball.csv,is_four / is_six,23,20 rows have runs=4 with is_four=false; 3 rows have runs=6 with is_six=false.,Retain both original fields; ask RR whether the flag represents batter-hit boundaries only.
+Q04,ball_by_ball.csv,extras1_runs,200999,"This field maps one-to-one to extras_type as a category code: 1=Overstep, 2=wide, 3=legbyes, 4=byes, 5=other, 6=None, 7=Penalty.",Treat as an enum/code; never sum it as runs.
+Q05,ball_by_ball.csv,extras_2_runs,36,Only 36 rows are non-zero (20 values of 1 and 16 values of 4); semantics not supplied.,Do not infer total extras or team scores until RR supplies field definition.
+Q06,ball_by_ball.csv,bowl_speed,77861,"77,861 values (38.7%) are zero.",Treat zero as missing/unknown unless RR confirms zero is a real speed.
+Q07,ball_by_ball.csv,innings,38,Six matches contain innings 3 and 4; likely Super Over deliveries.,Keep separate from regular innings unless the methodology explicitly scores Super Overs.
+Q08,ball_by_ball.csv,dismissed_player_id,1,One wicket event is marked Retire Out but has no dismissed_player_id.,Keep as unresolved; exclude from player-level dismissed-batter attribution until confirmed.
+Q09,playing_eleven.csv,is_played / batting_order,11,11 rows are is_played=true with blank batting_order.,Do not infer batting position from blank values; inspect impact/substitute semantics.
+Q10,matches.csv,revised_target,860,revised_target is blank in 860 of 883 match rows.,Do not use as the only source of chase targets.
+Q11,matches.csv,first_inn_revised_overs / second_inn_revised_overs,858,Each revised-overs field is blank in 858 rows; units are not defined in the pack.,Confirm whether these values are overs or balls before using them.
+Q12,ball_by_ball.csv,delivery_ist_time,200999,Sample values include a UTC suffix although the field name contains IST.,Do not use for local-time calculations until timezone semantics are confirmed.

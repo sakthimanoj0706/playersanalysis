@@ -1,0 +1,66 @@
+bowler_id,player_name,bowling_type,matches,legal_balls,wickets,dot_balls,overs,dot_pct,bowler_strike_rate,suitability_index,suitability
+6256,Varun Chakravarthy,Right-arm Leg-Break,95,2128,135,806,354.4,37.88,15.76,82.7,82.7
+4722,Rashid Khan,Right-arm Leg-Break,122,2747,153,938,457.5,34.15,17.95,77.8,77.8
+4900,Wanindu Hasaranga,Right-arm Leg-Break,91,2034,133,682,339.0,33.53,15.29,75.5,75.5
+3644,Kuldeep Yadav,Left-arm Chinaman,89,1914,118,631,319.0,32.97,16.22,69.0,69.0
+5979,Abrar Ahmed,Right-arm Leg-Break,35,764,46,320,127.2,41.88,16.61,63.7,63.7
+2876,Axar Patel,Slow left-arm orthodox,136,2670,120,939,445.0,35.17,22.25,63.6,63.6
+6450,Mujeeb Ur Rahman,Right-arm offbreak,38,820,48,343,136.4,41.83,17.08,63.4,63.4
+34485,Sufiyan Muqeem,Left-arm Chinaman,17,344,23,150,57.2,43.6,14.96,63.0,63.0
+1612,Yuzvendra Chahal,Right-arm Leg-Break,98,2138,124,624,356.2,29.19,17.24,62.6,62.6
+5837,Mahedi Hasan,Right-arm offbreak,41,914,50,383,152.2,41.9,18.28,62.2,62.2
+7967,Noor Ahmad,Left-arm Chinaman,70,1467,85,504,244.3,34.36,17.26,60.6,60.6
+4101,Mitchell Santner,Slow left-arm orthodox,83,1737,87,633,289.3,36.44,19.97,60.4,60.4
+2417,Akeal Hosein,Slow left-arm orthodox,79,1693,79,659,282.1,38.92,21.43,60.0,60.0
+2490,Mohammad Nawaz,Slow left-arm orthodox,52,1004,66,345,167.2,34.36,15.21,58.7,58.7
+8380,Mohammad Rishad Hossain,Right-arm Leg-Break,49,1018,61,348,169.4,34.18,16.69,54.6,54.6
+479,Adil Rashid,Right-arm Leg-Break,61,1324,72,443,220.4,33.46,18.39,53.7,53.7
+2636,Adam Zampa,Right-arm Leg-Break,52,1152,71,350,192.0,30.38,16.23,51.7,51.7
+499,Shakib Al Hasan,Slow left-arm orthodox,17,340,20,131,56.4,38.53,17.0,50.3,50.3
+19316,Maheesh Theekshana,Right-arm offbreak,99,2264,93,759,377.2,33.52,24.34,50.1,50.1
+6512,Michael Bracewell,Right-arm offbreak,41,678,39,238,113.0,35.1,17.38,49.1,49.1
+781,Sunil Narine,Right-arm offbreak,67,1530,64,559,255.0,36.54,23.91,47.9,47.9
+7690,Saim Ayub,Right-arm offbreak,32,510,26,196,85.0,38.43,19.62,47.6,47.6
+1596,Moeen Ali,Right-arm offbreak,58,806,45,271,134.2,33.62,17.91,47.4,47.4
+2526,Ish Sodhi,Right-arm Leg-Break,59,1175,63,365,195.5,31.06,18.65,46.8,46.8
+24017,Brian Bennett,Right-arm offbreak,16,132,7,53,22.0,40.15,18.86,46.5,46.5
+722,Liam Dawson,Slow left-arm orthodox,22,415,25,144,69.1,34.7,16.6,45.8,45.8
+23,Piyush Chawla,Right-arm Leg-Break,27,576,35,185,96.0,32.12,16.46,44.4,44.4
+4658,Nasum Ahmed,Slow left-arm orthodox,29,600,25,241,100.0,40.17,24.0,43.3,43.3
+3282,Mehidy Hasan Miraz,Right-arm offbreak,17,234,14,82,39.0,35.04,16.71,43.2,43.2
+5577,Sai Kishore,Slow left-arm orthodox,27,465,33,136,77.3,29.25,14.09,42.8,42.8
+7741,Gareth Delany,Right-arm Leg-Break,35,552,30,181,92.0,32.79,18.4,41.1,41.1
+6272,William Jacks,Right-arm offbreak,35,414,23,138,69.0,33.33,18.0,40.7,40.7
+4229,George Linde,Slow left-arm orthodox,17,283,15,99,47.1,34.98,18.87,39.9,39.9
+1944,Keshav Maharaj,Slow left-arm orthodox,30,598,32,191,99.4,31.94,18.69,39.7,39.7
+4823,Washington Sundar,Right-arm offbreak,51,787,39,251,131.1,31.89,20.18,39.1,39.1
+32862,Allah Ghazanfar,Right-arm offbreak,15,305,16,104,50.5,34.1,19.06,38.4,38.4
+4219,Krunal Pandya,Slow left-arm orthodox,66,1257,56,384,209.3,30.55,22.45,37.9,37.9
+7325,Harpreet Brar,Slow left-arm orthodox,38,667,32,218,111.1,32.68,20.84,37.5,37.5
+395,Karn Sharma,Right-arm Leg-Break,21,363,24,100,60.3,27.55,15.12,35.8,35.8
+3276,Gudakesh Motie,Slow left-arm orthodox,38,738,34,236,123.0,31.98,21.71,35.5,35.5
+4812,Harry Tector,Right-arm offbreak,16,230,11,80,38.2,34.78,20.91,35.2,35.2
+4926,Shadab Khan,Right-arm Leg-Break,42,832,36,268,138.4,32.21,23.11,34.2,34.2
+4391,Liam Livingstone,Right-arm Leg-Break,49,594,32,169,99.0,28.45,18.56,34.0,34.0
+2687,Roston Chase,Right-arm offbreak,45,836,35,272,139.2,32.54,23.89,33.2,33.2
+2463,Ryan Burl,Right-arm Leg-Break,22,318,18,93,53.0,29.25,17.67,32.9,32.9
+838,Glenn Maxwell,Right-arm offbreak,52,639,29,199,106.3,31.14,22.03,32.2,32.2
+2984,Sikandar Raza,Right-arm offbreak,52,1092,43,348,182.0,31.87,25.4,31.9,31.9
+6284,Anukul Roy,Slow left-arm orthodox,21,311,14,102,51.5,32.8,22.21,30.6,30.6
+1107,Mohammad Nabi,Right-arm offbreak,44,680,29,214,113.2,31.47,23.45,30.5,30.5
+4815,Benjamin White,Right-arm Leg-Break,20,390,18,122,65.0,31.28,21.67,30.0,30.0
+4237,Tabraiz Shamsi,Left-arm Chinaman,16,310,17,87,51.4,28.06,18.24,29.7,29.7
+6161,Rahul Chahar,Right-arm Leg-Break,38,794,32,251,132.2,31.61,24.81,29.3,29.3
+3727,Matthew Short,Right-arm offbreak,15,151,9,41,25.1,27.15,16.78,28.3,28.3
+6683,Mayank Markande,Right-arm Leg-Break,22,433,21,120,72.1,27.71,20.62,26.4,26.4
+46066,Vipraj Nigam,Right-arm Leg-Break,18,288,13,85,48.0,29.51,22.15,24.8,24.8
+7574,Kumar Kartikeya Singh,Slow left-arm orthodox,16,282,12,85,47.0,30.14,23.5,23.5,23.5
+305,Ravichandran Ashwin,Right-arm offbreak,61,1404,47,427,234.0,30.41,29.87,23.3,23.3
+36982,Suyash Sharma,Right-arm Leg-Break,39,803,27,249,133.5,31.01,29.74,19.1,19.1
+1101,George Dockrell,Slow left-arm orthodox,15,186,8,52,31.0,27.96,23.25,19.1,19.1
+6423,Riyan Parag,Right-arm offbreak,24,260,10,71,43.2,27.31,26.0,14.1,14.1
+4639,Wellington Masakadza,Slow left-arm orthodox,27,480,15,149,80.0,31.04,32.0,12.2,12.2
+58134,Digvesh Rathi,Right-arm Leg-Break,23,547,19,149,91.1,27.24,28.79,12.0,12.0
+3605,Aiden Markram,Right-arm offbreak,42,397,13,110,66.1,27.71,30.54,8.4,8.4
+7472,Shahbaz Ahmed,Slow left-arm orthodox,42,536,18,139,89.2,25.93,29.78,7.9,7.9
+6281,Abhishek Sharma,Slow left-arm orthodox,43,427,13,118,71.1,27.63,32.85,4.5,4.5

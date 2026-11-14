@@ -1,0 +1,23 @@
+# Python bytecode and environments
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+venv/
+.venv/
+env/
+.env
+
+# Streamlit local state
+.streamlit/
+
+# Temporary data / checkpoints
+*.tmp
+*.bak
+data/scratch/
+data/outputs_backup*/
+
+# OS generated files
+.DS_Store
+Thumbs.db

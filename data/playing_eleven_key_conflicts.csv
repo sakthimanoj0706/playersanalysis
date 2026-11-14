@@ -1,0 +1,76 @@
+﻿match_id,team_id,player_id,batting_order,is_played,is_captain,is_wk,is_impact,is_impact_off,comp_id,comp_name,match_format,season
+13613,20,3539,1,true,false,false,0,0,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022
+13613,20,3539,3,true,false,false,0,0,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022
+13613,20,838,1,true,false,false,0,0,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022
+13613,20,838,4,true,false,false,0,0,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022
+13613,20,250,2,true,true,false,0,0,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022
+13613,20,250,4,true,true,false,0,0,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022
+13613,20,2639,2,true,false,false,0,0,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022
+13613,20,2639,6,true,false,false,0,0,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022
+13613,20,4736,3,true,false,false,0,0,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022
+13613,20,4736,5,true,false,false,0,0,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022
+13613,20,223,5,true,false,false,0,0,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022
+13613,20,223,6,true,false,false,0,0,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022
+13613,27,2436,1,true,true,false,0,0,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022
+13613,27,2436,6,true,true,false,0,0,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022
+13613,27,6931,1,true,false,false,0,0,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022
+13613,27,6931,3,true,false,false,0,0,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022
+13613,27,2351,2,true,false,false,0,0,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022
+13613,27,2351,4,true,false,false,0,0,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022
+13613,27,1100,2,true,false,true,0,0,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022
+13613,27,1100,5,true,false,true,0,0,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022
+13613,27,4902,3,true,false,false,0,0,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022
+13613,27,4902,5,true,false,false,0,0,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022
+13613,27,4895,4,true,false,false,0,0,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022
+13613,27,4895,6,true,false,false,0,0,1345,Sri Lanka in Australia T20I Series 2022,T20I,2022
+21176,17,4106,1,true,false,false,0,0,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023
+21176,17,4106,4,true,false,false,0,0,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023
+21176,17,25534,1,true,false,false,0,0,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023
+21176,17,25534,4,true,false,false,0,0,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023
+21176,17,3323,2,true,false,false,0,0,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023
+21176,17,3323,6,true,false,false,0,0,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023
+21176,17,3700,2,true,false,false,0,0,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023
+21176,17,3700,5,true,false,false,0,0,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023
+21176,17,2246,3,true,true,true,0,0,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023
+21176,17,2246,6,true,true,true,0,0,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023
+21176,17,3374,3,true,false,false,0,0,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023
+21176,17,3374,5,true,false,false,0,0,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023
+21176,27,6931,1,true,false,false,0,0,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023
+21176,27,6931,3,true,false,false,0,0,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023
+21176,27,3672,1,true,false,true,0,0,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023
+21176,27,3672,2,true,false,true,0,0,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023
+21176,27,4895,2,true,false,false,0,0,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023
+21176,27,4895,5,true,false,false,0,0,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023
+21176,27,1481,3,true,false,false,0,0,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023
+21176,27,1481,4,true,false,false,0,0,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023
+21176,27,2407,4,true,false,false,0,0,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023
+21176,27,2407,5,true,false,false,0,0,1719,Sri Lanka in New Zealand T20I Series 2023,T20I,2023
+28962,18,126,1,true,true,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,18,126,2,true,true,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,18,6819,1,true,false,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,18,6819,2,true,false,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,18,6819,4,true,false,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,18,4708,2,true,false,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,18,4708,3,true,false,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,18,4708,6,true,false,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,18,2258,3,true,false,true,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,18,2258,5,true,false,true,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,18,47,3,true,false,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,18,47,5,true,false,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,18,4755,4,true,false,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,18,4755,6,true,false,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,78,6674,1,true,false,true,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,78,6674,2,true,false,true,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,78,1107,1,true,false,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,78,1107,3,true,false,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,78,1107,5,true,false,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,78,2214,1,true,false,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,78,2214,3,true,false,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,78,2214,4,true,false,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,78,6448,2,true,true,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,78,6448,5,true,true,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,78,5808,3,true,false,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,78,5808,4,true,false,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,78,5808,6,true,false,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,78,6676,4,true,false,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
+28962,78,6676,6,true,false,false,0,0,2059,Afghanistan in India T20I Series 2024,T20I,2024
