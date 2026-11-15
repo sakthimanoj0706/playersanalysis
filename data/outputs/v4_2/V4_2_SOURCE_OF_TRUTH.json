@@ -1,0 +1,238 @@
+{
+  "model_version": "V4.2",
+  "release_status": "V4.2 PROVISIONAL \u2014 RESOURCE STRESS",
+  "git_head_sha_at_generation": "f68c2e3c23e183af720abe66bdd7d90d576a93fe",
+  "origin_main_sha": "c7579ed0473cd5674360b60880a69528e6a4c4c7",
+  "branch": "fix/v4-2-statistical-corrections-20261115",
+  "chase_score_reconstruction_blocked": true,
+  "estimator": "OPTION_A_COMPLETE_PENALIZED_FWL_REML",
+  "bootstrap": {
+    "type": "Nuisance-orthogonalized match-cluster score bootstrap with REML every replicate",
+    "n_iter": 2000,
+    "tie_handling": "average_ranks_and_fractional_top10_never_player_id"
+  },
+  "pressure_proxy_trace": {
+    "chase_score_reconstruction_blocked": true,
+    "fitted_parameters": {
+      "innings_1": {
+        "R0": 238.01380435176614,
+        "b": 1.192095034528456,
+        "gamma": 0.5313057360099076
+      },
+      "innings_2": {
+        "R0": 396.4882614811032,
+        "b": 0.47300076168556615,
+        "gamma": 0.3063878739702698
+      },
+      "bowl_ridge_alpha": 10.0
+    },
+    "parameter_role_trace": {
+      "R0": "Fitted scale parameter of expected remaining runs R(u,w) = R0*(1-exp(-b*u))*((10-w)/10)^gamma. Used ONLY during parameter optimization to fit gamma on clean non-DLS matches; NOT used directly in bat_pressure scoring.",
+      "b": "Fitted ball-decay parameter of R(u,w). Absorbs balls-remaining expectations during MLE/LS estimation of gamma; NOT directly multiplied into bat_pressure, which uses (innings, overid) stage centering instead.",
+      "gamma": "Fitted wicket-elasticity exponent. Directly enters raw_depl = 1 - ((10 - wickets_before)/10)^gamma before subtracting stage_exp[innings, overid]."
+    },
+    "proxies": {
+      "BATTING_WICKET_DEPLETION_ANOMALY": {
+        "aliases": [
+          "BATTING_RESOURCE_STRESS",
+          "bat_pressure"
+        ],
+        "role_applies_to": "Batter facing each legal delivery (pre-delivery state).",
+        "formula": "F_emp((1 - ((10 - wickets_before)/10)^gamma) - E[1 - ((10 - wickets_before)/10)^gamma | innings, overid])",
+        "what_it_measures": "Wicket-depletion anomaly above the empirical innings-stage average; higher values indicate more wickets already lost than typical for that over and innings.",
+        "inputs_used": [
+          "innings",
+          "overid",
+          "wkts_before (wickets_before)",
+          "fitted gamma (estimated using clean non-DLS matches)"
+        ],
+        "missing_state_variables": [
+          "exact score",
+          "target score",
+          "runs_required",
+          "required_run_rate",
+          "DLS par score"
+        ],
+        "cannot_distinguish": "Cannot distinguish needing 12 runs from needing 70 runs when balls remaining and wickets remaining are identical.",
+        "zero_leakage": true,
+        "is_calibrated_match_leverage": false,
+        "is_dls_resources": false
+      },
+      "BOWLING_EXPECTED_SCORING_THREAT": {
+        "aliases": [
+          "BOWLING_SCORING_THREAT",
+          "bowl_pressure"
+        ],
+        "role_applies_to": "Bowler delivering each legal ball (pre-delivery state).",
+        "formula": "F_emp(Ridge_10(alpha=10.0) predicted expected batter runs per 100b from pre-delivery innings, phase, overid, balls_rem, wickets_before, log(wickets_rem), venue_season)",
+        "what_it_measures": "Expected pre-delivery batter scoring rate given match stage and resource state; higher values represent tougher scoring environments for the bowler.",
+        "inputs_used": [
+          "innings",
+          "phase",
+          "overid",
+          "balls_rem_before",
+          "wkts_before (wickets_before)",
+          "venue_season"
+        ],
+        "missing_state_variables": [
+          "exact score",
+          "target score",
+          "runs_required",
+          "required_run_rate",
+          "match win-probability leverage"
+        ],
+        "cannot_distinguish": "Cannot distinguish a defending bowler protecting a 10-run cushion in the final over from defending 35 runs in the final over.",
+        "zero_leakage": true,
+        "is_calibrated_match_leverage": false
+      },
+      "BAT_DEPLETION_FULL_RUW": {
+        "role_applies_to": "Sensitivity check only (batter).",
+        "formula": "F_emp((1 - ((1-exp(-b*u))/(1-exp(-b))) * ((10-w)/10)^gamma) - E[.|innings, overid])",
+        "what_it_measures": "Interpretable remaining-resource depletion combining fitted b (balls curve) and gamma (wicket curve) centered by innings-stage mean.",
+        "is_calibrated_match_leverage": false
+      }
+    }
+  },
+  "score_audit_summary": {
+    "scoped_matches_with_deliveries": 837,
+    "scoped_regular_innings": 1652,
+    "total_delivery_rows": 193988,
+    "total_legal_balls": 185951,
+    "external_scorecard_matched_by_stable_id": 0,
+    "revised_target_populated_matches": 23,
+    "matches_zero_all_extras": 0,
+    "matches_zero_unknown_extras": 25,
+    "non_dls_run_margin_matches": 390,
+    "non_dls_run_margin_exact": 48,
+    "non_dls_run_margin_fail": 342,
+    "non_dls_exact_also_zero_unknown_extras": 5,
+    "non_dls_exact_accidental_cancellation": 43,
+    "chase_score_reconstruction_blocked": true,
+    "verified_score_coverage_pct": 0.0
+  },
+  "heterogeneity": {
+    "batter_reml": {
+      "mu0": -36.12382310440359,
+      "tau2": 76.57866255086711,
+      "tau": 8.750923525598147,
+      "Q": 180.07243593519186,
+      "df": 137,
+      "I2": 0.23919505343224018,
+      "k_eff": 4.527578739272876
+    },
+    "bowler_reml": {
+      "mu0": -50.88379123033889,
+      "tau2": 108.6758802224588,
+      "tau": 10.424772430248,
+      "Q": 230.12149368020187,
+      "df": 170,
+      "I2": 0.2612597924631597,
+      "k_eff": 3.482200941409702
+    },
+    "batter_opt_b_em": {
+      "estimator": "OPTION_B_JOINT_HIERARCHICAL_REML_EM",
+      "mu_delta": -33.2113296381375,
+      "tau2_delta": 113.61942899616132,
+      "tau_delta": 10.659241483152604,
+      "implied_lam_slope": 144.66452183361528,
+      "median_cluster_deff": 1.0000000000000002,
+      "em_iters": 25
+    },
+    "bowler_opt_b_em": {
+      "estimator": "OPTION_B_JOINT_HIERARCHICAL_REML_EM",
+      "mu_delta": -50.74645232133419,
+      "tau2_delta": 133.9408980799102,
+      "tau_delta": 11.573283807109812,
+      "implied_lam_slope": 122.20633597911845,
+      "median_cluster_deff": 1.0000000000000002,
+      "em_iters": 25
+    }
+  },
+  "claims_oot": {
+    "batter": {
+      "claim_a_n": 10,
+      "claim_a_spearman_rho": 0.5393939393939393,
+      "claim_a_p": 0.1075931877824148,
+      "claim_b_n": 10,
+      "claim_b_spearman_rho": -0.11515151515151514,
+      "claim_b_p": 0.7514196523258484,
+      "claim_c_n": 10,
+      "claim_c_spearman_rho": -0.35757575757575755,
+      "claim_c_p": 0.3103760917056799,
+      "claim_c_inv_var_r": 0.0022084203376096212,
+      "claim_c_predictable_any_ridge": false,
+      "claim_c_status": "CLAIM_C_OOT_UNPREDICTABLE_UNDER_RESOURCE_STRESS"
+    },
+    "bowler": {
+      "claim_a_n": 18,
+      "claim_a_spearman_rho": 0.4592363261093911,
+      "claim_a_p": 0.05521566198726722,
+      "claim_b_n": 18,
+      "claim_b_spearman_rho": 0.013415892672858616,
+      "claim_b_p": 0.9578637574487228,
+      "claim_c_n": 18,
+      "claim_c_spearman_rho": 0.10629514963880288,
+      "claim_c_p": 0.6746395315456968,
+      "claim_c_inv_var_r": 0.15286169088056872,
+      "claim_c_predictable_any_ridge": false,
+      "claim_c_status": "CLAIM_C_OOT_UNPREDICTABLE_UNDER_RESOURCE_STRESS"
+    }
+  },
+  "top10_batters": [
+    1077,
+    7059,
+    152,
+    4904,
+    1318,
+    6512,
+    3489,
+    25213,
+    24017,
+    4812
+  ],
+  "top10_batter_names": [
+    "David Miller",
+    "Nehal Wadhera",
+    "Ravindra Jadeja",
+    "Kamindu Mendis",
+    "Andre Russell",
+    "Michael Bracewell",
+    "Salman Agha",
+    "Dewald Brevis",
+    "Brian Bennett",
+    "Harry Tector"
+  ],
+  "top10_bowlers": [
+    8661,
+    7364,
+    4641,
+    2933,
+    19316,
+    7967,
+    3275,
+    2687,
+    6628,
+    3720
+  ],
+  "top10_bowler_names": [
+    "Matheesha Pathirana",
+    "Haris Rauf",
+    "Lungi Ngidi",
+    "Jasprit Bumrah",
+    "Maheesh Theekshana",
+    "Noor Ahmad",
+    "Alzarri Joseph",
+    "Roston Chase",
+    "Gerald Coetzee",
+    "Craig Young"
+  ],
+  "hashes": {
+    "V4_2_FINAL_SHORTLIST.csv": "7259fa0c5bc6536eb84699271ffcaa648537b6ffee71df9b9c9abc9135dc1917",
+    "V4_2_RANK_PROBABILITIES.csv": "89ac106ae6d0f7c5773cc8b5189b90d568b24eef39abcabe4b480add5a7340d2",
+    "V4_2_RAW_ADJUSTED_DECOMPOSITION.csv": "387a01c52b08f9cfc8997ad13bce05c0322478990ef5e0971169e421d215731e",
+    "V4_2_MODEL_COMPARISON.csv": "58209e7a0641e0d6459aa89f9166f298512f2e085da9cfd2bdd32e0e9ecdfe8a",
+    "V4_2_ELIGIBILITY_PRECISION_ANALYSIS.csv": "8a03a1ce70d4508265689492ea1ebb2abf090a74888c855b73ffaa3e3e3073b4",
+    "V4_2_VALIDATION_MATRIX.csv": "6db3bdce2800fd3d9440e28e72cab432d78fbdf78f4b7632fa3912d86f8ea557",
+    "V4_2_SCORE_ENRICHMENT_AUDIT.csv": "8f350152238341933bf71d6f1cfc9601bb689e695f13952b32faca96b9c1e02c"
+  }
+}

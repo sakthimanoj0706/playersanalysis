@@ -25,13 +25,15 @@ def run_score_enrichment_audit(
     reg = bbb[bbb["innings"].isin([1, 2])].copy()
     for et in ("wide", "Overstep", "legbyes", "byes", "other", "Penalty"):
         reg[f"cnt_{et}"] = (reg["extras_type"] == et).astype(int)
+    reg["is_legal_ball"] = (~reg["extras_type"].isin(["wide", "Overstep"])).astype(int)
     reg["min_penalty_extra"] = reg["extras_type"].isin(["wide", "Overstep"]).astype(int)
     reg["min_reconstructed_run"] = reg["runs"].astype(float) + reg["min_penalty_extra"].astype(float)
 
     inn = reg.groupby(["match_id", "innings"], as_index=False).agg(
         original_batter_runs=("runs", "sum"),
         min_reconstructed_score=("min_reconstructed_run", "sum"),
-        legal_balls=("is_wicket", "size"),
+        delivery_rows=("is_wicket", "size"),
+        legal_balls=("is_legal_ball", "sum"),
         wide_events=("cnt_wide", "sum"),
         overstep_events=("cnt_Overstep", "sum"),
         legbye_events=("cnt_legbyes", "sum"),
@@ -108,6 +110,7 @@ def run_score_enrichment_audit(
 
     out_cols = [
         "match_id", "innings", "match_date", "match_format", "season",
+        "delivery_rows", "legal_balls",
         "original_batter_runs", "min_reconstructed_score", "scorecard_score",
         "scorecard_difference", "stated_run_margin", "min_calc_margin",
         "margin_difference", "wide_events", "overstep_events",

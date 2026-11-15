@@ -388,7 +388,7 @@ def run_v41_validation_matrix(
 
     for q_hi, q_lo, qlab in [(0.80, 0.20, "P80_vs_P20"), (0.85, 0.15, "P85_vs_P15")]:
         for role, base_r, sc in [("batter", base_bat_ref, 100.0), ("bowler", base_bowl_ref, -100.0)]:
-            r_q, dg_q, _, _ = fit_v41_two_stage(reg_v41, role=role, outcome="batter_runs", scale=sc, hi_thr=q_hi, lo_thr=q_lo, span=float(q_hi - 0.5 * q_lo))
+            r_q, dg_q, _, _ = fit_v41_two_stage(reg_v41, role=role, outcome="batter_runs", scale=sc, hi_thr=q_hi, lo_thr=q_lo, span=float(q_hi - q_lo))
             mrg = base_r[_precision_eligible_mask(base_r)][["player_id", "empirical_bayes_delta"]].merge(
                 r_q[["player_id", "empirical_bayes_delta"]], on="player_id", suffixes=("_b", "_q")
             )

@@ -1,0 +1,21 @@
+check,role,span,metric_1,metric_2,metric_3,passed,detail
+quant_span_060_P80_P20,batter,0.6,0.998861374914981,10.0,6.639799641117474,True,Exact span=0.600; Spearman vs P87.5-P12.5=0.9989; Top-10 overlap=10/10; REML tau=6.640
+quant_span_070_P85_P15,batter,0.7,0.9987505353049348,10.0,7.190198154369771,True,Exact span=0.700; Spearman vs P87.5-P12.5=0.9988; Top-10 overlap=10/10; REML tau=7.190
+quant_span_075_P875_P125,batter,0.75,0.9970375595133134,10.0,7.9995261640469595,True,Exact span=0.750; Spearman vs P87.5-P12.5=0.9970; Top-10 overlap=10/10; REML tau=8.000
+quant_span_060_P80_P20,bowler,0.6,0.999871189351653,10.0,8.522074602305413,True,Exact span=0.600; Spearman vs P87.5-P12.5=0.9999; Top-10 overlap=10/10; REML tau=8.522
+quant_span_070_P85_P15,bowler,0.7,0.9993798005820331,10.0,10.03320877004356,True,Exact span=0.700; Spearman vs P87.5-P12.5=0.9994; Top-10 overlap=10/10; REML tau=10.033
+quant_span_075_P875_P125,bowler,0.75,0.9994131959353083,10.0,11.026083276689553,True,Exact span=0.750; Spearman vs P87.5-P12.5=0.9994; Top-10 overlap=10/10; REML tau=11.026
+proxy_sensitivity_wicket_vs_full_ruw,batter,0.75,0.6991006877093987,5.0,8.064299759509076,True,"Wicket-depletion anomaly vs R(u,w) depletion Spearman=0.699, Top-10 overlap=5/10"
+score_bootstrap_vs_full_refit_proof,batter,0.75,0.9198961558645988,1.0661292898237433,25.0,True,"K=25 full nuisance+B3 refits across 332 players: median replicate r=0.9199, median SE ratio=1.066"
+score_bootstrap_vs_full_refit_proof,bowler,0.75,0.9326356144926143,1.0580957317100417,25.0,True,"K=25 full nuisance+B3 refits across 380 players: median replicate r=0.9326, median SE ratio=1.058"
+within_stratum_placebo_permutation,batter,0.75,0.0,0.05333333333333334,0.0,True,"Placebo REML tau=0.000, I2=0.0%, share(|z|>1.96)=0.053"
+within_stratum_placebo_permutation,bowler,0.75,5.461223278674003,0.07534246575342465,0.07156729052131917,True,"Placebo REML tau=5.461, I2=7.2%, share(|z|>1.96)=0.075"
+oot_claim_a_general_skill,batter,,0.5393939393939393,0.1075931877824148,10.0,True,"Claim A (General player FE OOT >=2023): rho=0.539, p=0.108, n=10"
+oot_claim_b_high_stress_execution,batter,,-0.11515151515151514,0.7514196523258484,10.0,True,"Claim B (High-stress residual execution OOT >=2023): rho=-0.115, p=0.751, n=10"
+oot_claim_c_pressure_vs_normal_slope,batter,0.75,-0.35757575757575755,0.3103760917056799,0.0022084203376096212,True,"Claim C (CLAIM_C_OOT_UNPREDICTABLE_UNDER_RESOURCE_STRESS): rho=-0.358, p=0.31, inv-var r=0.002, n=10"
+oot_claim_a_general_skill,bowler,,0.4592363261093911,0.05521566198726722,18.0,True,"Claim A (General player FE OOT >=2023): rho=0.459, p=0.0552, n=18"
+oot_claim_b_high_stress_execution,bowler,,0.013415892672858616,0.9578637574487228,18.0,True,"Claim B (High-stress residual execution OOT >=2023): rho=0.013, p=0.958, n=18"
+oot_claim_c_pressure_vs_normal_slope,bowler,0.75,0.10629514963880288,0.6746395315456968,0.15286169088056872,True,"Claim C (CLAIM_C_OOT_UNPREDICTABLE_UNDER_RESOURCE_STRESS): rho=0.106, p=0.675, inv-var r=0.153, n=18"
+like_for_like_additive_identities,batter,0.75,6.394884621840902e-14,1.4210854715202004e-14,824.0,True,"Max nuisance identity err=6.39e-14, max bridge identity err=1.42e-14"
+like_for_like_additive_identities,bowler,0.75,8.526512829121202e-14,2.842170943040401e-14,596.0,True,"Max nuisance identity err=8.53e-14, max bridge identity err=2.84e-14"
+score_audit_and_legal_balls,all,,48.0,390.0,0.0,True,Legal balls=185951 <= Delivery rows=193988; non-DLS run margin exact=48/390 (fail=342); zero-extras matches=0/837; CHASE_SCORE_RECONSTRUCTION_BLOCKED=True
