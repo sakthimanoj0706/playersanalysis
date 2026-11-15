@@ -120,12 +120,13 @@ class V3PressureModel:
     def compute_batting_crisis_pressure(cls, df: pd.DataFrame) -> pd.DataFrame:
         """Estimate pre-delivery batting crisis pressure score on [0.0, 10.0] with explicit validation.
 
-        Formula (strictly ex-ante provisional heuristic):
-        1. Wicket depletion (0 to 3.5 pts): wickets_fallen_before * 0.45.
-        2. Collapse cluster (0 to 2.0 pts): 2+ wickets in last 12 balls = 2.0, 1 wicket = 0.75.
-        3. Batter entry vulnerability (0 to 1.5 pts): 1.5 * (1 - balls_faced / 5) if balls_faced < 5.
-        4. Stagnation pressure (0 to 1.5 pts): consecutive_dots * 0.3 + (dots_in_12 / 12) * 0.6.
-        5. Innings phase multiplier: death 1.25x, middle 1.0x, powerplay 0.95x.
+        Formula (strictly ex-ante calibrated heuristic V3.3):
+        1. Wicket depletion (0 to 3.5 pts): min(3.5, wickets_fallen_before * 0.50).
+        2. Collapse cluster (0 to 2.2 pts): 2+ wickets in last 12 legal balls = 2.2, 1 wicket = 1.0.
+        3. Batter entry vulnerability (0 to 1.5 pts): 1.5 * (1 - balls_faced / 6) if balls_faced < 6.
+        4. Stagnation pressure (0 to 1.8 pts): min(1.8, consecutive_dots * 0.35 + (dots_in_12 / 12) * 0.90).
+        5. Innings phase multiplier: powerplay 1.00x, middle 1.05x, death 1.25x.
+        6. Optional 2nd-innings chase leverage ([-0.8, +1.2] pts): derived from clean_rrr_deficit when available.
         """
         df = df.copy()
         n = len(df)
@@ -166,7 +167,23 @@ class V3PressureModel:
             phase_map = {'powerplay': 1.00, 'middle': 1.05, 'death': 1.25}
             phase_mult = sub['innings_phase'].map(phase_map).values.astype(float)
 
-            raw_score = (c_wkt + c_cluster + c_novelty + c_stagnation) * phase_mult
+            # 6. Optional 2nd-innings clean chase leverage (never touches extras1_runs)
+            if 'clean_rrr_deficit' in sub.columns:
+                rrr = sub['clean_rrr_deficit'].values.astype(float)
+                valid_rrr = np.isfinite(rrr)
+                c_chase = np.where(
+                    valid_rrr,
+                    np.where(
+                        rrr >= 8.5,
+                        np.clip((rrr - 8.5) * 0.20, 0.0, 1.2),
+                        -np.clip((5.0 - rrr) * 0.25, 0.0, 0.8),
+                    ),
+                    0.0,
+                )
+            else:
+                c_chase = 0.0
+
+            raw_score = (c_wkt + c_cluster + c_novelty + c_stagnation) * phase_mult + c_chase
             valid_scores = np.clip(raw_score, 0.0, 10.0).round(2)
             scores[valid_idx] = valid_scores
 
@@ -194,11 +211,12 @@ class V3PressureModel:
     def compute_bowling_defensive_pressure(cls, df: pd.DataFrame) -> pd.DataFrame:
         """Estimate pre-delivery bowling defensive pressure score on [0.0, 10.0] with explicit validation.
 
-        Formula (strictly ex-ante provisional heuristic):
-        1. Batting resource threat (0 to 3.0 pts): wickets in hand (>=8: 3.0, >=6: 2.0, >=4: 1.0, <4: 0.2).
-        2. Innings phase / restrictions (1.0 to 3.0 pts): death 3.0, powerplay 2.0, middle 1.0.
-        3. Opponent boundary momentum (0 to 2.5 pts): boundaries in last 12 balls (>=3: 2.5, 2: 1.6, 1: 0.8, 0: 0.0).
-        4. Strike-rotation pressure (0 to 1.5 pts): 1.5 * (1 - dots_in_12 / 12).
+        Formula (strictly ex-ante calibrated heuristic V3.3):
+        1. Batting resource threat (0.2 to 2.2 pts): wickets in hand (>=8: 2.2, >=6: 1.4, >=4: 0.8, <4: 0.2).
+        2. Innings phase / restrictions (1.0 to 2.8 pts): death 2.8, powerplay 2.4, middle 1.0.
+        3. Opponent boundary momentum (0 to 2.8 pts): boundaries in last 12 legal balls (>=3: 2.8, 2: 1.8, 1: 0.7, 0: 0.0).
+        4. Strike-rotation pressure (0 to 0.8 pts): 0.8 * (1 - dots_in_12 / 12).
+        5. Optional 2nd-innings chase leverage ([-0.8, +1.0] pts): amplifies tight chases (6-12 RPO) and dampens dead-rubber blowouts.
         """
         df = df.copy()
         n = len(df)
@@ -225,8 +243,8 @@ class V3PressureModel:
                 w_rem = 10.0 - sub['wickets_fallen_before'].values.astype(float)
             c_resource = np.where(w_rem >= 8, 2.2, np.where(w_rem >= 6, 1.4, np.where(w_rem >= 4, 0.8, 0.2)))
 
-            # 2. Innings phase
-            phase_pts = {'death': 3.2, 'powerplay': 2.6, 'middle': 0.8}
+            # 2. Innings phase (rebalanced so middle-overs spinners can reach high pressure in tight games)
+            phase_pts = {'death': 2.8, 'powerplay': 2.4, 'middle': 1.0}
             c_phase = sub['innings_phase'].map(phase_pts).values.astype(float)
 
             # 3. Opponent boundary momentum
@@ -237,7 +255,17 @@ class V3PressureModel:
             d12 = sub['dots_in_last_12_legal_balls'].values.astype(float)
             c_rotation = np.clip(0.8 * (1.0 - d12 / 12.0), 0.0, 0.8)
 
-            raw_score = c_resource + c_phase + c_momentum + c_rotation
+            # 5. Optional 2nd-innings clean chase leverage
+            if 'clean_rrr_deficit' in sub.columns:
+                rrr = sub['clean_rrr_deficit'].values.astype(float)
+                valid_rrr = np.isfinite(rrr)
+                tight_bonus = np.clip(1.0 - np.abs(rrr - 9.0) / 4.5, 0.0, 1.0)
+                blowout_penalty = np.where((rrr > 16.0) | (rrr < 4.0), -0.8, 0.0)
+                c_chase = np.where(valid_rrr, np.where(blowout_penalty < 0, blowout_penalty, tight_bonus), 0.0)
+            else:
+                c_chase = 0.0
+
+            raw_score = c_resource + c_phase + c_momentum + c_rotation + c_chase
             valid_scores = np.clip(raw_score, 0.0, 10.0).round(2)
             scores[valid_idx] = valid_scores
 

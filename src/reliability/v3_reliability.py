@@ -370,3 +370,70 @@ class V3ReliabilityEngine:
         if return_metadata:
             return res_series, metadata
         return res_series
+
+    @classmethod
+    def phase_adjusted_dual_arm_did(
+        cls,
+        crisis_excess: pd.Series,
+        crisis_balls: pd.Series,
+        norm_excess: pd.Series,
+        norm_balls: pd.Series,
+        k_crisis: float = 25.0,
+        k_norm: float = 25.0,
+        floor_normal_at_zero: bool = True,
+        cohort_calibrated: bool = True,
+        allow_prior_anchored: bool = False,
+        cohort_mask: Optional[pd.Series] = None,
+    ) -> Tuple[pd.Series, pd.Series, pd.Series]:
+        """Shrink phase-adjusted crisis and normal residuals toward 0 (league phase average)
+        and return (shrunk_crisis, shrunk_norm, did_maintenance).
+
+        When ``cohort_calibrated=True``, fits the cohort's empirical regression-to-the-mean
+        slope ``beta`` (clipped to [0.25, 0.75]) between positive normal excess and crisis excess
+        so elite normal-overs performers (e.g., Jasprit Bumrah) are not penalized for having
+        a high normal baseline.
+
+        When ``allow_prior_anchored=True``, players with zero normal balls receive
+        ``shrunk_norm = 0.0`` (anchored to the league phase-average prior) rather than NaN.
+        """
+        c_val = pd.to_numeric(crisis_excess, errors='coerce').astype(float)
+        c_n = pd.to_numeric(crisis_balls, errors='coerce').fillna(0.0).astype(float)
+        n_val = pd.to_numeric(norm_excess, errors='coerce').astype(float)
+        n_n = pd.to_numeric(norm_balls, errors='coerce').fillna(0.0).astype(float)
+
+        shrunk_c = np.where((c_n > 0) & c_val.notna(), (c_n / (c_n + k_crisis)) * c_val, np.nan)
+        if allow_prior_anchored:
+            shrunk_n = np.where((n_n > 0) & n_val.notna(), (n_n / (n_n + k_norm)) * n_val, 0.0)
+        else:
+            shrunk_n = np.where((n_n > 0) & n_val.notna(), (n_n / (n_n + k_norm)) * n_val, np.nan)
+
+        raw_pos_n = np.maximum(shrunk_n, 0.0) if floor_normal_at_zero else shrunk_n
+
+        if cohort_calibrated:
+            fit_mask = pd.notna(shrunk_c) & pd.notna(shrunk_n) & (c_n > 0) & (n_n > 0)
+            if cohort_mask is not None:
+                fit_mask = fit_mask & cohort_mask.values.astype(bool)
+            if int(np.sum(fit_mask)) >= 15:
+                x = raw_pos_n[fit_mask]
+                y = shrunk_c[fit_mask]
+                # Winsorize x and y at 2.5% / 97.5% for outlier-resistant slope estimation
+                x_w = np.clip(x, np.quantile(x, 0.025), np.quantile(x, 0.975))
+                y_w = np.clip(y, np.quantile(y, 0.025), np.quantile(y, 0.975))
+                vx = float(np.var(x_w))
+                if vx > 1e-8:
+                    beta = float(np.clip(np.cov(x_w, y_w, ddof=0)[0, 1] / vx, 0.25, 0.75))
+                else:
+                    beta = 0.45
+            else:
+                beta = 0.45
+            baseline_ref = beta * raw_pos_n
+        else:
+            baseline_ref = raw_pos_n
+
+        did = np.where(pd.notna(shrunk_c) & pd.notna(shrunk_n), shrunk_c - baseline_ref, np.nan)
+
+        return (
+            pd.Series(shrunk_c, index=crisis_excess.index, dtype=float),
+            pd.Series(shrunk_n, index=norm_excess.index, dtype=float),
+            pd.Series(did, index=crisis_excess.index, dtype=float),
+        )

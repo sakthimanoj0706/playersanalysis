@@ -50,39 +50,38 @@ def test_no_player_eligible_for_both_leaderboards():
 
 
 def test_low_sample_players_cannot_enter_final_top10():
-    """Verify that players with <40 crisis balls cannot enter Top 10 Batters, and <120 crisis balls or <100 norm balls cannot enter Top 10 Bowlers."""
+    """Verify that players with <60 crisis balls cannot enter Top 10 Batters, and <120 crisis balls cannot enter Top 10 Bowlers."""
     top_bat = pd.read_csv(OUTPUTS_V3 / "TOP_10_BATTERS.csv")
     top_bowl = pd.read_csv(OUTPUTS_V3 / "TOP_10_BOWLERS.csv")
 
-    assert (top_bat['crisis_balls'] >= 40).all()
+    assert (top_bat['crisis_balls'] >= 60).all()
     assert (top_bat['crisis_matches'] >= 5).all()
-    assert (top_bat['norm_balls'] >= 30).all()
+    assert (top_bat['norm_balls'] >= 60).all()
     assert (top_bat['sample_eligible'] == True).all()
 
     assert (top_bowl['crisis_balls'] >= 120).all()
     assert (top_bowl['crisis_matches'] >= 5).all()
-    assert (top_bowl['norm_balls'] >= 100).all()
     assert (top_bowl['norm_baseline_eligible'] == True).all()
     assert (top_bowl['sample_eligible'] == True).all()
 
 
-def test_bowler_normal_baseline_min_100_balls_and_raw_vs_capped_maintenance():
-    """Verify MIN_NORMAL_BALLS=100 for bowlers, BOWLER_NORMAL_BASELINE_INSUFFICIENT flag, and separate raw/capped ratios."""
+def test_bowler_normal_baseline_prior_anchored_and_raw_vs_capped_maintenance():
+    """Verify PRIOR_ANCHORED_SPECIALIST (<100 norm balls) vs VALID_NORMAL_BASELINE (>=100), and separate raw/capped ratios."""
     all_bowl = pd.read_csv(OUTPUTS_V3 / "ALL_BOWLER_METRICS.csv")
 
     insuff = all_bowl[all_bowl['norm_balls'] < 100]
     suff = all_bowl[all_bowl['norm_balls'] >= 100]
 
     assert len(insuff) > 0
-    assert (insuff['norm_baseline_eligible'] == False).all()
-    assert (insuff['norm_baseline_status'] == 'BOWLER_NORMAL_BASELINE_INSUFFICIENT').all()
-    assert (insuff['sample_eligible'] == False).all()
+    assert (insuff['norm_baseline_eligible'] == True).all()
+    assert (insuff['norm_baseline_status'] == 'PRIOR_ANCHORED_SPECIALIST').all()
     assert insuff['capped_dot_maintenance'].isna().all()
     assert insuff['dot_maintenance'].isna().all()
-    assert insuff['provisional_fixed_weight_score'].isna().all()
+    assert (insuff['effective_w_maint'] < 0.35).all()
 
     assert (suff['norm_baseline_eligible'] == True).all()
     assert (suff['norm_baseline_status'] == 'VALID_NORMAL_BASELINE').all()
+    assert (suff['effective_w_maint'] == 0.35).all()
     valid_suff = suff[suff['raw_dot_maintenance'].notna()]
     expected_capped = np.clip(valid_suff['raw_dot_maintenance'], 0.5, 1.5).round(3)
     assert (valid_suff['capped_dot_maintenance'].round(3) == expected_capped).all()

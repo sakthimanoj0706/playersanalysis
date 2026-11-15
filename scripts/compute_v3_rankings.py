@@ -42,10 +42,10 @@ REPORTS_V3.mkdir(parents=True, exist_ok=True)
 
 # Baseline Thresholds
 DEFAULT_BAT_THRESHOLDS = {
-    'crisis_balls': 40,
+    'crisis_balls': 60,
     'total_balls': 120,
     'crisis_matches': 5,
-    'norm_balls': 30
+    'norm_balls': 60
 }
 
 MIN_NORMAL_BALLS_BOWLER = 100
@@ -54,7 +54,7 @@ DEFAULT_BOWL_THRESHOLDS = {
     'crisis_balls': 120,
     'total_legal_balls': 120,
     'crisis_matches': 5,
-    'norm_balls': MIN_NORMAL_BALLS_BOWLER
+    'norm_balls': 0  # Decoupled via prior-anchored specialist weighting
 }
 
 
@@ -71,9 +71,9 @@ def load_verified_deliveries() -> pd.DataFrame:
             # Validate required columns and calibrated formula version
             req = ['canonical_striker_id', 'canonical_bowler_id', 'batting_pressure_data_valid',
                    'bowling_pressure_data_valid', 'is_batting_high_pressure', 'is_bowling_high_pressure',
-                   'v3_pressure_formula_version']
+                   'v3_pressure_formula_version', 'clean_rrr_deficit']
             if all(c in df.columns for c in req) and len(df) == 193988:
-                if (str(df['v3_pressure_formula_version'].iloc[0]) == 'V3.2_EGM_CALIBRATED_HEURISTIC'
+                if (str(df['v3_pressure_formula_version'].iloc[0]) == 'V3.3_GOLDFISH_CHASE_LEVERAGE'
                         and int(df['batting_pressure_data_valid'].sum()) == len(df)):
                     rebuild_needed = False
                     logging.info(f"Loaded verified pressure parquet ({len(df)} rows)")
@@ -97,8 +97,8 @@ def load_verified_deliveries() -> pd.DataFrame:
 
         df = resolver.resolve_deliveries(df)
         df = V3PressureModel.apply_dual_pressure(df)
-        df['v3_pressure_schema_version'] = 'V3.1_CANONICAL'
-        df['v3_pressure_formula_version'] = 'V3.2_EGM_CALIBRATED_HEURISTIC'
+        df['v3_pressure_schema_version'] = 'V3.3_CANONICAL'
+        df['v3_pressure_formula_version'] = 'V3.3_GOLDFISH_CHASE_LEVERAGE'
         df.to_parquet(press_path, index=False)
         logging.info(f"Saved rebuilt {press_path} ({len(df)} rows)")
 
@@ -147,7 +147,42 @@ def compute_v3_rankings(
     # 1. BATTING RANKINGS PIPELINE
     # ══════════════════════════════════════════════════════════════════════════
     logging.info("Aggregating Universal Batting Intelligence...")
+    bbb['batter_runs'] = pd.to_numeric(bbb['batter_runs'], errors='coerce').fillna(0.0)
+    bbb['is_bnd'] = (bbb['is_four_validated'] == True) | (bbb['is_six_validated'] == True)
+
+    def _resolve_dismissed(val):
+        if pd.isna(val):
+            return None
+        try:
+            raw_id = str(int(float(val)))
+        except (ValueError, TypeError):
+            raw_id = str(val).strip()
+        return resolver.resolve_id(raw_id)
+
+    bbb['canonical_dismissed_id'] = bbb['dismissed_player_id'].apply(_resolve_dismissed)
+    bbb['is_striker_out'] = (bbb['is_wicket'] == True) & (
+        bbb['canonical_dismissed_id'].astype(str) == bbb['striker_id'].astype(str)
+    )
+
     faced = bbb[bbb['is_ball_faced'] == True].copy()
+
+    # Phase-adjusted expected baselines for batting (resolves Simpson's Paradox)
+    bat_valid_phase = faced[
+        (faced['batting_pressure_data_valid'] == True)
+        & faced['innings_phase'].isin(['powerplay', 'middle', 'death'])
+    ]
+    bat_phase_mu = bat_valid_phase.groupby('innings_phase').agg(
+        mu_sr=('batter_runs', lambda s: float(s.mean()) * 100.0),
+        mu_out=('is_striker_out', lambda s: float(s.mean()) * 100.0),
+    )
+    fallback_bat_sr = float(bat_valid_phase['batter_runs'].mean()) * 100.0
+    fallback_bat_out = float(bat_valid_phase['is_striker_out'].mean()) * 100.0
+    faced = faced.join(bat_phase_mu, on='innings_phase')
+    faced['mu_sr'] = faced['mu_sr'].fillna(fallback_bat_sr)
+    faced['mu_out'] = faced['mu_out'].fillna(fallback_bat_out)
+    faced['r_sr'] = 100.0 * faced['batter_runs'] - faced['mu_sr']
+    faced['r_surv'] = faced['mu_out'] - 100.0 * faced['is_striker_out'].astype(float)
+    faced['r_bat'] = faced['r_sr'] + 6.0 * faced['r_surv']
 
     # Mutually exclusive pressure sets (only valid pressure records)
     p_high = faced[(faced['batting_pressure_data_valid'] == True) & (faced['is_batting_high_pressure'] == True)]
@@ -156,20 +191,27 @@ def compute_v3_rankings(
     p_unclass = faced[faced['batting_pressure_data_valid'] == False]
 
     def _agg_bat(tier_df: pd.DataFrame, prefix: str) -> pd.DataFrame:
+        cols = [
+            'striker_id', f'{prefix}_balls', f'{prefix}_runs', f'{prefix}_sr',
+            f'{prefix}_outs', f'{prefix}_out_pct', f'{prefix}_r_bat', f'{prefix}_matches'
+        ]
         if len(tier_df) == 0:
-            return pd.DataFrame(columns=['striker_id', f'{prefix}_balls', f'{prefix}_runs', f'{prefix}_sr', f'{prefix}_matches'])
+            return pd.DataFrame(columns=cols)
         agg = tier_df.groupby('striker_id').agg(
             balls=('batter_runs', 'count'),
             runs=('batter_runs', 'sum'),
-            fours=('is_four_validated', 'sum'),
-            sixes=('is_six_validated', 'sum'),
+            outs=('is_striker_out', 'sum'),
+            r_bat_mean=('r_bat', 'mean'),
             matches=('match_id', 'nunique')
         ).reset_index()
         agg[f'{prefix}_balls'] = agg['balls']
         agg[f'{prefix}_runs'] = agg['runs']
         agg[f'{prefix}_sr'] = np.where(agg['balls'] > 0, (agg['runs'] / agg['balls']) * 100.0, np.nan)
+        agg[f'{prefix}_outs'] = agg['outs']
+        agg[f'{prefix}_out_pct'] = np.where(agg['balls'] > 0, (agg['outs'] / agg['balls']) * 100.0, np.nan)
+        agg[f'{prefix}_r_bat'] = agg['r_bat_mean']
         agg[f'{prefix}_matches'] = agg['matches']
-        return agg[['striker_id', f'{prefix}_balls', f'{prefix}_runs', f'{prefix}_sr', f'{prefix}_matches']]
+        return agg[cols]
 
     df_high_bat = _agg_bat(p_high, 'crisis')
     df_norm_bat = _agg_bat(p_norm, 'norm')
@@ -189,10 +231,10 @@ def compute_v3_rankings(
     bat_master = bat_master.merge(df_norm_bat, on='striker_id', how='left')
 
     # Fill count fields with 0; performance rates remain NaN if balls == 0
-    count_cols = ['crisis_balls', 'crisis_runs', 'crisis_matches', 'norm_balls', 'norm_runs', 'norm_matches']
+    count_cols = ['crisis_balls', 'crisis_runs', 'crisis_outs', 'crisis_matches', 'norm_balls', 'norm_runs', 'norm_outs', 'norm_matches']
     for c in count_cols:
         bat_master[c] = pd.to_numeric(bat_master[c], errors='coerce').fillna(0).astype(int)
-    for c in ['crisis_sr', 'norm_sr', 'total_sr']:
+    for c in ['crisis_sr', 'norm_sr', 'total_sr', 'crisis_out_pct', 'norm_out_pct', 'crisis_r_bat', 'norm_r_bat']:
         bat_master[c] = pd.to_numeric(bat_master[c], errors='coerce').astype(float)
 
     # Attach Canonical Player Metadata & Roles
@@ -311,6 +353,22 @@ def compute_v3_rankings(
         np.where(bat_master['crisis_sr_below_cohort_mean'], 'CRISIS_SR_BELOW_COHORT_MEAN', 'NONE')
     )
 
+    # Phase-adjusted dual-arm EB shrinkage & cohort-calibrated DiD maintenance
+    c_delta_bat, n_delta_bat, did_bat = V3ReliabilityEngine.phase_adjusted_dual_arm_did(
+        bat_master['crisis_r_bat'],
+        bat_master['crisis_balls'],
+        bat_master['norm_r_bat'],
+        bat_master['norm_balls'],
+        k_crisis=25.0,
+        k_norm=25.0,
+        floor_normal_at_zero=True,
+        cohort_calibrated=True,
+        cohort_mask=prior_bat_mask,
+    )
+    bat_master['crisis_delta_rv'] = c_delta_bat.round(2)
+    bat_master['norm_delta_rv'] = n_delta_bat.round(2)
+    bat_master['did_bat_maintenance'] = did_bat.round(2)
+
     # Sample Confidence
     bat_master['sample_confidence'] = np.clip(
         np.log1p(bat_master['crisis_balls']) / np.log1p(250.0), 0.1, 1.0
@@ -333,27 +391,22 @@ def compute_v3_rankings(
         cb = row['crisis_balls']
         cm = row['crisis_matches']
 
-        # Consistency score (Empirical Bayes match-shrunk ball-weighted consistency + delivery success rate)
+        # Phase-adjusted match consistency on survival- & phase-adjusted run-value residual
         if cb < 15 or cm < 3:
             consistencies.append(0.10)
         else:
             p_sub = p_high[p_high['striker_id'] == pid]
-            m_runs = p_sub.groupby('match_id')['batter_runs'].sum()
-            m_balls = p_sub.groupby('match_id')['batter_runs'].count()
-            overall_sr = float(row['crisis_sr']) if pd.notna(row['crisis_sr']) else 130.0
-            norm_sr_val = float(row['norm_sr']) if pd.notna(row['norm_sr']) and float(row['norm_sr']) > 0 else overall_sr
-            m_srs = (m_runs / m_balls) * 100.0
+            m_rv = p_sub.groupby('match_id')['r_bat'].mean()
+            m_balls = p_sub.groupby('match_id')['r_bat'].count()
+            overall_rv = float(row['crisis_delta_rv']) if pd.notna(row['crisis_delta_rv']) else 0.0
             w_eb = m_balls / (m_balls + 6.0)
-            shrunk_m_srs = w_eb * m_srs + (1.0 - w_eb) * overall_sr
+            shrunk_m_rv = w_eb * m_rv + (1.0 - w_eb) * overall_rv
             w_b = m_balls.values.astype(float)
-            w_mean = float(np.average(shrunk_m_srs.values, weights=w_b))
-            w_var = float(np.average((shrunk_m_srs.values - w_mean) ** 2, weights=w_b))
+            w_mean = float(np.average(shrunk_m_rv.values, weights=w_b))
+            w_var = float(np.average((shrunk_m_rv.values - w_mean) ** 2, weights=w_b))
             w_std = float(np.sqrt(w_var))
-            cv = (w_std / w_mean) if w_mean > 0 else 1.5
-            target_sr = max(125.0, 0.90 * norm_sr_val)
-            success_rate = float(np.average((shrunk_m_srs.values >= target_sr).astype(float), weights=w_b))
             m_w = np.sqrt(cm / (cm + 3.0))
-            c_score = np.clip((0.65 * np.exp(-cv) + 0.35 * success_rate) * m_w, 0.05, 0.98)
+            c_score = np.clip(np.exp(-w_std / 55.0) * m_w, 0.05, 0.98)
             consistencies.append(round(float(c_score), 4))
 
         # Bootstrap CI on match cluster
@@ -381,23 +434,28 @@ def compute_v3_rankings(
     bat_master['ci_sample_deliveries'] = ci_sample_deliveries
     bat_master['ci_metric'] = 'CRISIS_STRIKE_RATE'
 
-    # Normalization across eligible pool
+    # Normalization across eligible pool (2.5% / 97.5% winsorized z-score mapped to [0, 1])
     el_pool_bat = bat_master[bat_master['sample_eligible'] & bat_master['eligible_for_bat_leaderboard']].copy()
     if len(el_pool_bat) == 0:
         el_pool_bat = bat_master[bat_master['sample_eligible']].copy()
     if len(el_pool_bat) == 0:
         el_pool_bat = bat_master.copy()
 
-    def _minmax(s: pd.Series, ref_s: pd.Series) -> pd.Series:
+    def _winsorized_zscore(s: pd.Series, ref_s: pd.Series) -> pd.Series:
         valid_ref = ref_s.dropna()
-        if len(valid_ref) == 0 or valid_ref.max() == valid_ref.min():
+        if len(valid_ref) == 0:
             return pd.Series(0.5, index=s.index)
-        lo, hi = valid_ref.min(), valid_ref.max()
-        return np.clip((s - lo) / (hi - lo), 0.0, 1.0).fillna(0.0)
+        ql, qh = valid_ref.quantile(0.025), valid_ref.quantile(0.975)
+        ref_w = np.clip(valid_ref, ql, qh)
+        mu_w = float(ref_w.mean())
+        sd_w = float(ref_w.std(ddof=0))
+        if sd_w <= 1e-12:
+            return pd.Series(0.5, index=s.index)
+        return np.clip(((s - mu_w) / sd_w + 2.5) / 5.0, 0.0, 1.0).fillna(0.0)
 
-    bat_master['norm_maint'] = _minmax(bat_master['sr_maintenance'], el_pool_bat['sr_maintenance'])
-    bat_master['norm_abs'] = _minmax(bat_master['shrunk_crisis_sr'], el_pool_bat['shrunk_crisis_sr'])
-    bat_master['norm_cons'] = _minmax(bat_master['consistency_score'], el_pool_bat['consistency_score'])
+    bat_master['norm_maint'] = _winsorized_zscore(bat_master['did_bat_maintenance'], el_pool_bat['did_bat_maintenance'])
+    bat_master['norm_abs'] = _winsorized_zscore(bat_master['crisis_delta_rv'], el_pool_bat['crisis_delta_rv'])
+    bat_master['norm_cons'] = _winsorized_zscore(bat_master['consistency_score'], el_pool_bat['consistency_score'])
     bat_master['norm_sample'] = bat_master['sample_confidence']
 
     # Component contributions & Provisional PRI Score
@@ -456,24 +514,61 @@ def compute_v3_rankings(
     logging.info("Aggregating Universal Bowling Intelligence...")
     legal = bbb[bbb['is_legal_ball'] == True].copy()
 
+    # Phase-adjusted expected baselines for bowling (resolves Simpson's Paradox & adds economy/boundary control)
+    bowl_valid_phase = legal[
+        (legal['bowling_pressure_data_valid'] == True)
+        & legal['innings_phase'].isin(['powerplay', 'middle', 'death'])
+    ]
+    bowl_phase_mu = bowl_valid_phase.groupby('innings_phase').agg(
+        mu_econ=('batter_runs', lambda s: float(s.mean()) * 6.0),
+        mu_dot=('is_dot_ball', lambda s: float(s.mean()) * 100.0),
+        mu_bnd=('is_bnd', lambda s: float(s.mean()) * 100.0),
+        mu_wkt=('is_bowler_wicket', lambda s: float(s.mean()) * 100.0),
+    )
+    legal = legal.join(bowl_phase_mu, on='innings_phase')
+    legal['mu_econ'] = legal['mu_econ'].fillna(float(bowl_valid_phase['batter_runs'].mean()) * 6.0)
+    legal['mu_dot'] = legal['mu_dot'].fillna(float(bowl_valid_phase['is_dot_ball'].mean()) * 100.0)
+    legal['mu_bnd'] = legal['mu_bnd'].fillna(float(bowl_valid_phase['is_bnd'].mean()) * 100.0)
+    legal['mu_wkt'] = legal['mu_wkt'].fillna(float(bowl_valid_phase['is_bowler_wicket'].mean()) * 100.0)
+
+    legal['r_econ'] = legal['mu_econ'] - 6.0 * legal['batter_runs']
+    legal['r_dot'] = 100.0 * legal['is_dot_ball'].astype(float) - legal['mu_dot']
+    legal['r_bnd'] = legal['mu_bnd'] - 100.0 * legal['is_bnd'].astype(float)
+    legal['r_wkt'] = 100.0 * legal['is_bowler_wicket'].astype(float) - legal['mu_wkt']
+    legal['r_ctrl'] = 0.40 * (10.0 * legal['r_econ']) + 0.30 * legal['r_dot'] + 0.30 * legal['r_bnd']
+
     p_high_bowl = legal[(legal['bowling_pressure_data_valid'] == True) & (legal['is_bowling_high_pressure'] == True)]
     p_norm_bowl = legal[(legal['bowling_pressure_data_valid'] == True) & (legal['is_bowling_normal_pressure'] == True)]
 
     def _agg_bowl(tier_df: pd.DataFrame, prefix: str) -> pd.DataFrame:
+        cols = [
+            'bowler_id', f'{prefix}_balls', f'{prefix}_runs', f'{prefix}_econ',
+            f'{prefix}_wickets', f'{prefix}_dot_pct', f'{prefix}_bnd_pct',
+            f'{prefix}_wicket_rate', f'{prefix}_r_ctrl', f'{prefix}_r_wkt', f'{prefix}_matches'
+        ]
         if len(tier_df) == 0:
-            return pd.DataFrame(columns=['bowler_id', f'{prefix}_balls', f'{prefix}_wickets', f'{prefix}_dot_pct', f'{prefix}_matches'])
+            return pd.DataFrame(columns=cols)
         agg = tier_df.groupby('bowler_id').agg(
             balls=('batter_runs', 'count'),
+            runs=('batter_runs', 'sum'),
             wickets=('is_bowler_wicket', 'sum'),
             dots=('is_dot_ball', 'sum'),
+            bnds=('is_bnd', 'sum'),
+            r_ctrl_mean=('r_ctrl', 'mean'),
+            r_wkt_mean=('r_wkt', 'mean'),
             matches=('match_id', 'nunique')
         ).reset_index()
         agg[f'{prefix}_balls'] = agg['balls']
+        agg[f'{prefix}_runs'] = agg['runs']
+        agg[f'{prefix}_econ'] = np.where(agg['balls'] > 0, (agg['runs'] / agg['balls']) * 6.0, np.nan)
         agg[f'{prefix}_wickets'] = agg['wickets']
         agg[f'{prefix}_dot_pct'] = np.where(agg['balls'] > 0, (agg['dots'] / agg['balls']) * 100.0, np.nan)
+        agg[f'{prefix}_bnd_pct'] = np.where(agg['balls'] > 0, (agg['bnds'] / agg['balls']) * 100.0, np.nan)
         agg[f'{prefix}_wicket_rate'] = np.where(agg['balls'] > 0, (agg['wickets'] / agg['balls']) * 100.0, np.nan)
+        agg[f'{prefix}_r_ctrl'] = agg['r_ctrl_mean']
+        agg[f'{prefix}_r_wkt'] = agg['r_wkt_mean']
         agg[f'{prefix}_matches'] = agg['matches']
-        return agg[['bowler_id', f'{prefix}_balls', f'{prefix}_wickets', f'{prefix}_dot_pct', f'{prefix}_wicket_rate', f'{prefix}_matches']]
+        return agg[cols]
 
     df_high_bowl = _agg_bowl(p_high_bowl, 'crisis')
     df_norm_bowl = _agg_bowl(p_norm_bowl, 'norm')
@@ -493,9 +588,13 @@ def compute_v3_rankings(
     bowl_master = df_tot_bowl.merge(df_high_bowl, on='bowler_id', how='left')
     bowl_master = bowl_master.merge(df_norm_bowl, on='bowler_id', how='left')
 
-    for c in ['crisis_balls', 'crisis_wickets', 'crisis_matches', 'norm_balls', 'norm_wickets', 'norm_matches']:
+    for c in ['crisis_balls', 'crisis_runs', 'crisis_wickets', 'crisis_matches', 'norm_balls', 'norm_runs', 'norm_wickets', 'norm_matches']:
         bowl_master[c] = pd.to_numeric(bowl_master[c], errors='coerce').fillna(0).astype(int)
-    for c in ['crisis_dot_pct', 'crisis_wicket_rate', 'norm_dot_pct', 'norm_wicket_rate', 'total_dot_pct']:
+    for c in [
+        'crisis_econ', 'norm_econ', 'crisis_dot_pct', 'crisis_bnd_pct', 'crisis_wicket_rate',
+        'norm_dot_pct', 'norm_bnd_pct', 'norm_wicket_rate', 'total_dot_pct',
+        'crisis_r_ctrl', 'norm_r_ctrl', 'crisis_r_wkt', 'norm_r_wkt'
+    ]:
         bowl_master[c] = pd.to_numeric(bowl_master[c], errors='coerce').astype(float)
 
     # Attach Canonical Player Metadata & Roles
@@ -506,7 +605,7 @@ def compute_v3_rankings(
     bowl_master['eligible_for_bowl_leaderboard'] = bowl_master['canonical_player_id'].apply(lambda pid: role_map.get(pid, {}).get('eligible_for_bowl_leaderboard', False))
     bowl_master['is_quarantined'] = bowl_master['canonical_player_id'].apply(resolver.is_quarantined)
 
-    # Normal comparison validity for Bowlers (MIN_NORMAL_BALLS = 100, no silent imputation, raw vs capped kept separate)
+    # Normal comparison validity for Bowlers (Prior-Anchored Specialist for norm_balls < 100, raw vs capped kept separate)
     norm_elig_b = []
     norm_status_b = []
     raw_dot_maints = []
@@ -533,10 +632,9 @@ def compute_v3_rankings(
                 capped_dot_maints.append(np.nan)
                 is_maint_capped_b.append(False)
         else:
-            norm_elig_b.append(False)
-            norm_status_b.append('BOWLER_NORMAL_BASELINE_INSUFFICIENT')
+            norm_elig_b.append(True)
+            norm_status_b.append('PRIOR_ANCHORED_SPECIALIST')
             raw_dot_maints.append(raw_val)
-            # Do not treat maintenance ratio as reliable when normal balls < 100
             capped_dot_maints.append(np.nan)
             is_maint_capped_b.append(False)
 
@@ -547,19 +645,17 @@ def compute_v3_rankings(
     bowl_master['dot_maintenance'] = capped_dot_maints
     bowl_master['is_maintenance_capped'] = is_maint_capped_b
 
-    # Sample Eligibility: crisis >= 120, total >= 120, crisis matches >= 5, norm balls >= 100
+    # Sample Eligibility: crisis >= 120, total >= 120, crisis matches >= 5 (decoupled from norm_balls >= 100)
     c_b_cb = bowl_master['crisis_balls'] >= DEFAULT_BOWL_THRESHOLDS['crisis_balls']
     c_b_tb = bowl_master['total_legal_balls'] >= DEFAULT_BOWL_THRESHOLDS['total_legal_balls']
     c_b_cm = bowl_master['crisis_matches'] >= DEFAULT_BOWL_THRESHOLDS['crisis_matches']
-    c_b_nb = bowl_master['norm_baseline_eligible']
     c_b_not_quar = ~bowl_master['is_quarantined']
 
-    bowl_master['sample_eligible'] = c_b_cb & c_b_tb & c_b_cm & c_b_nb & c_b_not_quar
+    bowl_master['sample_eligible'] = c_b_cb & c_b_tb & c_b_cm & c_b_not_quar
     bowl_master['eligibility_status'] = np.where(
         bowl_master['sample_eligible'], 'ELIGIBLE',
         np.where(bowl_master['is_quarantined'], 'IDENTITY_CONFLICT_QUARANTINE',
-                 np.where(~bowl_master['norm_baseline_eligible'], 'BOWLER_NORMAL_BASELINE_INSUFFICIENT',
-                          np.where(bowl_master['crisis_balls'] >= 15, 'PROVISIONAL_SAMPLE', 'INSUFFICIENT_SAMPLE')))
+                 np.where(bowl_master['crisis_balls'] >= 15, 'PROVISIONAL_SAMPLE', 'INSUFFICIENT_SAMPLE'))
     )
     bowl_master['final_eligibility'] = np.where(
         bowl_master['sample_eligible'] & bowl_master['eligible_for_bowl_leaderboard'] & (~bowl_master['is_quarantined']),
@@ -576,8 +672,6 @@ def compute_v3_rankings(
             reasons.append(f"TOTAL_LEGAL_BALLS<{DEFAULT_BOWL_THRESHOLDS['total_legal_balls']}")
         if r['crisis_matches'] < DEFAULT_BOWL_THRESHOLDS['crisis_matches']:
             reasons.append(f"CRISIS_MATCHES<{DEFAULT_BOWL_THRESHOLDS['crisis_matches']}")
-        if not r['norm_baseline_eligible']:
-            reasons.append(f"BOWLER_NORMAL_BASELINE_INSUFFICIENT (NORM_BALLS<{MIN_NORMAL_BALLS_BOWLER})")
         if not r['eligible_for_bowl_leaderboard']:
             reasons.append(f"INELIGIBLE_ROLE_{r['v3_role']}")
         return "; ".join(reasons) if reasons else 'NONE'
@@ -598,6 +692,31 @@ def compute_v3_rankings(
     bowl_master['prior_mean'] = bowl_prior_meta['prior_mean']
     bowl_master['prior_population_count'] = bowl_prior_meta['prior_population_count']
     bowl_master['shrinkage_status'] = bowl_prior_meta['shrinkage_status']
+
+    # Phase-adjusted dual-arm EB shrinkage & cohort-calibrated DiD maintenance for bowling
+    # allow_prior_anchored=True lets specialist bowlers with sparse normal overs anchor at league phase average (0.0)
+    c_delta_ctrl, n_delta_ctrl, did_bowl = V3ReliabilityEngine.phase_adjusted_dual_arm_did(
+        bowl_master['crisis_r_ctrl'],
+        bowl_master['crisis_balls'],
+        bowl_master['norm_r_ctrl'],
+        bowl_master['norm_balls'],
+        k_crisis=40.0,
+        k_norm=40.0,
+        floor_normal_at_zero=True,
+        cohort_calibrated=True,
+        allow_prior_anchored=True,
+        cohort_mask=prior_bowl_mask & (bowl_master['norm_balls'] >= MIN_NORMAL_BALLS_BOWLER),
+    )
+    bowl_master['crisis_delta_ctrl'] = c_delta_ctrl.round(2)
+    bowl_master['norm_delta_ctrl'] = n_delta_ctrl.round(2)
+    bowl_master['did_bowl_maintenance'] = did_bowl.round(2)
+    c_delta_wkt = np.where(
+        (bowl_master['crisis_balls'] > 0) & bowl_master['crisis_r_wkt'].notna(),
+        (bowl_master['crisis_balls'] / (bowl_master['crisis_balls'] + 60.0)) * bowl_master['crisis_r_wkt'],
+        np.nan,
+    )
+    bowl_master['crisis_delta_wkt'] = pd.Series(c_delta_wkt, index=bowl_master.index).round(3)
+    bowl_master['abs_bowl_score'] = (0.60 * bowl_master['crisis_delta_ctrl'] + 0.40 * (10.0 * bowl_master['crisis_delta_wkt'])).round(2)
 
     # Sample Confidence (scaled to 600 crisis balls for bowlers so 120..600 ball workloads are properly differentiated)
     bowl_master['sample_confidence'] = np.clip(
@@ -625,22 +744,17 @@ def compute_v3_rankings(
             b_consistencies.append(0.10)
         else:
             p_sub = p_high_bowl[p_high_bowl['bowler_id'] == bid]
-            m_dots = p_sub.groupby('match_id')['is_dot_ball'].sum()
-            m_balls = p_sub.groupby('match_id')['batter_runs'].count()
-            overall_dot = float(row['crisis_dot_pct']) if pd.notna(row['crisis_dot_pct']) else 35.0
-            norm_dot = float(row['norm_dot_pct']) if pd.notna(row['norm_dot_pct']) and float(row['norm_dot_pct']) > 0 else overall_dot
-            m_dot_rates = (m_dots / m_balls) * 100.0
+            m_ctrl = p_sub.groupby('match_id')['r_ctrl'].mean()
+            m_balls = p_sub.groupby('match_id')['r_ctrl'].count()
+            overall_ctrl = float(row['crisis_delta_ctrl']) if pd.notna(row['crisis_delta_ctrl']) else 0.0
             w_eb = m_balls / (m_balls + 6.0)
-            shrunk_m_rates = w_eb * m_dot_rates + (1.0 - w_eb) * overall_dot
+            shrunk_m_ctrl = w_eb * m_ctrl + (1.0 - w_eb) * overall_ctrl
             w_b = m_balls.values.astype(float)
-            w_mean = float(np.average(shrunk_m_rates.values, weights=w_b))
-            w_var = float(np.average((shrunk_m_rates.values - w_mean) ** 2, weights=w_b))
+            w_mean = float(np.average(shrunk_m_ctrl.values, weights=w_b))
+            w_var = float(np.average((shrunk_m_ctrl.values - w_mean) ** 2, weights=w_b))
             w_std = float(np.sqrt(w_var))
-            cv = (w_std / w_mean) if w_mean > 0 else 1.2
-            target_dot = max(38.0, 0.92 * norm_dot)
-            success_rate = float(np.average((shrunk_m_rates.values >= target_dot).astype(float), weights=w_b))
             m_w = np.sqrt(cm / (cm + 3.0))
-            c_score = np.clip((0.40 * np.exp(-cv) + 0.60 * success_rate) * m_w, 0.08, 0.98)
+            c_score = np.clip(np.exp(-w_std / 22.0) * m_w, 0.08, 0.98)
             b_consistencies.append(round(float(c_score), 4))
 
         boot = V3ReliabilityEngine.match_clustered_bootstrap_bowling(
@@ -673,14 +787,30 @@ def compute_v3_rankings(
     if len(el_pool_bowl) == 0:
         el_pool_bowl = bowl_master.copy()
 
-    bowl_master['norm_maint'] = _minmax(bowl_master['dot_maintenance'], el_pool_bowl['dot_maintenance'])
-    bowl_master['norm_abs'] = _minmax(bowl_master['shrunk_crisis_wr'], el_pool_bowl['shrunk_crisis_wr'])
-    bowl_master['norm_cons'] = _minmax(bowl_master['consistency_score'], el_pool_bowl['consistency_score'])
+    bowl_master['norm_maint'] = _winsorized_zscore(bowl_master['did_bowl_maintenance'], el_pool_bowl['did_bowl_maintenance'])
+    bowl_master['norm_abs'] = _winsorized_zscore(bowl_master['abs_bowl_score'], el_pool_bowl['abs_bowl_score'])
+    bowl_master['norm_cons'] = _winsorized_zscore(bowl_master['consistency_score'], el_pool_bowl['consistency_score'])
     bowl_master['norm_sample'] = bowl_master['sample_confidence']
 
-    bowl_master['contrib_maint'] = (w['maintenance'] * bowl_master['norm_maint'] * 100.0).round(2)
-    bowl_master['contrib_abs'] = (w['absolute'] * bowl_master['norm_abs'] * 100.0).round(2)
-    bowl_master['contrib_cons'] = (w['consistency'] * bowl_master['norm_cons'] * 100.0).round(2)
+    # Reliability-attenuated maintenance weight for specialists with < MIN_NORMAL_BALLS_BOWLER normal balls
+    w_norm_rel = np.where(
+        bowl_master['norm_balls'] >= MIN_NORMAL_BALLS_BOWLER,
+        1.0,
+        bowl_master['norm_balls'] / (bowl_master['norm_balls'] + 40.0),
+    )
+    eff_w_maint = w['maintenance'] * w_norm_rel
+    reallocated_w = w['maintenance'] - eff_w_maint
+    abs_cons_sum = w['absolute'] + w['consistency']
+    eff_w_abs = w['absolute'] + reallocated_w * (w['absolute'] / abs_cons_sum)
+    eff_w_cons = w['consistency'] + reallocated_w * (w['consistency'] / abs_cons_sum)
+
+    bowl_master['effective_w_maint'] = np.round(eff_w_maint, 4)
+    bowl_master['effective_w_abs'] = np.round(eff_w_abs, 4)
+    bowl_master['effective_w_cons'] = np.round(eff_w_cons, 4)
+
+    bowl_master['contrib_maint'] = (eff_w_maint * bowl_master['norm_maint'] * 100.0).round(2)
+    bowl_master['contrib_abs'] = (eff_w_abs * bowl_master['norm_abs'] * 100.0).round(2)
+    bowl_master['contrib_cons'] = (eff_w_cons * bowl_master['norm_cons'] * 100.0).round(2)
     bowl_master['contrib_sample'] = (w['sample'] * bowl_master['norm_sample'] * 100.0).round(2)
 
     bowl_master['bowling_pri_provisional'] = (
@@ -689,8 +819,6 @@ def compute_v3_rankings(
         bowl_master['contrib_cons'] +
         bowl_master['contrib_sample']
     ).round(2)
-    # Never allow an insufficient normal baseline (<100 balls) to generate an apparently reliable composite ranking
-    bowl_master.loc[~bowl_master['norm_baseline_eligible'], ['norm_maint', 'contrib_maint', 'bowling_pri_provisional']] = np.nan
     bowl_master['provisional_fixed_weight_score'] = bowl_master['bowling_pri_provisional']
     bowl_master['bowling_pri'] = bowl_master['bowling_pri_provisional']
     bowl_master['formula_status'] = 'PROVISIONAL_FIXED_WEIGHT_SCORE'
@@ -698,9 +826,12 @@ def compute_v3_rankings(
     def _bowl_score_explanation(r):
         if pd.isna(r['provisional_fixed_weight_score']):
             return f"UNRANKED_INSUFFICIENT_BASELINE ({r['norm_baseline_status']})"
+        wm = int(round(r['effective_w_maint'] * 100))
+        wa = int(round(r['effective_w_abs'] * 100))
+        wc = int(round(r['effective_w_cons'] * 100))
         return (
-            f"Maint(35%)={r['contrib_maint']:.2f} + Abs(35%)={r['contrib_abs']:.2f} + "
-            f"Cons(20%)={r['contrib_cons']:.2f} + Sample(10%)={r['contrib_sample']:.2f} = {r['provisional_fixed_weight_score']:.2f}"
+            f"Maint({wm}%)={r['contrib_maint']:.2f} + Abs({wa}%)={r['contrib_abs']:.2f} + "
+            f"Cons({wc}%)={r['contrib_cons']:.2f} + Sample(10%)={r['contrib_sample']:.2f} = {r['provisional_fixed_weight_score']:.2f}"
         )
 
     bowl_master['component_breakdown_explanation'] = bowl_master.apply(_bowl_score_explanation, axis=1)
@@ -777,10 +908,10 @@ def compute_v3_rankings(
             ).sum())
             paired_counts[(cb, cm)] = (b_cnt, w_cnt)
 
-    # Batter grid: cb in [40, 60, 80, 100, 150, 200, 250], cm in [5, 8, 10], nb in [30, 50, 75], tb in [120, 200]
+    # Batter grid: cb in [40, 60, 80, 100, 150, 200, 250], cm in [5, 8, 10], nb in [30, 60, 80, 100], tb in [120, 200]
     for cb in crisis_ball_grid:
         for cm in crisis_match_grid:
-            for nb in [30, 50, 75]:
+            for nb in [30, 60, 80, 100]:
                 for tb in [120, 200]:
                     mask = (
                         (bat_master['crisis_balls'] >= cb) &
@@ -834,9 +965,9 @@ def compute_v3_rankings(
                         'min_crisis_matches': cm,
                         'min_normal_balls': nb,
                         'min_total_deliveries': tb,
-                        'is_primary_crisis_sweep': (cm == 5 and nb == 30 and tb == 120),
+                        'is_primary_crisis_sweep': (cm == 5 and nb == 60 and tb == 120),
                         'eligible_players': len(cand),
-                        'eligible_batter_count': len(cand) if (nb == 30 and tb == 120) else b_cnt,
+                        'eligible_batter_count': len(cand) if (nb == 60 and tb == 120) else b_cnt,
                         'eligible_bowler_count': w_cnt,
                         'unique_canonical_ids': cand['canonical_player_id'].nunique(),
                         'available_top10_count': len(cand_top10),
@@ -951,10 +1082,23 @@ def compute_v3_rankings(
     def _eval_weights(df_pool: pd.DataFrame, disc: str, norm_cols: Dict[str, str], base_top10_ids: set) -> pd.DataFrame:
         p_df = df_pool.copy()
         for cfg_name, weights in SENSITIVITY_CONFIGS.items():
+            if disc == 'Bowling' and 'norm_balls' in p_df.columns:
+                w_rel = np.where(
+                    p_df['norm_balls'] >= MIN_NORMAL_BALLS_BOWLER,
+                    1.0,
+                    p_df['norm_balls'] / (p_df['norm_balls'] + 40.0),
+                )
+                wm = weights['maintenance'] * w_rel
+                realloc = weights['maintenance'] - wm
+                ac_sum = weights['absolute'] + weights['consistency']
+                wa = weights['absolute'] + realloc * (weights['absolute'] / ac_sum)
+                wc = weights['consistency'] + realloc * (weights['consistency'] / ac_sum)
+            else:
+                wm, wa, wc = weights['maintenance'], weights['absolute'], weights['consistency']
             scores = (
-                weights['maintenance'] * p_df[norm_cols['maint']] +
-                weights['absolute'] * p_df[norm_cols['abs']] +
-                weights['consistency'] * p_df[norm_cols['cons']] +
+                wm * p_df[norm_cols['maint']] +
+                wa * p_df[norm_cols['abs']] +
+                wc * p_df[norm_cols['cons']] +
                 weights['sample'] * p_df[norm_cols['sample']]
             ) * 100.0
             p_df[f'score_{cfg_name}'] = scores.round(2)
@@ -1024,14 +1168,14 @@ def compute_v3_rankings(
         df_b['primary_role'] = df_b['v3_role']
         df_b['modal_batting_position'] = df_b['modal_order']
         df_b['source_of_truth_file'] = 'data/outputs/v3/TOP_10_BATTERS.csv'
-        df_b['pressure_model_status'] = 'PROVISIONAL_POSITION_PROXY_HEURISTIC'
+        df_b['pressure_model_status'] = 'V3.3_GOLDFISH_CHASE_LEVERAGE'
         df_b['hazard_model_status'] = 'EXPERIMENTAL_NOT_USED_FOR_RANKING'
 
     for df_w in [top10_bowlers, bowl_master]:
         df_w['canonical_display_name'] = df_w['player_name']
         df_w['primary_role'] = df_w['v3_role']
         df_w['source_of_truth_file'] = 'data/outputs/v3/TOP_10_BOWLERS.csv'
-        df_w['pressure_model_status'] = 'PROVISIONAL_POSITION_PROXY_HEURISTIC'
+        df_w['pressure_model_status'] = 'V3.3_GOLDFISH_CHASE_LEVERAGE'
         df_w['hazard_model_status'] = 'EXPERIMENTAL_NOT_USED_FOR_RANKING'
 
     # Authoritative Batter Fields
@@ -1045,6 +1189,7 @@ def compute_v3_rankings(
         'crisis_balls', 'crisis_runs', 'crisis_sr', 'crisis_matches',
         'norm_balls', 'norm_runs', 'norm_sr', 'norm_matches',
         'raw_sr_maintenance', 'capped_sr_maintenance', 'sr_maintenance', 'is_maintenance_capped',
+        'did_bat_maintenance', 'crisis_delta_rv',
         'shrunk_crisis_sr', 'crisis_sr_vs_cohort_mean', 'crisis_sr_below_cohort_mean',
         'performance_anomaly_flag', 'consistency_score', 'sample_confidence',
         'norm_maint', 'norm_abs', 'norm_cons', 'norm_sample',
@@ -1071,6 +1216,7 @@ def compute_v3_rankings(
         'crisis_balls', 'crisis_wickets', 'crisis_dot_pct', 'crisis_wicket_rate', 'crisis_matches',
         'norm_balls', 'norm_wickets', 'norm_dot_pct', 'norm_wicket_rate', 'norm_matches',
         'raw_dot_maintenance', 'capped_dot_maintenance', 'dot_maintenance', 'is_maintenance_capped',
+        'did_bowl_maintenance', 'abs_bowl_score', 'effective_w_maint', 'effective_w_abs', 'effective_w_cons',
         'shrunk_crisis_wr', 'consistency_score', 'sample_confidence',
         'norm_maint', 'norm_abs', 'norm_cons', 'norm_sample',
         'contrib_maint', 'contrib_abs', 'contrib_cons', 'contrib_sample',
@@ -1194,6 +1340,20 @@ def compute_v3_rankings(
     bat_master.to_parquet(OUTPUTS_ROOT / "batting_pressure_rankings.parquet", index=False)
     bowl_master.to_parquet(OUTPUTS_ROOT / "bowling_pressure_rankings.parquet", index=False)
 
+    def _file_sha256(p: Path) -> Optional[str]:
+        if not p.exists():
+            return None
+        h = hashlib.sha256()
+        with open(p, 'rb') as fh:
+            for chunk in iter(lambda: fh.read(65536), b''):
+                h.update(chunk)
+        return h.hexdigest()
+
+    sens_bat_ranks = [int(r) for r in top10_batters.loc[top10_batters['ranking_sensitivity_status'] == 'RANKING_SENSITIVE_TO_WEIGHTS', 'rank'].tolist()]
+    sens_bowl_ranks = [int(r) for r in top10_bowlers.loc[top10_bowlers['ranking_sensitivity_status'] == 'RANKING_SENSITIVE_TO_WEIGHTS', 'rank'].tolist()]
+    bat_sens_str = ", ".join(f"#{r}" for r in sens_bat_ranks) if sens_bat_ranks else "none"
+    bowl_sens_str = ", ".join(f"#{r}" for r in sens_bowl_ranks) if sens_bowl_ranks else "none"
+
     # Master JSON Manifest
     manifest = {
         'manifest_title': 'SupeRR Intelligence V3 Universal Player Ranking Single Source of Truth',
@@ -1207,6 +1367,20 @@ def compute_v3_rankings(
             'threshold_sensitivity_csv': 'data/outputs/v3/RANKING_THRESHOLD_SENSITIVITY.csv',
             'weight_sensitivity_csv': 'data/outputs/v3/RANKING_WEIGHT_SENSITIVITY.csv',
             'player_identity_crosswalk_csv': 'data/outputs/v3/PLAYER_IDENTITY_CROSSWALK.csv'
+        },
+        'artifact_sha256': {
+            'TOP_10_BATTERS.csv': _file_sha256(OUTPUTS_V3 / "TOP_10_BATTERS.csv"),
+            'TOP_10_BOWLERS.csv': _file_sha256(OUTPUTS_V3 / "TOP_10_BOWLERS.csv"),
+            'ALL_BATTER_METRICS.csv': _file_sha256(OUTPUTS_V3 / "ALL_BATTER_METRICS.csv"),
+            'ALL_BOWLER_METRICS.csv': _file_sha256(OUTPUTS_V3 / "ALL_BOWLER_METRICS.csv"),
+            'RR_PLAYER_FIT.csv': _file_sha256(OUTPUTS_V3 / "RR_PLAYER_FIT.csv"),
+        },
+        'summary_metrics': {
+            'eligible_batters_count': int(len(top_batters_eligible)),
+            'eligible_bowlers_count': int(len(top_bowlers_eligible)),
+            'sensitive_bat_ranks': sens_bat_ranks,
+            'sensitive_bowl_ranks': sens_bowl_ranks,
+            'threshold_sensitivity_combinations': int(len(thresh_df)),
         },
         'synchronized_downstream_copies': {
             'top_10_batters_copies': [
@@ -1243,17 +1417,18 @@ def compute_v3_rankings(
         'governance': {
             'git_baseline_commit': '537777c8436fd647a484a49cfbfa30b843c98a1c',
             'git_branch': 'fix/v3-pre-submission-consistency-001',
-            'ranking_script_version': 'V3.1.1_PRE_SUBMISSION_CONSISTENCY_PATCH',
-            'pressure_formula_version': 'PROVISIONAL_POSITION_PROXY_HEURISTIC',
+            'ranking_script_version': 'V3.3_GOLDFISH_TRIZ_PATCH',
+            'pressure_formula_version': 'V3.3_GOLDFISH_CHASE_LEVERAGE',
             'hazard_model_status': 'EXPERIMENTAL_NOT_USED_FOR_RANKING',
             'identity_crosswalk_version': 'V3.1_CANONICAL',
             'ranking_score_status': 'PROVISIONAL_FIXED_WEIGHT_SCORE',
             'threshold_governance': 'PROVISIONAL_ELIGIBILITY_CONFIRMED',
-            'ranking_approval_status': 'P1.1 PATCH VERIFIED — PROVISIONAL MODEL',
+            'ranking_approval_status': 'V3.3 GOLDFISH TRIZ VERIFIED — PROVISIONAL MODEL',
             'mandatory_disclosure': (
-                'Rankings are provisional. Batter ranks 5, 6, 9 and 10 are sensitive to scoring weights. '
-                'The pressure classification remains heuristic and position-proxy based. '
-                'The new score has not yet undergone independent out-of-time validation.'
+                f"Rankings are provisional. Batter ranks sensitive to scoring weights: {bat_sens_str}; "
+                f"Bowler ranks sensitive to scoring weights: {bowl_sens_str}. "
+                "The pressure classification uses the calibrated pre-delivery state & clean-channel chase-leverage heuristic "
+                "(V3.3_GOLDFISH_CHASE_LEVERAGE). The new score has not yet undergone independent out-of-time validation."
             )
         },
         'configurations': {

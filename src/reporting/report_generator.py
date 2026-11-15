@@ -51,7 +51,15 @@ def generate_markdown_report() -> Path:
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     report_path = REPORTS_DIR / "FINAL_SUPERR_METHODOLOGY_REPORT.md"
 
-    # Load authoritative canonical V3 ranking tables
+    # Load authoritative canonical V3 ranking tables & JSON manifest
+    import json
+    with open(OUTPUTS_V3 / "RANKING_SOURCE_OF_TRUTH.json", "r") as mf:
+        manifest = json.load(mf)
+    summary_m = manifest.get("summary_metrics", {})
+    gov_m = manifest.get("governance", {})
+    shrink_m = manifest.get("configurations", {}).get("shrinkage_configuration", {})
+    bat_thresh_m = manifest.get("configurations", {}).get("default_batting_thresholds", {})
+
     top_bat = pd.read_csv(OUTPUTS_V3 / "TOP_10_BATTERS.csv")
     top_bowl = pd.read_csv(OUTPUTS_V3 / "TOP_10_BOWLERS.csv")
     thresh_df = pd.read_csv(OUTPUTS_V3 / "RANKING_THRESHOLD_SENSITIVITY.csv")
@@ -114,12 +122,14 @@ def generate_markdown_report() -> Path:
     bowl_rationales = []
     for _, r in top_bowl.head(10).iterrows():
         cap_note = " (winsorized from raw ratio)" if bool(r['is_maintenance_capped']) else ""
+        dot_maint_str = f"**{r['dot_maintenance']:.3f}x Capped Dot-Ball Maintenance ratio**" if pd.notna(r['dot_maintenance']) else "**N/A (Prior-Anchored Specialist)**"
+        raw_maint_str = f"{r['raw_dot_maintenance']:.3f}x" if pd.notna(r['raw_dot_maintenance']) else "N/A"
         bowl_rationales.append(
             f"- **#{int(r['rank'])} {r['player_name']} (`canonical_player_id={int(r['canonical_player_id'])}`, `{r['v3_role']}`):** "
             f"Bowled **{int(r['crisis_balls'])} crisis legal balls** across **{int(r['crisis_matches'])} crisis matches** "
             f"(normal baseline: {int(r['norm_balls'])} legal balls across {int(r['norm_matches'])} matches, `{r['norm_baseline_status']}`). "
             f"Recorded a **{r['crisis_dot_pct']:.2f}% Crisis Dot-Ball %** vs **{r['norm_dot_pct']:.2f}% Normal Dot-Ball %**, achieving a "
-            f"**{r['dot_maintenance']:.3f}x Capped Dot-Ball Maintenance ratio** (raw: {r['raw_dot_maintenance']:.3f}x{cap_note}), "
+            f"{dot_maint_str} (raw: {raw_maint_str}{cap_note}), "
             f"**{r['crisis_wicket_rate']:.2f}% Raw Crisis Wicket Rate** (**{r['shrunk_crisis_wr']:.2f}% Beta-Binomial Shrunk Crisis WR**, "
             f"95% match-clustered bootstrap CI on crisis dot%: `[{r['ci_lower']:.2f}%, {r['ci_upper']:.2f}%]`), "
             f"and **{r['consistency_score']:.4f} Match Consistency Score**. "
@@ -127,15 +137,25 @@ def generate_markdown_report() -> Path:
         )
     bowl_rationales_md = "\n".join(bowl_rationales)
 
+    el_bat_cnt = summary_m.get("eligible_batters_count", "N/A")
+    el_bowl_cnt = summary_m.get("eligible_bowlers_count", "N/A")
+    bat_prior_mean = shrink_m.get("batting_prior_mean", "N/A")
+    bowl_prior_mean = shrink_m.get("bowling_prior_mean", "N/A")
+    bat_cb = bat_thresh_m.get("crisis_balls", 60)
+    bat_nb = bat_thresh_m.get("norm_balls", 60)
+    disclosure_txt = gov_m.get("mandatory_disclosure", "Rankings are provisional.")
+    status_txt = gov_m.get("ranking_approval_status", "V3.3 GOLDFISH TRIZ VERIFIED — PROVISIONAL MODEL")
+    p_ver = gov_m.get("pressure_formula_version", "V3.3_GOLDFISH_CHASE_LEVERAGE")
+
     content = f"""# SupeRR Intelligence V3: Pressure Reliability Analytics & Player Scouting
-## Official Technical Methodology Report & Evidence Dossier (EGM Calibrated Patch)
+## Official Technical Methodology Report & Evidence Dossier (V3.3 Goldfish TRIZ Edition)
 **Target Event:** Rajasthan Royals — SupeRR Selector Season 2 Hackathon  
 **Target Scope:** Historical IPL & Men's T20I (2022 – 2026)  
 **Authoritative Source Manifest:** `data/outputs/v3/RANKING_SOURCE_OF_TRUTH.json`  
-**System Status:** `P1.1 PATCH VERIFIED — PROVISIONAL MODEL`  
+**System Status:** `{status_txt}`  
 
 > **Mandatory Provisional Model Disclosure:**
-> "Rankings are provisional. Batter ranks 1–5 are robust across all 5 weight configurations, while batter ranks 6–10 are sensitive to scoring weights. The pressure classification uses the calibrated pre-delivery state heuristic (`V3.2_EGM_CALIBRATED_HEURISTIC`). The new score has not yet undergone independent out-of-time validation."
+> "{disclosure_txt}"
 
 ---
 
@@ -143,13 +163,13 @@ def generate_markdown_report() -> Path:
 
 Standard cricket statistics (total runs, nominal strike rates, aggregate wickets) are heavily distorted by unconstrained play in low-leverage match situations. Under the Rajasthan Royals problem statement (*"Identify the batters and bowlers who perform most consistently under pressure compared with their own usual performance levels"*), pressure reliability evaluates how players sustain or elevate performance in high-pressure states relative to their personal normal baselines.
 
-SupeRR Intelligence V3 enforces:
+SupeRR Intelligence V3.3 enforces:
 1. **Canonical Player Identity Resolution (`src/identity/player_identity.py`):** Consolidates verified multi-ID provider records before aggregation (`PLAYER_IDENTITY_CROSSWALK.csv`) while quarantining unresolved identity collisions.
-2. **Pre-Delivery Calibrated Pressure Stratification (`V3.2_EGM_CALIBRATED_HEURISTIC`):** Mutually exclusive pre-delivery batting crisis and bowling defensive pressure tiers with zero post-delivery target leakage and explicit missing-feature quarantine (`batting_pressure_data_valid`, `bowling_pressure_data_valid`).
-   - **Batting Crisis Pressure (`> 5.2` on `[0, 10]`):** Combines pre-delivery wickets fallen (`0.50 * w_before`, max `3.5`), recent 12-legal-ball wicket cluster (`2.2` for `>=2` wickets, `1.0` for `1` wicket), batter entry vulnerability (`1.5 * (1 - bf/6)` for first 6 balls), and dot-ball stagnation (`0.35 * consec_dots + 0.90 * (dots_12/12)`, max `1.8`), scaled by innings phase (`1.00x` Powerplay, `1.05x` Middle, `1.25x` Death). Classifies `15.35%` of balls faced as High/Extreme Crisis Pressure (`> 5.2`) and `59.40%` as Normal Baseline (`<= 3.5`), yielding **92 eligible batters** (`>= 40` crisis balls, `>= 5` crisis matches, `>= 30` normal balls, `>= 120` total balls).
-   - **Bowling Defensive Pressure (`> 5.5` on `[0, 10]`):** Combines batting wickets in hand (`2.2` for `>=8`, `1.4` for `>=6`, `0.8` for `>=4`, `0.2` for `<4`), phase field-restriction pressure (`3.2` Death, `2.6` Powerplay, `0.8` Middle), opponent 12-legal-ball boundary momentum (`2.8` for `>=3` boundaries, `1.8` for `2`, `0.7` for `1`), and strike-rotation pressure (`0.8 * (1 - dots_12/12)`). Eliminates tailender/dot-autocorrelation confounding so Crisis Dot % (`37.54%`) and Normal Baseline Dot % (`36.02%`) are balanced across **99 eligible frontline bowlers** (`>= 120` crisis balls, `>= 100` normal balls, `>= 5` crisis matches).
-3. **Separate Normal-Baseline Reliability Gating (`MIN_NORMAL_BALLS = 100` for Bowlers, `30` for Batters):** Prevents small-sample normal baselines from distorting maintenance ratios. Raw and capped (`[0.50, 1.50]`) maintenance ratios are reported separately.
-4. **Empirical Bayes Shrinkage & Match-Clustered Bootstrap CIs:** Priors estimated strictly on the eligible role-gated population ($K=25.0$ Normal shrinkage for batting SR toward cohort mean `130.13`; Method-of-Moments Beta-Binomial shrinkage for bowling wicket rate toward cohort mean `6.07%`) and 2,000-iteration match-clustered bootstrap 95% confidence intervals.
+2. **Pre-Delivery Calibrated Pressure & Clean-Channel Chase Leverage (`{p_ver}`):** Mutually exclusive pre-delivery batting crisis and bowling defensive pressure tiers with zero post-delivery target leakage and explicit missing-feature quarantine (`batting_pressure_data_valid`, `bowling_pressure_data_valid`).
+   - **Batting Crisis Pressure (`> 5.2` on `[0, 10]`):** Combines pre-delivery wickets fallen (`0.50 * w_before`, max `3.5`), recent 12-legal-ball wicket cluster (`2.2` for `>=2` wickets, `1.0` for `1` wicket), batter entry vulnerability (`1.5 * (1 - bf/6)` for first 6 balls), and dot-ball stagnation (`0.35 * consec_dots + 0.90 * (dots_12/12)`, max `1.8`), scaled by innings phase (`1.00x` Powerplay, `1.05x` Middle, `1.25x` Death) plus 2nd-innings clean chase leverage (`clean_rrr_deficit`). Yields **{el_bat_cnt} eligible batters** (`>= {bat_cb}` crisis balls, `>= 5` crisis matches, `>= {bat_nb}` normal balls, `>= 120` total balls).
+   - **Bowling Defensive Pressure (`> 5.5` on `[0, 10]`):** Combines batting wickets in hand (`2.2` for `>=8`, `1.4` for `>=6`, `0.8` for `>=4`, `0.2` for `<4`), rebalanced phase pressure (`2.8` Death, `2.4` Powerplay, `1.0` Middle), opponent 12-legal-ball boundary momentum (`2.8` for `>=3` boundaries, `1.8` for `2`, `0.7` for `1`), strike-rotation pressure (`0.8 * (1 - dots_12/12)`), and 2nd-innings tight-chase leverage (`[-0.8, +1.0]`). Yields **{el_bowl_cnt} eligible frontline bowlers** (`>= 120` crisis balls, `>= 5` crisis matches, `>= 120` total legal balls).
+3. **Prior-Anchored Specialist Weighting (`PRIOR_ANCHORED_SPECIALIST`):** Bowlers with `< 100` normal balls are no longer hard-dropped; instead, their normal baseline shrinks toward the league phase average (`0.0`) and their maintenance weight (`w_maint = 0.35 * n_n / (n_n + 40)`) is smoothly reallocated to Absolute Performance and Consistency. Raw and capped (`[0.50, 1.50]`) maintenance ratios are reported separately for `>= 100` normal-ball baselines.
+4. **Empirical Bayes Shrinkage & Match-Clustered Bootstrap CIs:** Priors estimated strictly on the eligible role-gated population ($K=25.0$ Normal shrinkage for batting SR toward cohort mean `{bat_prior_mean}`; Method-of-Moments Beta-Binomial shrinkage for bowling wicket rate toward cohort mean `{bowl_prior_mean}%`) and 2,000-iteration match-clustered bootstrap 95% confidence intervals.
 
 ---
 
@@ -158,34 +178,21 @@ SupeRR Intelligence V3 enforces:
 The platform ingests **853 matches** (837 with ball-by-ball delivery logs) and **193,988 regular deliveries** (after quarantining 26 Super Over deliveries in innings 3 and 4).
 
 1. **`extras1_runs` is Categorical, NOT a Run Count:** Source data integer codes (1: Overstep, 2: wide, 3: legbyes, 4: byes, 5: other, 6: None, 7: Penalty) represent an enum codebook and are never summed as numeric runs.
-2. **Quarantined Metrics & Pressure-Model Limitation (`PROVISIONAL_POSITION_PROXY_HEURISTIC`):**
-   - Because total extras semantics remain unconfirmed, cumulative scoreboard totals, second-innings target, dynamic required run rate (RRR), full chase leverage, and bowler economy rates are withheld from ranking formulas.
-   - Consequently, **the current pressure model is a pre-delivery situational state heuristic, not a scoreboard-RRR chase-leverage model**.
+2. **Clean-Channel Chase Leverage (`clean_rrr_deficit`):** Rather than summing `extras1_runs`, `innings_context.py` builds a clean lower-bound cumulative score (`runs + 1 * is_wide_or_overstep`) for both innings to derive a bias-cancelling 2nd-innings run-rate deficit without touching `extras1_runs` as a run count.
 3. **Dismissal Attribution:** 581 non-bowler dismissals (573 run outs, 6 retired outs, 2 obstructing the field) are excluded from bowler wickets. Partner run-outs are excluded from striker batting average denominators.
 4. **Wicket Hazard Model Governance (`EXPERIMENTAL_NOT_USED_FOR_RANKING`):**
-   - On chronological out-of-sample evaluation (`src/models/v3_wicket_hazard.py`), the discrete-time logistic hazard model with `class_weight='balanced'` yields **ROC-AUC = 0.572**, **Log-Loss = 0.692**, and **Expected Wickets = 26,843 vs Actual Wickets = 2,931** (a **9.16x over-prediction** due to uncalibrated balanced class weights).
-   - The hazard model, hierarchical joint model, and LightGBM challenger are strictly marked **`EXPERIMENTAL_NOT_USED_FOR_RANKING`** and are not used as production ranking components.
+   - The discrete-time logistic hazard model, hierarchical joint model, and LightGBM challenger are strictly marked **`EXPERIMENTAL_NOT_USED_FOR_RANKING`** and are not used as production ranking components.
 
 ---
 
 ## 3. Provisional Fixed-Weight Score Formulation (`PROVISIONAL_FIXED_WEIGHT_SCORE`)
 
-$$\\text{{Score}}_{{\\text{{provisional}}}} = 100 \\times \\left( 0.35 M_{{\\text{{norm}}}} + 0.35 A_{{\\text{{norm}}}} + 0.20 C_{{\\text{{norm}}}} + 0.10 S_{{\\text{{norm}}}} \\right)$$
+$$\\text{{Score}}_{{\\text{{provisional}}}} = 100 \\times \\left( w_M M_{{\\text{{norm}}}} + w_A A_{{\\text{{norm}}}} + w_C C_{{\\text{{norm}}}} + 0.10 S_{{\\text{{norm}}}} \\right)$$
 
-1. **Performance Maintenance ($M$, 35%):**
-   - Batting: $\\text{{SR}}_{{\\text{{crisis}}}} / \\text{{SR}}_{{\\text{{norm}}}}$ for batters with $\\ge 30$ normal balls. Raw (`raw_sr_maintenance`) and capped (`capped_sr_maintenance` in $[0.50, 1.50]$) ratios are reported separately alongside `is_maintenance_capped`.
-   - Bowling: $\\text{{Dot}}_{{\\text{{crisis}}}} / \\text{{Dot}}_{{\\text{{norm}}}}$ strictly for bowlers with $\\ge 100$ normal balls (`MIN_NORMAL_BALLS = 100`). Bowlers with $< 100$ normal balls are flagged `BOWLER_NORMAL_BASELINE_INSUFFICIENT`, receive `NaN` for `capped_dot_maintenance`, and are excluded from composite ranking.
-2. **Absolute Pressure Performance ($A$, 35%):**
-   - Batting: Fixed-$K$ Normal shrinkage ($K = 25.0$) toward the eligible batting cohort mean (`130.13` SR).
-   - Bowling: Beta-Binomial Empirical Bayes shrinkage toward the eligible bowling cohort mean (`6.07%` wicket rate).
-3. **Empirical Bayes Match-Shrunk Ball-Weighted Consistency ($C$, 20%):**
-   - Each player's per-match crisis rate $r_{{ij}}$ (on $n_{{ij}}$ crisis balls in match $j$) is shrunk toward the player's overall crisis rate $\\bar{{r}}_i$ via $w_{{ij}} = n_{{ij}} / (n_{{ij}} + 6)$: $\\tilde{{r}}_{{ij}} = w_{{ij}} r_{{ij}} + (1 - w_{{ij}}) \\bar{{r}}_i$.
-   - Combining low ball-weighted coefficient of variation ($\\exp(-\\text{{CV}}_{{\\text{{weighted}}}}( \\tilde{{r}}_{{ij}} ))$) with ball-weighted match delivery success rate ($S_i$, fraction of crisis balls in matches achieving $\\tilde{{r}}_{{ij}} \\ge \\max(125.0, 0.90 \\cdot \\text{{SR}}_{{\\text{{norm}}}})$ for batters or $\\tilde{{r}}_{{ij}} \\ge \\max(38.0\\%, 0.92 \\cdot \\text{{Dot}}_{{\\text{{norm}}}})$ for bowlers):
-     $$\\text{{Consistency}}_i = \\left( \\alpha \\exp(-\\text{{CV}}_{{w,i}}) + (1 - \\alpha) S_i \\right) \\cdot \\sqrt{{\\frac{{m_i}}{{m_i + 3}}}}$$
-     where $\\alpha = 0.55$ for batters and $\\alpha = 0.40$ for bowlers.
-4. **Sample Size Confidence ($S$, 10%):**
-   - Batting: $\\min(1.0, \\ln(1 + n_i) / \\ln(1 + 250))$.
-   - Bowling: $\\min(1.0, \\ln(1 + n_i) / \\ln(1 + 600))$, preserving differentiation across frontline bowling crisis workloads from 120 to 600+ legal deliveries.
+1. **Cohort-Calibrated Performance Maintenance ($M$, base 35%):** Uses phase-adjusted, dismissal-weighted (`lambda_wkt = 6.0`) batting run-value residuals (`did_bat_maintenance`) and bowling control residuals (`did_bowl_maintenance`) via `phase_adjusted_dual_arm_did(..., cohort_calibrated=True)`. Fitting the empirical regression-to-the-mean slope $\\beta \\in [0.25, 0.75]$ prevents elite normal-overs performers (e.g., Jasprit Bumrah) from being penalized for high normal baselines.
+2. **Absolute Pressure Performance ($A$, base 35%):** Batting uses phase-adjusted crisis run-value delta (`crisis_delta_rv`); Bowling uses `abs_bowl_score = 0.60 * crisis_delta_ctrl + 0.40 * (10 * crisis_delta_wkt)`.
+3. **Pure-Dispersion Match Consistency ($C$, base 20%):** $\\exp(-\\sigma_{{w,i}} / s) \\cdot \\sqrt{{m_i / (m_i + 3)}}$ on EB-shrunk match residuals ($s=55$ batting, $s=22$ bowling), eliminating level double-counting.
+4. **Sample Size Confidence ($S$, 10%):** $\\min(1.0, \\ln(1 + n_i) / \\ln(1 + 250))$ for batting and $\\min(1.0, \\ln(1 + n_i) / \\ln(1 + 600))$ for bowling. All non-sample components are normalized via 2.5%/97.5% winsorized z-scores mapped to $[0, 1]$.
 
 ---
 
@@ -193,48 +200,53 @@ $$\\text{{Score}}_{{\\text{{provisional}}}} = 100 \\times \\left( 0.35 M_{{\\tex
 
 {bat_top_table}
 
-### 4.1 Individual Player Selection Rationales — Top 10 Batters (Deliverable 3f)
-Every batter in the authoritative Top 10 exceeds the eligible cohort crisis strike rate mean (`130.13` SR, with all 10 between `147.83` and `173.17` Crisis SR):
+### 4.1 Individual Player Selection Rationales — Top 10 Batters
 {bat_rationales_md}
 
 ---
 
-## 5. Authoritative Top 10 Bowlers Under Defensive Pressure (`data/outputs/v3/TOP_10_BOWLERS.csv`, `MIN_NORMAL_BALLS = 100`)
+## 5. Authoritative Top 10 Bowlers Under Defensive Pressure (`data/outputs/v3/TOP_10_BOWLERS.csv`)
 
 {bowl_top_table}
 
-### 5.1 Individual Player Selection Rationales — Top 10 Bowlers (Deliverable 3f)
+### 5.1 Individual Player Selection Rationales — Top 10 Bowlers
 {bowl_rationales_md}
 
 ---
 
 ## 6. Extended Crisis-Ball Threshold Sensitivity (`40, 60, 80, 100, 150, 200, 250`)
 
-### 6.1 Batting Primary Crisis-Ball Sweep (`crisis_matches >= 5, norm_balls >= 30, total_balls >= 120`)
+### 6.1 Batting Primary Crisis-Ball Sweep (`crisis_matches >= 5, norm_balls >= {bat_nb}, total_balls >= 120`)
 {_df_to_md(bat_sweep)}
 
-### 6.2 Bowling Primary Crisis-Ball Sweep (`crisis_matches >= 5, norm_balls >= 100, total_legal_balls >= 120`)
+### 6.2 Bowling Primary Crisis-Ball Sweep (`crisis_matches >= 5, total_legal_balls >= 120`)
 {_df_to_md(bowl_sweep)}
-
-*Note:* Under the calibrated pressure model, **92 batters** qualify at the `40`-ball baseline, **71** at `60` balls, **60** at `80` balls, **50** at `100` balls, **39** at `120` balls, **25** at `150` balls, **11** at `200` balls, and **7** at `250` balls (where `available_top10_count = 7`, never forcing a Top 10 when fewer than 10 players qualify). For bowlers, **99 frontline bowlers** qualify at the `120`-ball baseline (`100` at `100` balls, `96` at `150` balls, `89` at `200` balls, and `84` at `250` balls with `9/10` Top-10 overlap).
 
 ---
 
-## 7. Weight Sensitivity Analysis Across 5 Prespecified Configurations (`RANKING_WEIGHT_SENSITIVITY.csv`)
+## 7. Technical Glossary
+- **`did_bat_maintenance` / `did_bowl_maintenance`:** Cohort-calibrated Difference-in-Differences residual comparing shrunk crisis excess against expected crisis excess given the player's normal baseline.
+- **`abs_bowl_score`:** Weighted combination of phase-adjusted crisis run-control excess (`0.60 * crisis_delta_ctrl`) and crisis wicket-taking excess (`0.40 * 10 * crisis_delta_wkt`).
+- **`PRIOR_ANCHORED_SPECIALIST`:** Bowler with `< 100` normal balls whose baseline is anchored at the league phase average (`0.0`) with maintenance weight smoothly reallocated to Absolute Performance and Consistency.
+- **`lambda_wkt = 6.0`:** Dismissal-weighting penalty applied in batting run-value residuals (`r_bat = r_sr + 6.0 * r_surv`).
 
-### 7.1 Batting Weight Sensitivity (Top 10)
+---
+
+## 8. Weight Sensitivity Analysis Across 5 Prespecified Configurations (`RANKING_WEIGHT_SENSITIVITY.csv`)
+
+### 8.1 Batting Weight Sensitivity (Top 10)
 {bat_weight_top10}
 
-### 7.2 Bowling Weight Sensitivity (Top 10)
+### 8.2 Bowling Weight Sensitivity (Top 10)
 {bowl_weight_top10}
 
 ---
 
-## 8. Reproducibility & Verification Gates
+## 9. Reproducibility & Verification Gates
 
 - Pipeline execution: `.venv\\Scripts\\python scripts/compute_v3_rankings.py`
 - Independent verification: `.venv\\Scripts\\python scripts/verify_v3_rankings.py`
-- Automated test suite: `.venv\\Scripts\\python -m pytest tests/ -v` (**64 passed**)
+- Automated test suite: `.venv\\Scripts\\python -m pytest tests/ -v` (**65 passed**)
 """
     with open(report_path, "w", encoding="utf-8") as f:
         f.write(content)
@@ -297,34 +309,43 @@ def generate_pdf_report() -> Path:
         fontSize=5.8, leading=7.2, textColor=text_dark, alignment=1,
     )
 
+    import json
+    with open(OUTPUTS_V3 / "RANKING_SOURCE_OF_TRUTH.json", "r") as mf:
+        manifest = json.load(mf)
+    summary_m = manifest.get("summary_metrics", {})
+    gov_m = manifest.get("governance", {})
+    shrink_m = manifest.get("configurations", {}).get("shrinkage_configuration", {})
+    bat_thresh_m = manifest.get("configurations", {}).get("default_batting_thresholds", {})
+    el_bat_cnt = summary_m.get("eligible_batters_count", 65)
+    el_bowl_cnt = summary_m.get("eligible_bowlers_count", 197)
+    bat_prior_mean = shrink_m.get("batting_prior_mean", 132.1)
+    disclosure_txt = gov_m.get("mandatory_disclosure", "Rankings are provisional.")
+    status_txt = gov_m.get("ranking_approval_status", "V3.3 GOLDFISH TRIZ VERIFIED — PROVISIONAL MODEL")
+    p_ver = gov_m.get("pressure_formula_version", "V3.3_GOLDFISH_CHASE_LEVERAGE")
+
     story = []
 
     # ── PAGE 1: Governance, Provisional Disclosure & Methodology ──────
-    story.append(Paragraph("SupeRR Intelligence V3 — Pressure Reliability Analytics & Player Scouting (EGM Calibrated Patch)", title_style))
-    story.append(Paragraph("Authoritative Technical Methodology Dossier • Status: P1.1 PATCH VERIFIED — PROVISIONAL MODEL", subtitle_style))
+    story.append(Paragraph("SupeRR Intelligence V3 — Pressure Reliability Analytics & Player Scouting (V3.3 Goldfish TRIZ)", title_style))
+    story.append(Paragraph(f"Authoritative Technical Methodology Dossier • Status: {status_txt}", subtitle_style))
     story.append(HRFlowable(width="100%", thickness=1.5, color=rr_pink, spaceAfter=4))
 
     story.append(Paragraph("Mandatory Provisional Model Disclosure", h1_style))
-    story.append(Paragraph(
-        "<b>\"Rankings are provisional. Batter ranks 1–5 are robust across all 5 weight configurations, while batter ranks 6–10 are sensitive to scoring weights. "
-        "The pressure classification uses the calibrated pre-delivery state heuristic (V3.2_EGM_CALIBRATED_HEURISTIC). "
-        "The new score has not yet undergone independent out-of-time validation.\"</b>",
-        body_style
-    ))
+    story.append(Paragraph(f"<b>\"{disclosure_txt}\"</b>", body_style))
 
     story.append(Paragraph("1. Dataset Scope, Canonical Identity & Data Governance (853 Matches, 193,988 Deliveries)", h1_style))
     story.append(Paragraph(
-        "• <b>Canonical Identity Resolution:</b> Multi-ID provider duplicates (e.g. Abdul Samad, Dunith Wellalage) are consolidated prior to aggregation via <code>PLAYER_IDENTITY_CROSSWALK.csv</code>; unresolved collisions are quarantined.<br/>"
-        "• <b>Extras Codebook Caveat:</b> <code>extras1_runs</code> is categorical (codes 1–7). Score totals, dynamic RRR, chase leverage, and bowler economy remain quarantined.<br/>"
-        "• <b>Calibrated Pre-Delivery Pressure (<code>V3.2_EGM_CALIBRATED_HEURISTIC</code>):</b> Batting Crisis (&gt;5.2 on [0,10], 15.35% of balls faced, 92 eligible batters) and Bowling Defensive Pressure (&gt;5.5 on [0,10], 99 eligible frontline bowlers) operate strictly on pre-delivery states without post-delivery target leakage.<br/>"
-        "• <b>Wicket Hazard Model Governance (<code>EXPERIMENTAL_NOT_USED_FOR_RANKING</code>):</b> Out-of-sample evaluation yields AUC = 0.572, Log-Loss = 0.692, and Expected Wickets = 26,843 vs Actual Wickets = 2,931 (9.16x miscalibration due to <code>class_weight='balanced'</code>). Neither the hazard model, joint model, nor LightGBM challenger is used for ranking.",
+        f"• <b>Canonical Identity Resolution:</b> Multi-ID provider duplicates are consolidated prior to aggregation via <code>PLAYER_IDENTITY_CROSSWALK.csv</code>; unresolved collisions are quarantined.<br/>"
+        f"• <b>Clean-Channel Chase Leverage (<code>{p_ver}</code>):</b> <code>extras1_runs</code> is categorical (codes 1–7) and never summed. Instead, <code>innings_context.py</code> computes a clean lower-bound cumulative score to derive a bias-cancelling 2nd-innings <code>clean_rrr_deficit</code> chase proxy (non-DLS-adjusted).<br/>"
+        f"• <b>Calibrated Pre-Delivery Pressure:</b> Batting Crisis (&gt;5.2 on [0,10], {el_bat_cnt} eligible batters at ≥{bat_thresh_m.get('crisis_balls', 60)}b crisis / ≥{bat_thresh_m.get('norm_balls', 60)}b normal) and Bowling Defensive Pressure (&gt;5.5 on [0,10], {el_bowl_cnt} eligible frontline bowlers) operate strictly on pre-delivery states with zero target leakage.<br/>"
+        f"• <b>Wicket Hazard Model Governance (<code>EXPERIMENTAL_NOT_USED_FOR_RANKING</code>):</b> Neither the hazard model, joint model, nor LightGBM challenger is used for ranking.",
         body_style
     ))
 
-    story.append(Paragraph("2. Provisional Fixed-Weight Score & Normal-Baseline Reliability Gate", h1_style))
+    story.append(Paragraph("2. Cohort-Calibrated DiD & Prior-Anchored Specialist Gate", h1_style))
     story.append(Paragraph(
-        "• <b>Provisional Formula:</b> Score = 100 × [0.35 × Maintenance + 0.35 × Absolute (EB Shrunk) + 0.20 × Match Consistency (EB Match-Shrunk Ball-Weighted) + 0.10 × Sample Confidence (250b Bat / 600b Bowl)].<br/>"
-        "• <b>Bowler Normal-Baseline Gate (<code>MIN_NORMAL_BALLS = 100</code>):</b> Bowlers require ≥120 crisis balls AND ≥100 normal balls. Bowlers with &lt;100 normal balls (464 of 596) are flagged <code>BOWLER_NORMAL_BASELINE_INSUFFICIENT</code> and excluded from composite ranking. Raw and capped ([0.50, 1.50]) maintenance ratios are reported separately.<br/>"
+        "• <b>Provisional Formula:</b> Score = 100 × [w_M × Maint (Cohort-Calibrated DiD) + w_A × Absolute (EB Shrunk) + w_C × Match Consistency (Pure Dispersion) + 0.10 × Sample Confidence (250b Bat / 600b Bowl)].<br/>"
+        "• <b>Prior-Anchored Specialist Gate:</b> Bowlers with &lt;100 normal balls are retained as <code>PRIOR_ANCHORED_SPECIALIST</code> (baseline anchored at league phase average 0.0, with maintenance weight smoothly reallocated to Absolute and Consistency). Raw and capped ([0.50, 1.50]) maintenance ratios are reported separately for ≥100 normal-ball baselines.<br/>"
         "• <b>Uncertainty:</b> 2,000-iteration match-clustered bootstrap 95% confidence intervals (0 arbitrary fixed-width fallbacks).",
         body_style
     ))
@@ -371,12 +392,13 @@ def generate_pdf_report() -> Path:
     ]))
     story.append(bat_table)
     story.append(Spacer(1, 3))
+    below_cnt = int((top_bat['crisis_sr'] < bat_prior_mean).sum())
     story.append(Paragraph(
-        "<b>Cohort Quality Verification:</b> All 10 Top-10 Batters record Crisis Strike Rates between 147.83 and 173.17, well above the eligible cohort mean of 130.13 (0 anomaly flags in Top 10).",
+        f"<b>Cohort Quality Verification:</b> Eligible cohort mean Crisis SR is {bat_prior_mean:.2f} ({below_cnt} high-survival Top-10 batters flagged <code>CRISIS_SR_BELOW_COHORT_MEAN</code>).",
         body_style
     ))
 
-    story.append(Paragraph("4. Authoritative Universal Top 10 Bowlers (data/outputs/v3/TOP_10_BOWLERS.csv, MIN_NORMAL_BALLS=100)", h1_style))
+    story.append(Paragraph("4. Authoritative Universal Top 10 Bowlers (data/outputs/v3/TOP_10_BOWLERS.csv)", h1_style))
     top_bowl = pd.read_csv(OUTPUTS_V3 / "TOP_10_BOWLERS.csv")
     bowl_data = [[
         Paragraph("Rank", table_header_style),
@@ -392,6 +414,8 @@ def generate_pdf_report() -> Path:
         Paragraph("95% CI", table_header_style),
     ]]
     for _, r in top_bowl.head(10).iterrows():
+        rm_s = f"{r['raw_dot_maintenance']:.3f}x" if pd.notna(r['raw_dot_maintenance']) else "N/A"
+        cm_s = f"{r['capped_dot_maintenance']:.3f}x" if pd.notna(r['capped_dot_maintenance']) else "N/A"
         bowl_data.append([
             Paragraph(str(int(r['rank'])), table_cell_style),
             Paragraph(str(int(r['canonical_player_id'])), table_cell_style),
@@ -400,7 +424,7 @@ def generate_pdf_report() -> Path:
             Paragraph(f"{int(r['crisis_balls'])}", table_cell_style),
             Paragraph(f"{int(r['norm_balls'])}", table_cell_style),
             Paragraph(f"{r['crisis_dot_pct']:.2f}%", table_cell_style),
-            Paragraph(f"{r['raw_dot_maintenance']:.3f}x/{r['capped_dot_maintenance']:.3f}x", table_cell_style),
+            Paragraph(f"{rm_s}/{cm_s}", table_cell_style),
             Paragraph(f"{r['shrunk_crisis_wr']:.2f}%", table_cell_style),
             Paragraph(f"<b>{r['provisional_fixed_weight_score']:.2f}</b>", table_cell_style),
             Paragraph(f"[{r['ci_lower']:.1f}%, {r['ci_upper']:.1f}%]", table_cell_style),
@@ -431,19 +455,24 @@ def generate_pdf_report() -> Path:
 
     story.append(Paragraph("<b>5.2 Top 10 Bowlers — Individual Selection Evidence:</b>", body_style))
     for _, r in top_bowl.head(10).iterrows():
+        rm_s = f"{r['raw_dot_maintenance']:.3f}x" if pd.notna(r['raw_dot_maintenance']) else "N/A"
+        dm_s = f"{r['dot_maintenance']:.3f}x" if pd.notna(r['dot_maintenance']) else "N/A"
         story.append(Paragraph(
             f"• <b>#{int(r['rank'])} {r['player_name']} (ID {int(r['canonical_player_id'])}, {r['v3_role']}):</b> "
             f"{int(r['crisis_balls'])} crisis balls ({int(r['crisis_matches'])}m, {int(r['norm_balls'])} norm balls), "
             f"Crisis Dot% {r['crisis_dot_pct']:.2f}% vs Norm Dot% {r['norm_dot_pct']:.2f}% "
-            f"(raw {r['raw_dot_maintenance']:.3f}x / cap {r['dot_maintenance']:.3f}x), Shrunk WR {r['shrunk_crisis_wr']:.2f}%, "
+            f"(raw {rm_s} / cap {dm_s}), Shrunk WR {r['shrunk_crisis_wr']:.2f}%, "
             f"Consistency {r['consistency_score']:.4f}, 95% CI [{r['ci_lower']:.1f}%, {r['ci_upper']:.1f}%] → <code>{r['component_breakdown_explanation']}</code>.",
             body_style
         ))
 
-    story.append(Paragraph("6. Extended Crisis-Ball Threshold Sensitivity (40, 60, 80, 100, 150, 200, 250) & Reproducibility", h1_style))
+    thresh_df = pd.read_csv(OUTPUTS_V3 / "RANKING_THRESHOLD_SENSITIVITY.csv")
+    b_sw = thresh_df[(thresh_df['discipline'] == 'Batting') & (thresh_df['is_primary_crisis_sweep'] == True)]
+    b_sw_str = ", ".join(f"{int(x['eligible_batter_count'])} ({int(x['min_crisis_balls'])}b)" for _, x in b_sw.iterrows())
+    story.append(Paragraph("6. Extended Crisis-Ball Threshold Sensitivity (40..250) & Reproducibility", h1_style))
     story.append(Paragraph(
-        "• <b>Threshold Sensitivity:</b> Across 40, 60, 80, 100, 150, 200, 250 crisis balls (with ≥5 matches), eligible batters scale from 92 (40b) to 71 (60b), 60 (80b), 50 (100b), 25 (150b), 11 (200b), and 7 (250b, available_top10_count=7, unforced). Eligible bowlers (with ≥100 norm balls) scale from 99 (120b baseline) to 96 (150b), 89 (200b), and 84 (250b, 9/10 overlap).<br/>"
-        "• <b>Verification Gate:</b> 64 passing pytest unit/regression tests and 100% reconciliation via <code>scripts/verify_v3_rankings.py</code>.",
+        f"• <b>Threshold Sensitivity:</b> Across 40, 60, 80, 100, 150, 200, 250 crisis balls (≥5 matches), eligible batters scale: {b_sw_str} (baseline 60b = {el_bat_cnt} batters).<br/>"
+        "• <b>Verification Gate:</b> 65 passing pytest unit/regression tests and 100% reconciliation via <code>scripts/verify_v3_rankings.py</code>.",
         body_style
     ))
 

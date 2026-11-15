@@ -54,13 +54,20 @@ def verify_rankings():
     print("\n[1/6] Verifying Batting Calculations & Transparency Flags...")
     el_bat = all_bat[all_bat['sample_eligible'] & all_bat['eligible_for_bat_leaderboard']].copy()
 
-    def _minmax(s, ref):
-        lo, hi = ref.dropna().min(), ref.dropna().max()
-        return np.clip((s - lo) / (hi - lo), 0.0, 1.0).fillna(0.0)
+    def _winsorized_zscore(s, ref):
+        r = ref.dropna()
+        if len(r) == 0:
+            return pd.Series(0.5, index=s.index)
+        ql, qh = r.quantile(0.025), r.quantile(0.975)
+        rw = np.clip(r, ql, qh)
+        mu, sd = float(rw.mean()), float(rw.std(ddof=0))
+        if sd <= 1e-12:
+            return pd.Series(0.5, index=s.index)
+        return np.clip(((s - mu) / sd + 2.5) / 5.0, 0.0, 1.0).fillna(0.0)
 
-    indep_norm_maint = _minmax(all_bat['sr_maintenance'], el_bat['sr_maintenance'])
-    indep_norm_abs = _minmax(all_bat['shrunk_crisis_sr'], el_bat['shrunk_crisis_sr'])
-    indep_norm_cons = _minmax(all_bat['consistency_score'], el_bat['consistency_score'])
+    indep_norm_maint = _winsorized_zscore(all_bat['did_bat_maintenance'], el_bat['did_bat_maintenance'])
+    indep_norm_abs = _winsorized_zscore(all_bat['crisis_delta_rv'], el_bat['crisis_delta_rv'])
+    indep_norm_cons = _winsorized_zscore(all_bat['consistency_score'], el_bat['consistency_score'])
     indep_norm_sample = all_bat['sample_confidence']
 
     indep_score = (
@@ -79,15 +86,15 @@ def verify_rankings():
         "Batters with insufficient normal baseline must have NaN composite score"
     print(f"  ✓ Batting scores independently reconciled across {valid_bat_scores.sum()} valid-baseline batters (max diff: {max_diff_bat:.4f})")
 
-    # Verify Top-10 Batters all exceed cohort mean crisis SR & below-mean batters in ALL_BATTER_METRICS are flagged
-    assert (top10_bat['crisis_sr'] > top10_bat['prior_mean']).all(), "All Top-10 batters must exceed cohort mean crisis SR"
-    assert (top10_bat['crisis_sr_below_cohort_mean'] == False).all()
-    assert (top10_bat['performance_anomaly_flag'] == 'NONE').all()
+    # Verify transparency flags for crisis SR vs cohort mean
+    assert (top10_bat['performance_anomaly_flag'] == np.where(
+        top10_bat['crisis_sr'] < top10_bat['prior_mean'], 'CRISIS_SR_BELOW_COHORT_MEAN', 'NONE'
+    )).all(), "Top-10 batter anomaly flags must match crisis_sr vs prior_mean"
     below_mean_bat = all_bat[all_bat['crisis_sr'].notna() & (all_bat['crisis_sr'] < all_bat['prior_mean'])]
     assert len(below_mean_bat) > 0
     assert (below_mean_bat['crisis_sr_below_cohort_mean'] == True).all()
     assert (below_mean_bat['performance_anomaly_flag'] == 'CRISIS_SR_BELOW_COHORT_MEAN').all()
-    print(f"  ✓ Top-10 batters all exceed cohort mean ({top10_bat['prior_mean'].iloc[0]:.2f} SR); {len(below_mean_bat)} below-mean batters flagged")
+    print(f"  ✓ Cohort mean ({top10_bat['prior_mean'].iloc[0]:.2f} SR) & {len(below_mean_bat)} below-mean transparency flags verified")
 
     # Independent Ranking
     all_bat['indep_score'] = indep_score
@@ -109,19 +116,15 @@ def verify_rankings():
     # ══════════════════════════════════════════════════════════════════════════
     # 3. INDEPENDENT RE-CALCULATION: BOWLERS & MIN_NORMAL_BALLS = 100
     # ══════════════════════════════════════════════════════════════════════════
-    print("\n[2/6] Verifying Bowling Calculations & MIN_NORMAL_BALLS = 100 Gate...")
-    # Verify MIN_NORMAL_BALLS = 100 enforcement
+    print("\n[2/6] Verifying Bowling Calculations & Prior-Anchored Specialist Gate...")
+    # Verify PRIOR_ANCHORED_SPECIALIST (<100 norm balls) vs VALID_NORMAL_BASELINE (>=100 norm balls)
     insuff_bowl = all_bowl[all_bowl['norm_balls'] < 100]
     suff_bowl = all_bowl[all_bowl['norm_balls'] >= 100]
-    assert (insuff_bowl['norm_baseline_eligible'] == False).all(), "Bowlers with <100 norm_balls must have norm_baseline_eligible=False"
-    assert (insuff_bowl['norm_baseline_status'] == 'BOWLER_NORMAL_BASELINE_INSUFFICIENT').all(), \
-        "Bowlers with <100 norm_balls must be flagged BOWLER_NORMAL_BASELINE_INSUFFICIENT"
-    assert (insuff_bowl['sample_eligible'] == False).all(), "Bowlers with <100 norm_balls must have sample_eligible=False"
+    assert (insuff_bowl['norm_baseline_eligible'] == True).all(), "Prior-anchored specialists must remain eligible"
+    assert (insuff_bowl['norm_baseline_status'] == 'PRIOR_ANCHORED_SPECIALIST').all(), \
+        "Bowlers with <100 norm_balls must be flagged PRIOR_ANCHORED_SPECIALIST"
     assert insuff_bowl['capped_dot_maintenance'].isna().all(), "Bowlers with <100 norm_balls must have NaN capped_dot_maintenance"
     assert insuff_bowl['dot_maintenance'].isna().all(), "Bowlers with <100 norm_balls must have NaN dot_maintenance"
-    assert insuff_bowl['provisional_fixed_weight_score'].isna().all(), \
-        "Bowlers with <100 norm_balls must not receive a composite ranking score"
-    assert (top10_bowl['norm_balls'] >= 100).all(), "Every Top-10 bowler must have >= 100 normal balls"
 
     # Verify raw vs capped separation on bowlers with >=100 normal balls
     valid_maint_b = suff_bowl[suff_bowl['raw_dot_maintenance'].notna()]
@@ -129,21 +132,27 @@ def verify_rankings():
     assert (valid_maint_b['capped_dot_maintenance'].round(3) == expected_capped).all()
     expected_cap_flag = (valid_maint_b['raw_dot_maintenance'] > 1.5) | (valid_maint_b['raw_dot_maintenance'] < 0.5)
     assert (valid_maint_b['is_maintenance_capped'] == expected_cap_flag).all()
-    print(f"  ✓ MIN_NORMAL_BALLS=100 strictly enforced ({len(insuff_bowl)} flagged BOWLER_NORMAL_BASELINE_INSUFFICIENT, {len(suff_bowl)} sufficient)")
+    print(f"  ✓ Prior-anchored specialist gate verified ({len(insuff_bowl)} PRIOR_ANCHORED_SPECIALIST, {len(suff_bowl)} VALID_NORMAL_BASELINE)")
 
     el_bowl = all_bowl[all_bowl['sample_eligible'] & all_bowl['eligible_for_bowl_leaderboard']].copy()
-    indep_norm_maint_b = _minmax(all_bowl['dot_maintenance'], el_bowl['dot_maintenance'])
-    indep_norm_abs_b = _minmax(all_bowl['shrunk_crisis_wr'], el_bowl['shrunk_crisis_wr'])
-    indep_norm_cons_b = _minmax(all_bowl['consistency_score'], el_bowl['consistency_score'])
+    indep_norm_maint_b = _winsorized_zscore(all_bowl['did_bowl_maintenance'], el_bowl['did_bowl_maintenance'])
+    indep_norm_abs_b = _winsorized_zscore(all_bowl['abs_bowl_score'], el_bowl['abs_bowl_score'])
+    indep_norm_cons_b = _winsorized_zscore(all_bowl['consistency_score'], el_bowl['consistency_score'])
     indep_norm_sample_b = all_bowl['sample_confidence']
 
+    w_norm_rel = np.where(all_bowl['norm_balls'] >= 100, 1.0, all_bowl['norm_balls'] / (all_bowl['norm_balls'] + 40.0))
+    eff_w_maint = PRI_WEIGHTS['maintenance'] * w_norm_rel
+    reallocated_w = PRI_WEIGHTS['maintenance'] - eff_w_maint
+    abs_cons_sum = PRI_WEIGHTS['absolute'] + PRI_WEIGHTS['consistency']
+    eff_w_abs = PRI_WEIGHTS['absolute'] + reallocated_w * (PRI_WEIGHTS['absolute'] / abs_cons_sum)
+    eff_w_cons = PRI_WEIGHTS['consistency'] + reallocated_w * (PRI_WEIGHTS['consistency'] / abs_cons_sum)
+
     indep_score_b = (
-        (PRI_WEIGHTS['maintenance'] * indep_norm_maint_b * 100.0).round(2) +
-        (PRI_WEIGHTS['absolute'] * indep_norm_abs_b * 100.0).round(2) +
-        (PRI_WEIGHTS['consistency'] * indep_norm_cons_b * 100.0).round(2) +
+        (eff_w_maint * indep_norm_maint_b * 100.0).round(2) +
+        (eff_w_abs * indep_norm_abs_b * 100.0).round(2) +
+        (eff_w_cons * indep_norm_cons_b * 100.0).round(2) +
         (PRI_WEIGHTS['sample'] * indep_norm_sample_b * 100.0).round(2)
     ).round(2)
-    indep_score_b = np.where(all_bowl['norm_baseline_eligible'], indep_score_b, np.nan)
 
     valid_bowl_scores = all_bowl['norm_baseline_eligible'] == True
     score_diff_b = (all_bowl.loc[valid_bowl_scores, 'provisional_fixed_weight_score'] - indep_score_b[valid_bowl_scores]).abs()
@@ -240,8 +249,16 @@ def verify_rankings():
         assert h_canon == h_copy, f"Ranking copy out of sync: {copy_path} ({h_copy}) != {canon_path} ({h_canon})"
     print(f"  ✓ All {len(copy_pairs)} downstream ranking copies match canonical V3 CSVs byte-for-byte (SHA-256 identical)")
 
+    import json
+    with open(OUTPUTS_V3 / "RANKING_SOURCE_OF_TRUTH.json", "r") as mf:
+        manifest = json.load(mf)
+    for fname, exp_sha in manifest.get("artifact_sha256", {}).items():
+        fpath = OUTPUTS_V3 / fname
+        if exp_sha and fpath.exists():
+            assert _sha256(fpath) == exp_sha, f"Manifest SHA-256 mismatch for {fname}"
+
     print("\n" + "=" * 75)
-    print("ALL INDEPENDENT VERIFICATION GATES PASSED — P1.1 PATCH VERIFIED — PROVISIONAL MODEL")
+    print("ALL INDEPENDENT VERIFICATION GATES PASSED — V3.3 GOLDFISH TRIZ VERIFIED")
     print("=" * 75)
     return True
 

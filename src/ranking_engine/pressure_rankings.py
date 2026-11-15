@@ -32,7 +32,7 @@ from src.config import OUTPUTS_DIR
 BAT_MIN_CRISIS_BALLS = 40       # Minimum crisis balls faced
 BAT_MIN_TOTAL_BALLS = 120       # Minimum total balls faced
 BAT_MIN_CRISIS_MATCHES = 5      # Minimum matches with crisis exposure
-BAT_MIN_NORMAL_BALLS = 30       # Minimum normal baseline balls faced
+BAT_MIN_NORMAL_BALLS = 60       # Minimum normal baseline balls faced (EGM-aligned)
 
 BOWL_MIN_CRISIS_BALLS = 40      # Minimum crisis legal balls bowled for all-role
 BOWL_PRIMARY_MIN_CRISIS = 120   # Minimum crisis legal balls for frontline primary leaderboard
