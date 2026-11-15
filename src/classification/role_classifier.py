@@ -55,35 +55,36 @@ CANONICAL_NAME_MAP = {
     3926: "Rahul Tewatia",
     6161: "Rahul Chahar",
     1440: "Rahul Tripathi",
-    1821: "David Miller",
-    4680: "Abdul Samad",
-    3862: "Daryl Mitchell",
-    3844: "Liam Livingstone",
-    803: "Matthew Wade",
-    8314: "Jaker Ali",              # Jaker Ali Anik
-    13010: "Ramandeep Singh",
-    2741: "Marcus Stoinis",
-    7486: "Jitesh Sharma",
-    1918: "Sam Curran",
-    2285: "Moeen Ali",
-    3249: "Shimron Hetmyer",
-    3066: "Iftikhar Ahmed",
-    2899: "Roston Chase",
-    5260: "Marco Jansen",
-    5756: "Shamim Hossain",
-    3182: "Mukesh Kumar",
-    6863: "Gerald Coetzee",
-    2354: "Lungi Ngidi",
-    8182: "Dunith Wellalage",
-    1629: "Adam Milne",
-    1602: "Sandeep Sharma",
-    3074: "Corbin Bosch",
-    6255: "Saim Ayub",
-    3938: "Haris Rauf",
-    1582: "Mitchell Starc",
-    5740: "Joshua Little",
-    3776: "Haider Ali",
-    2158: "Keshav Maharaj",
+    1077: "David Miller",
+    7446: "Abdul Samad",
+    6922: "Abdul Samad (PAK)",
+    4106: "Daryl Mitchell",
+    4391: "Liam Livingstone",
+    796: "Matthew Wade",
+    4773: "Jaker Ali Anik",
+    20006: "Ramandeep Singh",
+    2639: "Marcus Stoinis",
+    3916: "Jitesh Sharma",
+    4409: "Sam Curran",
+    1596: "Moeen Ali",
+    3297: "Shimron Hetmyer",
+    3056: "Iftikhar Ahmed",
+    2687: "Roston Chase",
+    5041: "Mukesh Kumar",
+    4641: "Lungi Ngidi",
+    8182: "Donovan Ferreira",
+    7052: "Dunith Wellalage",
+    1487: "Adam Milne",
+    2411: "Sandeep Sharma",
+    3629: "Corbin Bosch",
+    829: "Mitchell Starc",
+    7741: "Gareth Delany",
+    22920: "Jacob Duffy",
+    7338: "Haider Ali",
+    28756: "Haider Ali (UAE)",
+    3083: "Mohammad Ali",
+    20229: "Mohammad Ali",
+    1944: "Keshav Maharaj",
 }
 
 
@@ -211,19 +212,18 @@ def classify_player_roles(
     master = master.merge(bowl_crisis, on='player_id', how='left')
 
     # Fill defaults
-    master['modal_order'] = master['modal_order'].fillna(10).astype(int)
-    master['avg_order'] = master['avg_order'].fillna(10.0).astype(float).round(2)
+    for int_col, default_val in [
+        ('modal_order', 10), ('inns_count', 0), ('total_batting_balls', 0),
+        ('total_batting_runs', 0), ('pressure_deliveries_faced', 0),
+        ('total_bowling_deliveries', 0), ('pressure_deliveries_bowled', 0)
+    ]:
+        master[int_col] = pd.to_numeric(master[int_col], errors='coerce').fillna(default_val).astype(int)
+    master['avg_order'] = pd.to_numeric(master['avg_order'], errors='coerce').fillna(10.0).astype(float).round(2)
     master['dist_str'] = master['dist_str'].fillna('No order recorded')
-    master['inns_count'] = master['inns_count'].fillna(0).astype(int)
-    master['top7_ratio'] = master['top7_ratio'].fillna(0.0).astype(float)
-    master['is_regular_top7'] = master['is_regular_top7'].fillna(False).astype(bool)
-    master['is_wicketkeeper'] = master['is_wicketkeeper'].fillna(False).astype(bool)
-    master['total_batting_balls'] = master['total_batting_balls'].fillna(0).astype(int)
-    master['total_batting_runs'] = master['total_batting_runs'].fillna(0).astype(int)
-    master['pressure_deliveries_faced'] = master['pressure_deliveries_faced'].fillna(0).astype(int)
-    master['total_bowling_deliveries'] = master['total_bowling_deliveries'].fillna(0).astype(int)
+    master['top7_ratio'] = pd.to_numeric(master['top7_ratio'], errors='coerce').fillna(0.0).astype(float)
+    master['is_regular_top7'] = master['is_regular_top7'].where(master['is_regular_top7'].notna(), False).astype(bool)
+    master['is_wicketkeeper'] = master['is_wicketkeeper'].where(master['is_wicketkeeper'].notna(), False).astype(bool)
     master['bowling_style'] = master['bowling_style'].fillna('None')
-    master['pressure_deliveries_bowled'] = master['pressure_deliveries_bowled'].fillna(0).astype(int)
 
     # 6. Apply Empirical Role Classification
     roles = []

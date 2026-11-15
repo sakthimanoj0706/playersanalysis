@@ -5,14 +5,14 @@ SCENARIO_CORE_RELEASE,RELEASE,Sandeep Sharma,4.00,Indian,Death over execution st
 SCENARIO_CORE_RELEASE,RELEASE,Adam Milne,2.40,Overseas,Played only 1 match without wickets; frees valuable overseas roster slot,2.40,USER_PROVIDED_UNVERIFIED
 SCENARIO_CORE_RELEASE,RELEASE,Kuldeep Sen,0.75,Indian,Recurring injury profile; limited match readiness,0.75,USER_PROVIDED_UNVERIFIED
 SCENARIO_CORE_RELEASE,RELEASE,Lhuan-dre Pretorius,0.30,Overseas,Unused overseas development slot; frees overseas spot for auction,0.30,USER_PROVIDED_UNVERIFIED
-SCENARIO_RETAIN_CORE,RETAIN,Vaibhav Sooryavanshi,1.10,Indian,Orange Cap & MVP winner (776 runs at 237.31 SR),0.00,VERIFIED_RETENTION
-SCENARIO_RETAIN_CORE,RETAIN,Yashasvi Jaiswal,18.00,Indian,Core top-order foundation (427 runs at 152.50 SR),0.00,VERIFIED_RETENTION
-SCENARIO_RETAIN_CORE,RETAIN,Dhruv Jurel,14.00,Indian,Middle-order anchor & wicketkeeper (515 runs at 154.65 SR),0.00,VERIFIED_RETENTION
-SCENARIO_RETAIN_CORE,RETAIN,Riyan Parag,14.00,Indian,Appointed captain & No. 4 batter (309 runs at 157.65 SR),0.00,VERIFIED_RETENTION
-SCENARIO_RETAIN_CORE,RETAIN,Ravindra Jadeja,14.00,Indian,Clutch finisher & spin control (266 runs at 135 SR; 10 wkts),0.00,VERIFIED_RETENTION
-SCENARIO_RETAIN_CORE,RETAIN,Jofra Archer,12.50,Overseas,Spearhead fast bowler (25 wickets; 3rd on Purple Cap),0.00,VERIFIED_RETENTION
-SCENARIO_RETAIN_CORE,RETAIN,Donovan Ferreira,1.00,Overseas,No. 6 power hitter & death finisher (317 runs at 179.10 SR),0.00,VERIFIED_RETENTION
-SCENARIO_RETAIN_CORE,RETAIN,Ravi Bishnoi,7.20,Indian,Frontline wicket-taking leg-spinner (11 wickets in 9 games),0.00,VERIFIED_RETENTION
-SCENARIO_RETAIN_CORE,RETAIN,Nandre Burger,3.50,Overseas,New-ball pace enforcer (14 wickets in 13 games),0.00,VERIFIED_RETENTION
-SCENARIO_RETAIN_CORE,RETAIN,Brijesh Sharma,0.30,Indian,Breakthrough uncapped spinner (14 wickets in 13 games),0.00,VERIFIED_RETENTION
+SCENARIO_RETAIN_CORE,RETAIN,Vaibhav Sooryavanshi,1.10,Indian,Orange Cap & MVP winner (776 runs at 237.31 SR),0.00,USER_PROVIDED_UNVERIFIED
+SCENARIO_RETAIN_CORE,RETAIN,Yashasvi Jaiswal,18.00,Indian,Core top-order foundation (427 runs at 152.50 SR),0.00,USER_PROVIDED_UNVERIFIED
+SCENARIO_RETAIN_CORE,RETAIN,Dhruv Jurel,14.00,Indian,Middle-order anchor & wicketkeeper (515 runs at 154.65 SR),0.00,USER_PROVIDED_UNVERIFIED
+SCENARIO_RETAIN_CORE,RETAIN,Riyan Parag,14.00,Indian,Appointed captain & No. 4 batter (309 runs at 157.65 SR),0.00,USER_PROVIDED_UNVERIFIED
+SCENARIO_RETAIN_CORE,RETAIN,Ravindra Jadeja,14.00,Indian,Clutch finisher & spin control (266 runs at 135 SR; 10 wkts),0.00,USER_PROVIDED_UNVERIFIED
+SCENARIO_RETAIN_CORE,RETAIN,Jofra Archer,12.50,Overseas,Spearhead fast bowler (25 wickets; 3rd on Purple Cap),0.00,USER_PROVIDED_UNVERIFIED
+SCENARIO_RETAIN_CORE,RETAIN,Donovan Ferreira,1.00,Overseas,No. 6 power hitter & death finisher (317 runs at 179.10 SR),0.00,USER_PROVIDED_UNVERIFIED
+SCENARIO_RETAIN_CORE,RETAIN,Ravi Bishnoi,7.20,Indian,Frontline wicket-taking leg-spinner (11 wickets in 9 games),0.00,USER_PROVIDED_UNVERIFIED
+SCENARIO_RETAIN_CORE,RETAIN,Nandre Burger,3.50,Overseas,New-ball pace enforcer (14 wickets in 13 games),0.00,USER_PROVIDED_UNVERIFIED
+SCENARIO_RETAIN_CORE,RETAIN,Brijesh Sharma,0.30,Indian,Breakthrough uncapped spinner (14 wickets in 13 games),0.00,USER_PROVIDED_UNVERIFIED
 SCENARIO_CONFLICT,RESOLVE,Sam Curran vs Dasun Shanaka,2.00,Overseas,Shanaka served as temporary injury replacement for Curran. Curran contract status requires official IPL confirmation,0.00,CONFLICTING_STATUS

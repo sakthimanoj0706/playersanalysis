@@ -58,6 +58,8 @@ def build_innings_context(bbb_df: pd.DataFrame) -> pd.DataFrame:
     out_new = np.zeros(n, dtype=bool)
     out_entry_w = np.zeros(n, dtype=np.int32)
     out_over_ball = np.zeros(n, dtype=np.int32)
+    out_clean_cum_runs = np.zeros(n, dtype=np.int32)
+    out_innings_clean_total = np.zeros(n, dtype=np.int32)
 
     is_wkt_arr = df['is_wicket'].values.astype(bool)
     striker_arr = df['striker_id'].values
@@ -65,6 +67,14 @@ def build_innings_context(bbb_df: pd.DataFrame) -> pd.DataFrame:
     runs_arr = df['runs'].values.astype(np.int32)
     is_legal_arr = df['is_legal_ball'].values.astype(bool)
     over_arr = df['overid'].values
+
+    if 'extras_category' in df.columns:
+        is_extra_penalty_arr = df['extras_category'].isin(['wide', 'Overstep']).values.astype(np.int32)
+    elif 'is_wide' in df.columns and 'is_noball' in df.columns:
+        is_extra_penalty_arr = (df['is_wide'] | df['is_noball']).values.astype(np.int32)
+    else:
+        is_extra_penalty_arr = (~is_legal_arr).astype(np.int32)
+    clean_ball_runs_arr = runs_arr + is_extra_penalty_arr
 
     # Determine boundary and dot indicators
     if 'boundary_validated' in df.columns:
@@ -74,10 +84,10 @@ def build_innings_context(bbb_df: pd.DataFrame) -> pd.DataFrame:
     else:
         is_bnd_arr = np.isin(runs_arr, [4, 6])
 
-    if 'extras_category' in df.columns:
-        is_dot_arr = (runs_arr == 0) & (df['extras_category'].values == 'None')
+    if 'is_dot_ball' in df.columns:
+        is_dot_arr = df['is_dot_ball'].values.astype(bool)
     else:
-        is_dot_arr = (runs_arr == 0)
+        is_dot_arr = is_legal_arr & (runs_arr == 0)
 
     grp = df.groupby(['match_id', 'innings'], sort=False)
 
@@ -110,6 +120,15 @@ def build_innings_context(bbb_df: pd.DataFrame) -> pd.DataFrame:
         shifted_leg[1:] = cum_leg[:-1]
         out_cum_legal[start:end] = shifted_leg
 
+        # Clean lower-bound cumulative runs before delivery (ignores corrupted extras1_runs codebook)
+        clean_runs_inn = clean_ball_runs_arr[start:end]
+        cum_clean = np.cumsum(clean_runs_inn)
+        shifted_clean = np.empty(length, dtype=np.int32)
+        shifted_clean[0] = 0
+        shifted_clean[1:] = cum_clean[:-1]
+        out_clean_cum_runs[start:end] = shifted_clean
+        out_innings_clean_total[start:end] = int(cum_clean[-1]) if length > 0 else 0
+
         # Delivery event window (last 12 delivery events)
         wkt_int = is_wkt.astype(np.int32)
         for i in range(length):
@@ -117,15 +136,15 @@ def build_innings_context(bbb_df: pd.DataFrame) -> pd.DataFrame:
             out_wickets_12_del[start + i] = np.sum(wkt_int[lb_del:i])
         out_cluster_del[start:end] = out_wickets_12_del[start:end] >= 2
 
-        # Legal ball window (last 12 legal balls)
-        # Find indices of previous deliveries that were legal balls
+        # Legal ball window (last 12 legal balls, capturing wickets/boundaries/runs on extras within the span)
         legal_indices = []
         for i in range(length):
             if len(legal_indices) > 0:
                 recent_legal = legal_indices[-12:]
-                out_wickets_12_leg[start + i] = np.sum(wkt_int[recent_legal])
-                out_runs_12_leg[start + i] = np.sum(runs[recent_legal])
-                out_bnd_12_leg[start + i] = np.sum(is_bnd[recent_legal])
+                win_start = recent_legal[0]
+                out_wickets_12_leg[start + i] = np.sum(wkt_int[win_start:i])
+                out_runs_12_leg[start + i] = np.sum(runs[win_start:i])
+                out_bnd_12_leg[start + i] = np.sum(is_bnd[win_start:i])
                 out_dots_12_leg[start + i] = np.sum(is_dot[recent_legal])
             if is_legal[i]:
                 legal_indices.append(i)
@@ -192,5 +211,22 @@ def build_innings_context(bbb_df: pd.DataFrame) -> pd.DataFrame:
     df['is_new_batter'] = out_new
     df['batter_entry_wickets'] = out_entry_w
     df['over_ball'] = out_over_ball
+    df['clean_cum_runs'] = out_clean_cum_runs
+
+    # Derive 1st-innings clean total per match and 2nd-innings clean RRR deficit
+    inn1_totals = (
+        df[df['innings'] == 1]
+        .assign(_inn1_clean=out_innings_clean_total[df['innings'].values == 1])
+        .groupby('match_id')['_inn1_clean']
+        .first()
+    )
+    df['innings1_clean_total'] = df['match_id'].map(inn1_totals).astype(float)
+    overs_rem = np.maximum(df['legal_balls_remaining'].values / 6.0, 1.0 / 6.0)
+    is_inn2 = (df['innings'].values == 2) & df['innings1_clean_total'].notna().values
+    df['clean_rrr_deficit'] = np.where(
+        is_inn2,
+        np.clip((df['innings1_clean_total'].values - out_clean_cum_runs) / overs_rem, -10.0, 36.0),
+        np.nan,
+    )
 
     return df

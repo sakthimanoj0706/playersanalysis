@@ -1,4 +1,4 @@
-"""V3 Match Pressure Modeling Engine.
+"""V3 Match Pressure Modeling Engine with Strict Feature Schema Validation.
 
 Provides independent, pre-delivery ex-ante pressure models:
 1. Batting Crisis Pressure Model: Measures pre-delivery collapse, resource depletion,
@@ -9,134 +9,283 @@ Provides independent, pre-delivery ex-ante pressure models:
 Zero Target Leakage Guarantee:
 Every feature is computed strictly from states established BEFORE the ball is bowled.
 No future balls, eventual delivery outcomes, or match results are ingested as inputs.
+
+Missing-Data Integrity:
+Silent defaults (e.g. missing wickets -> 0, missing balls faced -> 10) are removed.
+Incomplete records are marked as PRESSURE_UNCLASSIFIED and flagged with data validity indicators:
+- batting_pressure_data_valid
+- bowling_pressure_data_valid
+- batting_pressure_missing_features
+- bowling_pressure_missing_features
 """
-from typing import Dict, Tuple
+from typing import Dict, List, Optional, Tuple
 import numpy as np
 import pandas as pd
 
 
 class V3PressureModel:
-    """Pre-delivery pressure state estimator for batting and bowling situations."""
+    """Pre-delivery pressure state estimator with strict data completeness validation."""
 
-    @staticmethod
-    def compute_batting_crisis_pressure(df: pd.DataFrame) -> pd.DataFrame:
-        """Estimate pre-delivery batting crisis pressure score on [0.0, 10.0].
+    # Explicit required feature schemas
+    BATTING_REQUIRED_FEATURES = [
+        'wickets_fallen_before',
+        'wickets_in_last_12_legal_balls',
+        'batter_balls_faced',
+        'consecutive_dots',
+        'dots_in_last_12_legal_balls',
+        'innings_phase'
+    ]
 
-        Components (strictly ex-ante):
-        1. Wicket depletion (0 to 3.5 pts): wickets lost before delivery.
-        2. Collapse cluster (0 to 2.0 pts): 2+ wickets in last 12 legal balls.
-        3. Batter entry vulnerability (0 to 1.5 pts): first 5 balls faced.
-        4. Stagnation pressure (0 to 1.5 pts): consecutive dots and low scoring in last 12 balls.
-        5. Innings phase multiplier: death overs 1.25x, middle 1.0x, powerplay 0.95x.
+    BOWLING_REQUIRED_FEATURES = [
+        'innings_phase',
+        'boundaries_in_last_12_legal_balls',
+        'dots_in_last_12_legal_balls'
+        # Note: requires batting_wickets_remaining OR wickets_fallen_before
+    ]
+
+    VALID_PHASES = {'powerplay', 'middle', 'death'}
+
+    @classmethod
+    def validate_batting_features(cls, df: pd.DataFrame) -> Tuple[np.ndarray, List[str]]:
+        """Validate presence and non-null status of all required batting features."""
+        n = len(df)
+        valid_mask = np.ones(n, dtype=bool)
+        missing_reasons = [[] for _ in range(n)]
+
+        for feat in cls.BATTING_REQUIRED_FEATURES:
+            if feat not in df.columns:
+                valid_mask[:] = False
+                for i in range(n):
+                    missing_reasons[i].append(feat)
+            else:
+                col_vals = df[feat]
+                is_null = col_vals.isna().values
+                if feat == 'innings_phase':
+                    is_invalid_phase = ~col_vals.isin(cls.VALID_PHASES).values
+                    is_bad = is_null | is_invalid_phase
+                else:
+                    is_bad = is_null
+                valid_mask = valid_mask & (~is_bad)
+                bad_indices = np.where(is_bad)[0]
+                for idx in bad_indices:
+                    missing_reasons[idx].append(feat)
+
+        missing_str = [",".join(m) for m in missing_reasons]
+        return valid_mask, missing_str
+
+    @classmethod
+    def validate_bowling_features(cls, df: pd.DataFrame) -> Tuple[np.ndarray, List[str]]:
+        """Validate presence and non-null status of all required bowling features."""
+        n = len(df)
+        valid_mask = np.ones(n, dtype=bool)
+        missing_reasons = [[] for _ in range(n)]
+
+        # Check wicket resource feature (either batting_wickets_remaining or wickets_fallen_before)
+        has_w_rem = 'batting_wickets_remaining' in df.columns
+        has_w_bef = 'wickets_fallen_before' in df.columns
+        if not has_w_rem and not has_w_bef:
+            valid_mask[:] = False
+            for i in range(n):
+                missing_reasons[i].append('batting_wickets_remaining')
+        else:
+            w_col = df['batting_wickets_remaining'] if has_w_rem else df['wickets_fallen_before']
+            is_bad = w_col.isna().values
+            valid_mask = valid_mask & (~is_bad)
+            bad_indices = np.where(is_bad)[0]
+            for idx in bad_indices:
+                missing_reasons[idx].append('batting_wickets_remaining')
+
+        for feat in cls.BOWLING_REQUIRED_FEATURES:
+            if feat not in df.columns:
+                valid_mask[:] = False
+                for i in range(n):
+                    missing_reasons[i].append(feat)
+            else:
+                col_vals = df[feat]
+                is_null = col_vals.isna().values
+                if feat == 'innings_phase':
+                    is_invalid_phase = ~col_vals.isin(cls.VALID_PHASES).values
+                    is_bad = is_null | is_invalid_phase
+                else:
+                    is_bad = is_null
+                valid_mask = valid_mask & (~is_bad)
+                bad_indices = np.where(is_bad)[0]
+                for idx in bad_indices:
+                    missing_reasons[idx].append(feat)
+
+        missing_str = [",".join(m) for m in missing_reasons]
+        return valid_mask, missing_str
+
+    @classmethod
+    def compute_batting_crisis_pressure(cls, df: pd.DataFrame) -> pd.DataFrame:
+        """Estimate pre-delivery batting crisis pressure score on [0.0, 10.0] with explicit validation.
+
+        Formula (strictly ex-ante calibrated heuristic V3.3):
+        1. Wicket depletion (0 to 3.5 pts): min(3.5, wickets_fallen_before * 0.50).
+        2. Collapse cluster (0 to 2.2 pts): 2+ wickets in last 12 legal balls = 2.2, 1 wicket = 1.0.
+        3. Batter entry vulnerability (0 to 1.5 pts): 1.5 * (1 - balls_faced / 6) if balls_faced < 6.
+        4. Stagnation pressure (0 to 1.8 pts): min(1.8, consecutive_dots * 0.35 + (dots_in_12 / 12) * 0.90).
+        5. Innings phase multiplier: powerplay 1.00x, middle 1.05x, death 1.25x.
+        6. Optional 2nd-innings chase leverage ([-0.8, +1.2] pts): derived from clean_rrr_deficit when available.
         """
         df = df.copy()
+        n = len(df)
+        valid_mask, missing_features = cls.validate_batting_features(df)
 
-        # 1. Wickets fallen before delivery
-        if 'wickets_fallen_before' in df.columns:
-            w_before = df['wickets_fallen_before'].fillna(0).values.astype(float)
-        else:
-            w_before = np.zeros(len(df))
-        c_wkt = np.clip(w_before * 0.45, 0.0, 3.5)
+        df['batting_pressure_data_valid'] = valid_mask
+        df['batting_pressure_missing_features'] = missing_features
 
-        # 2. Recent wicket cluster (last 12 legal balls)
-        if 'wickets_in_last_12_legal_balls' in df.columns:
-            w12 = df['wickets_in_last_12_legal_balls'].fillna(0).values.astype(float)
-            c_cluster = np.where(w12 >= 2, 2.0, np.where(w12 == 1, 0.75, 0.0))
-        elif 'recent_wicket_cluster' in df.columns:
-            c_cluster = np.where(df['recent_wicket_cluster'].fillna(False).values, 2.0, 0.0)
-        else:
-            c_cluster = np.zeros(len(df))
+        # Initialize output columns
+        scores = np.full(n, np.nan, dtype=float)
+        tiers = np.full(n, 'PRESSURE_UNCLASSIFIED', dtype=object)
+        is_high = np.zeros(n, dtype=bool)
+        is_mod = np.zeros(n, dtype=bool)
+        is_norm = np.zeros(n, dtype=bool)
 
-        # 3. Entry vulnerability (first 5 balls faced by the striker)
-        if 'batter_balls_faced' in df.columns:
-            bf = df['batter_balls_faced'].fillna(10.0).values.astype(float)
-        else:
-            bf = np.full(len(df), 10.0)
-        c_novelty = np.where(bf < 5, 1.5 * (1.0 - bf / 5.0), 0.0)
+        if np.any(valid_mask):
+            valid_idx = np.where(valid_mask)[0]
+            sub = df.iloc[valid_idx]
 
-        # 4. Stagnation / dots pressure
-        if 'consecutive_dots' in df.columns:
-            consec_dots = df['consecutive_dots'].fillna(0).values.astype(float)
-        else:
-            consec_dots = np.zeros(len(df))
-            
-        if 'dots_in_last_12_legal_balls' in df.columns:
-            dots_12 = df['dots_in_last_12_legal_balls'].fillna(0).values.astype(float)
-        else:
-            dots_12 = np.zeros(len(df))
-        c_stagnation = np.clip(consec_dots * 0.3 + (dots_12 / 12.0) * 0.6, 0.0, 1.5)
+            # 1. Wickets fallen before delivery
+            w_before = sub['wickets_fallen_before'].values.astype(float)
+            c_wkt = np.clip(w_before * 0.50, 0.0, 3.5)
 
-        # 5. Innings phase multiplier
-        phase_map = {'powerplay': 0.95, 'middle': 1.0, 'death': 1.25, 'unknown': 1.0}
-        phase_mult = df['innings_phase'].map(phase_map).fillna(1.0).values if 'innings_phase' in df.columns else np.ones(len(df))
+            # 2. Recent wicket cluster
+            w12 = sub['wickets_in_last_12_legal_balls'].values.astype(float)
+            c_cluster = np.where(w12 >= 2, 2.2, np.where(w12 == 1, 1.0, 0.0))
 
-        raw_score = (c_wkt + c_cluster + c_novelty + c_stagnation) * phase_mult
-        df['batting_crisis_score'] = np.clip(raw_score, 0.0, 10.0).round(2)
+            # 3. Entry vulnerability
+            bf = sub['batter_balls_faced'].values.astype(float)
+            c_novelty = np.where(bf < 6, 1.5 * (1.0 - bf / 6.0), 0.0)
 
-        # Tier classification
-        df['batting_pressure_tier'] = pd.cut(
-            df['batting_crisis_score'],
-            bins=[-0.01, 1.5, 3.5, 5.5, 7.5, 10.01],
-            labels=['none', 'low', 'moderate', 'high', 'extreme']
-        )
-        df['is_batting_high_pressure'] = df['batting_pressure_tier'].isin(['high', 'extreme'])
-        df['is_batting_moderate_pressure'] = df['batting_pressure_tier'] == 'moderate'
-        df['is_batting_normal_pressure'] = df['batting_pressure_tier'].isin(['none', 'low'])
+            # 4. Stagnation / dots pressure
+            consec_dots = sub['consecutive_dots'].values.astype(float)
+            dots_12 = sub['dots_in_last_12_legal_balls'].values.astype(float)
+            c_stagnation = np.clip(consec_dots * 0.35 + (dots_12 / 12.0) * 0.90, 0.0, 1.8)
+
+            # 5. Innings phase multiplier
+            phase_map = {'powerplay': 1.00, 'middle': 1.05, 'death': 1.25}
+            phase_mult = sub['innings_phase'].map(phase_map).values.astype(float)
+
+            # 6. Optional 2nd-innings clean chase leverage (never touches extras1_runs)
+            if 'clean_rrr_deficit' in sub.columns:
+                rrr = sub['clean_rrr_deficit'].values.astype(float)
+                valid_rrr = np.isfinite(rrr)
+                c_chase = np.where(
+                    valid_rrr,
+                    np.where(
+                        rrr >= 8.5,
+                        np.clip((rrr - 8.5) * 0.20, 0.0, 1.2),
+                        -np.clip((5.0 - rrr) * 0.25, 0.0, 0.8),
+                    ),
+                    0.0,
+                )
+            else:
+                c_chase = 0.0
+
+            raw_score = (c_wkt + c_cluster + c_novelty + c_stagnation) * phase_mult + c_chase
+            valid_scores = np.clip(raw_score, 0.0, 10.0).round(2)
+            scores[valid_idx] = valid_scores
+
+            # Tier classification
+            valid_tiers = pd.cut(
+                valid_scores,
+                bins=[-0.01, 1.5, 3.5, 5.2, 7.5, 10.01],
+                labels=['none', 'low', 'moderate', 'high', 'extreme']
+            ).astype(str)
+            tiers[valid_idx] = valid_tiers
+
+            is_high[valid_idx] = np.isin(valid_tiers, ['high', 'extreme'])
+            is_mod[valid_idx] = (valid_tiers == 'moderate')
+            is_norm[valid_idx] = np.isin(valid_tiers, ['none', 'low'])
+
+        df['batting_crisis_score'] = scores
+        df['batting_pressure_tier'] = tiers
+        df['is_batting_high_pressure'] = is_high
+        df['is_batting_moderate_pressure'] = is_mod
+        df['is_batting_normal_pressure'] = is_norm
 
         return df
 
-    @staticmethod
-    def compute_bowling_defensive_pressure(df: pd.DataFrame) -> pd.DataFrame:
-        """Estimate pre-delivery bowling defensive pressure score on [0.0, 10.0].
+    @classmethod
+    def compute_bowling_defensive_pressure(cls, df: pd.DataFrame) -> pd.DataFrame:
+        """Estimate pre-delivery bowling defensive pressure score on [0.0, 10.0] with explicit validation.
 
-        Components (strictly ex-ante):
-        1. Batting resource threat (0 to 3.0 pts): opponent wickets in hand (10 - wickets_fallen_before).
-        2. Critical phase / field restrictions (1.0 to 3.0 pts): death = 3.0, powerplay = 2.0, middle = 1.0.
-        3. Opponent boundary momentum (0 to 2.5 pts): boundaries conceded in last 12 legal balls.
-        4. Strike-rotation pressure (0 to 1.5 pts): low dot frequency in last 12 legal balls.
+        Formula (strictly ex-ante calibrated heuristic V3.3):
+        1. Batting resource threat (0.2 to 2.2 pts): wickets in hand (>=8: 2.2, >=6: 1.4, >=4: 0.8, <4: 0.2).
+        2. Innings phase / restrictions (1.0 to 2.8 pts): death 2.8, powerplay 2.4, middle 1.0.
+        3. Opponent boundary momentum (0 to 2.8 pts): boundaries in last 12 legal balls (>=3: 2.8, 2: 1.8, 1: 0.7, 0: 0.0).
+        4. Strike-rotation pressure (0 to 0.8 pts): 0.8 * (1 - dots_in_12 / 12).
+        5. Optional 2nd-innings chase leverage ([-0.8, +1.0] pts): amplifies tight chases (6-12 RPO) and dampens dead-rubber blowouts.
         """
         df = df.copy()
+        n = len(df)
+        valid_mask, missing_features = cls.validate_bowling_features(df)
 
-        # 1. Batting resource threat
-        if 'batting_wickets_remaining' in df.columns:
-            w_rem = df['batting_wickets_remaining'].values.astype(float)
-        elif 'wickets_fallen_before' in df.columns:
-            w_rem = 10.0 - df['wickets_fallen_before'].values.astype(float)
-        else:
-            w_rem = np.full(len(df), 7.0)
+        df['bowling_pressure_data_valid'] = valid_mask
+        df['bowling_pressure_missing_features'] = missing_features
 
-        c_resource = np.where(w_rem >= 8, 3.0, np.where(w_rem >= 6, 2.0, np.where(w_rem >= 4, 1.0, 0.2)))
+        # Initialize output columns
+        scores = np.full(n, np.nan, dtype=float)
+        tiers = np.full(n, 'PRESSURE_UNCLASSIFIED', dtype=object)
+        is_high = np.zeros(n, dtype=bool)
+        is_mod = np.zeros(n, dtype=bool)
+        is_norm = np.zeros(n, dtype=bool)
 
-        # 2. Innings phase / field restriction leverage
-        phase_pts = {'death': 3.0, 'powerplay': 2.0, 'middle': 1.0, 'unknown': 1.0}
-        c_phase = df['innings_phase'].map(phase_pts).fillna(1.0).values if 'innings_phase' in df.columns else np.ones(len(df))
+        if np.any(valid_mask):
+            valid_idx = np.where(valid_mask)[0]
+            sub = df.iloc[valid_idx]
 
-        # 3. Opponent boundary momentum
-        if 'boundaries_in_last_12_legal_balls' in df.columns:
-            b12 = df['boundaries_in_last_12_legal_balls'].values.astype(float)
-            c_momentum = np.where(b12 >= 3, 2.5, np.where(b12 == 2, 1.6, np.where(b12 == 1, 0.8, 0.0)))
-        else:
-            c_momentum = np.zeros(len(df))
+            # 1. Batting resource threat
+            if 'batting_wickets_remaining' in sub.columns and sub['batting_wickets_remaining'].notna().all():
+                w_rem = sub['batting_wickets_remaining'].values.astype(float)
+            else:
+                w_rem = 10.0 - sub['wickets_fallen_before'].values.astype(float)
+            c_resource = np.where(w_rem >= 8, 2.2, np.where(w_rem >= 6, 1.4, np.where(w_rem >= 4, 0.8, 0.2)))
 
-        # 4. Strike-rotation / lack of dots pressure
-        if 'dots_in_last_12_legal_balls' in df.columns:
-            d12 = df['dots_in_last_12_legal_balls'].values.astype(float)
-            c_rotation = np.clip(1.5 * (1.0 - d12 / 12.0), 0.0, 1.5)
-        else:
-            c_rotation = np.zeros(len(df))
+            # 2. Innings phase (rebalanced so middle-overs spinners can reach high pressure in tight games)
+            phase_pts = {'death': 2.8, 'powerplay': 2.4, 'middle': 1.0}
+            c_phase = sub['innings_phase'].map(phase_pts).values.astype(float)
 
-        raw_score = c_resource + c_phase + c_momentum + c_rotation
-        df['bowling_defensive_score'] = np.clip(raw_score, 0.0, 10.0).round(2)
+            # 3. Opponent boundary momentum
+            b12 = sub['boundaries_in_last_12_legal_balls'].values.astype(float)
+            c_momentum = np.where(b12 >= 3, 2.8, np.where(b12 == 2, 1.8, np.where(b12 == 1, 0.7, 0.0)))
 
-        # Tier classification
-        df['bowling_pressure_tier'] = pd.cut(
-            df['bowling_defensive_score'],
-            bins=[-0.01, 2.5, 4.5, 6.5, 8.0, 10.01],
-            labels=['none', 'low', 'moderate', 'high', 'extreme']
-        )
-        df['is_bowling_high_pressure'] = df['bowling_pressure_tier'].isin(['high', 'extreme'])
-        df['is_bowling_moderate_pressure'] = df['bowling_pressure_tier'] == 'moderate'
-        df['is_bowling_normal_pressure'] = df['bowling_pressure_tier'].isin(['none', 'low'])
+            # 4. Strike-rotation / lack of dots pressure
+            d12 = sub['dots_in_last_12_legal_balls'].values.astype(float)
+            c_rotation = np.clip(0.8 * (1.0 - d12 / 12.0), 0.0, 0.8)
+
+            # 5. Optional 2nd-innings clean chase leverage
+            if 'clean_rrr_deficit' in sub.columns:
+                rrr = sub['clean_rrr_deficit'].values.astype(float)
+                valid_rrr = np.isfinite(rrr)
+                tight_bonus = np.clip(1.0 - np.abs(rrr - 9.0) / 4.5, 0.0, 1.0)
+                blowout_penalty = np.where((rrr > 16.0) | (rrr < 4.0), -0.8, 0.0)
+                c_chase = np.where(valid_rrr, np.where(blowout_penalty < 0, blowout_penalty, tight_bonus), 0.0)
+            else:
+                c_chase = 0.0
+
+            raw_score = c_resource + c_phase + c_momentum + c_rotation + c_chase
+            valid_scores = np.clip(raw_score, 0.0, 10.0).round(2)
+            scores[valid_idx] = valid_scores
+
+            # Tier classification
+            valid_tiers = pd.cut(
+                valid_scores,
+                bins=[-0.01, 2.5, 4.5, 5.5, 7.5, 10.01],
+                labels=['none', 'low', 'moderate', 'high', 'extreme']
+            ).astype(str)
+            tiers[valid_idx] = valid_tiers
+
+            is_high[valid_idx] = np.isin(valid_tiers, ['high', 'extreme'])
+            is_mod[valid_idx] = (valid_tiers == 'moderate')
+            is_norm[valid_idx] = np.isin(valid_tiers, ['none', 'low'])
+
+        df['bowling_defensive_score'] = scores
+        df['bowling_pressure_tier'] = tiers
+        df['is_bowling_high_pressure'] = is_high
+        df['is_bowling_moderate_pressure'] = is_mod
+        df['is_bowling_normal_pressure'] = is_norm
 
         return df
 

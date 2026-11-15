@@ -273,10 +273,10 @@ class V3RRPlayerFitEngine:
             'target_gap': 'Economical Middle-Over Spinner',
             'nationality': 'West Indies',
             'is_overseas': True,
-            'primary_role': 'Specialist Spin Bowler',
+            'primary_role': 'BOWL_PRIMARY_AR (Left-Arm Orthodox Spin All-Rounder)',
             'key_phase': 'Powerplay & Middle Choke',
             'relevant_phase_performance': '114 defensive pressure deliveries, elite new-ball spin economy in T20Is.',
-            'universal_ranking': 'Classified BOWL_SPECIALIST (Excluded from Batting Top 10 by Role Gate)',
+            'universal_ranking': 'Classified BOWL_PRIMARY_AR (Excluded from Batting Top 10 by Role Gate)',
             'source_doc_or_url': 'T20I International Ball-by-Ball Records',
             'source_period': '2022-2026',
             'price_estimate': '₹2.5 - ₹4.0 Cr',
@@ -301,10 +301,10 @@ class V3RRPlayerFitEngine:
             'target_gap': 'Domestic Lower-Order Finisher',
             'nationality': 'India',
             'is_overseas': False,
-            'primary_role': 'Finisher / Lower-Middle Batter',
+            'primary_role': 'BAT_SPECIALIST (Finisher / Lower-Middle Batter)',
             'key_phase': 'Death Overs (Overs 16-20)',
-            'relevant_phase_performance': 'Exceptional death-over strike rate in 2024 (>180.0), fearless clutch boundary hitting under crisis.',
-            'universal_ranking': 'Eligible Batting Specialist',
+            'relevant_phase_performance': 'Ranked #1 in Universal Top 10 Batters (Score 93.88, 168.92 Crisis SR across 148 crisis balls, 1.345x maintenance).',
+            'universal_ranking': 'Rank #1 Universal Top-10 Batter (BAT_SPECIALIST, Score 93.88)',
             'source_doc_or_url': 'IPL 2024-2025 Match Scorecards & Ball-by-Ball Data',
             'source_period': '2024-2025',
             'price_estimate': '₹2.5 - ₹3.5 Cr (Ceiling: ₹4.5 Cr)',
@@ -379,6 +379,14 @@ class V3RRPlayerFitEngine:
     def generate_player_fit_dataset(cls) -> pd.DataFrame:
         """Export standardized provenance-aware candidate evaluation matrix."""
         df = pd.DataFrame(cls.WATCHLIST_CANDIDATES)
+        # Attach canonical v3_role from player_roles.csv if available
+        roles_path = pd.io.common.Path(__file__).resolve().parent.parent.parent / "data" / "outputs" / "v3" / "player_roles.csv"
+        if roles_path.exists():
+            roles_df = pd.read_csv(roles_path)
+            role_map = roles_df.set_index('player_id')['v3_role'].to_dict()
+            df['v3_role'] = df['canonical_player_id'].map(role_map).fillna('HISTORICAL_WATCHLIST')
+        else:
+            df['v3_role'] = 'HISTORICAL_WATCHLIST'
         # Rename canonical_player_id to player_id for dashboard compatibility while retaining canonical ID
         df['player_id'] = df['canonical_player_id']
         df['estimated_price_range'] = df['price_estimate']

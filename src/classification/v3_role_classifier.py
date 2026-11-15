@@ -20,6 +20,7 @@ import numpy as np
 import pandas as pd
 
 from src.classification.role_classifier import CANONICAL_NAME_MAP
+from src.identity.player_identity import PlayerIdentityResolver
 
 
 class V3RoleClassifier:
@@ -45,9 +46,20 @@ class V3RoleClassifier:
         mapping_df: Optional[pd.DataFrame] = None
     ) -> pd.DataFrame:
         """Classify all players in the dataset into the 5 mutually exclusive states."""
+        # 0. Canonical Player Identity Resolution
+        resolver = PlayerIdentityResolver()
+        p11_df = resolver.resolve_playing_eleven(p11_df)
+        bbb_df = resolver.resolve_deliveries(bbb_df)
+        if mapping_df is not None:
+            mapping_df = resolver.resolve_mapping(mapping_df)
         
-        # 1. Batting order profile from playing eleven
-        p11_valid = p11_df[p11_df['batting_order'].notna() & (p11_df['batting_order'] > 0)].copy()
+        # 1. Batting order profile from playing eleven (filter to active played rows and deduplicate key collisions)
+        p11_active = p11_df[p11_df['is_played'] == True].copy() if 'is_played' in p11_df.columns else p11_df.copy()
+        dedup_cols = ['match_id', 'team_id', 'player_id'] if 'team_id' in p11_active.columns else ['match_id', 'player_id']
+        if all(c in p11_active.columns for c in dedup_cols):
+            p11_active = p11_active.drop_duplicates(subset=dedup_cols, keep='first')
+
+        p11_valid = p11_active[p11_active['batting_order'].notna() & (p11_active['batting_order'] > 0)].copy()
         
         def _get_order_stats(s):
             if len(s) == 0:
@@ -61,14 +73,15 @@ class V3RoleClassifier:
         order_stats = p11_valid.groupby('player_id')['batting_order'].apply(_get_order_stats).unstack().reset_index()
 
         # 2. Wicketkeeper duty detection
-        wk_stats = p11_df.groupby('player_id').agg(
+        wk_stats = p11_active.groupby('player_id').agg(
             wk_matches=('is_wk', lambda x: (x == True).sum()),
             total_matches=('match_id', 'nunique')
         ).reset_index()
         wk_stats['is_wicketkeeper'] = (wk_stats['wk_matches'] >= 3) & ((wk_stats['wk_matches'] / np.maximum(1, wk_stats['total_matches'])) >= 0.30)
 
-        # 3. Batting workload (balls faced)
-        faced = bbb_df[bbb_df['is_ball_faced']].copy() if 'is_ball_faced' in bbb_df.columns else bbb_df.copy()
+        # 3. Batting workload (balls faced, excluding Super Overs innings > 2 if present)
+        bbb_reg = bbb_df[bbb_df['innings'].isin([1, 2])].copy() if 'innings' in bbb_df.columns else bbb_df.copy()
+        faced = bbb_reg[bbb_reg['is_ball_faced']].copy() if 'is_ball_faced' in bbb_reg.columns else bbb_reg.copy()
         bat_agg = faced.groupby('striker_id').agg(
             balls_faced=('runs', 'count'),
             total_runs=('runs', 'sum'),
@@ -76,7 +89,7 @@ class V3RoleClassifier:
         ).reset_index().rename(columns={'striker_id': 'player_id'})
 
         # 4. Bowling workload (legal balls)
-        legal = bbb_df[bbb_df['is_legal_ball']].copy() if 'is_legal_ball' in bbb_df.columns else bbb_df.copy()
+        legal = bbb_reg[bbb_reg['is_legal_ball']].copy() if 'is_legal_ball' in bbb_reg.columns else bbb_reg.copy()
         bowl_agg = legal.groupby('bowler_id').agg(
             legal_balls_bowled=('runs', 'count'),
             wickets=('is_bowler_wicket' if 'is_bowler_wicket' in legal.columns else 'is_wicket', 'sum'),
@@ -99,18 +112,15 @@ class V3RoleClassifier:
         master = master.merge(bowl_agg, on='player_id', how='left')
 
         # Fill missing values
-        master['modal_order'] = master['modal_order'].fillna(10).astype(int)
-        master['mean_order'] = master['mean_order'].fillna(10.0).astype(float)
-        master['top7_ratio'] = master['top7_ratio'].fillna(0.0).astype(float)
-        master['p11_appearances'] = master['p11_appearances'].fillna(0).astype(int)
-        master['is_wicketkeeper'] = master['is_wicketkeeper'].fillna(False).astype(bool)
-        master['total_matches'] = master['total_matches'].fillna(0).astype(int)
-        master['balls_faced'] = master['balls_faced'].fillna(0).astype(int)
-        master['total_runs'] = master['total_runs'].fillna(0).astype(int)
-        master['bat_matches'] = master['bat_matches'].fillna(0).astype(int)
-        master['legal_balls_bowled'] = master['legal_balls_bowled'].fillna(0).astype(int)
-        master['wickets'] = master['wickets'].fillna(0).astype(int)
-        master['bowl_matches'] = master['bowl_matches'].fillna(0).astype(int)
+        for int_col, default_val in [
+            ('modal_order', 10), ('p11_appearances', 0), ('total_matches', 0),
+            ('balls_faced', 0), ('total_runs', 0), ('bat_matches', 0),
+            ('legal_balls_bowled', 0), ('wickets', 0), ('bowl_matches', 0)
+        ]:
+            master[int_col] = pd.to_numeric(master[int_col], errors='coerce').fillna(default_val).astype(int)
+        master['mean_order'] = pd.to_numeric(master['mean_order'], errors='coerce').fillna(10.0).astype(float)
+        master['top7_ratio'] = pd.to_numeric(master['top7_ratio'], errors='coerce').fillna(0.0).astype(float)
+        master['is_wicketkeeper'] = master['is_wicketkeeper'].where(master['is_wicketkeeper'].notna(), False).astype(bool)
         master['bowling_style'] = master['bowling_style'].fillna('Unknown')
 
         # Compute combined match exposure
@@ -124,9 +134,13 @@ class V3RoleClassifier:
         def _get_name(pid):
             if pid in CANONICAL_NAME_MAP:
                 return CANONICAL_NAME_MAP[pid]
+            res_name = resolver.resolve_name(pid)
+            if res_name and not res_name.startswith("Player_"):
+                return res_name
             return name_map.get(pid, f"Player_{pid}")
 
         master['player_name'] = master['player_id'].map(_get_name)
+        master['canonical_player_id'] = master['player_id']
 
         # 6. Apply Five-State Classification Rules
         roles = []
@@ -180,6 +194,11 @@ class V3RoleClassifier:
                         roles.append('BOWL_PRIMARY_AR')
                         confidences.append('MEDIUM')
                         reasons.append(f"Batting order {m_order} with active bowling volume: {bb} bowled.")
+                elif bb >= 60 and bf < 60:
+                    # Lower-middle order player whose primary match workload is bowling
+                    roles.append('BOWL_PRIMARY_AR')
+                    confidences.append('MEDIUM')
+                    reasons.append(f"Order {m_order} player with primary bowling workload: {bb} bowled vs {bf} faced.")
                 else:
                     # Specialist Batter (negligible bowling)
                     roles.append('BAT_SPECIALIST')
@@ -189,10 +208,11 @@ class V3RoleClassifier:
             # Case B: Lower Order / Tailender (modal_order >= 8, top7_ratio < 0.50)
             else:
                 # Sub-check for Bowling All-Rounder vs Specialist Bowler
-                if bb >= 100 and bf >= 80:
+                # Require genuine batting involvement (pos <= 8 or top7 >= 15%, plus >= 2.5 balls faced/match or >= 15% of balls bowled)
+                if bb >= 100 and bf >= 80 and (m_order <= 8 or top7_r >= 0.15) and (bf / max(1, m_count) >= 2.5 or bf >= bb * 0.15):
                     roles.append('BOWL_PRIMARY_AR')
                     confidences.append('HIGH')
-                    reasons.append(f"Lower order (pos {m_order}) with high bowling ({bb}b) and significant lower-order runs ({bf}b).")
+                    reasons.append(f"Lower order (pos {m_order}) with high bowling ({bb}b) and genuine batting volume ({bf}b across {m_count}m).")
                 elif bb >= 60:
                     roles.append('BOWL_SPECIALIST')
                     confidences.append('HIGH' if bb >= 120 else 'MEDIUM')
@@ -216,7 +236,7 @@ class V3RoleClassifier:
         master['eligible_for_bowl_leaderboard'] = master['v3_role'].isin(['BOWL_SPECIALIST', 'BOWL_PRIMARY_AR'])
 
         cols = [
-            'player_id', 'player_name', 'v3_role', 'role_confidence',
+            'player_id', 'canonical_player_id', 'player_name', 'v3_role', 'role_confidence',
             'modal_order', 'mean_order', 'top7_ratio', 'balls_faced',
             'legal_balls_bowled', 'wickets', 'is_wicketkeeper', 'match_count',
             'eligible_for_bat_leaderboard', 'eligible_for_bowl_leaderboard',

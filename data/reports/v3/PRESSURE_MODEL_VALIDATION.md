@@ -1,17 +1,23 @@
-# V3 Match Pressure Model Validation Report
+# V3 Match Pressure Model Specification & Limitation Report (P1.1 Patch)
 **Document Code:** AGY-V3-PMV-001  
-**Execution Date:** November 2026  
-**Status:** Validated, Ex-Ante, Zero Target Leakage
+**Execution Date:** 15 November 2026  
+**Governance Status:** **`PROVISIONAL_POSITION_PROXY_HEURISTIC`** (Ex-Ante, Zero Target Leakage)
 
 ---
 
-## 1. Executive Summary
+## 1. Executive Summary & Limitation Disclosure
 
-The V3 Pressure Engine decouples the match context into two logically distinct, pre-delivery leverage models:
-1. **Batting Crisis Pressure Model:** Quantifies the ex-ante risk of an innings collapse facing the batting side.
-2. **Bowling Defensive Pressure Model:** Quantifies the ex-ante defensive pressure on the bowling side to suppress boundaries and defend against opponent resources.
+The V3 Pressure Engine decouples match context into two logically distinct, pre-delivery heuristic scoring rules:
+1. **Batting Crisis Pressure Model:** Quantifies pre-delivery collapse and stagnation state facing the batting side.
+2. **Bowling Defensive Pressure Model:** Quantifies pre-delivery resource, phase, and momentum constraints on the bowling side.
 
-Both models operate strictly on state observable *before* the bowler releases the ball, satisfying the zero target leakage requirement.
+Both models operate strictly on state observable *before* the bowler releases the ball (`0.0` target leakage) and quarantine any row with missing pre-delivery inputs (`batting_pressure_data_valid`, `bowling_pressure_data_valid`).
+
+### Mandatory Pressure-Model Limitation Disclosure (`PROVISIONAL_POSITION_PROXY_HEURISTIC`)
+- **Not a Calibrated Match-Leverage Model:** The current pressure model is a **position-proxy and pre-delivery state heuristic**, not an empirically fitted win-probability or match-leverage model.
+- **Batting Position is a Proxy:** Modal batting position and wicket depletion serve as structural proxies for entry context, not direct calibrated evidence of match pressure.
+- **Target, Required Run Rate (RRR), and Full Chase Leverage Not Yet Integrated:** Because `extras1_runs` in the raw dataset is a categorical codebook (codes 1–7) rather than numeric runs, reconstructed scoreboard totals, second-innings targets, and dynamic RRR remain quarantined.
+- **Interpretation Constraint:** Current positional crisis distributions must **not** be presented as calibrated player-level crisis probabilities.
 
 ---
 
@@ -38,21 +44,17 @@ Where:
 
 ---
 
-## 3. Empirical Distribution and Baseline Calibration
+## 3. Empirical Distribution Across 193,988 Regular Deliveries
 
-Across 193,988 regular deliveries:
-- **Batting Crisis Tiers:**
+- **Batting Crisis Tiers (Mutually Exclusive):**
   - High & Extreme ($\ge 5.5$): 15,464 balls (7.97% of deliveries)
-  - Moderate ($[3.5, 5.5)$): 30,844 balls (15.90%)
-  - Normal / Low ($< 3.5$): 147,680 balls (76.13%)
-- **Bowling Defensive Tiers:**
+  - Moderate ($[3.5, 5.5)$): 30,760 balls (15.86%)
+  - Normal / Low ($< 3.5$): 147,764 balls (76.17%)
+  - Unclassified / Invalid Inputs: 0 balls (0.00%)
+- **Bowling Defensive Tiers (Mutually Exclusive):**
   - High & Extreme ($\ge 6.5$): 101,935 balls (52.55% of deliveries)
-  - Moderate ($[4.5, 6.5)$): 55,286 balls (28.50%)
-  - Normal / Low ($< 4.5$): 36,767 balls (18.95%)
+  - Moderate ($[4.5, 6.5)$): 71,592 balls (36.91%)
+  - Normal / Low ($< 4.5$): 20,461 balls (10.55%)
+  - Unclassified / Invalid Inputs: 0 balls (0.00%)
+  - *Impact on Bowler Normal Baseline:* Because only 10.55% of legal deliveries fall in the Normal/Low defensive tier ($< 4.5$), P1.1 enforces a separate **`MIN_NORMAL_BALLS = 100`** requirement for bowlers so that maintenance ratios are never computed on sparse normal baselines.
 
----
-
-## 4. Verification and Leakage Audit
-- **Pre-delivery Guarantee:** Every input feature is derived exclusively from historical balls prior to the active delivery sequence.
-- **Independence Test:** Perturbing future balls, runs scored, or dismissal flags results in an identical pre-delivery pressure score ($0.0$ difference).
-- **Target Leakage:** None detected.
