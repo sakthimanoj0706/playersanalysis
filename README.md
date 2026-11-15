@@ -9,6 +9,19 @@
 
 ## Key Submission Documents
 
+### Authoritative Final Deliverables (`data/outputs/final/`)
+- **Authoritative Top 10 Batters CSV:** [data/outputs/final/FINAL_TOP_10_BATTERS.csv](data/outputs/final/FINAL_TOP_10_BATTERS.csv)
+- **Authoritative Top 10 Bowlers CSV:** [data/outputs/final/FINAL_TOP_10_BOWLERS.csv](data/outputs/final/FINAL_TOP_10_BOWLERS.csv)
+- **All Eligible & Ineligible Player Estimates CSV:** [data/outputs/final/ALL_PLAYER_FINAL_ESTIMATES.csv](data/outputs/final/ALL_PLAYER_FINAL_ESTIMATES.csv)
+- **Final Methodology Report:** [data/outputs/final/FINAL_METHODOLOGY_REPORT.md](data/outputs/final/FINAL_METHODOLOGY_REPORT.md)
+- **Final Player Justifications (All 20 Players):** [data/outputs/final/FINAL_PLAYER_JUSTIFICATIONS.md](data/outputs/final/FINAL_PLAYER_JUSTIFICATIONS.md)
+- **Final Source-of-Truth & SHA-256 Provenance:** [data/outputs/final/FINAL_RANKING_SOURCE_OF_TRUTH.json](data/outputs/final/FINAL_RANKING_SOURCE_OF_TRUTH.json)
+- **Star-Player Identity & Eligibility Audit (21 Stars, incl. Pat Cummins = Patrick Cummins ID 1758):** [STAR_PLAYER_ELIGIBILITY_AUDIT.csv](STAR_PLAYER_ELIGIBILITY_AUDIT.csv)
+- **Pressure Methodology Empirical Benchmark (5 Proxies + Blocked WPA):** [PRESSURE_METHODOLOGY_COMPARISON.csv](PRESSURE_METHODOLOGY_COMPARISON.csv)
+- **Rajasthan Royals Secondary Scouting Module (Strictly Decoupled):** [data/outputs/final/RR_PLAYER_FIT_REPORT.md](data/outputs/final/RR_PLAYER_FIT_REPORT.md), [RR_TEAM_REQUIREMENTS.csv](data/outputs/final/RR_TEAM_REQUIREMENTS.csv), [RR_TOP10_CANDIDATE_FIT.csv](data/outputs/final/RR_TOP10_CANDIDATE_FIT.csv), [RR_BEST_OUTSIDE_TOP10_CANDIDATES.csv](data/outputs/final/RR_BEST_OUTSIDE_TOP10_CANDIDATES.csv), [RR_RECOMMENDED_SQUAD.csv](data/outputs/final/RR_RECOMMENDED_SQUAD.csv)
+- **Pre-Fix & Post-Fix Audit Reports:** [FINAL_AUDIT_BEFORE_FIX.md](FINAL_AUDIT_BEFORE_FIX.md) and [FINAL_POST_FIX_AUDIT.md](FINAL_POST_FIX_AUDIT.md)
+
+### Underlying V4.2 Statistical Artifacts (`data/outputs/v4_2/`)
 - **Primary Methodology Report:** [METHODOLOGY_REPORT.md](METHODOLOGY_REPORT.md)
 - **Individual Top 10 Player Justifications (All 20 Players):** [data/reports/v4_2/V4_2_PLAYER_JUSTIFICATIONS.md](data/reports/v4_2/V4_2_PLAYER_JUSTIFICATIONS.md)
 - **Release Decision & Statistical Audit:** [data/reports/v4_2/V4_2_RELEASE_DECISION.md](data/reports/v4_2/V4_2_RELEASE_DECISION.md)
