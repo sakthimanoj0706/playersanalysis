@@ -50,38 +50,44 @@ def test_no_player_eligible_for_both_leaderboards():
 
 
 def test_low_sample_players_cannot_enter_final_top10():
-    """Verify that players with <60 crisis balls cannot enter Top 10 Batters, and <120 crisis balls cannot enter Top 10 Bowlers."""
+    """Verify V4 minimum sample, normal-baseline, and Tier-1 exposure gates on Top 10."""
     top_bat = pd.read_csv(OUTPUTS_V3 / "TOP_10_BATTERS.csv")
     top_bowl = pd.read_csv(OUTPUTS_V3 / "TOP_10_BOWLERS.csv")
 
-    assert (top_bat['crisis_balls'] >= 60).all()
-    assert (top_bat['crisis_matches'] >= 5).all()
-    assert (top_bat['norm_balls'] >= 60).all()
+    assert (top_bat['eff_crisis_balls'] >= 60).all()
+    assert (top_bat['crisis_matches'] >= 6).all()
+    assert (top_bat['eff_norm_balls'] >= 60).all()
+    assert (top_bat['tier1_share'] >= 0.60).all()
     assert (top_bat['sample_eligible'] == True).all()
 
-    assert (top_bowl['crisis_balls'] >= 120).all()
-    assert (top_bowl['crisis_matches'] >= 5).all()
+    assert (top_bowl['eff_crisis_balls'] >= 120).all()
+    assert (top_bowl['crisis_matches'] >= 6).all()
+    assert (top_bowl['eff_norm_balls'] >= 100).all()
+    assert (top_bowl['tier1_share'] >= 0.60).all()
     assert (top_bowl['norm_baseline_eligible'] == True).all()
     assert (top_bowl['sample_eligible'] == True).all()
 
 
-def test_bowler_normal_baseline_prior_anchored_and_raw_vs_capped_maintenance():
-    """Verify PRIOR_ANCHORED_SPECIALIST (<100 norm balls) vs VALID_NORMAL_BASELINE (>=100), and separate raw/capped ratios."""
+def test_bowler_normal_baseline_strict_and_invariant_weights():
+    """Verify V4 strict normal baseline (<100 Tier-weighted balls excluded), raw/capped ratios, and invariant weights."""
     all_bowl = pd.read_csv(OUTPUTS_V3 / "ALL_BOWLER_METRICS.csv")
 
-    insuff = all_bowl[all_bowl['norm_balls'] < 100]
-    suff = all_bowl[all_bowl['norm_balls'] >= 100]
+    eff_nb = all_bowl['eff_norm_balls']
+    insuff = all_bowl[(eff_nb < 100) | (all_bowl['norm_balls'] == 0) | (all_bowl['norm_dot_pct'].fillna(0) <= 0)]
+    suff = all_bowl[(eff_nb >= 100) & (all_bowl['norm_balls'] > 0) & (all_bowl['norm_dot_pct'].fillna(0) > 0)]
 
     assert len(insuff) > 0
-    assert (insuff['norm_baseline_eligible'] == True).all()
-    assert (insuff['norm_baseline_status'] == 'PRIOR_ANCHORED_SPECIALIST').all()
+    assert (insuff['norm_baseline_eligible'] == False).all()
+    assert insuff['provisional_fixed_weight_score'].isna().all()
     assert insuff['capped_dot_maintenance'].isna().all()
     assert insuff['dot_maintenance'].isna().all()
-    assert (insuff['effective_w_maint'] < 0.35).all()
 
+    assert len(suff) > 0
     assert (suff['norm_baseline_eligible'] == True).all()
     assert (suff['norm_baseline_status'] == 'VALID_NORMAL_BASELINE').all()
-    assert (suff['effective_w_maint'] == 0.35).all()
+    assert np.allclose(all_bowl['effective_w_maint'].values, 0.30, atol=1e-4)
+    assert np.allclose(all_bowl['effective_w_abs'].values, 0.35, atol=1e-4)
+    assert np.allclose(all_bowl['effective_w_cons'].values, 0.25, atol=1e-4)
     valid_suff = suff[suff['raw_dot_maintenance'].notna()]
     expected_capped = np.clip(valid_suff['raw_dot_maintenance'], 0.5, 1.5).round(3)
     assert (valid_suff['capped_dot_maintenance'].round(3) == expected_capped).all()
@@ -90,9 +96,9 @@ def test_bowler_normal_baseline_prior_anchored_and_raw_vs_capped_maintenance():
 
 
 def test_extended_threshold_sensitivity_grid_and_no_forced_top10():
-    """Verify crisis-ball threshold grid includes 40, 60, 80, 100, 150, 200, 250 and does not force Top 10 when <10 eligible."""
+    """Verify crisis-ball threshold grid includes 40..750 and does not force Top 10 when <10 eligible."""
     thresh = pd.read_csv(OUTPUTS_V3 / "RANKING_THRESHOLD_SENSITIVITY.csv")
-    req_grid = {40, 60, 80, 100, 150, 200, 250}
+    req_grid = {40, 60, 80, 100, 150, 200, 250, 500, 750}
 
     bat_grid = set(thresh[thresh['discipline'] == 'Batting']['min_crisis_balls'].unique())
     bowl_grid = set(thresh[thresh['discipline'] == 'Bowling']['min_crisis_balls'].unique())

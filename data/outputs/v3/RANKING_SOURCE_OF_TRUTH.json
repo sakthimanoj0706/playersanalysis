@@ -1,6 +1,6 @@
 {
-  "manifest_title": "SupeRR Intelligence V3 Universal Player Ranking Single Source of Truth",
-  "generation_timestamp_utc": "2026-11-15T08:18:41.490815Z",
+  "manifest_title": "SupeRR Intelligence V4 Unified Calibrated-Ridge Player Ranking Single Source of Truth",
+  "generation_timestamp_utc": "2026-11-15T10:16:40.637534Z",
   "authoritative_artifacts": {
     "top_10_batters_csv": "data/outputs/v3/TOP_10_BATTERS.csv",
     "top_10_bowlers_csv": "data/outputs/v3/TOP_10_BOWLERS.csv",
@@ -12,30 +12,22 @@
     "player_identity_crosswalk_csv": "data/outputs/v3/PLAYER_IDENTITY_CROSSWALK.csv"
   },
   "artifact_sha256": {
-    "TOP_10_BATTERS.csv": "7679034e931e61e380e394d95340739b5a98fb2b9688d3e4fc36e05d35a4af8f",
-    "TOP_10_BOWLERS.csv": "3fa7cf8d2e33d51a451fa96952ba9c82e648601da9f15a52c989ff2947aa4b36",
-    "ALL_BATTER_METRICS.csv": "a525b7a2c65ca95f9ced710d31b416f4e09022969b267efe4b2acb8806f40405",
-    "ALL_BOWLER_METRICS.csv": "2e36156e15012f5f6b8be5adb63d35b713ce186665278ee73335c2ca4227256c",
-    "RR_PLAYER_FIT.csv": "d1c85309b9ed994324ccfdcf009be5de30942b56b085d00fdf5c518055f054ba"
+    "TOP_10_BATTERS.csv": "d4629e4ef0d60aaf2964f9f9fceda4d2bc1451a256f0d5911809e99559b111d8",
+    "TOP_10_BOWLERS.csv": "606a4e09ca4554700987b06db1c6600d9cb4de23e381bec0fcf6c8ebfab5b4a9",
+    "ALL_BATTER_METRICS.csv": "d8205236fae1c0b4175651aa6fb5ea49497acd0e547e8c226ce2e8b9e6462c03",
+    "ALL_BOWLER_METRICS.csv": "dbf88f6cb9cbeba19277e6ac77e2fdb69df1274a0e53dd94e097bac74e7ed697",
+    "RR_PLAYER_FIT.csv": "b2bc1b8a15c2f0593099bda49d950b3cff7c877430d96cb14b57ff9cfc2a698c"
   },
   "summary_metrics": {
-    "eligible_batters_count": 65,
-    "eligible_bowlers_count": 197,
+    "eligible_batters_count": 156,
+    "eligible_bowlers_count": 122,
     "sensitive_bat_ranks": [
-      2,
-      3,
-      6,
-      7,
-      8
+      7
     ],
     "sensitive_bowl_ranks": [
-      4,
-      6,
-      8,
-      9,
-      10
+      7
     ],
-    "threshold_sensitivity_combinations": 312
+    "threshold_sensitivity_combinations": 648
   },
   "synchronized_downstream_copies": {
     "top_10_batters_copies": [
@@ -72,45 +64,45 @@
   "governance": {
     "git_baseline_commit": "537777c8436fd647a484a49cfbfa30b843c98a1c",
     "git_branch": "fix/v3-pre-submission-consistency-001",
-    "ranking_script_version": "V3.3_GOLDFISH_TRIZ_PATCH",
-    "pressure_formula_version": "V3.3_GOLDFISH_CHASE_LEVERAGE",
+    "ranking_script_version": "V4_UNIFIED_CALIBRATED_RIDGE",
+    "pressure_formula_version": "V4_CALIBRATED_RIDGE",
     "hazard_model_status": "EXPERIMENTAL_NOT_USED_FOR_RANKING",
     "identity_crosswalk_version": "V3.1_CANONICAL",
-    "ranking_score_status": "PROVISIONAL_FIXED_WEIGHT_SCORE",
-    "threshold_governance": "PROVISIONAL_ELIGIBILITY_CONFIRMED",
-    "ranking_approval_status": "V3.3 GOLDFISH TRIZ VERIFIED \u2014 PROVISIONAL MODEL",
-    "mandatory_disclosure": "Rankings are provisional. Batter ranks sensitive to scoring weights: #2, #3, #6, #7, #8; Bowler ranks sensitive to scoring weights: #4, #6, #8, #9, #10. The pressure classification uses the calibrated pre-delivery state & clean-channel chase-leverage heuristic (V3.3_GOLDFISH_CHASE_LEVERAGE). The new score has not yet undergone independent out-of-time validation."
+    "ranking_score_status": "V4_CALIBRATED_RIDGE_SCORE",
+    "threshold_governance": "INVARIANT_NORMAL_AND_TIER1_GATED",
+    "ranking_approval_status": "V4 CALIBRATED RIDGE \u2014 UNIFIED RUN VALUE VERIFIED",
+    "mandatory_disclosure": "Rankings use V4 Calibrated Ridge state-conditional run values with Tier-1 weighting and within-phase quantile tiers. Batter ranks sensitive to scoring weights: #7; Bowler ranks sensitive to scoring weights: #7."
   },
   "configurations": {
     "pri_weights": {
-      "maintenance": 0.35,
+      "maintenance": 0.3,
       "absolute": 0.35,
-      "consistency": 0.2,
+      "consistency": 0.25,
       "sample": 0.1
     },
     "sensitivity_configs": {
       "balanced_default": {
-        "maintenance": 0.35,
+        "maintenance": 0.3,
         "absolute": 0.35,
-        "consistency": 0.2,
+        "consistency": 0.25,
         "sample": 0.1
       },
       "maintenance_heavy": {
-        "maintenance": 0.5,
+        "maintenance": 0.45,
         "absolute": 0.25,
-        "consistency": 0.15,
+        "consistency": 0.2,
         "sample": 0.1
       },
       "absolute_heavy": {
-        "maintenance": 0.25,
+        "maintenance": 0.2,
         "absolute": 0.5,
-        "consistency": 0.15,
+        "consistency": 0.2,
         "sample": 0.1
       },
       "consistency_heavy": {
-        "maintenance": 0.3,
-        "absolute": 0.3,
-        "consistency": 0.3,
+        "maintenance": 0.2,
+        "absolute": 0.25,
+        "consistency": 0.45,
         "sample": 0.1
       },
       "equal_weights": {
@@ -122,27 +114,45 @@
     },
     "default_batting_thresholds": {
       "crisis_balls": 60,
-      "total_balls": 120,
-      "crisis_matches": 5,
+      "total_balls": 200,
+      "crisis_matches": 6,
       "norm_balls": 60
     },
     "default_bowling_thresholds": {
       "crisis_balls": 120,
-      "total_legal_balls": 120,
-      "crisis_matches": 5,
-      "norm_balls": 0
+      "total_legal_balls": 250,
+      "crisis_matches": 6,
+      "norm_balls": 100
     },
     "min_normal_balls_bowler": 100,
+    "min_tier1_share": 0.6,
+    "comp_tier_weights": {
+      "T1_IPL": 1.0,
+      "T1_FM_T20I": 1.0,
+      "T2_MIXED": 0.5,
+      "T3_ASSOC": 0.2
+    },
+    "v_wkt_bowl_by_phase": {
+      "powerplay": 5.5,
+      "middle": 5.0,
+      "death": 3.5
+    },
+    "v_wkt_bat_by_phase": {
+      "powerplay": 4.0,
+      "middle": 3.5,
+      "death": 2.5
+    },
     "shrinkage_configuration": {
-      "batting_method": "FIXED_K_NORMAL_SHRINKAGE",
-      "prior_k": 25.0,
-      "batting_prior_mean": 132.1,
-      "batting_prior_pop_count": 65,
-      "bowling_method": "BETA_BINOMIAL_EMPIRICAL_BAYES",
-      "bowling_prior_alpha": 5.5039,
-      "bowling_prior_beta": 94.4961,
-      "bowling_prior_mean": 5.5,
-      "bowling_prior_pop_count": 197
+      "batting_method": "RIDGE_DUAL_ARM_EMPIRICAL_SHRINKAGE",
+      "prior_k": 90.0,
+      "batting_prior_mean": 131.04,
+      "batting_prior_pop_count": 156,
+      "bowling_method": "RIDGE_DUAL_ARM_AND_BETA_BINOMIAL",
+      "bowling_prior_k": 150.0,
+      "bowling_prior_alpha": 5.3942,
+      "bowling_prior_beta": 94.6058,
+      "bowling_prior_mean": 5.39,
+      "bowling_prior_pop_count": 122
     },
     "bootstrap_configuration": {
       "method": "MATCH_CLUSTERED_BOOTSTRAP",

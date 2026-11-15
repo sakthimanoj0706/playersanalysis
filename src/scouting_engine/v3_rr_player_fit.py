@@ -18,6 +18,7 @@ Transparent Multi-Criteria Assessment:
 - Final Recommendation Category:
   [Strong Fit, Conditional Fit, Low Priority, Not Suitable for Current RR Needs, Insufficient Evidence]
 """
+from pathlib import Path
 from typing import Dict, List, Optional
 import numpy as np
 import pandas as pd
@@ -273,10 +274,10 @@ class V3RRPlayerFitEngine:
             'target_gap': 'Economical Middle-Over Spinner',
             'nationality': 'West Indies',
             'is_overseas': True,
-            'primary_role': 'BOWL_PRIMARY_AR (Left-Arm Orthodox Spin All-Rounder)',
+            'primary_role': 'BOWL_SPECIALIST (Left-Arm Orthodox Spin Specialist)',
             'key_phase': 'Powerplay & Middle Choke',
-            'relevant_phase_performance': '114 defensive pressure deliveries, elite new-ball spin economy in T20Is.',
-            'universal_ranking': 'Classified BOWL_PRIMARY_AR (Excluded from Batting Top 10 by Role Gate)',
+            'relevant_phase_performance': 'Evaluated dynamically from V4 System A bowling crisis metrics.',
+            'universal_ranking': 'Classified BOWL_PRIMARY_AR (Synced dynamically from V4 pool)',
             'source_doc_or_url': 'T20I International Ball-by-Ball Records',
             'source_period': '2022-2026',
             'price_estimate': '₹2.5 - ₹4.0 Cr',
@@ -303,8 +304,8 @@ class V3RRPlayerFitEngine:
             'is_overseas': False,
             'primary_role': 'BAT_SPECIALIST (Finisher / Lower-Middle Batter)',
             'key_phase': 'Death Overs (Overs 16-20)',
-            'relevant_phase_performance': 'Ranked #1 in Universal Top 10 Batters (Score 93.88, 168.92 Crisis SR across 148 crisis balls, 1.345x maintenance).',
-            'universal_ranking': 'Rank #1 Universal Top-10 Batter (BAT_SPECIALIST, Score 93.88)',
+            'relevant_phase_performance': 'Evaluated dynamically from V4 System A batting crisis metrics.',
+            'universal_ranking': 'Synced dynamically from V4 Universal Batting Rankings',
             'source_doc_or_url': 'IPL 2024-2025 Match Scorecards & Ball-by-Ball Data',
             'source_period': '2024-2025',
             'price_estimate': '₹2.5 - ₹3.5 Cr (Ceiling: ₹4.5 Cr)',
@@ -376,19 +377,78 @@ class V3RRPlayerFitEngine:
     ]
 
     @classmethod
-    def generate_player_fit_dataset(cls) -> pd.DataFrame:
-        """Export standardized provenance-aware candidate evaluation matrix."""
+    def generate_player_fit_dataset(cls, save: bool = True) -> pd.DataFrame:
+        """Export standardized provenance-aware candidate evaluation synced with live System A metrics."""
         df = pd.DataFrame(cls.WATCHLIST_CANDIDATES)
-        # Attach canonical v3_role from player_roles.csv if available
-        roles_path = pd.io.common.Path(__file__).resolve().parent.parent.parent / "data" / "outputs" / "v3" / "player_roles.csv"
+        outputs_v3 = Path(__file__).resolve().parent.parent.parent / "data" / "outputs" / "v3"
+        roles_path = outputs_v3 / "player_roles.csv"
+        bat_path = outputs_v3 / "ALL_BATTER_METRICS.csv"
+        bowl_path = outputs_v3 / "ALL_BOWLER_METRICS.csv"
+
         if roles_path.exists():
             roles_df = pd.read_csv(roles_path)
             role_map = roles_df.set_index('player_id')['v3_role'].to_dict()
             df['v3_role'] = df['canonical_player_id'].map(role_map).fillna('HISTORICAL_WATCHLIST')
         else:
             df['v3_role'] = 'HISTORICAL_WATCHLIST'
+
+        bat_map = pd.read_csv(bat_path).set_index('canonical_player_id').to_dict('index') if bat_path.exists() else {}
+        bowl_map = pd.read_csv(bowl_path).set_index('canonical_player_id').to_dict('index') if bowl_path.exists() else {}
+
+        for idx, row in df.iterrows():
+            pid = int(row['canonical_player_id'])
+            is_bat_target = 'Finisher' in str(row['target_gap']) or str(row['v3_role']).startswith('BAT')
+            if is_bat_target and pid in bat_map:
+                m = bat_map[pid]
+                rk = m.get('rank')
+                sc = m.get('provisional_fixed_weight_score')
+                cb = int(m.get('crisis_balls', 0))
+                csr = m.get('crisis_sr', np.nan)
+                rv = m.get('crisis_delta_rv', np.nan)
+                did = m.get('did_bat_maintenance', np.nan)
+                if pd.notna(rk) and pd.notna(sc):
+                    df.at[idx, 'universal_ranking'] = f"Rank #{int(rk)} Universal V4 Batter (Score {float(sc):.2f}, {m.get('v3_role')})"
+                    df.at[idx, 'relevant_phase_performance'] = (
+                        f"V4 Score {float(sc):.2f} (Rank #{int(rk)}): {cb} crisis balls at {float(csr):.2f} SR, "
+                        f"{float(rv):+.2f} runs/100 above exp., DiD {float(did):+.2f}."
+                    )
+                else:
+                    excl = m.get('exclusion_reasons', 'UNRANKED')
+                    df.at[idx, 'universal_ranking'] = f"Unranked in V4 Batting Pool ({m.get('v3_role')}: {excl})"
+                    if cb > 0 and pd.notna(csr):
+                        df.at[idx, 'relevant_phase_performance'] = (
+                            f"Dataset sample ({cb} crisis balls, {float(csr):.2f} crisis SR); excluded by gate: {excl}."
+                        )
+                df.at[idx, 'evidence_verification_status'] = 'VERIFIED'
+            elif (not is_bat_target) and pid in bowl_map:
+                m = bowl_map[pid]
+                rk = m.get('rank')
+                sc = m.get('provisional_fixed_weight_score')
+                cb = int(m.get('crisis_balls', 0))
+                econ = m.get('crisis_econ', np.nan)
+                rv = m.get('crisis_delta_rv', np.nan)
+                wrate = m.get('crisis_wicket_rate', np.nan)
+                if pd.notna(rk) and pd.notna(sc):
+                    df.at[idx, 'universal_ranking'] = f"Rank #{int(rk)} Universal V4 Bowler (Score {float(sc):.2f}, {m.get('v3_role')})"
+                    df.at[idx, 'relevant_phase_performance'] = (
+                        f"V4 Score {float(sc):.2f} (Rank #{int(rk)}): {cb} crisis legal balls, {float(econ):.2f} econ, "
+                        f"{float(rv):+.2f} runs saved/ov, {float(wrate):.2f}% wkt rate."
+                    )
+                else:
+                    excl = m.get('exclusion_reasons', 'UNRANKED')
+                    df.at[idx, 'universal_ranking'] = f"Unranked in V4 Bowling Pool ({m.get('v3_role')}: {excl})"
+                    if cb > 0 and pd.notna(econ):
+                        df.at[idx, 'relevant_phase_performance'] = (
+                            f"Dataset sample ({cb} crisis legal balls, {float(econ):.2f} econ, {float(wrate):.2f}% wkt rate); excluded by gate: {excl}."
+                        )
+                df.at[idx, 'evidence_verification_status'] = 'VERIFIED'
+
         # Rename canonical_player_id to player_id for dashboard compatibility while retaining canonical ID
         df['player_id'] = df['canonical_player_id']
         df['estimated_price_range'] = df['price_estimate']
         df['historical_evidence'] = df['relevant_phase_performance']
+
+        if save and outputs_v3.exists():
+            df.to_csv(outputs_v3 / "RR_PLAYER_FIT.csv", index=False)
+
         return df

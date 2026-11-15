@@ -3,11 +3,16 @@
 Adds match-situation columns to each delivery: wickets fallen, legal-ball windows,
 recent wicket pressure, batting/bowling crisis context, and over-ball position.
 """
+from typing import Optional
+
 import numpy as np
 import pandas as pd
 
 
-def build_innings_context(bbb_df: pd.DataFrame) -> pd.DataFrame:
+def build_innings_context(
+    bbb_df: pd.DataFrame,
+    matches_df: Optional[pd.DataFrame] = None,
+) -> pd.DataFrame:
     """Add match context columns to each delivery strictly using pre-delivery information.
 
     For each delivery (ordered by match_id, innings, innings_ball_num):
@@ -19,13 +24,13 @@ def build_innings_context(bbb_df: pd.DataFrame) -> pd.DataFrame:
     - boundaries_in_last_12_legal_balls: boundaries in last 12 legal balls
     - dots_in_last_12_legal_balls: dots in last 12 legal balls
     - cumulative_legal_balls: legal balls bowled in innings BEFORE this delivery
-    - legal_balls_remaining: max(0, 120 - cumulative_legal_balls)
+    - legal_balls_remaining: max(0, scheduled_legal_balls - cumulative_legal_balls)
     - recent_wicket_cluster: True if 2+ wickets in last 12 deliveries
     - recent_wicket_cluster_legal: True if 2+ wickets in last 12 legal balls
     - balls_since_last_wicket: deliveries since last wicket (999 if none)
     - batter_balls_faced: cumulative balls faced by striker BEFORE this delivery
     - batter_runs_scored: cumulative runs scored by striker BEFORE this delivery
-    - is_new_batter: True if batter_balls_faced < 5 (vulnerability window)
+    - is_new_batter: True if batter_balls_faced == 0 (first ball faced)
     - batter_entry_wickets: wickets fallen when batter first appeared
     - over_ball: legal ball number within the over (1-6)
 
@@ -33,6 +38,10 @@ def build_innings_context(bbb_df: pd.DataFrame) -> pd.DataFrame:
     ----------
     bbb_df : pd.DataFrame
         Cleaned ball-by-ball data.
+    matches_df : pd.DataFrame, optional
+        Match metadata table containing DLS adjustments (`first_inn_revised_overs`,
+        `second_inn_revised_overs`, `revised_target`). When provided, `legal_balls_remaining`
+        and `clean_rrr_deficit` honor DLS-revised overs and targets.
 
     Returns
     -------
@@ -202,7 +211,23 @@ def build_innings_context(bbb_df: pd.DataFrame) -> pd.DataFrame:
     df['boundaries_in_last_12_legal_balls'] = out_bnd_12_leg
     df['dots_in_last_12_legal_balls'] = out_dots_12_leg
     df['cumulative_legal_balls'] = out_cum_legal
-    df['legal_balls_remaining'] = np.maximum(0, 120 - out_cum_legal)
+    max_legal_balls = np.full(len(df), 120.0, dtype=float)
+    rev_target_arr = np.full(len(df), np.nan, dtype=float)
+
+    if matches_df is not None and 'match_id' in matches_df.columns:
+        m_lut = matches_df.drop_duplicates('match_id').set_index('match_id')
+        if 'first_inn_revised_overs' in m_lut.columns:
+            inn1_rev = df['match_id'].map(m_lut['first_inn_revised_overs']).astype(float).values
+            has_i1 = (df['innings'].values == 1) & np.isfinite(inn1_rev) & (inn1_rev > 0)
+            max_legal_balls = np.where(has_i1, np.round(inn1_rev * 6.0), max_legal_balls)
+        if 'second_inn_revised_overs' in m_lut.columns:
+            inn2_rev = df['match_id'].map(m_lut['second_inn_revised_overs']).astype(float).values
+            has_i2 = (df['innings'].values == 2) & np.isfinite(inn2_rev) & (inn2_rev > 0)
+            max_legal_balls = np.where(has_i2, np.round(inn2_rev * 6.0), max_legal_balls)
+        if 'revised_target' in m_lut.columns:
+            rev_target_arr = df['match_id'].map(m_lut['revised_target']).astype(float).values
+
+    df['legal_balls_remaining'] = np.maximum(0, np.round(max_legal_balls).astype(int) - out_cum_legal)
     df['recent_wicket_cluster'] = out_cluster_del  # backwards compatibility alias
     df['recent_wicket_cluster_legal'] = out_cluster_leg
     df['balls_since_last_wicket'] = out_balls_since
@@ -213,7 +238,7 @@ def build_innings_context(bbb_df: pd.DataFrame) -> pd.DataFrame:
     df['over_ball'] = out_over_ball
     df['clean_cum_runs'] = out_clean_cum_runs
 
-    # Derive 1st-innings clean total per match and 2nd-innings clean RRR deficit
+    # Derive 1st-innings clean total per match and 2nd-innings clean RRR deficit (DLS-aware)
     inn1_totals = (
         df[df['innings'] == 1]
         .assign(_inn1_clean=out_innings_clean_total[df['innings'].values == 1])
@@ -221,11 +246,16 @@ def build_innings_context(bbb_df: pd.DataFrame) -> pd.DataFrame:
         .first()
     )
     df['innings1_clean_total'] = df['match_id'].map(inn1_totals).astype(float)
+    effective_target_score = np.where(
+        np.isfinite(rev_target_arr) & (rev_target_arr > 0),
+        rev_target_arr - 1.0,
+        df['innings1_clean_total'].values,
+    )
     overs_rem = np.maximum(df['legal_balls_remaining'].values / 6.0, 1.0 / 6.0)
-    is_inn2 = (df['innings'].values == 2) & df['innings1_clean_total'].notna().values
+    is_inn2 = (df['innings'].values == 2) & np.isfinite(effective_target_score)
     df['clean_rrr_deficit'] = np.where(
         is_inn2,
-        np.clip((df['innings1_clean_total'].values - out_clean_cum_runs) / overs_rem, -10.0, 36.0),
+        np.clip((effective_target_score - out_clean_cum_runs) / overs_rem, -10.0, 36.0),
         np.nan,
     )
 

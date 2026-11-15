@@ -132,6 +132,120 @@ class V3ReliabilityEngine:
         }
 
     @staticmethod
+    def match_clustered_bootstrap_metric(
+        df: pd.DataFrame,
+        value_col: str,
+        weight_col: Optional[str] = None,
+        denom_col: Optional[str] = None,
+        scale: float = 1.0,
+        n_bootstraps: int = 500,
+        random_state: int = 42,
+        min_matches: int = 3,
+    ) -> Dict[str, Union[float, int, str]]:
+        """Compute match-clustered bootstrap 95% CIs for a weighted match-cluster metric.
+
+        When ``denom_col`` is provided alongside ``weight_col``, sums ``value_col * weight_col``
+        in the numerator and ``denom_col * weight_col`` in the denominator (preserving extra-ball
+        penalties such as wides/no-balls in bowling run value per legal over).
+        """
+        n_deliveries = len(df)
+        if n_deliveries == 0 or value_col not in df.columns:
+            return {
+                'point_estimate': np.nan,
+                'ci_lower': np.nan,
+                'ci_upper': np.nan,
+                'uncertainty_width': np.nan,
+                'ci_status': 'NOT_ESTIMATED_NO_VALID_PRESSURE_DATA',
+                'ci_method': 'MATCH_CLUSTERED_BOOTSTRAP',
+                'ci_confidence_level': 0.95,
+                'ci_bootstrap_iterations': n_bootstraps,
+                'ci_sample_matches': 0,
+                'ci_sample_deliveries': 0,
+                'sample_matches': 0,
+                'sample_deliveries': 0,
+            }
+
+        w = (
+            pd.to_numeric(df[weight_col], errors='coerce').fillna(0.0).values
+            if weight_col and weight_col in df.columns
+            else np.ones(n_deliveries, dtype=float)
+        )
+        v = pd.to_numeric(df[value_col], errors='coerce').fillna(0.0).values
+        d = (
+            pd.to_numeric(df[denom_col], errors='coerce').fillna(0.0).values * w
+            if denom_col and denom_col in df.columns
+            else w
+        )
+        valid = (w > 0) & np.isfinite(v)
+        if not np.any(valid) or float(np.sum(d[valid])) <= 0:
+            return {
+                'point_estimate': np.nan,
+                'ci_lower': np.nan,
+                'ci_upper': np.nan,
+                'uncertainty_width': np.nan,
+                'ci_status': 'NOT_ESTIMATED_NO_VALID_PRESSURE_DATA',
+                'ci_method': 'MATCH_CLUSTERED_BOOTSTRAP',
+                'ci_confidence_level': 0.95,
+                'ci_bootstrap_iterations': n_bootstraps,
+                'ci_sample_matches': 0,
+                'ci_sample_deliveries': 0,
+                'sample_matches': 0,
+                'sample_deliveries': 0,
+            }
+
+        sub_m = df.loc[valid, 'match_id'].values
+        v = v[valid]
+        w = w[valid]
+        d = d[valid]
+        _, inv = np.unique(sub_m, return_inverse=True)
+        n_matches = int(inv.max() + 1)
+        m_num = np.bincount(inv, weights=v * w, minlength=n_matches)
+        m_den = np.bincount(inv, weights=d, minlength=n_matches)
+        tot_den = float(np.sum(m_den))
+        point_est = (float(np.sum(m_num)) / max(1e-9, tot_den)) * scale
+        n_eff_deliveries = int(np.sum(d > 0)) if denom_col else int(np.sum(valid))
+
+        if n_matches < min_matches:
+            return {
+                'point_estimate': round(point_est, 2),
+                'ci_lower': np.nan,
+                'ci_upper': np.nan,
+                'uncertainty_width': np.nan,
+                'ci_status': 'NOT_ESTIMATED_INSUFFICIENT_MATCH_CLUSTERS',
+                'ci_method': 'MATCH_CLUSTERED_BOOTSTRAP',
+                'ci_confidence_level': 0.95,
+                'ci_bootstrap_iterations': n_bootstraps,
+                'ci_sample_matches': n_matches,
+                'ci_sample_deliveries': n_eff_deliveries,
+                'sample_matches': n_matches,
+                'sample_deliveries': n_eff_deliveries,
+            }
+
+        rng = np.random.RandomState(random_state)
+        probs = np.full(n_matches, 1.0 / n_matches)
+        counts = rng.multinomial(n_matches, probs, size=n_bootstraps)
+        boot_num = counts @ m_num
+        boot_den = np.maximum(1e-9, counts @ m_den)
+        boot_vals = (boot_num / boot_den) * scale
+
+        ci_lower = float(np.percentile(boot_vals, 2.5))
+        ci_upper = float(np.percentile(boot_vals, 97.5))
+        return {
+            'point_estimate': round(point_est, 2),
+            'ci_lower': round(ci_lower, 2),
+            'ci_upper': round(ci_upper, 2),
+            'uncertainty_width': round(ci_upper - ci_lower, 2),
+            'ci_status': 'ESTIMATED_MATCH_CLUSTER_BOOTSTRAP',
+            'ci_method': 'MATCH_CLUSTERED_BOOTSTRAP',
+            'ci_confidence_level': 0.95,
+            'ci_bootstrap_iterations': n_bootstraps,
+            'ci_sample_matches': n_matches,
+            'ci_sample_deliveries': n_eff_deliveries,
+            'sample_matches': n_matches,
+            'sample_deliveries': n_eff_deliveries,
+        }
+
+    @staticmethod
     def match_clustered_bootstrap_bowling(
         df: pd.DataFrame,
         bowler_id: int,
@@ -381,6 +495,7 @@ class V3ReliabilityEngine:
         k_crisis: float = 25.0,
         k_norm: float = 25.0,
         floor_normal_at_zero: bool = True,
+        min_norm_ref: Optional[float] = None,
         cohort_calibrated: bool = True,
         allow_prior_anchored: bool = False,
         cohort_mask: Optional[pd.Series] = None,
@@ -389,12 +504,13 @@ class V3ReliabilityEngine:
         and return (shrunk_crisis, shrunk_norm, did_maintenance).
 
         When ``cohort_calibrated=True``, fits the cohort's empirical regression-to-the-mean
-        slope ``beta`` (clipped to [0.25, 0.75]) between positive normal excess and crisis excess
+        slope ``beta`` (clipped to [0.30, 0.80]) between capped normal excess and crisis excess
         so elite normal-overs performers (e.g., Jasprit Bumrah) are not penalized for having
         a high normal baseline.
 
-        When ``allow_prior_anchored=True``, players with zero normal balls receive
-        ``shrunk_norm = 0.0`` (anchored to the league phase-average prior) rather than NaN.
+        When ``min_norm_ref`` is provided (e.g., ``-5.0`` runs/100 or ``-0.5`` runs/over),
+        ``raw_pos_n`` is floored at ``min_norm_ref`` instead of hard 0.0, preventing weak normal
+        baselines from artificially inflating maintenance while avoiding runaway leverage distortion.
         """
         c_val = pd.to_numeric(crisis_excess, errors='coerce').astype(float)
         c_n = pd.to_numeric(crisis_balls, errors='coerce').fillna(0.0).astype(float)
@@ -407,7 +523,12 @@ class V3ReliabilityEngine:
         else:
             shrunk_n = np.where((n_n > 0) & n_val.notna(), (n_n / (n_n + k_norm)) * n_val, np.nan)
 
-        raw_pos_n = np.maximum(shrunk_n, 0.0) if floor_normal_at_zero else shrunk_n
+        if min_norm_ref is not None:
+            raw_pos_n = np.maximum(shrunk_n, float(min_norm_ref))
+        elif floor_normal_at_zero:
+            raw_pos_n = np.maximum(shrunk_n, 0.0)
+        else:
+            raw_pos_n = shrunk_n
 
         if cohort_calibrated:
             fit_mask = pd.notna(shrunk_c) & pd.notna(shrunk_n) & (c_n > 0) & (n_n > 0)
@@ -416,12 +537,11 @@ class V3ReliabilityEngine:
             if int(np.sum(fit_mask)) >= 15:
                 x = raw_pos_n[fit_mask]
                 y = shrunk_c[fit_mask]
-                # Winsorize x and y at 2.5% / 97.5% for outlier-resistant slope estimation
                 x_w = np.clip(x, np.quantile(x, 0.025), np.quantile(x, 0.975))
                 y_w = np.clip(y, np.quantile(y, 0.025), np.quantile(y, 0.975))
                 vx = float(np.var(x_w))
                 if vx > 1e-8:
-                    beta = float(np.clip(np.cov(x_w, y_w, ddof=0)[0, 1] / vx, 0.25, 0.75))
+                    beta = float(np.clip(np.cov(x_w, y_w, ddof=0)[0, 1] / vx, 0.30, 0.80))
                 else:
                     beta = 0.45
             else:

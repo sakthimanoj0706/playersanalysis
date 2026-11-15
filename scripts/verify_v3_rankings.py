@@ -1,11 +1,13 @@
-"""Independent Verification Script for V3 Universal Player Rankings (P1.1 Patch).
+"""Independent Verification Script for V4 Unified Calibrated-Ridge Universal Rankings.
 
-Independently recalculates component normalization, PRI formulas, eligibility filtering,
-bowler normal-baseline sufficiency (MIN_NORMAL_BALLS = 100), raw vs capped maintenance,
-extended threshold sensitivity (40..250), and downstream copy synchronization directly
-against the authoritative V3 CSVs.
+Independently recalculates component normalization, invariant PRI formulas, eligibility filtering,
+strict normal-baseline sufficiency (bat >= 60, bowl >= 100 Tier-weighted balls), Tier-1 share (>= 60%),
+raw vs capped maintenance, crisis-exposure sanity bounds, System B RR_PLAYER_FIT reconciliation,
+extended threshold sensitivity (40..250), and downstream copy synchronization directly against
+the authoritative canonical CSVs.
 """
 import hashlib
+import json
 import sys
 from pathlib import Path
 import numpy as np
@@ -16,9 +18,9 @@ OUTPUTS_V3 = ROOT / "data" / "outputs" / "v3"
 OUTPUTS_ROOT = ROOT / "data" / "outputs"
 
 PRI_WEIGHTS = {
-    'maintenance': 0.35,
+    'maintenance': 0.30,
     'absolute': 0.35,
-    'consistency': 0.20,
+    'consistency': 0.25,
     'sample': 0.10
 }
 
@@ -114,25 +116,31 @@ def verify_rankings():
     print("  ✓ TOP_10_BATTERS matches independent recalculation and sorting exactly (10/10)")
 
     # ══════════════════════════════════════════════════════════════════════════
-    # 3. INDEPENDENT RE-CALCULATION: BOWLERS & MIN_NORMAL_BALLS = 100
+    # 3. INDEPENDENT RE-CALCULATION: BOWLERS (V4 STRICT NORMAL & TIER-1 GATES)
     # ══════════════════════════════════════════════════════════════════════════
-    print("\n[2/6] Verifying Bowling Calculations & Prior-Anchored Specialist Gate...")
-    # Verify PRIOR_ANCHORED_SPECIALIST (<100 norm balls) vs VALID_NORMAL_BASELINE (>=100 norm balls)
-    insuff_bowl = all_bowl[all_bowl['norm_balls'] < 100]
-    suff_bowl = all_bowl[all_bowl['norm_balls'] >= 100]
-    assert (insuff_bowl['norm_baseline_eligible'] == True).all(), "Prior-anchored specialists must remain eligible"
-    assert (insuff_bowl['norm_baseline_status'] == 'PRIOR_ANCHORED_SPECIALIST').all(), \
-        "Bowlers with <100 norm_balls must be flagged PRIOR_ANCHORED_SPECIALIST"
-    assert insuff_bowl['capped_dot_maintenance'].isna().all(), "Bowlers with <100 norm_balls must have NaN capped_dot_maintenance"
-    assert insuff_bowl['dot_maintenance'].isna().all(), "Bowlers with <100 norm_balls must have NaN dot_maintenance"
+    print("\n[2/6] Verifying Bowling Calculations, Strict Normal Baseline & Invariant Weights...")
+    eff_nb_b = all_bowl['eff_norm_balls'] if 'eff_norm_balls' in all_bowl.columns else all_bowl['norm_balls']
+    insuff_bowl = all_bowl[(eff_nb_b < 100) | (all_bowl['norm_balls'] == 0) | (all_bowl['norm_dot_pct'].fillna(0) <= 0)]
+    suff_bowl = all_bowl[(eff_nb_b >= 100) & (all_bowl['norm_balls'] > 0) & (all_bowl['norm_dot_pct'].fillna(0) > 0)]
 
-    # Verify raw vs capped separation on bowlers with >=100 normal balls
+    assert (insuff_bowl['norm_baseline_eligible'] == False).all(), "Bowlers <100 Tier-weighted normal balls must NOT be baseline-eligible"
+    assert insuff_bowl['provisional_fixed_weight_score'].isna().all(), "Insufficient normal baseline bowlers must have NaN score"
+    assert insuff_bowl['capped_dot_maintenance'].isna().all()
+    assert (suff_bowl['norm_baseline_eligible'] == True).all()
+    assert (suff_bowl['norm_baseline_status'] == 'VALID_NORMAL_BASELINE').all()
+
+    # Verify raw vs capped separation on valid normal-baseline bowlers
     valid_maint_b = suff_bowl[suff_bowl['raw_dot_maintenance'].notna()]
     expected_capped = np.clip(valid_maint_b['raw_dot_maintenance'], 0.5, 1.5).round(3)
     assert (valid_maint_b['capped_dot_maintenance'].round(3) == expected_capped).all()
     expected_cap_flag = (valid_maint_b['raw_dot_maintenance'] > 1.5) | (valid_maint_b['raw_dot_maintenance'] < 0.5)
     assert (valid_maint_b['is_maintenance_capped'] == expected_cap_flag).all()
-    print(f"  ✓ Prior-anchored specialist gate verified ({len(insuff_bowl)} PRIOR_ANCHORED_SPECIALIST, {len(suff_bowl)} VALID_NORMAL_BASELINE)")
+
+    # Invariant weights check (zero weight-reallocation loophole)
+    assert np.allclose(all_bowl['effective_w_maint'].values, PRI_WEIGHTS['maintenance'], atol=1e-4)
+    assert np.allclose(all_bowl['effective_w_abs'].values, PRI_WEIGHTS['absolute'], atol=1e-4)
+    assert np.allclose(all_bowl['effective_w_cons'].values, PRI_WEIGHTS['consistency'], atol=1e-4)
+    print(f"  ✓ Strict normal-baseline & invariant weights verified ({len(insuff_bowl)} excluded, {len(suff_bowl)} VALID_NORMAL_BASELINE)")
 
     el_bowl = all_bowl[all_bowl['sample_eligible'] & all_bowl['eligible_for_bowl_leaderboard']].copy()
     indep_norm_maint_b = _winsorized_zscore(all_bowl['did_bowl_maintenance'], el_bowl['did_bowl_maintenance'])
@@ -140,19 +148,13 @@ def verify_rankings():
     indep_norm_cons_b = _winsorized_zscore(all_bowl['consistency_score'], el_bowl['consistency_score'])
     indep_norm_sample_b = all_bowl['sample_confidence']
 
-    w_norm_rel = np.where(all_bowl['norm_balls'] >= 100, 1.0, all_bowl['norm_balls'] / (all_bowl['norm_balls'] + 40.0))
-    eff_w_maint = PRI_WEIGHTS['maintenance'] * w_norm_rel
-    reallocated_w = PRI_WEIGHTS['maintenance'] - eff_w_maint
-    abs_cons_sum = PRI_WEIGHTS['absolute'] + PRI_WEIGHTS['consistency']
-    eff_w_abs = PRI_WEIGHTS['absolute'] + reallocated_w * (PRI_WEIGHTS['absolute'] / abs_cons_sum)
-    eff_w_cons = PRI_WEIGHTS['consistency'] + reallocated_w * (PRI_WEIGHTS['consistency'] / abs_cons_sum)
-
     indep_score_b = (
-        (eff_w_maint * indep_norm_maint_b * 100.0).round(2) +
-        (eff_w_abs * indep_norm_abs_b * 100.0).round(2) +
-        (eff_w_cons * indep_norm_cons_b * 100.0).round(2) +
+        (PRI_WEIGHTS['maintenance'] * indep_norm_maint_b * 100.0).round(2) +
+        (PRI_WEIGHTS['absolute'] * indep_norm_abs_b * 100.0).round(2) +
+        (PRI_WEIGHTS['consistency'] * indep_norm_cons_b * 100.0).round(2) +
         (PRI_WEIGHTS['sample'] * indep_norm_sample_b * 100.0).round(2)
     ).round(2)
+    indep_score_b = np.where(all_bowl['norm_baseline_eligible'], indep_score_b, np.nan)
 
     valid_bowl_scores = all_bowl['norm_baseline_eligible'] == True
     score_diff_b = (all_bowl.loc[valid_bowl_scores, 'provisional_fixed_weight_score'] - indep_score_b[valid_bowl_scores]).abs()
@@ -179,8 +181,8 @@ def verify_rankings():
     # ══════════════════════════════════════════════════════════════════════════
     # 4. EXTENDED THRESHOLD SENSITIVITY VERIFICATION
     # ══════════════════════════════════════════════════════════════════════════
-    print("\n[3/6] Verifying Extended Threshold Sensitivity Grid (40..250)...")
-    req_cb = {40, 60, 80, 100, 150, 200, 250}
+    print("\n[3/6] Verifying Extended Threshold Sensitivity Grid (40..750)...")
+    req_cb = {40, 60, 80, 100, 150, 200, 250, 500, 750}
     bat_cb = set(thresh[thresh['discipline'] == 'Batting']['min_crisis_balls'].unique())
     bowl_cb = set(thresh[thresh['discipline'] == 'Bowling']['min_crisis_balls'].unique())
     assert req_cb.issubset(bat_cb), f"Missing batting crisis ball thresholds: {req_cb - bat_cb}"
@@ -210,7 +212,47 @@ def verify_rankings():
 
     top_overlap = set(top10_bat['canonical_player_id']) & set(top10_bowl['canonical_player_id'])
     assert len(top_overlap) == 0, f"Leaderboard collision: {top_overlap}"
+
+    # V4 Domain Sanity Gates: Tier-1 eligibility, positive crisis value, bounded crisis share, System B sync
+    assert (top10_bat['tier1_share'] >= 0.60).all(), "Top-10 Batters must satisfy >=60% Tier-1 ball share"
+    assert (top10_bowl['tier1_share'] >= 0.60).all(), "Top-10 Bowlers must satisfy >=60% Tier-1 ball share"
+    assert (top10_bat['crisis_delta_rv'] > 0).all(), "All Top-10 Batters must beat Ridge state+opponent expectation under crisis"
+    assert (top10_bowl['crisis_delta_rv'] > 0).all(), "All Top-10 Bowlers must save runs vs Ridge expectation under crisis"
+    crisis_share_b = top10_bowl['crisis_balls'] / top10_bowl['total_legal_balls']
+    assert (crisis_share_b <= 0.55).all(), f"Top-10 Bowler crisis share exceeded 55%: max={crisis_share_b.max():.3f}"
+
+    fit_path = OUTPUTS_V3 / "RR_PLAYER_FIT.csv"
+    assert fit_path.exists(), "RR_PLAYER_FIT.csv must exist"
+    fit_df = pd.read_csv(fit_path)
+    ranked_bat_map = all_bat[all_bat['rank'].notna()].set_index('canonical_player_id')['rank'].to_dict()
+    ranked_bowl_map = all_bowl[all_bowl['rank'].notna()].set_index('canonical_player_id')['rank'].to_dict()
+    for _, fr in fit_df.iterrows():
+        pid = int(fr['canonical_player_id'])
+        is_bat_target = 'Finisher' in str(fr['target_gap']) or str(fr.get('v3_role', '')).startswith('BAT')
+        if is_bat_target:
+            if pid in ranked_bat_map:
+                assert f"Rank #{int(ranked_bat_map[pid])}" in str(fr['universal_ranking']), (
+                    f"Stale batter ranking in RR_PLAYER_FIT.csv for {fr['player_name']}: {fr['universal_ranking']} vs #{int(ranked_bat_map[pid])}"
+                )
+            else:
+                assert "Unranked" in str(fr['universal_ranking']), (
+                    f"Expected Unranked batter label for {fr['player_name']}: {fr['universal_ranking']}"
+                )
+        else:
+            if pid in ranked_bowl_map:
+                assert f"Rank #{int(ranked_bowl_map[pid])}" in str(fr['universal_ranking']), (
+                    f"Stale bowler ranking in RR_PLAYER_FIT.csv for {fr['player_name']}: {fr['universal_ranking']} vs #{int(ranked_bowl_map[pid])}"
+                )
+            else:
+                assert "Unranked" in str(fr['universal_ranking']), (
+                    f"Expected Unranked bowler label for {fr['player_name']}: {fr['universal_ranking']}"
+                )
+        assert str(fr.get('evidence_verification_status', '')) == 'VERIFIED', (
+            f"Unverified System B candidate status for {fr['player_name']}"
+        )
+
     print("  ✓ Confidence intervals strictly estimated via match clusters; 0 fallback bounds")
+    print("  ✓ V4 Domain Gates passed (Tier-1>=60%, positive crisis RV, <=55% crisis share, System B synced)")
     print("  ✓ Zero player overlap between Batting and Bowling Top 10 leaderboards")
 
     # ══════════════════════════════════════════════════════════════════════════
@@ -258,7 +300,7 @@ def verify_rankings():
             assert _sha256(fpath) == exp_sha, f"Manifest SHA-256 mismatch for {fname}"
 
     print("\n" + "=" * 75)
-    print("ALL INDEPENDENT VERIFICATION GATES PASSED — V3.3 GOLDFISH TRIZ VERIFIED")
+    print("ALL INDEPENDENT VERIFICATION GATES PASSED — V4 CALIBRATED RIDGE VERIFIED")
     print("=" * 75)
     return True
 

@@ -18,7 +18,7 @@ def test_unclassified_pressure_excluded_from_metrics():
 
 
 def test_normal_baseline_validity_flags():
-    """Verify that players without >=60 normal balls do not receive a valid normal baseline or fabricated maintenance ratio."""
+    """Verify V4 Tier-weighted normal baseline gates prevent insufficient samples from receiving maintenance ratios."""
     bat_master = pd.read_csv(OUTPUTS_V3 / "ALL_BATTER_METRICS.csv")
 
     no_norm = bat_master[bat_master['norm_balls'] == 0]
@@ -26,12 +26,12 @@ def test_normal_baseline_validity_flags():
         assert (no_norm['norm_baseline_status'] == 'NO_NORMAL_EXPOSURE').all()
         assert no_norm['sr_maintenance'].isna().all()
 
-    low_norm = bat_master[(bat_master['norm_balls'] > 0) & (bat_master['norm_balls'] < 60)]
+    low_norm = bat_master[(bat_master['norm_balls'] > 0) & (bat_master['eff_norm_balls'] < 60)]
     if len(low_norm) > 0:
         assert (low_norm['norm_baseline_status'] == 'INSUFFICIENT_NORMAL_EXPOSURE').all()
         assert low_norm['sr_maintenance'].isna().all()
 
-    valid_norm = bat_master[bat_master['norm_balls'] >= 60]
+    valid_norm = bat_master[(bat_master['eff_norm_balls'] >= 60) & (bat_master['norm_balls'] > 0) & (bat_master['norm_sr'].fillna(0) > 0)]
     assert (valid_norm['norm_baseline_status'] == 'VALID_NORMAL_BASELINE').all()
 
 

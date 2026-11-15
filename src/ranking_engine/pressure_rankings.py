@@ -29,30 +29,30 @@ from src.config import OUTPUTS_DIR
 
 
 # ── ELIGIBILITY THRESHOLDS ─────────────────────────────────────────────────
-BAT_MIN_CRISIS_BALLS = 40       # Minimum crisis balls faced
-BAT_MIN_TOTAL_BALLS = 120       # Minimum total balls faced
-BAT_MIN_CRISIS_MATCHES = 5      # Minimum matches with crisis exposure
-BAT_MIN_NORMAL_BALLS = 60       # Minimum normal baseline balls faced (EGM-aligned)
+BAT_MIN_CRISIS_BALLS = 60       # Minimum Tier-weighted crisis balls faced
+BAT_MIN_TOTAL_BALLS = 200       # Minimum total balls faced
+BAT_MIN_CRISIS_MATCHES = 6      # Minimum matches with crisis exposure
+BAT_MIN_NORMAL_BALLS = 60       # Minimum normal baseline balls faced
 
-BOWL_MIN_CRISIS_BALLS = 40      # Minimum crisis legal balls bowled for all-role
+BOWL_MIN_CRISIS_BALLS = 60      # Minimum crisis legal balls bowled for all-role
 BOWL_PRIMARY_MIN_CRISIS = 120   # Minimum crisis legal balls for frontline primary leaderboard
-BOWL_MIN_TOTAL_BALLS = 120      # Minimum total legal balls bowled
-BOWL_MIN_CRISIS_MATCHES = 5     # Minimum matches with crisis exposure
-BOWL_MIN_NORMAL_BALLS = 100     # Minimum normal baseline legal balls (aligned with V3 MIN_NORMAL_BALLS_BOWLER = 100)
+BOWL_MIN_TOTAL_BALLS = 250      # Minimum total legal balls bowled
+BOWL_MIN_CRISIS_MATCHES = 6     # Minimum matches with crisis exposure
+BOWL_MIN_NORMAL_BALLS = 100     # Minimum normal baseline legal balls
 
-# ── DEFAULT PRI WEIGHT CONFIGURATION ───────────────────────────────────────
+# ── DEFAULT PRI WEIGHT CONFIGURATION (V4 INVARIANT WEIGHTS) ────────────────
 PRI_WEIGHTS = {
-    'maintenance': 0.35,
+    'maintenance': 0.30,
     'absolute': 0.35,
-    'consistency': 0.20,
+    'consistency': 0.25,
     'sample': 0.10,
 }
 
 SENSITIVITY_CONFIGS = {
-    'balanced_default': {'maintenance': 0.35, 'absolute': 0.35, 'consistency': 0.20, 'sample': 0.10},
-    'maintenance_heavy': {'maintenance': 0.50, 'absolute': 0.25, 'consistency': 0.15, 'sample': 0.10},
-    'absolute_heavy': {'maintenance': 0.25, 'absolute': 0.50, 'consistency': 0.15, 'sample': 0.10},
-    'consistency_heavy': {'maintenance': 0.30, 'absolute': 0.30, 'consistency': 0.30, 'sample': 0.10},
+    'balanced_default': {'maintenance': 0.30, 'absolute': 0.35, 'consistency': 0.25, 'sample': 0.10},
+    'maintenance_heavy': {'maintenance': 0.45, 'absolute': 0.25, 'consistency': 0.20, 'sample': 0.10},
+    'absolute_heavy': {'maintenance': 0.20, 'absolute': 0.50, 'consistency': 0.20, 'sample': 0.10},
+    'consistency_heavy': {'maintenance': 0.20, 'absolute': 0.25, 'consistency': 0.45, 'sample': 0.10},
     'equal_weights': {'maintenance': 0.25, 'absolute': 0.25, 'consistency': 0.25, 'sample': 0.25},
 }
 
