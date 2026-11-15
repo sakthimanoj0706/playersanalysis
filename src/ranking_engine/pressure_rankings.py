@@ -38,7 +38,7 @@ BOWL_MIN_CRISIS_BALLS = 40      # Minimum crisis legal balls bowled for all-role
 BOWL_PRIMARY_MIN_CRISIS = 120   # Minimum crisis legal balls for frontline primary leaderboard
 BOWL_MIN_TOTAL_BALLS = 120      # Minimum total legal balls bowled
 BOWL_MIN_CRISIS_MATCHES = 5     # Minimum matches with crisis exposure
-BOWL_MIN_NORMAL_BALLS = 30      # Minimum normal baseline legal balls
+BOWL_MIN_NORMAL_BALLS = 100     # Minimum normal baseline legal balls (aligned with V3 MIN_NORMAL_BALLS_BOWLER = 100)
 
 # ── DEFAULT PRI WEIGHT CONFIGURATION ───────────────────────────────────────
 PRI_WEIGHTS = {
@@ -481,7 +481,7 @@ def rank_bowlers_comprehensive(
 
     # 3. Sample Size Confidence
     stats_df['sample_confidence'] = np.clip(
-        np.log1p(stats_df['crisis_balls']) / np.log1p(250.0), 0.1, 1.0
+        np.log1p(stats_df['crisis_balls']) / np.log1p(600.0), 0.1, 1.0
     ).round(4)
 
     # Normalization

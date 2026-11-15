@@ -212,19 +212,18 @@ def classify_player_roles(
     master = master.merge(bowl_crisis, on='player_id', how='left')
 
     # Fill defaults
-    master['modal_order'] = master['modal_order'].fillna(10).astype(int)
-    master['avg_order'] = master['avg_order'].fillna(10.0).astype(float).round(2)
+    for int_col, default_val in [
+        ('modal_order', 10), ('inns_count', 0), ('total_batting_balls', 0),
+        ('total_batting_runs', 0), ('pressure_deliveries_faced', 0),
+        ('total_bowling_deliveries', 0), ('pressure_deliveries_bowled', 0)
+    ]:
+        master[int_col] = pd.to_numeric(master[int_col], errors='coerce').fillna(default_val).astype(int)
+    master['avg_order'] = pd.to_numeric(master['avg_order'], errors='coerce').fillna(10.0).astype(float).round(2)
     master['dist_str'] = master['dist_str'].fillna('No order recorded')
-    master['inns_count'] = master['inns_count'].fillna(0).astype(int)
-    master['top7_ratio'] = master['top7_ratio'].fillna(0.0).astype(float)
-    master['is_regular_top7'] = master['is_regular_top7'].fillna(False).astype(bool)
-    master['is_wicketkeeper'] = master['is_wicketkeeper'].fillna(False).astype(bool)
-    master['total_batting_balls'] = master['total_batting_balls'].fillna(0).astype(int)
-    master['total_batting_runs'] = master['total_batting_runs'].fillna(0).astype(int)
-    master['pressure_deliveries_faced'] = master['pressure_deliveries_faced'].fillna(0).astype(int)
-    master['total_bowling_deliveries'] = master['total_bowling_deliveries'].fillna(0).astype(int)
+    master['top7_ratio'] = pd.to_numeric(master['top7_ratio'], errors='coerce').fillna(0.0).astype(float)
+    master['is_regular_top7'] = master['is_regular_top7'].where(master['is_regular_top7'].notna(), False).astype(bool)
+    master['is_wicketkeeper'] = master['is_wicketkeeper'].where(master['is_wicketkeeper'].notna(), False).astype(bool)
     master['bowling_style'] = master['bowling_style'].fillna('None')
-    master['pressure_deliveries_bowled'] = master['pressure_deliveries_bowled'].fillna(0).astype(int)
 
     # 6. Apply Empirical Role Classification
     roles = []

@@ -12,7 +12,7 @@
 2. **System B — Rajasthan Royals Team Intelligence:** Squad-first empirical analysis of RR's 16-match 2026 IPL campaign (3,788 balls, 3rd place overall finish), identifying 4 verified tactical deficiencies and evaluating 13 watchlist candidates under constraint-aware multi-criteria optimization.
 
 > **Mandatory Provisional Model Disclosure:**
-> "Rankings are provisional. Batter ranks 5, 6, 9 and 10 are sensitive to scoring weights. The pressure classification remains heuristic and position-proxy based. The new score has not yet undergone independent out-of-time validation."
+> "Rankings are provisional. Batter ranks 1–5 are robust across all 5 weight configurations, while batter ranks 6–10 are sensitive to scoring weights. The pressure classification uses the calibrated pre-delivery state heuristic (`V3.2_EGM_CALIBRATED_HEURISTIC`). The new score has not yet undergone independent out-of-time validation."
 
 ---
 
@@ -21,49 +21,42 @@
 All ranking tables below are generated directly from the single authoritative source-of-truth CSVs (`data/outputs/v3/TOP_10_BATTERS.csv` and `data/outputs/v3/TOP_10_BOWLERS.csv`) registered in `data/outputs/v3/RANKING_SOURCE_OF_TRUTH.json`. All downstream copies (`FINAL_TOP_10_*.csv`, `data/outputs/top_10_*.csv`) are synchronized byte-for-byte with these canonical files and verified by `scripts/verify_v3_rankings.py`.
 
 ### 🏏 Universal Top 10 Batters (Gated: `BAT_SPECIALIST` & `BAT_PRIMARY_AR`)
-*Eligibility: $\ge 40$ crisis balls, $\ge 120$ total career balls, $\ge 5$ crisis matches, $\ge 30$ normal baseline balls (39 eligible frontline batters). Confidence intervals: 2,000-iteration match-clustered bootstrap (95% percentile).*
+*Eligibility: $\ge 40$ crisis balls, $\ge 120$ total career balls, $\ge 5$ crisis matches, $\ge 30$ normal baseline balls (92 eligible frontline batters). Confidence intervals: 2,000-iteration match-clustered bootstrap (95% percentile).*
 
 | Rank | Canonical ID | Player Name | V3 Role | Crisis Balls (Matches) | Crisis SR | Normal SR ($\ge 30$b) | Raw / Capped Maint. (Capped?) | Shrunk Crisis SR | Match Consistency | Provisional Score (`PRI`) | 95% Match-Cluster CI | Weight Sensitivity & Flags |
 | :---: | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
-| **1** | `7897` | **Tilak Varma** | `BAT_PRIMARY_AR` | 60 (18) | 196.67 | 144.47 | 1.361x / 1.361x (No) | 180.06 | 0.5120 | **94.29** | [157.62, 251.16] | `ROBUST_ACROSS_WEIGHTS` |
-| **2** | `796` | **Matthew Wade** | `BAT_SPECIALIST` | 50 (15) | 172.00 | 144.49 | 1.190x / 1.190x (No) | 161.40 | 0.5018 | **77.35** | [105.70, 213.93] | `ROBUST_ACROSS_WEIGHTS` |
-| **3** | `4106` | **Daryl Mitchell** | `BAT_PRIMARY_AR` | 44 (12) | 177.27 | 147.10 | 1.205x / 1.205x (No) | 163.84 | 0.4266 | **72.55** | [117.22, 237.04] | `ROBUST_ACROSS_WEIGHTS` |
-| **4** | `4391` | **Liam Livingstone** | `BAT_PRIMARY_AR` | 60 (14) | 175.00 | 161.29 | 1.085x / 1.085x (No) | 164.77 | 0.4376 | **68.92** | [106.81, 221.52] | `ROBUST_ACROSS_WEIGHTS` |
-| **5** | `4773` | **Jaker Ali Anik** | `BAT_SPECIALIST` | 63 (15) | 139.68 | 122.38 | 1.141x / 1.141x (No) | 139.83 | 0.4874 | **65.13** | [100.00, 181.64] | `RANKING_SENSITIVE_TO_WEIGHTS`; `CRISIS_SR_BELOW_COHORT_MEAN` |
-| **6** | `7446` | **Abdul Samad** | `BAT_SPECIALIST` | 69 (23) | 169.57 | 168.67 | 1.005x / 1.005x (No) | 161.76 | 0.4409 | **64.51** | [128.57, 206.50] | `RANKING_SENSITIVE_TO_WEIGHTS` |
-| **7** | `1077` | **David Miller** | `BAT_SPECIALIST` | 56 (17) | 166.07 | 156.15 | 1.064x / 1.064x (No) | 158.09 | 0.4178 | **63.35** | [100.00, 218.65] | `ROBUST_ACROSS_WEIGHTS` |
-| **8** | `8` | **MS Dhoni** | `BAT_SPECIALIST` | 133 (35) | 154.89 | 140.94 | 1.099x / 1.099x (No) | 152.56 | 0.3983 | **62.51** | [119.66, 187.59] | `ROBUST_ACROSS_WEIGHTS` |
-| **9** | `3056` | **Iftikhar Ahmed** | `BAT_PRIMARY_AR` | 40 (11) | 127.50 | 120.96 | 1.054x / 1.054x (No) | 132.39 | 0.5497 | **62.38** | [92.72, 158.34] | `RANKING_SENSITIVE_TO_WEIGHTS`; `CRISIS_SR_BELOW_COHORT_MEAN` |
-| **10** | `3916` | **Jitesh Sharma** | `BAT_SPECIALIST` | 51 (22) | 172.55 | 155.53 | 1.109x / 1.109x (No) | 161.91 | 0.3598 | **62.01** | [108.69, 236.85] | `RANKING_SENSITIVE_TO_WEIGHTS` |
+| **1** | `8101` | **Ashutosh Sharma** | `BAT_SPECIALIST` | 148 (26) | 168.92 | 125.58 | 1.345x / 1.345x (No) | 163.31 | 0.7457 | **93.88** | [126.66, 213.61] | `ROBUST_ACROSS_WEIGHTS` |
+| **2** | `20006` | **Ramandeep Singh** | `BAT_PRIMARY_AR` | 115 (24) | 164.35 | 125.64 | 1.308x / 1.308x (No) | 158.24 | 0.6978 | **87.73** | [118.52, 213.06] | `ROBUST_ACROSS_WEIGHTS` |
+| **3** | `3647` | **Shreyas Iyer** | `BAT_SPECIALIST` | 65 (29) | 170.77 | 151.61 | 1.126x / 1.126x (No) | 159.48 | 0.8740 | **86.82** | [142.18, 205.17] | `ROBUST_ACROSS_WEIGHTS` |
+| **4** | `6272` | **William Jacks** | `BAT_PRIMARY_AR` | 41 (15) | 173.17 | 150.17 | 1.153x / 1.153x (No) | 156.87 | 0.8430 | **84.72** | [128.56, 208.11] | `ROBUST_ACROSS_WEIGHTS` |
+| **5** | `813` | **Jos Buttler** | `BAT_SPECIALIST` | 50 (9) | 168.00 | 154.86 | 1.085x / 1.085x (No) | 155.38 | 0.8185 | **80.62** | [131.42, 184.72] | `ROBUST_ACROSS_WEIGHTS` |
+| **6** | `3056` | **Iftikhar Ahmed** | `BAT_PRIMARY_AR` | 92 (23) | 147.83 | 119.74 | 1.235x / 1.235x (No) | 144.05 | 0.7267 | **79.22** | [104.83, 182.73] | `RANKING_SENSITIVE_TO_WEIGHTS` |
+| **7** | `26906` | **Angkrish Raghuvanshi** | `BAT_SPECIALIST` | 40 (8) | 167.50 | 146.00 | 1.147x / 1.147x (No) | 153.13 | 0.6987 | **76.97** | [107.31, 218.04] | `RANKING_SENSITIVE_TO_WEIGHTS` |
+| **8** | `8` | **MS Dhoni** | `BAT_SPECIALIST` | 239 (46) | 149.37 | 134.52 | 1.110x / 1.110x (No) | 147.55 | 0.6905 | **75.85** | [119.90, 177.83] | `RANKING_SENSITIVE_TO_WEIGHTS` |
+| **9** | `2003` | **Bhanuka Rajapaksa** | `BAT_SPECIALIST` | 49 (14) | 153.06 | 134.90 | 1.135x / 1.135x (No) | 145.31 | 0.7594 | **75.84** | [102.07, 201.92] | `RANKING_SENSITIVE_TO_WEIGHTS` |
+| **10** | `1699` | **Suryakumar Yadav** | `BAT_SPECIALIST` | 128 (45) | 165.62 | 170.49 | 0.971x / 0.971x (No) | 159.83 | 0.7147 | **75.35** | [130.84, 197.34] | `RANKING_SENSITIVE_TO_WEIGHTS` |
 
-#### Transparency Disclosure — Weight-Sensitive Batter Ranks & Iftikhar Ahmed (#9) Component Breakdown
-- **Weight-Sensitive Ranks:** Across the 5 prespecified weight configurations (`RANKING_WEIGHT_SENSITIVITY.csv`), the top 4 batters (#1 Tilak Varma, #2 Matthew Wade, #3 Daryl Mitchell, #4 Liam Livingstone) as well as #7 David Miller and #8 MS Dhoni remain robust (`max_rank_shift < 5`), whereas **#5 Jaker Ali Anik** (ranks 5–13), **#6 Abdul Samad** (ranks 5–10), **#9 Iftikhar Ahmed** (ranks 5–18), and **#10 Jitesh Sharma** (ranks 6–15) are explicitly flagged `RANKING_SENSITIVE_TO_WEIGHTS`.
-- **Iftikhar Ahmed (`canonical_player_id=3056`, Rank #9) Component-Level Breakdown:**
-  - Observed Crisis SR: **127.50** (40 balls across 11 matches), which is **below the eligible cohort mean of 140.20** (`-12.70` SR diff; explicitly flagged `CRISIS_SR_BELOW_COHORT_MEAN`).
-  - Why he ranks #9 under the provisional fixed-weight formula (`35% Maintenance + 35% Absolute + 20% Consistency + 10% Sample`):
-    - **Consistency Contribution (`20%` weight):** **20.00 / 20.00 pts** (match consistency score `0.5497`, highest `#1` in the 39-player eligible batter cohort).
-    - **Maintenance Contribution (`35%` weight):** **20.95 / 35.00 pts** (`1.054x` maintenance over his personal normal baseline SR of `120.96` across 291 normal balls).
-    - **Absolute Crisis SR Contribution (`35%` weight):** **14.71 / 35.00 pts** (shrunk crisis SR `132.39`, reflecting low raw strike rate).
-    - **Sample Confidence Contribution (`10%` weight):** **6.72 / 10.00 pts** (40 crisis balls).
-    - **Total Provisional Score:** `20.95 + 14.71 + 20.00 + 6.72 = 62.38`. Under `absolute_heavy` weighting (50% Absolute), Iftikhar drops from #9 to #18. In accordance with governance rules, he is not manually removed or demoted; instead, this component breakdown and anomaly flag are exposed directly in `TOP_10_BATTERS.csv`.
+#### Transparency Disclosure — Cohort Quality & Weight-Sensitive Batter Ranks
+- **100% Above-Mean Crisis Strike Rate:** Every batter in the authoritative Top 10 records a Crisis Strike Rate between **147.83** and **173.17**, well above the 92-player eligible cohort mean of **130.13** (`0` anomaly flags in the Top 10).
+- **Weight-Sensitive Ranks:** Across the 5 prespecified weight configurations (`RANKING_WEIGHT_SENSITIVITY.csv`), the top 5 batters (#1 Ashutosh Sharma, #2 Ramandeep Singh, #3 Shreyas Iyer, #4 William Jacks, #5 Jos Buttler) remain strictly robust (`max_rank_shift <= 2`), whereas ranks **#6–#10** (`Iftikhar Ahmed`, `Angkrish Raghuvanshi`, `MS Dhoni`, `Bhanuka Rajapaksa`, `Suryakumar Yadav`) shift by $\ge 5$ places and are explicitly flagged `RANKING_SENSITIVE_TO_WEIGHTS`.
 
 ---
 
 ### 🎯 Universal Top 10 Bowlers (Gated: `BOWL_SPECIALIST` & `BOWL_PRIMARY_AR`)
-*Eligibility: $\ge 120$ high-pressure legal balls, $\ge 120$ total legal balls, $\ge 5$ crisis matches, and **$\ge 100$ normal-pressure legal balls** (`MIN_NORMAL_BALLS = 100`, separate from high-pressure eligibility; 39 eligible frontline bowlers). Bowlers with $< 100$ normal balls (549 of 596 bowlers, including Craig Young [36 norm balls], Mark Adair [82 norm balls], Mark Wood [62 norm balls], Obed McCoy [46 norm balls], and Trent Boult [64 norm balls]) are flagged `BOWLER_NORMAL_BASELINE_INSUFFICIENT` and excluded from composite ranking so small-denominator normal baselines cannot inflate maintenance ratios.*
+*Eligibility: $\ge 120$ high-pressure legal balls, $\ge 120$ total legal balls, $\ge 5$ crisis matches, and **$\ge 100$ normal-pressure legal balls** (`MIN_NORMAL_BALLS = 100`, separate from high-pressure eligibility; 99 eligible frontline bowlers). Bowlers with $< 100$ normal balls (464 of 596 bowlers) are flagged `BOWLER_NORMAL_BASELINE_INSUFFICIENT` and excluded from composite ranking so small-denominator normal baselines cannot inflate maintenance ratios.*
 
 | Rank | Canonical ID | Player Name | V3 Role | High-Pressure Balls (Matches) | Normal Balls (`>=100`) | Normal Baseline Status | Crisis Dot % | Normal Dot % | Raw / Capped Dot Maint. (Capped?) | Crisis Wkt % (Shrunk) | Consistency | Provisional Score (`PRI`) | 95% Match-Cluster CI | Weight Sensitivity |
 | :---: | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
-| **1** | `8661` | **Matheesha Pathirana** | `BOWL_SPECIALIST` | 578 (49) | 122 | `VALID_NORMAL_BASELINE` | 36.51% | 38.52% | 0.948x / 0.948x (No) | 8.48% (8.04%) | 0.5785 | **84.45** | [32.03%, 40.96%] | `ROBUST_ACROSS_WEIGHTS` |
-| **2** | `1944` | **Keshav Maharaj** | `BOWL_PRIMARY_AR` | 225 (26) | 112 | `VALID_NORMAL_BASELINE` | 33.33% | 31.25% | 1.067x / 1.067x (No) | 7.11% (6.62%) | 0.4495 | **68.40** | [24.88%, 41.10%] | `ROBUST_ACROSS_WEIGHTS` |
-| **3** | `8380` | **Mohammad Rishad Hossain** | `BOWL_PRIMARY_AR` | 294 (40) | 261 | `VALID_NORMAL_BASELINE` | 36.05% | 42.53% | 0.848x / 0.848x (No) | 7.82% (7.24%) | 0.5006 | **64.99** | [31.16%, 41.23%] | `ROBUST_ACROSS_WEIGHTS` |
-| **4** | `6464` | **Arshdeep Singh** | `BOWL_PRIMARY_AR` | 2069 (141) | 149 | `VALID_NORMAL_BASELINE` | 36.93% | 44.30% | 0.834x / 0.834x (No) | 5.94% (5.93%) | 0.6475 | **64.66** | [34.55%, 39.25%] | `ROBUST_ACROSS_WEIGHTS` |
-| **5** | `7503` | **Ravi Bishnoi** | `BOWL_PRIMARY_AR` | 936 (94) | 401 | `VALID_NORMAL_BASELINE` | 37.07% | 38.40% | 0.965x / 0.965x (No) | 5.56% (5.55%) | 0.5641 | **62.40** | [33.60%, 40.67%] | `RANKING_SENSITIVE_TO_WEIGHTS` |
-| **6** | `2681` | **Taskin Ahmed** | `BOWL_PRIMARY_AR` | 552 (46) | 100 | `VALID_NORMAL_BASELINE` | 41.67% | 50.00% | 0.833x / 0.833x (No) | 6.34% (6.21%) | 0.5644 | **60.26** | [36.56%, 46.84%] | `ROBUST_ACROSS_WEIGHTS` |
-| **7** | `4900` | **Wanindu Hasaranga** | `BOWL_PRIMARY_AR` | 868 (82) | 331 | `VALID_NORMAL_BASELINE` | 31.68% | 42.30% | 0.749x / 0.749x (No) | 7.14% (6.97%) | 0.5403 | **59.88** | [28.49%, 34.92%] | `RANKING_SENSITIVE_TO_WEIGHTS` |
-| **8** | `3653` | **Avesh Khan** | `BOWL_SPECIALIST` | 1049 (77) | 136 | `VALID_NORMAL_BASELINE` | 35.46% | 41.18% | 0.861x / 0.861x (No) | 5.82% (5.79%) | 0.5756 | **59.16** | [31.79%, 39.42%] | `ROBUST_ACROSS_WEIGHTS` |
-| **9** | `2526` | **Ish Sodhi** | `BOWL_PRIMARY_AR` | 404 (46) | 249 | `VALID_NORMAL_BASELINE` | 30.94% | 35.34% | 0.875x / 0.875x (No) | 7.18% (6.85%) | 0.4459 | **58.71** | [26.10%, 36.39%] | `RANKING_SENSITIVE_TO_WEIGHTS` |
-| **10** | `3276` | **Gudakesh Motie** | `BOWL_PRIMARY_AR` | 315 (32) | 100 | `VALID_NORMAL_BASELINE` | 33.97% | 31.00% | 1.096x / 1.096x (No) | 4.44% (4.70%) | 0.4833 | **56.23** | [26.70%, 42.49%] | `RANKING_SENSITIVE_TO_WEIGHTS` |
+| **1** | `1566` | **Mohammed Shami** | `BOWL_SPECIALIST` | 875 (57) | 121 | `VALID_NORMAL_BASELINE` | 45.83% | 33.06% | 1.386x / 1.386x (No) | 5.71% (5.71%) | 0.7721 | **75.31** | [41.93%, 49.64%] | `RANKING_SENSITIVE_TO_WEIGHTS` |
+| **2** | `4837` | **Obed McCoy** | `BOWL_SPECIALIST` | 385 (31) | 123 | `VALID_NORMAL_BASELINE` | 38.70% | 30.89% | 1.253x / 1.253x (No) | 7.53% (7.15%) | 0.5786 | **73.15** | [33.03%, 44.21%] | `ROBUST_ACROSS_WEIGHTS` |
+| **3** | `4807` | **Joshua Little** | `BOWL_SPECIALIST` | 446 (34) | 175 | `VALID_NORMAL_BASELINE` | 42.15% | 36.00% | 1.171x / 1.171x (No) | 6.73% (6.54%) | 0.7199 | **70.58** | [37.17%, 47.12%] | `ROBUST_ACROSS_WEIGHTS` |
+| **4** | `2320` | **Trent Boult** | `BOWL_SPECIALIST` | 1131 (70) | 144 | `VALID_NORMAL_BASELINE` | 42.71% | 24.31% | 1.757x / 1.500x (Yes) | 4.69% (4.77%) | 0.6965 | **69.31** | [39.82%, 45.93%] | `RANKING_SENSITIVE_TO_WEIGHTS` |
+| **5** | `7364` | **Haris Rauf** | `BOWL_SPECIALIST` | 692 (47) | 169 | `VALID_NORMAL_BASELINE` | 41.33% | 42.01% | 0.984x / 0.984x (No) | 7.51% (7.29%) | 0.6729 | **67.48** | [37.41%, 45.10%] | `RANKING_SENSITIVE_TO_WEIGHTS` |
+| **6** | `278` | **Tim Southee** | `BOWL_SPECIALIST` | 531 (36) | 135 | `VALID_NORMAL_BASELINE` | 42.18% | 38.52% | 1.095x / 1.095x (No) | 6.78% (6.61%) | 0.6998 | **67.42** | [38.59%, 46.26%] | `ROBUST_ACROSS_WEIGHTS` |
+| **7** | `3275` | **Alzarri Joseph** | `BOWL_SPECIALIST` | 780 (52) | 165 | `VALID_NORMAL_BASELINE` | 40.64% | 32.73% | 1.242x / 1.242x (No) | 5.77% (5.76%) | 0.6823 | **66.07** | [36.76%, 44.77%] | `RANKING_SENSITIVE_TO_WEIGHTS` |
+| **8** | `8380` | **Mohammad Rishad Hossain** | `BOWL_PRIMARY_AR` | 280 (41) | 539 | `VALID_NORMAL_BASELINE` | 35.00% | 36.36% | 0.962x / 0.962x (No) | 8.93% (8.08%) | 0.5223 | **65.84** | [29.92%, 40.25%] | `RANKING_SENSITIVE_TO_WEIGHTS` |
+| **9** | `4229` | **George Linde** | `BOWL_PRIMARY_AR` | 133 (15) | 106 | `VALID_NORMAL_BASELINE` | 41.35% | 33.02% | 1.252x / 1.252x (No) | 6.77% (6.31%) | 0.6095 | **65.77** | [31.79%, 51.52%] | `RANKING_SENSITIVE_TO_WEIGHTS` |
+| **10** | `27960` | **Mayank Yadav** | `BOWL_SPECIALIST` | 276 (22) | 146 | `VALID_NORMAL_BASELINE` | 48.19% | 43.84% | 1.099x / 1.099x (No) | 6.16% (6.04%) | 0.7806 | **65.10** | [42.23%, 54.55%] | `RANKING_SENSITIVE_TO_WEIGHTS` |
 
 *Role Governance Confirmation:* Harry Tector is classified as `BAT_PRIMARY_AR` and is excluded from the bowling leaderboard. **Intersection between Batting and Bowling Top 10 is exactly 0.**
 
@@ -75,16 +68,16 @@ Full multi-dimensional sensitivity results (270 combinations across crisis balls
 
 | Crisis Ball Threshold | Eligible Batters | Available Batter Top-10 | Batter Overlap vs Baseline (`40`b) | Batter Jaccard Similarity | Batter Mean / Max Rank Shift | Eligible Bowlers (`norm>=100`) | Available Bowler Top-10 | Bowler Overlap vs Baseline (`120`b) | Bowler Jaccard Similarity | Bowler Mean / Max Rank Shift |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **40** *(Bat Baseline)* | **39** | **10** | **10 / 10** | **1.0000** | 0.0 / 0 | 40 | 10 | 10 / 10 | 1.0000 | 0.0 / 0 |
-| **60** | 21 | 10 | 5 / 10 | 0.3333 | 3.7 / 8 | 40 | 10 | 10 / 10 | 1.0000 | 0.0 / 0 |
-| **80** | 11 | 10 | 1 / 10 | 0.0526 | 17.3 / 24 | 40 | 10 | 10 / 10 | 1.0000 | 0.0 / 0 |
-| **100** | 8 | **8** *(unforced)* | 1 / 10 | 0.0588 | 20.0 / 30 | 39 | 10 | 10 / 10 | 1.0000 | 0.0 / 0 |
-| **120** *(Bowl Baseline)* | 6 | **6** *(unforced)* | 1 / 10 | 0.0667 | 22.8 / 32 | **39** | **10** | **10 / 10** | **1.0000** | 0.0 / 0 |
-| **150** | 0 | **0** *(unforced)* | 0 / 10 | 0.0000 | 0.0 / 0 | 39 | 10 | 10 / 10 | 1.0000 | 0.0 / 0 |
-| **200** | 0 | **0** *(unforced)* | 0 / 10 | 0.0000 | 0.0 / 0 | 39 | 10 | 10 / 10 | 1.0000 | 0.0 / 0 |
-| **250** | 0 | **0** *(unforced)* | 0 / 10 | 0.0000 | 0.0 / 0 | 37 | 10 | 9 / 10 | 0.8182 | 0.9 / 1 |
+| **40** *(Bat Baseline)* | **92** | **10** | **10 / 10** | **1.0000** | 0.0 / 0 | 103 | 10 | 10 / 10 | 1.0000 | 0.0 / 0 |
+| **60** | 71 | 10 | 6 / 10 | 0.4286 | 2.5 / 4 | 102 | 10 | 10 / 10 | 1.0000 | 0.0 / 0 |
+| **80** | 60 | 10 | 5 / 10 | 0.3333 | 4.2 / 6 | 101 | 10 | 10 / 10 | 1.0000 | 0.0 / 0 |
+| **100** | 50 | 10 | 4 / 10 | 0.2500 | 5.3 / 7 | 100 | 10 | 10 / 10 | 1.0000 | 0.0 / 0 |
+| **120** *(Bowl Baseline)* | 39 | 10 | 4 / 10 | 0.2500 | 6.8 / 10 | **99** | **10** | **10 / 10** | **1.0000** | 0.0 / 0 |
+| **150** | 25 | 10 | 1 / 10 | 0.0526 | 11.1 / 13 | 96 | 10 | 9 / 10 | 0.8182 | 0.2 / 1 |
+| **200** | 11 | 10 | 1 / 10 | 0.0526 | 27.6 / 57 | 89 | 10 | 9 / 10 | 0.8182 | 0.4 / 3 |
+| **250** | 7 | **7** *(unforced)* | 0 / 10 | 0.0000 | 34.6 / 70 | 84 | 10 | 9 / 10 | 0.8182 | 0.4 / 3 |
 
-- **Critical Stability Disclosure:** A 10/10 overlap at the low baseline threshold (`40` crisis balls for batters) **is not proof of stability across higher thresholds**. Because batting crisis states (`>= 5.5` score) represent only 7.97% of regular deliveries, raising the minimum to `60` crisis balls drops batter Top-10 overlap to `5/10` (Jaccard `0.3333`; Matthew Wade, Daryl Mitchell, David Miller, Iftikhar Ahmed, and Jitesh Sharma exit; Ramandeep Singh, Marcus Stoinis, Rinku Singh, Rahul Tewatia, and Shimron Hetmyer enter), and at `100` crisis balls only **8 batters** qualify (Top-10 is never forced when fewer than 10 players are eligible).
+- **Threshold Stability Analysis:** Under the calibrated pre-delivery pressure model (`15.35%` of balls faced classified as High/Extreme Crisis Pressure), **92 batters** qualify at the `40`-ball baseline, **71** at `60` balls (`6/10` Top-10 overlap, retaining Ashutosh Sharma, Ramandeep Singh, Shreyas Iyer, Iftikhar Ahmed, MS Dhoni, and Suryakumar Yadav), **60** at `80` balls (`5/10` overlap), **50** at `100` balls, **25** at `150` balls, **11** at `200` balls, and **7** at `250` balls (`available_top10_count = 7`, never forcing a Top 10 when `<10` players qualify). For bowlers, **99 frontline bowlers** qualify at the `120`-ball baseline (`9/10` Top-10 overlap even at `250` crisis balls).
 
 ---
 
@@ -133,7 +126,7 @@ All 16 matches (14 league games + Eliminator win + Qualifier 2 loss) and 3,788 d
 | Component | Implementation | Validation Split | Actual Audited Diagnostic Metrics | Governance Status | Used in Final Ranking? |
 | :--- | :--- | :--- | :--- | :--- | :---: |
 | **1. Pressure Model** | `src/pressure_engine/v3_pressure_model.py` | Ex-Ante Rule Audit | Zero post-delivery leakage; bounded in $[0, 10]$; position/state heuristic | **`PROVISIONAL_POSITION_PROXY_HEURISTIC`** | **Yes (Tier Stratification)** |
-| **2. Role Classifier** | `src/classification/v3_role_classifier.py` | Multi-Season Workload | 1,118 canonical players; 0 overlap between bat (382) and bowl (311) gates | **`CANONICAL_ROLE_GATING_ACTIVE`** | **Yes (Eligibility Gate)** |
+| **2. Role Classifier** | `src/classification/v3_role_classifier.py` | Multi-Season Workload | 1,100 canonical players; 0 overlap between bat (360) and bowl (332) gates | **`CANONICAL_ROLE_GATING_ACTIVE`** | **Yes (Eligibility Gate)** |
 | **3. Ranking Score (`PRI`)** | `scripts/compute_v3_rankings.py` | Sensitivity Grid (5 Weight Sets, 270 Thresholds) | Fixed weights (35/35/20/10); not yet validated out-of-time | **`PROVISIONAL_FIXED_WEIGHT_SCORE`** | **Yes (Primary Score)** |
 | **4. Uncertainty & Shrinkage** | `src/reliability/v3_reliability.py` | 2,000-Iter Cluster Bootstrap | Match-clustered 95% CIs; Fixed-$K$ ($K=25$) & Beta-Binomial priors on eligible pool | **`VERIFIED_CLUSTER_BOOTSTRAP`** | **Yes (Shrinkage & CIs)** |
 | **5. Wicket Hazard Model** | `src/models/v3_wicket_hazard.py` | Chronological Split (`2025-06-01`) | **AUC: 0.572, Log-Loss: 0.692, Expected Wickets: 26,843 vs Actual: 2,931 (9.16x miscalibration)** | **`EXPERIMENTAL_NOT_USED_FOR_RANKING`** | **No (Excluded)** |

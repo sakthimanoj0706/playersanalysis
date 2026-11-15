@@ -68,28 +68,37 @@ def load_verified_deliveries() -> pd.DataFrame:
     if press_path.exists():
         try:
             df = pd.read_parquet(press_path)
-            # Validate required columns
+            # Validate required columns and calibrated formula version
             req = ['canonical_striker_id', 'canonical_bowler_id', 'batting_pressure_data_valid',
-                   'bowling_pressure_data_valid', 'is_batting_high_pressure', 'is_bowling_high_pressure']
-            if all(c in df.columns for c in req) and len(df) > 0:
-                rebuild_needed = False
-                logging.info(f"Loaded verified pressure parquet ({len(df)} rows)")
+                   'bowling_pressure_data_valid', 'is_batting_high_pressure', 'is_bowling_high_pressure',
+                   'v3_pressure_formula_version']
+            if all(c in df.columns for c in req) and len(df) == 193988:
+                if (str(df['v3_pressure_formula_version'].iloc[0]) == 'V3.2_EGM_CALIBRATED_HEURISTIC'
+                        and int(df['batting_pressure_data_valid'].sum()) == len(df)):
+                    rebuild_needed = False
+                    logging.info(f"Loaded verified pressure parquet ({len(df)} rows)")
         except Exception as e:
             logging.warning(f"Error reading {press_path}: {e}. Rebuilding...")
 
     if rebuild_needed:
-        logging.info("Rebuilding ball_by_ball_with_pressure.parquet from verified context...")
-        if ctx_path.exists():
-            df = pd.read_parquet(ctx_path)
-        else:
-            raw_bbb = pd.read_csv(DATA_DIR / "ball_by_ball_ipl_t20i.csv", dtype={'season': str})
-            adapter = RRDataAdapter()
-            df = adapter.transform_deliveries(raw_bbb)
-        
+        logging.info("Rebuilding ball_by_ball_with_context.parquet and ball_by_ball_with_pressure.parquet...")
+        from src.ingestion.loader import load_all_data
+        from src.preprocessing.cleaner import clean_all
+        from src.context_engine.innings_context import build_innings_context
+        from src.context_engine.delivery_context import build_delivery_context
+        from src.context_engine.partnership_tracker import build_partnerships
+
+        raw_data = load_all_data()
+        df_regular, df_so = clean_all(raw_data['ball_by_ball'], raw_data['matches'])
+        df = build_innings_context(df_regular)
+        df = build_delivery_context(df)
+        df = build_partnerships(df)
+        df.to_parquet(ctx_path, index=False)
+
         df = resolver.resolve_deliveries(df)
         df = V3PressureModel.apply_dual_pressure(df)
         df['v3_pressure_schema_version'] = 'V3.1_CANONICAL'
-        df['v3_pressure_formula_version'] = 'V3_PROVISIONAL_HEURISTIC'
+        df['v3_pressure_formula_version'] = 'V3.2_EGM_CALIBRATED_HEURISTIC'
         df.to_parquet(press_path, index=False)
         logging.info(f"Saved rebuilt {press_path} ({len(df)} rows)")
 
@@ -182,7 +191,9 @@ def compute_v3_rankings(
     # Fill count fields with 0; performance rates remain NaN if balls == 0
     count_cols = ['crisis_balls', 'crisis_runs', 'crisis_matches', 'norm_balls', 'norm_runs', 'norm_matches']
     for c in count_cols:
-        bat_master[c] = bat_master[c].fillna(0).astype(int)
+        bat_master[c] = pd.to_numeric(bat_master[c], errors='coerce').fillna(0).astype(int)
+    for c in ['crisis_sr', 'norm_sr', 'total_sr']:
+        bat_master[c] = pd.to_numeric(bat_master[c], errors='coerce').astype(float)
 
     # Attach Canonical Player Metadata & Roles
     bat_master['canonical_player_id'] = bat_master['striker_id']
@@ -322,19 +333,27 @@ def compute_v3_rankings(
         cb = row['crisis_balls']
         cm = row['crisis_matches']
 
-        # Consistency score
+        # Consistency score (Empirical Bayes match-shrunk ball-weighted consistency + delivery success rate)
         if cb < 15 or cm < 3:
             consistencies.append(0.10)
         else:
             p_sub = p_high[p_high['striker_id'] == pid]
             m_runs = p_sub.groupby('match_id')['batter_runs'].sum()
             m_balls = p_sub.groupby('match_id')['batter_runs'].count()
+            overall_sr = float(row['crisis_sr']) if pd.notna(row['crisis_sr']) else 130.0
+            norm_sr_val = float(row['norm_sr']) if pd.notna(row['norm_sr']) and float(row['norm_sr']) > 0 else overall_sr
             m_srs = (m_runs / m_balls) * 100.0
-            mean_sr = m_srs.mean()
-            std_sr = m_srs.std() if len(m_srs) > 1 else mean_sr * 0.5
-            cv = (std_sr / mean_sr) if mean_sr > 0 else 1.5
+            w_eb = m_balls / (m_balls + 6.0)
+            shrunk_m_srs = w_eb * m_srs + (1.0 - w_eb) * overall_sr
+            w_b = m_balls.values.astype(float)
+            w_mean = float(np.average(shrunk_m_srs.values, weights=w_b))
+            w_var = float(np.average((shrunk_m_srs.values - w_mean) ** 2, weights=w_b))
+            w_std = float(np.sqrt(w_var))
+            cv = (w_std / w_mean) if w_mean > 0 else 1.5
+            target_sr = max(125.0, 0.90 * norm_sr_val)
+            success_rate = float(np.average((shrunk_m_srs.values >= target_sr).astype(float), weights=w_b))
             m_w = np.sqrt(cm / (cm + 3.0))
-            c_score = np.clip(np.exp(-cv) * m_w, 0.05, 0.98)
+            c_score = np.clip((0.65 * np.exp(-cv) + 0.35 * success_rate) * m_w, 0.05, 0.98)
             consistencies.append(round(float(c_score), 4))
 
         # Bootstrap CI on match cluster
@@ -475,7 +494,9 @@ def compute_v3_rankings(
     bowl_master = bowl_master.merge(df_norm_bowl, on='bowler_id', how='left')
 
     for c in ['crisis_balls', 'crisis_wickets', 'crisis_matches', 'norm_balls', 'norm_wickets', 'norm_matches']:
-        bowl_master[c] = bowl_master[c].fillna(0).astype(int)
+        bowl_master[c] = pd.to_numeric(bowl_master[c], errors='coerce').fillna(0).astype(int)
+    for c in ['crisis_dot_pct', 'crisis_wicket_rate', 'norm_dot_pct', 'norm_wicket_rate', 'total_dot_pct']:
+        bowl_master[c] = pd.to_numeric(bowl_master[c], errors='coerce').astype(float)
 
     # Attach Canonical Player Metadata & Roles
     bowl_master['canonical_player_id'] = bowl_master['bowler_id']
@@ -578,9 +599,9 @@ def compute_v3_rankings(
     bowl_master['prior_population_count'] = bowl_prior_meta['prior_population_count']
     bowl_master['shrinkage_status'] = bowl_prior_meta['shrinkage_status']
 
-    # Sample Confidence
+    # Sample Confidence (scaled to 600 crisis balls for bowlers so 120..600 ball workloads are properly differentiated)
     bowl_master['sample_confidence'] = np.clip(
-        np.log1p(bowl_master['crisis_balls']) / np.log1p(250.0), 0.1, 1.0
+        np.log1p(bowl_master['crisis_balls']) / np.log1p(600.0), 0.1, 1.0
     ).round(4)
 
     # Consistency & Match-Clustered Bootstrap CI
@@ -606,12 +627,20 @@ def compute_v3_rankings(
             p_sub = p_high_bowl[p_high_bowl['bowler_id'] == bid]
             m_dots = p_sub.groupby('match_id')['is_dot_ball'].sum()
             m_balls = p_sub.groupby('match_id')['batter_runs'].count()
+            overall_dot = float(row['crisis_dot_pct']) if pd.notna(row['crisis_dot_pct']) else 35.0
+            norm_dot = float(row['norm_dot_pct']) if pd.notna(row['norm_dot_pct']) and float(row['norm_dot_pct']) > 0 else overall_dot
             m_dot_rates = (m_dots / m_balls) * 100.0
-            mean_dot = m_dot_rates.mean()
-            std_dot = m_dot_rates.std() if len(m_dot_rates) > 1 else mean_dot * 0.4
-            cv = (std_dot / mean_dot) if mean_dot > 0 else 1.2
+            w_eb = m_balls / (m_balls + 6.0)
+            shrunk_m_rates = w_eb * m_dot_rates + (1.0 - w_eb) * overall_dot
+            w_b = m_balls.values.astype(float)
+            w_mean = float(np.average(shrunk_m_rates.values, weights=w_b))
+            w_var = float(np.average((shrunk_m_rates.values - w_mean) ** 2, weights=w_b))
+            w_std = float(np.sqrt(w_var))
+            cv = (w_std / w_mean) if w_mean > 0 else 1.2
+            target_dot = max(38.0, 0.92 * norm_dot)
+            success_rate = float(np.average((shrunk_m_rates.values >= target_dot).astype(float), weights=w_b))
             m_w = np.sqrt(cm / (cm + 3.0))
-            c_score = np.clip(np.exp(-cv) * m_w, 0.08, 0.98)
+            c_score = np.clip((0.40 * np.exp(-cv) + 0.60 * success_rate) * m_w, 0.08, 0.98)
             b_consistencies.append(round(float(c_score), 4))
 
         boot = V3ReliabilityEngine.match_clustered_bootstrap_bowling(
@@ -666,6 +695,16 @@ def compute_v3_rankings(
     bowl_master['bowling_pri'] = bowl_master['bowling_pri_provisional']
     bowl_master['formula_status'] = 'PROVISIONAL_FIXED_WEIGHT_SCORE'
 
+    def _bowl_score_explanation(r):
+        if pd.isna(r['provisional_fixed_weight_score']):
+            return f"UNRANKED_INSUFFICIENT_BASELINE ({r['norm_baseline_status']})"
+        return (
+            f"Maint(35%)={r['contrib_maint']:.2f} + Abs(35%)={r['contrib_abs']:.2f} + "
+            f"Cons(20%)={r['contrib_cons']:.2f} + Sample(10%)={r['contrib_sample']:.2f} = {r['provisional_fixed_weight_score']:.2f}"
+        )
+
+    bowl_master['component_breakdown_explanation'] = bowl_master.apply(_bowl_score_explanation, axis=1)
+
     top_bowlers_eligible = bowl_master[
         (bowl_master['sample_eligible'] == True) &
         (bowl_master['eligible_for_bowl_leaderboard'] == True)
@@ -677,6 +716,27 @@ def compute_v3_rankings(
     top_bowlers_eligible['provisional_rank'] = range(1, len(top_bowlers_eligible) + 1)
     top_bowlers_eligible['rank'] = top_bowlers_eligible['provisional_rank']
     top10_bowlers = top_bowlers_eligible.head(10).copy()
+
+    # Attach ranks to master tables and sort deterministically (eligible ranked first, then by score descending)
+    bat_rank_map = top_batters_eligible.set_index('canonical_player_id')['rank'].to_dict()
+    bat_master['provisional_rank'] = bat_master['canonical_player_id'].map(bat_rank_map)
+    bat_master['rank'] = bat_master['provisional_rank']
+    bat_master['_is_el_sort'] = np.where(bat_master['final_eligibility'] == 'ELIGIBLE', 0, 1)
+    bat_master = bat_master.sort_values(
+        by=['_is_el_sort', 'provisional_fixed_weight_score', 'canonical_player_id'],
+        ascending=[True, False, True],
+        na_position='last'
+    ).drop(columns=['_is_el_sort']).reset_index(drop=True)
+
+    bowl_rank_map = top_bowlers_eligible.set_index('canonical_player_id')['rank'].to_dict()
+    bowl_master['provisional_rank'] = bowl_master['canonical_player_id'].map(bowl_rank_map)
+    bowl_master['rank'] = bowl_master['provisional_rank']
+    bowl_master['_is_el_sort'] = np.where(bowl_master['final_eligibility'] == 'ELIGIBLE', 0, 1)
+    bowl_master = bowl_master.sort_values(
+        by=['_is_el_sort', 'provisional_fixed_weight_score', 'canonical_player_id'],
+        ascending=[True, False, True],
+        na_position='last'
+    ).drop(columns=['_is_el_sort']).reset_index(drop=True)
 
     # ══════════════════════════════════════════════════════════════════════════
     # 3. PRIORITY 5 & P1.1 — EXTENDED THRESHOLD SENSITIVITY STUDY
@@ -1015,6 +1075,7 @@ def compute_v3_rankings(
         'norm_maint', 'norm_abs', 'norm_cons', 'norm_sample',
         'contrib_maint', 'contrib_abs', 'contrib_cons', 'contrib_sample',
         'bowling_pri_provisional', 'provisional_fixed_weight_score', 'bowling_pri',
+        'component_breakdown_explanation',
         'ci_lower', 'ci_upper', 'uncertainty_width', 'ci_status', 'ci_method',
         'ci_confidence_level', 'ci_bootstrap_iterations', 'ci_sample_matches',
         'ci_sample_deliveries', 'ci_metric', 'ranking_sensitivity_status',
@@ -1102,7 +1163,8 @@ def compute_v3_rankings(
     all_bat_copy_targets = [
         ROOT / "ALL_BATTER_RANKINGS.csv",
         OUTPUTS_ROOT / "ALL_BATTER_RANKINGS.csv",
-        OUTPUTS_ROOT / "batting_pressure_rankings.csv"
+        OUTPUTS_ROOT / "batting_pressure_rankings.csv",
+        OUTPUTS_ROOT / "batting_pri_details.csv"
     ]
     for tgt in all_bat_copy_targets:
         shutil.copyfile(OUTPUTS_V3 / "ALL_BATTER_METRICS.csv", tgt)
@@ -1110,7 +1172,8 @@ def compute_v3_rankings(
     all_bowl_copy_targets = [
         ROOT / "ALL_BOWLER_RANKINGS.csv",
         OUTPUTS_ROOT / "ALL_BOWLER_RANKINGS.csv",
-        OUTPUTS_ROOT / "bowling_pressure_rankings.csv"
+        OUTPUTS_ROOT / "bowling_pressure_rankings.csv",
+        OUTPUTS_ROOT / "bowling_pri_details.csv"
     ]
     for tgt in all_bowl_copy_targets:
         shutil.copyfile(OUTPUTS_V3 / "ALL_BOWLER_METRICS.csv", tgt)
@@ -1123,6 +1186,13 @@ def compute_v3_rankings(
         shutil.copyfile(OUTPUTS_V3 / "PLAYER_ELIGIBILITY.csv", tgt)
 
     shutil.copyfile(OUTPUTS_V3 / "RANKING_WEIGHT_SENSITIVITY.csv", OUTPUTS_ROOT / "PRI_SENSITIVITY_ANALYSIS.csv")
+    shutil.copyfile(OUTPUTS_V3 / "RANKING_WEIGHT_SENSITIVITY.csv", ROOT / "PRI_SENSITIVITY_ANALYSIS.csv")
+
+    # Synchronize legacy parquet copies in data/outputs/
+    top10_batters.to_parquet(OUTPUTS_ROOT / "top_10_batters.parquet", index=False)
+    top10_bowlers.to_parquet(OUTPUTS_ROOT / "top_10_bowlers.parquet", index=False)
+    bat_master.to_parquet(OUTPUTS_ROOT / "batting_pressure_rankings.parquet", index=False)
+    bowl_master.to_parquet(OUTPUTS_ROOT / "bowling_pressure_rankings.parquet", index=False)
 
     # Master JSON Manifest
     manifest = {

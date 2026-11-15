@@ -1,6 +1,6 @@
 {
   "manifest_title": "SupeRR Intelligence V3 Universal Player Ranking Single Source of Truth",
-  "generation_timestamp_utc": "2026-11-15T04:33:06.516953Z",
+  "generation_timestamp_utc": "2026-11-15T06:23:32.932798Z",
   "authoritative_artifacts": {
     "top_10_batters_csv": "data/outputs/v3/TOP_10_BATTERS.csv",
     "top_10_bowlers_csv": "data/outputs/v3/TOP_10_BOWLERS.csv",
@@ -110,13 +110,13 @@
     "shrinkage_configuration": {
       "batting_method": "FIXED_K_NORMAL_SHRINKAGE",
       "prior_k": 25.0,
-      "batting_prior_mean": 140.2,
-      "batting_prior_pop_count": 39,
+      "batting_prior_mean": 130.13,
+      "batting_prior_pop_count": 92,
       "bowling_method": "BETA_BINOMIAL_EMPIRICAL_BAYES",
-      "bowling_prior_alpha": 5.5151,
-      "bowling_prior_beta": 94.4849,
-      "bowling_prior_mean": 5.52,
-      "bowling_prior_pop_count": 39
+      "bowling_prior_alpha": 5.6992,
+      "bowling_prior_beta": 94.3008,
+      "bowling_prior_mean": 5.7,
+      "bowling_prior_pop_count": 99
     },
     "bootstrap_configuration": {
       "method": "MATCH_CLUSTERED_BOOTSTRAP",

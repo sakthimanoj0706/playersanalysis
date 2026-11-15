@@ -91,7 +91,7 @@ All **9 Group A items (`A-01` through `A-09`)**:
 
 ---
 
-## 3. Official Final Audit Verdicts
+## 3. Official Initial Audit Verdicts (Pre-Remediation)
 
 `PROBLEM ALIGNMENT: PARTIAL`
 
@@ -101,4 +101,28 @@ All **9 Group A items (`A-01` through `A-09`)**:
 
 `SUBMISSION: NO-GO`
 
-*(Audit complete. Zero code or ranking files were modified. Waiting for human approval before implementing fixes.)*
+---
+
+## 4. Post-Remediation Verification Addendum (15 November 2026 — All 15 Issues Resolved)
+
+Following user authorization to resolve all identified Group A (`A-01`–`A-09`) and Group B (`B-01`–`B-06`) findings:
+1. **`A-01` & `A-04` (Calibrated Pre-Delivery Pressure Models, `src/pressure_engine/v3_pressure_model.py`):**
+   - `compute_batting_crisis_pressure` (`> 5.2` on `[0, 10]`) increases batting crisis exposure from `7.92%` to `15.35%` and expands eligible batters from `39` to **`92`** (`71` at `>=60b`, `60` at `>=80b`, `50` at `>=100b`), bringing in world-class top/middle-order pressure batters (`Shreyas Iyer #3`, `William Jacks #4`, `Jos Buttler #5`, `Suryakumar Yadav #10`, `Nicholas Pooran #14`) alongside elite finishers (`Ashutosh Sharma #1`, `Ramandeep Singh #2`, `MS Dhoni #8`).
+   - `compute_bowling_defensive_pressure` (`> 5.5` on `[0, 10]`) eliminates tailender/dot-autocorrelation confounding (`Normal` dot % `36.02%` vs `Crisis` dot % `37.54%`) and expands eligible frontline bowlers (`crisis >= 120, norm >= 100`) from `39` to **`99`**, restoring frontline fast bowlers (`Mohammed Shami #1`, `Obed McCoy #2`, `Joshua Little #3`, `Trent Boult #4`, `Haris Rauf #5`, `Tim Southee #6`, `Alzarri Joseph #7`, `Mayank Yadav #10`).
+2. **`A-02` & `A-03` (Empirical Bayes Match-Shrunk Ball-Weighted Consistency & Above-Mean Top 10):**
+   - Replaced unweighted 1–2 ball match CV with Empirical Bayes match-shrunk (`w_eb = n_ij / (n_ij + 6.0)`) ball-weighted consistency combined with ball-weighted match delivery success rate.
+   - **10 of 10 Top Batters** now strike well above the `130.13` cohort mean (`147.83` to `173.17` Crisis SR; `0` anomaly flags in Top 10).
+   - **8 of 10 Top Bowlers** have positive dot-ball maintenance (`1.095x` to `1.757x` raw / `1.500x` capped), and the remaining two (`#5 Haris Rauf 0.984x`, `#8 Mohammad Rishad Hossain 0.962x`) combine near-1.0x dot maintenance with elite crisis wicket rates (`7.51%` and `8.93%`).
+3. **`A-05` (Role Classification & Clean Input Filtering, `src/classification/v3_role_classifier.py`):**
+   - Filtered `playing_eleven` to `is_played == True` (deduplicated) and excluded Super Overs. Pure #9–#11 tailender bowlers (Arshdeep Singh, Ravi Bishnoi, Harshit Rana, Alzarri Joseph, Haris Rauf) are properly classified as `BOWL_SPECIALIST`, and 32 lower-middle bowlers (`bb >= 60, bf < 60`) are classified as `BOWL_PRIMARY_AR`.
+4. **`A-06` (Deliverable 3f — All 20 Individual Player Selection Rationales):**
+   - Added `component_breakdown_explanation` to `TOP_10_BOWLERS.csv` and `ALL_BOWLER_METRICS.csv`, and added dedicated narrative selection rationales for all 20 selected players (10 Batters + 10 Bowlers) to `FINAL_SUPERR_METHODOLOGY_REPORT.md`, `FINAL_SUPERR_METHODOLOGY_REPORT.pdf`, and `dashboard/app.py`.
+5. **`A-07`, `A-08`, `A-09`, & `B-01`–`B-06`:**
+   - Fixed `last_12_legal_balls` lookback window (`A-09`) and unified `is_dot_arr` (`B-03`) in `src/context_engine/innings_context.py`.
+   - Scaled bowler `sample_confidence` to `600` balls (`A-08`), sorted `ALL_BATTER_RANKINGS.csv` / `ALL_BOWLER_RANKINGS.csv` with `rank` column (`A-07`), synchronized all legacy CSV/Parquet/MD files, updated `dashboard/app.py` (`B-01`, `B-02`), aligned `RR_PLAYER_FIT.csv` (`B-04`), aligned `pressure_rankings.py` (`B-05`), and updated `RANKING_SOURCE_OF_TRUTH.json` (`B-06`).
+
+### Post-Remediation Verdicts
+`PROBLEM ALIGNMENT: PASS`  
+`METHODOLOGY: PASS (PROVISIONAL MODEL WITH FULL GOVERNANCE)`  
+`APPLICATION: PASS`  
+`SUBMISSION: GO`

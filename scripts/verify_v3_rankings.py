@@ -79,14 +79,15 @@ def verify_rankings():
         "Batters with insufficient normal baseline must have NaN composite score"
     print(f"  ✓ Batting scores independently reconciled across {valid_bat_scores.sum()} valid-baseline batters (max diff: {max_diff_bat:.4f})")
 
-    # Verify Iftikhar Ahmed (ID 3056) component breakdown & below-mean crisis SR flag
-    iftikhar = top10_bat[top10_bat['canonical_player_id'] == 3056]
-    assert len(iftikhar) == 1, "Iftikhar Ahmed (3056) must be present in TOP_10_BATTERS"
-    ift_row = iftikhar.iloc[0]
-    assert ift_row['crisis_sr_below_cohort_mean'] == True
-    assert ift_row['performance_anomaly_flag'] == 'CRISIS_SR_BELOW_COHORT_MEAN'
-    assert "CRISIS_SR_BELOW_COHORT_MEAN" in str(ift_row['component_breakdown_explanation'])
-    print(f"  ✓ Iftikhar Ahmed (#{int(ift_row['rank'])}) transparency flag verified: {ift_row['performance_anomaly_flag']}")
+    # Verify Top-10 Batters all exceed cohort mean crisis SR & below-mean batters in ALL_BATTER_METRICS are flagged
+    assert (top10_bat['crisis_sr'] > top10_bat['prior_mean']).all(), "All Top-10 batters must exceed cohort mean crisis SR"
+    assert (top10_bat['crisis_sr_below_cohort_mean'] == False).all()
+    assert (top10_bat['performance_anomaly_flag'] == 'NONE').all()
+    below_mean_bat = all_bat[all_bat['crisis_sr'].notna() & (all_bat['crisis_sr'] < all_bat['prior_mean'])]
+    assert len(below_mean_bat) > 0
+    assert (below_mean_bat['crisis_sr_below_cohort_mean'] == True).all()
+    assert (below_mean_bat['performance_anomaly_flag'] == 'CRISIS_SR_BELOW_COHORT_MEAN').all()
+    print(f"  ✓ Top-10 batters all exceed cohort mean ({top10_bat['prior_mean'].iloc[0]:.2f} SR); {len(below_mean_bat)} below-mean batters flagged")
 
     # Independent Ranking
     all_bat['indep_score'] = indep_score

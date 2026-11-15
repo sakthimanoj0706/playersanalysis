@@ -74,10 +74,10 @@ def build_innings_context(bbb_df: pd.DataFrame) -> pd.DataFrame:
     else:
         is_bnd_arr = np.isin(runs_arr, [4, 6])
 
-    if 'extras_category' in df.columns:
-        is_dot_arr = (runs_arr == 0) & (df['extras_category'].values == 'None')
+    if 'is_dot_ball' in df.columns:
+        is_dot_arr = df['is_dot_ball'].values.astype(bool)
     else:
-        is_dot_arr = (runs_arr == 0)
+        is_dot_arr = is_legal_arr & (runs_arr == 0)
 
     grp = df.groupby(['match_id', 'innings'], sort=False)
 
@@ -117,15 +117,15 @@ def build_innings_context(bbb_df: pd.DataFrame) -> pd.DataFrame:
             out_wickets_12_del[start + i] = np.sum(wkt_int[lb_del:i])
         out_cluster_del[start:end] = out_wickets_12_del[start:end] >= 2
 
-        # Legal ball window (last 12 legal balls)
-        # Find indices of previous deliveries that were legal balls
+        # Legal ball window (last 12 legal balls, capturing wickets/boundaries/runs on extras within the span)
         legal_indices = []
         for i in range(length):
             if len(legal_indices) > 0:
                 recent_legal = legal_indices[-12:]
-                out_wickets_12_leg[start + i] = np.sum(wkt_int[recent_legal])
-                out_runs_12_leg[start + i] = np.sum(runs[recent_legal])
-                out_bnd_12_leg[start + i] = np.sum(is_bnd[recent_legal])
+                win_start = recent_legal[0]
+                out_wickets_12_leg[start + i] = np.sum(wkt_int[win_start:i])
+                out_runs_12_leg[start + i] = np.sum(runs[win_start:i])
+                out_bnd_12_leg[start + i] = np.sum(is_bnd[win_start:i])
                 out_dots_12_leg[start + i] = np.sum(is_dot[recent_legal])
             if is_legal[i]:
                 legal_indices.append(i)

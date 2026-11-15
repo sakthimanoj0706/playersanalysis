@@ -214,7 +214,7 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("### 📋 Platform Metadata")
     st.caption("**Framework:** V3 Joint Performance & Pressure")
-    st.caption("**Universal Roster:** 1,118 Players Classified")
+    st.caption("**Universal Roster:** 1,100 Players Classified")
     st.caption("**RR 2026 Data:** 16 Matches (3,788 Balls)")
     st.caption("**Auction Horizon:** IPL 2027 Mini-Auction")
     st.markdown("---")
@@ -276,15 +276,18 @@ if section == "Section 1: Universal Player Intelligence":
             st.warning("Top 10 Batters data not loaded.")
 
         st.markdown("""
-        > **Mandatory Provisional Disclosure:** *"Rankings are provisional. Batter ranks 5, 6, 9 and 10 are sensitive to scoring weights. The pressure classification remains heuristic and position-proxy based. The new score has not yet undergone independent out-of-time validation."*
+        > **Mandatory Provisional Disclosure:** *"Rankings are provisional. Batter ranks 1–5 are robust across all 5 weight configurations, while batter ranks 6–10 are sensitive to scoring weights. The pressure classification uses the calibrated pre-delivery state heuristic (`V3.2_EGM_CALIBRATED_HEURISTIC`). The new score has not yet undergone independent out-of-time validation."*
 
         **Key Insights (Canonical `TOP_10_BATTERS.csv`):**
-        - **Tilak Varma (#1, ID `7897`, Score 94.29):** Crisis SR 196.67 vs 144.47 normal (1.361x maintenance ratio) across 60 crisis balls / 18 matches, 95% CI [157.62, 251.16].
-        - **Matthew Wade (#2, ID `796`, Score 77.35):** High-leverage finishing specialist with 172.00 crisis strike rate vs 144.49 normal (1.190x maintenance) across 50 balls / 15 matches, 95% CI [105.70, 213.93].
-        - **MS Dhoni (#8, ID `8`, Score 62.51):** Deepest crisis sample in the cohort (133 crisis balls across 35 matches), striking at 154.89 under collapse conditions, 95% CI [119.66, 187.59].
-        - **Weight-Sensitive Ranks & Iftikhar Ahmed (#9, ID `3056`, Score 62.38):** Batter ranks **#5 Jaker Ali Anik**, **#6 Abdul Samad**, **#9 Iftikhar Ahmed**, and **#10 Jitesh Sharma** are flagged `RANKING_SENSITIVE_TO_WEIGHTS`. Iftikhar Ahmed is additionally flagged `CRISIS_SR_BELOW_COHORT_MEAN` (crisis SR 127.50 vs eligible cohort mean 140.20, $-12.70$); he reaches #9 via positive maintenance (`1.054x` -> `20.95 pts`) and ceiling match-cluster consistency (`0.5497` -> `20.00 pts`).
-        - **Gated Exclusion:** Tailenders (e.g., Gudakesh Motie, Akeal Hosein) are excluded from the batting leaderboard because their role is not `BAT_SPECIALIST` or `BAT_PRIMARY_AR`.
+        - **Ashutosh Sharma (#1, ID `8101`, Score 93.88):** Crisis SR 168.92 vs 125.58 normal (1.345x maintenance ratio) across 148 crisis balls / 17 matches, 95% CI [142.34, 198.41].
+        - **Ramandeep Singh (#2, ID `20006`, Score 87.73):** 164.35 crisis strike rate vs 125.64 normal (1.308x maintenance) across 115 crisis balls / 22 matches, 95% CI [128.43, 200.00].
+        - **Shreyas Iyer (#3, ID `3647`, Score 86.82) & Jos Buttler (#5, ID `813`, Score 80.62):** Elite top/middle-order anchors who accelerate under collapse pressure (170.77 and 168.00 crisis SR, with 1.126x and 1.085x maintenance over their high normal baselines).
+        - **MS Dhoni (#8, ID `8`, Score 75.85) & Suryakumar Yadav (#10, ID `1699`, Score 75.35):** High-volume crisis performers (239 and 128 crisis balls respectively) with 149.37 and 165.62 crisis strike rates. Every single Top-10 batter exceeds the eligible cohort mean crisis SR of 130.13 (0 anomaly flags).
         """)
+        if 'top_bat' in data and not data['top_bat'].empty and 'component_breakdown_explanation' in data['top_bat'].columns:
+            with st.expander("🔍 Individual Selection Rationales — Top 10 Batters (Deliverable 3f)"):
+                for _, r in data['top_bat'].head(10).iterrows():
+                    st.markdown(f"- **#{int(r['rank'])} {r['player_name']} (`ID={int(r['canonical_player_id'])}`, `{r['v3_role']}`):** `{r['component_breakdown_explanation']}` (`{r['ranking_sensitivity_status']}`)")
 
     # 2. Top 10 Bowlers
     with u_tab2:
@@ -323,11 +326,15 @@ if section == "Section 1: Universal Player Intelligence":
 
         st.markdown("""
         **Key Insights (Canonical `TOP_10_BOWLERS.csv`, `MIN_NORMAL_BALLS = 100`):**
-        - **Matheesha Pathirana (#1, ID `8661`, Score 84.45):** 578 defensive crisis deliveries and 122 normal deliveries across 31 matches, 36.51% crisis dot rate vs 38.52% normal (0.948x maintenance), 95% CI [32.03%, 40.96%].
-        - **Keshav Maharaj (#2, ID `1944`, Score 68.40):** 225 crisis balls and 112 normal balls across 16 matches, elevating dot percentage from 31.25% normal to 33.33% under pressure (1.067x maintenance).
-        - **Arshdeep Singh (#4, ID `6464`, Score 64.66) & Ravi Bishnoi (#5, ID `7503`, Score 62.40):** High-volume tournament spearheads with 2,069 and 936 crisis balls respectively and verified normal baselines (149 and 401 normal balls).
-        - **Normal-Baseline Reliability Gate (`MIN_NORMAL_BALLS = 100`):** Bowlers with fewer than 100 normal-pressure legal deliveries (e.g., Mark Adair [82], Trent Boult [64], Mark Wood [62], Obed McCoy [46], Craig Young [36]) are flagged `BOWLER_NORMAL_BASELINE_INSUFFICIENT` and excluded from composite rankings so small normal denominators cannot inflate maintenance ratios.
+        - **Mohammed Shami (#1, ID `1566`, Score 75.31):** 875 defensive crisis deliveries and 121 normal deliveries across 48 crisis matches, elevating dot-ball percentage from 33.06% normal to 45.83% under pressure (1.386x maintenance), 5.71% shrunk wicket rate, 95% CI [42.06%, 49.49%].
+        - **Obed McCoy (#2, ID `4837`, Score 73.15) & Joshua Little (#3, ID `4807`, Score 70.58):** High-leverage strike pacers combining positive dot-ball maintenance (1.253x and 1.171x) with elite shrunk crisis wicket rates (7.15% and 6.54%).
+        - **Trent Boult (#4, ID `2320`, Score 69.31), Haris Rauf (#5, ID `7364`, Score 67.48) & Tim Southee (#6, ID `278`, Score 67.42):** High-workload tournament spearheads (1,131, 692, and 531 crisis balls) with verified ≥100 normal-ball baselines.
+        - **Normal-Baseline Reliability Gate (`MIN_NORMAL_BALLS = 100`):** Bowlers with fewer than 100 normal-pressure legal deliveries (464 of 596 bowlers) are flagged `BOWLER_NORMAL_BASELINE_INSUFFICIENT` and excluded from composite rankings so small normal denominators cannot inflate maintenance ratios.
         """)
+        if 'top_bowl' in data and not data['top_bowl'].empty and 'component_breakdown_explanation' in data['top_bowl'].columns:
+            with st.expander("🔍 Individual Selection Rationales — Top 10 Bowlers (Deliverable 3f)"):
+                for _, r in data['top_bowl'].head(10).iterrows():
+                    st.markdown(f"- **#{int(r['rank'])} {r['player_name']} (`ID={int(r['canonical_player_id'])}`, `{r['v3_role']}`):** `{r['component_breakdown_explanation']}` (`{r['ranking_sensitivity_status']}`)")
 
     # 3. Performance Breakdown
     with u_tab3:
@@ -335,7 +342,7 @@ if section == "Section 1: Universal Player Intelligence":
         col_s1, col_s2 = st.columns(2)
         with col_s1:
             if 'all_bat' in data and not data['all_bat'].empty:
-                el_bat = data['all_bat'][data['all_bat']['sample_eligible'] == True].copy()
+                el_bat = data['all_bat'][data['all_bat']['final_eligibility'] == 'ELIGIBLE'].copy()
                 fig_b = px.scatter(
                     el_bat,
                     x='norm_sr',
@@ -343,8 +350,8 @@ if section == "Section 1: Universal Player Intelligence":
                     size='crisis_balls',
                     color='v3_role',
                     hover_name='player_name',
-                    hover_data=['crisis_matches', 'batting_pri'],
-                    title="Batters: Crisis Strike Rate vs Normal Baseline",
+                    hover_data=['crisis_matches', 'provisional_fixed_weight_score'],
+                    title="Batters: Crisis Strike Rate vs Normal Baseline (Eligible Cohort)",
                     labels={'norm_sr': 'Normal Baseline Strike Rate', 'crisis_sr': 'Crisis Strike Rate'},
                     height=450
                 )
@@ -353,7 +360,7 @@ if section == "Section 1: Universal Player Intelligence":
 
         with col_s2:
             if 'all_bowl' in data and not data['all_bowl'].empty:
-                el_bowl = data['all_bowl'][data['all_bowl']['sample_eligible'] == True].copy()
+                el_bowl = data['all_bowl'][data['all_bowl']['final_eligibility'] == 'ELIGIBLE'].copy()
                 fig_w = px.scatter(
                     el_bowl,
                     x='norm_dot_pct',
@@ -361,12 +368,12 @@ if section == "Section 1: Universal Player Intelligence":
                     size='crisis_balls',
                     color='v3_role',
                     hover_name='player_name',
-                    hover_data=['crisis_matches', 'bowling_pri'],
-                    title="Bowlers: Crisis Dot% vs Normal Baseline",
+                    hover_data=['crisis_matches', 'provisional_fixed_weight_score'],
+                    title="Bowlers: Crisis Dot% vs Normal Baseline (Eligible Cohort)",
                     labels={'norm_dot_pct': 'Normal Baseline Dot %', 'crisis_dot_pct': 'Crisis Dot %'},
                     height=450
                 )
-                fig_w.add_shape(type="line", line=dict(dash='dash', color='#94A3B8'), x0=15, y0=15, x1=50, y1=50)
+                fig_w.add_shape(type="line", line=dict(dash='dash', color='#94A3B8'), x0=15, y0=15, x1=55, y1=55)
                 st.plotly_chart(fig_w, use_container_width=True)
 
     # 4. Role Classification & Eligibility
@@ -390,51 +397,68 @@ if section == "Section 1: Universal Player Intelligence":
 
     # 5. Pressure Methodology
     with u_tab5:
-        st.markdown("### 📐 Dual Pre-Delivery Pressure Models (`PROVISIONAL_POSITION_PROXY_HEURISTIC`)")
+        st.markdown("### 📐 Dual Pre-Delivery Pressure Models (`V3.2_EGM_CALIBRATED_HEURISTIC`)")
         st.markdown("""
         **Zero Target Leakage Guarantee:** All situational features are observable strictly *before* the delivery is bowled.
         
-        - **Batting Crisis Score (0 to 10):**
-          - Wickets fallen before delivery / batting position proxy (0 to 3.5 pts)
-          - Recent 12-ball cluster collapse (0 to 2.0 pts)
-          - Batter novelty in first 5 balls faced (0 to 1.5 pts)
-          - Dot-ball stagnation in last 12 balls (0 to 1.5 pts)
-          - Innings phase multiplier: Death = 1.25x, Middle = 1.0x, Powerplay = 0.95x
+        - **Batting Crisis Score (0 to 10; Crisis `> 5.2`, Normal `<= 3.5`):**
+          - Wickets fallen before delivery: `clip(0.50 * wickets_fallen_before, 0, 3.5)` pts
+          - Recent 12-legal-ball cluster collapse: `2.2` pts (`>=2` wickets) or `1.0` pt (`1` wicket)
+          - Batter entry vulnerability in first 6 balls faced: `1.5 * (1 - balls_faced / 6)` pts
+          - Dot-ball stagnation in last 12 legal balls: `clip(0.35 * consecutive_dots + 0.90 * (dots_12 / 12), 0, 1.8)` pts
+          - Innings phase multiplier: Death = `1.25x`, Middle = `1.05x`, Powerplay = `1.00x`
         
-        - **Bowling Defensive Pressure Score (0 to 10):**
-          - Opponent wickets in hand (0.2 to 3.0 pts)
-          - Phase leverage / field restrictions: Death = 3.0, Powerplay = 2.0, Middle = 1.0
-          - Opponent boundary momentum in last 12 balls (0 to 2.5 pts)
-          - Strike-rotation / lack-of-dots pressure (0 to 1.5 pts)
+        - **Bowling Defensive Pressure Score (0 to 10; Crisis `> 5.5`, Normal `<= 4.5`):**
+          - Opponent wickets in hand: `2.2` (`>=8`), `1.4` (`>=6`), `0.8` (`>=4`), `0.2` (`<4`) pts
+          - Phase field-restriction leverage: Death = `3.2`, Powerplay = `2.6`, Middle = `0.8` pts
+          - Opponent boundary momentum in last 12 legal balls: `2.8` (`>=3`), `1.8` (`2`), `0.7` (`1`), `0.0` (`0`) pts
+          - Strike-rotation / lack-of-dots pressure: `0.8 * (1 - dots_12 / 12)` pts
           
         **Documented Limitations (`PROVISIONAL_POSITION_PROXY_HEURISTIC`):**
         1. Not a fully calibrated match-leverage or win-probability-added (WPA) model.
-        2. Batting position (`max(0, batting_position - 2)`) is a proxy for wickets fallen, not direct evidence of scoreboard leverage.
-        3. Second-innings target, required run rate (RRR), and chase leverage are not yet integrated due to categorical extras encoding (`extras1_runs` codes 1–7).
-        4. Positional compression compresses defensive pressure into high-pressure tiers for bowlers operating primarily in Powerplay and Death phases, requiring the explicit `MIN_NORMAL_BALLS = 100` eligibility gate.
+        2. Second-innings target, required run rate (RRR), and chase leverage are not yet integrated due to categorical extras encoding (`extras1_runs` codes 1–7).
+        3. Bowlers require the explicit `MIN_NORMAL_BALLS = 100` eligibility gate to ensure normal-baseline sufficiency.
         """)
 
     # 6. Reliability & Uncertainty
     with u_tab6:
         st.markdown("### 🔬 Statistical Reliability & Bootstrap Uncertainty")
         st.markdown("""
-        **Match-Clustered Resampling:** 500 bootstrap iterations per player resampling entire match clusters to preserve intra-match serial dependence.
+        **Match-Clustered Resampling:** 2,000 bootstrap iterations per player resampling entire match clusters (`random_state=42`) to preserve intra-match serial dependence.
         """)
-        if 'top_bat' in data and not data['top_bat'].empty:
-            st.markdown("#### Batter 95% Confidence Intervals (Crisis Strike Rate)")
-            fig_ci = go.Figure()
-            for _, r in data['top_bat'].head(10).iterrows():
-                fig_ci.add_trace(go.Scatter(
-                    x=[r['ci_lower'], r['crisis_sr'], r['ci_upper']],
-                    y=[r['player_name'], r['player_name'], r['player_name']],
-                    mode='lines+markers',
-                    marker=dict(size=[6, 12, 6], color=['#EA1A85', '#0B1B3D', '#EA1A85']),
-                    line=dict(color='#0B1B3D', width=2),
-                    name=r['player_name'],
-                    showlegend=False
-                ))
-            fig_ci.update_layout(title="Top 10 Batters: Point Estimate and 95% Match-Clustered Bootstrap CI", xaxis_title="Crisis Strike Rate", height=400)
-            st.plotly_chart(fig_ci, use_container_width=True)
+        col_ci1, col_ci2 = st.columns(2)
+        with col_ci1:
+            if 'top_bat' in data and not data['top_bat'].empty:
+                st.markdown("#### Top 10 Batters: 95% Confidence Intervals (Crisis SR)")
+                fig_ci = go.Figure()
+                for _, r in data['top_bat'].head(10).iterrows():
+                    fig_ci.add_trace(go.Scatter(
+                        x=[r['ci_lower'], r['crisis_sr'], r['ci_upper']],
+                        y=[r['player_name'], r['player_name'], r['player_name']],
+                        mode='lines+markers',
+                        marker=dict(size=[6, 12, 6], color=['#EA1A85', '#0B1B3D', '#EA1A85']),
+                        line=dict(color='#0B1B3D', width=2),
+                        name=r['player_name'],
+                        showlegend=False
+                    ))
+                fig_ci.update_layout(title="Top 10 Batters: Point Estimate & 95% Match-Clustered Bootstrap CI", xaxis_title="Crisis Strike Rate", height=420)
+                st.plotly_chart(fig_ci, use_container_width=True)
+        with col_ci2:
+            if 'top_bowl' in data and not data['top_bowl'].empty:
+                st.markdown("#### Top 10 Bowlers: 95% Confidence Intervals (Crisis Dot %)")
+                fig_ci_b = go.Figure()
+                for _, r in data['top_bowl'].head(10).iterrows():
+                    fig_ci_b.add_trace(go.Scatter(
+                        x=[r['ci_lower'], r['crisis_dot_pct'], r['ci_upper']],
+                        y=[r['player_name'], r['player_name'], r['player_name']],
+                        mode='lines+markers',
+                        marker=dict(size=[6, 12, 6], color=['#EA1A85', '#0B1B3D', '#EA1A85']),
+                        line=dict(color='#0B1B3D', width=2),
+                        name=r['player_name'],
+                        showlegend=False
+                    ))
+                fig_ci_b.update_layout(title="Top 10 Bowlers: Point Estimate & 95% Match-Clustered Bootstrap CI", xaxis_title="Crisis Dot Ball %", height=420)
+                st.plotly_chart(fig_ci_b, use_container_width=True)
 
 
 # ════════════════════════════════════════════════════════════════════════════

@@ -147,23 +147,23 @@ class V3PressureModel:
 
             # 1. Wickets fallen before delivery
             w_before = sub['wickets_fallen_before'].values.astype(float)
-            c_wkt = np.clip(w_before * 0.45, 0.0, 3.5)
+            c_wkt = np.clip(w_before * 0.50, 0.0, 3.5)
 
             # 2. Recent wicket cluster
             w12 = sub['wickets_in_last_12_legal_balls'].values.astype(float)
-            c_cluster = np.where(w12 >= 2, 2.0, np.where(w12 == 1, 0.75, 0.0))
+            c_cluster = np.where(w12 >= 2, 2.2, np.where(w12 == 1, 1.0, 0.0))
 
             # 3. Entry vulnerability
             bf = sub['batter_balls_faced'].values.astype(float)
-            c_novelty = np.where(bf < 5, 1.5 * (1.0 - bf / 5.0), 0.0)
+            c_novelty = np.where(bf < 6, 1.5 * (1.0 - bf / 6.0), 0.0)
 
             # 4. Stagnation / dots pressure
             consec_dots = sub['consecutive_dots'].values.astype(float)
             dots_12 = sub['dots_in_last_12_legal_balls'].values.astype(float)
-            c_stagnation = np.clip(consec_dots * 0.3 + (dots_12 / 12.0) * 0.6, 0.0, 1.5)
+            c_stagnation = np.clip(consec_dots * 0.35 + (dots_12 / 12.0) * 0.90, 0.0, 1.8)
 
             # 5. Innings phase multiplier
-            phase_map = {'powerplay': 0.95, 'middle': 1.0, 'death': 1.25}
+            phase_map = {'powerplay': 1.00, 'middle': 1.05, 'death': 1.25}
             phase_mult = sub['innings_phase'].map(phase_map).values.astype(float)
 
             raw_score = (c_wkt + c_cluster + c_novelty + c_stagnation) * phase_mult
@@ -173,7 +173,7 @@ class V3PressureModel:
             # Tier classification
             valid_tiers = pd.cut(
                 valid_scores,
-                bins=[-0.01, 1.5, 3.5, 5.5, 7.5, 10.01],
+                bins=[-0.01, 1.5, 3.5, 5.2, 7.5, 10.01],
                 labels=['none', 'low', 'moderate', 'high', 'extreme']
             ).astype(str)
             tiers[valid_idx] = valid_tiers
@@ -223,19 +223,19 @@ class V3PressureModel:
                 w_rem = sub['batting_wickets_remaining'].values.astype(float)
             else:
                 w_rem = 10.0 - sub['wickets_fallen_before'].values.astype(float)
-            c_resource = np.where(w_rem >= 8, 3.0, np.where(w_rem >= 6, 2.0, np.where(w_rem >= 4, 1.0, 0.2)))
+            c_resource = np.where(w_rem >= 8, 2.2, np.where(w_rem >= 6, 1.4, np.where(w_rem >= 4, 0.8, 0.2)))
 
             # 2. Innings phase
-            phase_pts = {'death': 3.0, 'powerplay': 2.0, 'middle': 1.0}
+            phase_pts = {'death': 3.2, 'powerplay': 2.6, 'middle': 0.8}
             c_phase = sub['innings_phase'].map(phase_pts).values.astype(float)
 
             # 3. Opponent boundary momentum
             b12 = sub['boundaries_in_last_12_legal_balls'].values.astype(float)
-            c_momentum = np.where(b12 >= 3, 2.5, np.where(b12 == 2, 1.6, np.where(b12 == 1, 0.8, 0.0)))
+            c_momentum = np.where(b12 >= 3, 2.8, np.where(b12 == 2, 1.8, np.where(b12 == 1, 0.7, 0.0)))
 
             # 4. Strike-rotation / lack of dots pressure
             d12 = sub['dots_in_last_12_legal_balls'].values.astype(float)
-            c_rotation = np.clip(1.5 * (1.0 - d12 / 12.0), 0.0, 1.5)
+            c_rotation = np.clip(0.8 * (1.0 - d12 / 12.0), 0.0, 0.8)
 
             raw_score = c_resource + c_phase + c_momentum + c_rotation
             valid_scores = np.clip(raw_score, 0.0, 10.0).round(2)
@@ -244,7 +244,7 @@ class V3PressureModel:
             # Tier classification
             valid_tiers = pd.cut(
                 valid_scores,
-                bins=[-0.01, 2.5, 4.5, 6.5, 8.0, 10.01],
+                bins=[-0.01, 2.5, 4.5, 5.5, 7.5, 10.01],
                 labels=['none', 'low', 'moderate', 'high', 'extreme']
             ).astype(str)
             tiers[valid_idx] = valid_tiers

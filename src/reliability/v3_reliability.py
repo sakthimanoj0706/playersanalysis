@@ -262,29 +262,30 @@ class V3ReliabilityEngine:
             Zero-exposure rows remain NaN (never populated with synthetic rates).
         """
         # Determine eligible prior population
+        obs_float = pd.to_numeric(observed_vals, errors='coerce').astype(float)
         if eligible_mask is not None:
-            prior_mask = (sample_sizes > 0) & observed_vals.notna() & ~np.isinf(observed_vals) & eligible_mask
+            prior_mask = (sample_sizes > 0) & obs_float.notna() & ~np.isinf(obs_float) & eligible_mask
         else:
-            prior_mask = (sample_sizes > 0) & observed_vals.notna() & ~np.isinf(observed_vals)
+            prior_mask = (sample_sizes > 0) & obs_float.notna() & ~np.isinf(obs_float)
 
         if prior_mask.sum() == 0:
-            prior_mask = (sample_sizes > 0) & observed_vals.notna() & ~np.isinf(observed_vals)
+            prior_mask = (sample_sizes > 0) & obs_float.notna() & ~np.isinf(obs_float)
 
         if prior_mask.sum() == 0:
             pop_mean = 130.0  # Safe default if entirely empty
             prior_pop_count = 0
         else:
-            pop_mean = float(observed_vals[prior_mask].mean())
+            pop_mean = float(obs_float[prior_mask].mean())
             prior_pop_count = int(prior_mask.sum())
 
         w = sample_sizes / (sample_sizes + k_prior)
         # Positive exposure rows are shrunk; zero-exposure rows stay NaN
         shrunk = np.where(
-            sample_sizes > 0,
-            w * observed_vals + (1.0 - w) * pop_mean,
+            (sample_sizes > 0) & obs_float.notna(),
+            w * obs_float + (1.0 - w) * pop_mean,
             np.nan
         )
-        res_series = pd.Series(shrunk, index=observed_vals.index)
+        res_series = pd.Series(shrunk, index=observed_vals.index, dtype=float)
 
         metadata = {
             'shrinkage_method': 'FIXED_K_NORMAL_SHRINKAGE',

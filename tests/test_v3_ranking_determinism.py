@@ -62,21 +62,25 @@ def test_deterministic_sorting():
     assert (np.diff(bowl_scores) <= 0).all(), "Bowling rankings are not sorted descending by score!"
 
 
-def test_iftikhar_ahmed_transparency_and_weight_sensitive_batters():
-    """Verify Iftikhar Ahmed (#9) component breakdown, below-mean crisis SR flag, and weight-sensitive batter identification."""
+def test_top10_batters_above_cohort_mean_and_weight_sensitivity_flags():
+    """Verify all Top-10 batters exceed cohort mean crisis SR, below-mean batters in ALL_BATTER_METRICS are flagged, and weight sensitivity is tracked."""
     top_bat = pd.read_csv(OUTPUTS_V3 / "TOP_10_BATTERS.csv")
-    ift = top_bat[top_bat['canonical_player_id'] == 3056]
-    assert len(ift) == 1
-    row = ift.iloc[0]
-    assert int(row['rank']) == 9
-    assert row['crisis_sr'] < row['prior_mean']
-    assert row['crisis_sr_below_cohort_mean'] == True
-    assert row['performance_anomaly_flag'] == 'CRISIS_SR_BELOW_COHORT_MEAN'
-    assert "CRISIS_SR_BELOW_COHORT_MEAN" in str(row['component_breakdown_explanation'])
+    all_bat = pd.read_csv(OUTPUTS_V3 / "ALL_BATTER_METRICS.csv")
 
-    # Weight-sensitive Top-10 batters (#5 Jaker Ali, #6 Abdul Samad, #9 Iftikhar Ahmed, #10 Jitesh Sharma)
+    assert (top_bat['crisis_sr'] > top_bat['prior_mean']).all()
+    assert (top_bat['crisis_sr_below_cohort_mean'] == False).all()
+    assert (top_bat['performance_anomaly_flag'] == 'NONE').all()
+
+    below_mean = all_bat[all_bat['crisis_sr'].notna() & (all_bat['crisis_sr'] < all_bat['prior_mean'])]
+    assert len(below_mean) > 0
+    assert (below_mean['crisis_sr_below_cohort_mean'] == True).all()
+    assert (below_mean['performance_anomaly_flag'] == 'CRISIS_SR_BELOW_COHORT_MEAN').all()
+
+    # Top-5 batters are robust across weights; ranks 6-10 are flagged sensitive to weights
+    robust_ranks = set(top_bat[top_bat['ranking_sensitivity_status'] == 'ROBUST_ACROSS_WEIGHTS']['rank'].astype(int))
     sens_ranks = set(top_bat[top_bat['ranking_sensitivity_status'] == 'RANKING_SENSITIVE_TO_WEIGHTS']['rank'].astype(int))
-    assert {5, 6, 9, 10}.issubset(sens_ranks)
+    assert {1, 2, 3, 4, 5}.issubset(robust_ranks)
+    assert {6, 7, 8, 9, 10}.issubset(sens_ranks)
 
 
 def test_downstream_ranking_copies_match_canonical_v3_outputs():

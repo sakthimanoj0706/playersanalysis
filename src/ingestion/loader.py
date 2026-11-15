@@ -99,7 +99,7 @@ def load_all_data() -> Dict[str, pd.DataFrame]:
     # ── matches (parse match_date) ───────────────────────────────────
     dataframes['matches'] = pd.read_csv(MATCHES_CSV)
     dataframes['matches']['match_date'] = pd.to_datetime(
-        dataframes['matches']['match_date'], dayfirst=True, errors='coerce',
+        dataframes['matches']['match_date'], format='mixed', dayfirst=True, errors='coerce',
     )
 
     # ── playing_eleven ───────────────────────────────────────────────
@@ -118,7 +118,7 @@ def load_all_data() -> Dict[str, pd.DataFrame]:
     if 'match_date' in dataframes['ball_by_ball'].columns:
         dataframes['ball_by_ball']['match_date'] = pd.to_datetime(
             dataframes['ball_by_ball']['match_date'],
-            dayfirst=True, errors='coerce',
+            format='mixed', dayfirst=True, errors='coerce',
         )
 
     # ── Validate row counts ──────────────────────────────────────────
