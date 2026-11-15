@@ -120,9 +120,35 @@ def describe_pressure_proxy_trace(b3_state: Dict[str, Any]) -> Dict[str, Any]:
             BOWLING_PROXY_PRIMARY_NAME: {
                 "aliases": ["BOWLING_SCORING_THREAT", "bowl_pressure"],
                 "role_applies_to": "Bowler delivering each legal ball (pre-delivery state).",
-                "formula": "F_emp(Ridge_10(alpha=10.0) predicted expected batter runs per 100b from pre-delivery innings, phase, overid, balls_rem, wickets_before, log(wickets_rem), venue_season)",
-                "what_it_measures": "Expected pre-delivery batter scoring rate given match stage and resource state; higher values represent tougher scoring environments for the bowler.",
-                "inputs_used": ["innings", "phase", "overid", "balls_rem_before", "wkts_before (wickets_before)", "venue_season"],
+                "formula": "F_emp(Ridge(alpha=10.0) predicted expected batter runs per 100b from _bowl_design_matrix())",
+                "what_it_measures": (
+                    "Expected pre-delivery batter scoring rate given innings, phase (powerplay/middle/death), "
+                    "T20I format indicator, wickets remaining / 10, balls remaining / 120, and phase/resource "
+                    "interactions; higher values represent tougher scoring environments for the bowler."
+                ),
+                "inputs_used": [
+                    "phase (powerplay, middle, death)",
+                    "innings (innings == 2)",
+                    "is_t20i",
+                    "wkts_rem_before (divided by 10)",
+                    "balls_rem_before (divided by 120)",
+                    "phase/innings/resource interactions",
+                ],
+                "design_matrix_terms": [
+                    "pp",
+                    "mid",
+                    "death",
+                    "inn2",
+                    "fmt",
+                    "wf",
+                    "u",
+                    "pp * wf",
+                    "mid * wf",
+                    "death * wf",
+                    "death * (1 - wf)",
+                    "inn2 * u",
+                    "death * u",
+                ],
                 "missing_state_variables": ["exact score", "target score", "runs_required", "required_run_rate", "match win-probability leverage"],
                 "cannot_distinguish": "Cannot distinguish a defending bowler protecting a 10-run cushion in the final over from defending 35 runs in the final over.",
                 "zero_leakage": True,

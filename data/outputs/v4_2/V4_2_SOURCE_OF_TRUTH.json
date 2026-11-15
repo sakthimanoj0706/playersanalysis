@@ -2,6 +2,8 @@
   "model_version": "V4.2",
   "release_status": "V4.2 PROVISIONAL \u2014 RESOURCE STRESS",
   "git_head_sha_at_generation": "f68c2e3c23e183af720abe66bdd7d90d576a93fe",
+  "ranking_artifacts_committed_in_sha": "7762786f0f91c086d924642f885bf1f1f3133eda",
+  "provenance_note": "V4.2 ranking CSVs were generated from checkout f68c2e3c23e183af720abe66bdd7d90d576a93fe and committed in 7762786f0f91c086d924642f885bf1f1f3133eda. Subsequent judge-readiness documentation commits do not recompute or alter any ranking CSVs or SHA-256 hashes.",
   "origin_main_sha": "c7579ed0473cd5674360b60880a69528e6a4c4c7",
   "branch": "fix/v4-2-statistical-corrections-20261115",
   "chase_score_reconstruction_blocked": true,
@@ -64,15 +66,30 @@
           "bowl_pressure"
         ],
         "role_applies_to": "Bowler delivering each legal ball (pre-delivery state).",
-        "formula": "F_emp(Ridge_10(alpha=10.0) predicted expected batter runs per 100b from pre-delivery innings, phase, overid, balls_rem, wickets_before, log(wickets_rem), venue_season)",
-        "what_it_measures": "Expected pre-delivery batter scoring rate given match stage and resource state; higher values represent tougher scoring environments for the bowler.",
+        "formula": "F_emp(Ridge(alpha=10.0) predicted expected batter runs per 100b from _bowl_design_matrix())",
+        "what_it_measures": "Expected pre-delivery batter scoring rate given innings, phase (powerplay/middle/death), T20I format indicator, wickets remaining / 10, balls remaining / 120, and phase/resource interactions; higher values represent tougher scoring environments for the bowler.",
         "inputs_used": [
-          "innings",
-          "phase",
-          "overid",
-          "balls_rem_before",
-          "wkts_before (wickets_before)",
-          "venue_season"
+          "phase (powerplay, middle, death)",
+          "innings (innings == 2)",
+          "is_t20i",
+          "wkts_rem_before (divided by 10)",
+          "balls_rem_before (divided by 120)",
+          "phase/innings/resource interactions"
+        ],
+        "design_matrix_terms": [
+          "pp",
+          "mid",
+          "death",
+          "inn2",
+          "fmt",
+          "wf",
+          "u",
+          "pp * wf",
+          "mid * wf",
+          "death * wf",
+          "death * (1 - wf)",
+          "inn2 * u",
+          "death * u"
         ],
         "missing_state_variables": [
           "exact score",

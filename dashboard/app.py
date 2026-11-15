@@ -279,6 +279,13 @@ if section == "Section 1: Universal Player Intelligence":
             "Ordered by Claim C REML `eb_delta` (units: `BATTER_RUNS_PER_100_LEGAL_BALLS`, complete FWL `span=0.75`). "
             "Includes both total `eb_delta` and excess above population stress slope (`eb_vs_pop_mean_delta`), 5 uncertainty measures, match-level consistency, and dismissal-risk trade-offs."
         )
+        st.info(
+            "**How to read `EB Δ` vs `EB vs Pop μ₀`:** `EB Δ` is the absolute estimated player-specific proxy-stress effect "
+            "(for batters, REML pooled average `μ₀ = -36.12` runs/100b). `EB vs Pop μ₀ = EB Δ − μ₀` measures how much less "
+            "each player deteriorates relative to the pooled eligible-batter stress average (e.g., David Miller `EB Δ = -29.39` "
+            "means `-29.39 - (-36.12) = +6.73` above pooled average, while his absolute effect remains negative). "
+            "`P(Top 10)` is bootstrap Top-10 membership probability; `P(Δ>0)` is the probability of a positive absolute slope (distinct from `P(Top 10)`)."
+        )
 
         bat_s = short_df[short_df['role'] == 'batter'].copy() if not short_df.empty else pd.DataFrame()
         if not bat_s.empty:
@@ -311,8 +318,15 @@ if section == "Section 1: Universal Player Intelligence":
     with u_tab2:
         st.markdown("### 🎯 Universal Top 10 Bowlers Under Scoring Threat (`PROVISIONAL`)")
         st.caption(
-            "Metric: `BATTER_RUNS_CONCEDED_SUPPRESSION_PER_100_LEGAL_BALLS_PROXY` (+ = fewer batter-credited runs conceded than expectation; "
-            "not full economy with wides/byes/leg-byes). Ranked purely by Claim C REML `eb_delta` with secondary dot-ball % and wicket % effects shown side-by-side."
+            "Metric: `BATTER_RUNS_CONCEDED_SUPPRESSION_PER_100_LEGAL_BALLS_PROXY` (`-100 * batter_runs / legal_ball`). "
+            "These are negative batter-run observations per 100 legal balls, NOT full runs conceded (multi-run wides, byes, leg-byes, and other extras are unavailable). "
+            "Ranked purely by Claim C REML `eb_delta` with secondary dot-ball % and wicket % effects shown side-by-side."
+        )
+        st.info(
+            "**How to read `EB Δ` vs `EB vs Pop μ₀`:** `EB Δ` is the absolute estimated player-specific proxy-stress effect "
+            "(for bowlers, REML pooled average `μ₀ = -50.88` proxy units/100b). `EB vs Pop μ₀ = EB Δ − μ₀` measures relative "
+            "resilience compared with the pooled eligible-bowler stress deterioration (e.g., Matheesha Pathirana `EB Δ = -34.95` "
+            "gives `+15.94` vs `μ₀`, while his absolute effect remains negative). Do not confuse `P(Δ>0)` (positive absolute effect) with `P(Top 10)`."
         )
 
         bowl_s = short_df[short_df['role'] == 'bowler'].copy() if not short_df.empty else pd.DataFrame()
@@ -327,7 +341,7 @@ if section == "Section 1: Universal Player Intelligence":
             ]].copy()
             tw_disp.columns = [
                 'Rank', 'Avg Rank', 'Player Name', 'Matches', 'High Balls', 'Low Balls', 'CS Matches',
-                'Raw Hi Saved', 'Raw Lo Saved', 'FWL Δ', 'EB Δ', 'EB vs Pop μ0',
+                'Raw Hi (-Runs/100b)', 'Raw Lo (-Runs/100b)', 'FWL Δ', 'EB Δ', 'EB vs Pop μ0',
                 'Cond CI Low', 'Cond CI High', 'Boot CI Low', 'Boot CI High',
                 'P(Δ>0)', 'Rank CI Low', 'Rank CI High', 'P(Top10)', 'MCSE',
                 'Spread Matches', 'Between-Match SD', 'Share + vs Own Normal',
@@ -416,7 +430,7 @@ if section == "Section 1: Universal Player Intelligence":
         """)
         if 'score_audit' in data and not data['score_audit'].empty:
             st.markdown("#### Match-Level Score Audit Sample (Non-DLS Margin Failures)")
-            st.dataframe(data['score_audit'][data['score_audit']['match_validation_status'] == 'NON_DLS_RUN_MARGIN_FAIL'].head(25), use_container_width=True, hide_index=True)
+            st.dataframe(data['score_audit'][data['score_audit']['match_validation_status'] == 'MARGIN_MISMATCH_BLOCKED'].head(25), use_container_width=True, hide_index=True)
 
     # 6. Model Comparison & Claim C OOT Tuning
     with u_tab6:

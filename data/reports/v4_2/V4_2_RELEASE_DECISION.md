@@ -100,7 +100,20 @@ Across the candidate Ridge grid (`5/20/60/150/asym`), Claim C OOT replication do
 
 ---
 
-## 8. Provenance
+## 8. Judge-Facing Interpretation & Consistency Guide
+
+- **Root Methodology & Player Evidence:** See [METHODOLOGY_REPORT.md](../../../METHODOLOGY_REPORT.md) for the complete 16-section judge-facing methodology and [V4_2_PLAYER_JUSTIFICATIONS.md](V4_2_PLAYER_JUSTIFICATIONS.md) for all 20 individual player justifications and exposure caveats.
+- **Why all 20 shortlisted players have negative absolute `EB Δ`:** High `BATTING_WICKET_DEPLETION_ANOMALY` and high `BOWLING_EXPECTED_SCORING_THREAT` represent tougher match environments across the entire population, producing strongly negative REML pooled stress slopes (`μ₀ = -36.12` runs/100b for batters; `μ₀ = -50.88` proxy units/100b for bowlers).
+- **Why positive `EB vs Pop μ₀ = EB Δ − μ₀` still matters for relative ranking:** `EB vs Pop μ₀` measures how much *less* each candidate deteriorates compared with the pooled eligible-player stress tax (e.g., David Miller `-29.39 - (-36.12) = +6.73`; Matheesha Pathirana `-34.95 - (-50.88) = +15.94`), ordering candidates relative to the field.
+- **Why this does NOT establish positive absolute pressure performance:** `P(Δ > 0) < 0.001` for all 20 shortlisted candidates; no player is claimed to be a statistically confirmed positive absolute pressure performer.
+- **How own-normal comparison works:** Option A Complete Penalized FWL estimates each player's continuous stress slope relative to their own player fixed effect after residualizing match, state, player, and opponent nuisance factors (`W` and `y` both residualized against `Z`).
+- **Same-match consistency vs paired high-vs-low share:** `share_matches_pos_delta_vs_normal` evaluates high-stress deliveries versus all non-high deliveries within the same match against `0`, whereas `within_match_hilo_matches` requires both P87.5+ high-stress and P12.5- low-stress balls in the same match (unavailable for Brian Bennett).
+- **Why Claim C OOT remains inconclusive:** Out-of-time (`>= 2023`) Claim C sample sizes are small (`n = 10` batters, `n = 18` bowlers) and lack chase targets/RRR, yielding `CLAIM_C_OOT_UNPREDICTABLE_UNDER_RESOURCE_STRESS`.
+- **Why individual caveats are mandatory:** Operational eligibility admits finite-sample and boundary entrants (e.g., Michael Bracewell `37` low-proxy balls, Brian Bennett missing paired `hi-vs-lo`, Craig Young `23` CS matches and rank CI `[2, 75]`) that must be read alongside `P(Top 10)` and LOMO sensitivity.
+
+---
+
+## 9. Provenance
 
 - **Branch:** `fix/v4-2-statistical-corrections-20261115`
 - **Origin Main SHA:** `c7579ed0473cd5674360b60880a69528e6a4c4c7`
