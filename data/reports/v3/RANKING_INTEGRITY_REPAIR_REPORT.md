@@ -120,44 +120,44 @@ All artificial fallbacks ($\pm 40, \pm 20, \pm 30, \text{fixed width } 80, 40$) 
 
 ## 6. Authoritative Top-10 Comparison (Before vs. After)
 
-### 6.1 Authoritative Top 10 Batters Under Pressure (V3)
-| Rank | Canonical ID | Player Name | V3 Role | Crisis Balls | Crisis SR | Maint Ratio | Prov PRI Score | 95% CI Status | CI [Low, High] |
-| :---: | :---: | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **1** | 7897 | Tilak Varma | BAT_PRIMARY_AR | 60 | 196.67 | 1.361 | **94.29** | ESTIMATED | [133.33, 260.00] |
-| **2** | 796 | Matthew Wade | BAT_SPECIALIST | 50 | 172.00 | 1.190 | **77.35** | ESTIMATED | [100.00, 240.00] |
-| **3** | 4106 | Daryl Mitchell | BAT_PRIMARY_AR | 44 | 177.27 | 1.205 | **72.55** | ESTIMATED | [94.12, 255.56] |
-| **4** | 4391 | Liam Livingstone | BAT_PRIMARY_AR | 60 | 175.00 | 1.085 | **68.92** | ESTIMATED | [93.75, 250.00] |
-| **5** | 4773 | Jaker Ali Anik | BAT_SPECIALIST | 63 | 139.68 | 1.141 | **65.13** | ESTIMATED | [88.89, 186.67] |
-| **6** | 7446 | Abdul Samad | BAT_SPECIALIST | 69 | 169.57 | 1.005 | **64.51** | ESTIMATED | [100.00, 237.50] |
-| **7** | 1077 | David Miller | BAT_SPECIALIST | 56 | 166.07 | 1.064 | **63.35** | ESTIMATED | [100.00, 233.33] |
-| **8** | 8 | MS Dhoni | BAT_SPECIALIST | 133 | 154.89 | 1.099 | **62.51** | ESTIMATED | [104.76, 203.45] |
-| **9** | 3056 | Iftikhar Ahmed | BAT_PRIMARY_AR | 40 | 127.50 | 1.054 | **62.38** | ESTIMATED | [76.92, 175.00] |
-| **10** | 3916 | Jitesh Sharma | BAT_SPECIALIST | 51 | 172.55 | 1.109 | **62.01** | ESTIMATED | [100.00, 236.36] |
+### 6.1 Authoritative Top 10 Batters Under Pressure (V3 — Updated with P1.1 Component Breakdown & Flags)
+| Rank | Canonical ID | Player Name | V3 Role | Crisis Balls | Crisis SR | Maint Ratio | Prov PRI Score | 95% CI Status | CI [Low, High] | Weight Sensitivity & Anomaly Flags |
+| :---: | :---: | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
+| **1** | 7897 | Tilak Varma | BAT_PRIMARY_AR | 60 | 196.67 | 1.361 | **94.29** | ESTIMATED | [157.62, 251.16] | `ROBUST_ACROSS_WEIGHTS` |
+| **2** | 796 | Matthew Wade | BAT_SPECIALIST | 50 | 172.00 | 1.190 | **77.35** | ESTIMATED | [105.70, 213.93] | `ROBUST_ACROSS_WEIGHTS` |
+| **3** | 4106 | Daryl Mitchell | BAT_PRIMARY_AR | 44 | 177.27 | 1.205 | **72.55** | ESTIMATED | [117.22, 237.04] | `ROBUST_ACROSS_WEIGHTS` |
+| **4** | 4391 | Liam Livingstone | BAT_PRIMARY_AR | 60 | 175.00 | 1.085 | **68.92** | ESTIMATED | [106.81, 221.52] | `ROBUST_ACROSS_WEIGHTS` |
+| **5** | 4773 | Jaker Ali Anik | BAT_SPECIALIST | 63 | 139.68 | 1.141 | **65.13** | ESTIMATED | [100.00, 181.64] | `RANKING_SENSITIVE_TO_WEIGHTS`; `CRISIS_SR_BELOW_COHORT_MEAN` |
+| **6** | 7446 | Abdul Samad | BAT_SPECIALIST | 69 | 169.57 | 1.005 | **64.51** | ESTIMATED | [128.57, 206.50] | `RANKING_SENSITIVE_TO_WEIGHTS` |
+| **7** | 1077 | David Miller | BAT_SPECIALIST | 56 | 166.07 | 1.064 | **63.35** | ESTIMATED | [100.00, 218.65] | `ROBUST_ACROSS_WEIGHTS` |
+| **8** | 8 | MS Dhoni | BAT_SPECIALIST | 133 | 154.89 | 1.099 | **62.51** | ESTIMATED | [119.66, 187.59] | `ROBUST_ACROSS_WEIGHTS` |
+| **9** | 3056 | Iftikhar Ahmed | BAT_PRIMARY_AR | 40 | 127.50 | 1.054 | **62.38** | ESTIMATED | [92.72, 158.34] | `RANKING_SENSITIVE_TO_WEIGHTS`; `CRISIS_SR_BELOW_COHORT_MEAN` |
+| **10** | 3916 | Jitesh Sharma | BAT_SPECIALIST | 51 | 172.55 | 1.109 | **62.01** | ESTIMATED | [108.69, 236.85] | `RANKING_SENSITIVE_TO_WEIGHTS` |
 
 **Key Batting Changes:**
 - Rinku Singh dropped from Rank 9 (score 62.78) to Rank 13 (score 60.15) due to lower maintenance ratio under cleaned normal baseline.
-- Iftikhar Ahmed (Rank 9, score 62.38) and Jitesh Sharma (Rank 10, score 62.01) entered the Top 10 with verified canonical roles and high crisis consistency.
+- Iftikhar Ahmed (Rank 9, score 62.38; `Maint=20.95 + Abs=14.71 + Cons=20.00 + Sample=6.72`, flagged `CRISIS_SR_BELOW_COHORT_MEAN` at 127.50 vs 140.20 cohort mean) and Jitesh Sharma (Rank 10, score 62.01) entered the Top 10 with verified canonical roles and high crisis consistency.
 - Ramandeep Singh moved from Rank 10 to Rank 11 (score 61.20).
 - Abdul Samad (ID 7446) consolidated career records strictly from SRH/LSG, verified at Rank 6 (score 64.51).
 
-### 6.2 Authoritative Top 10 Bowlers Under Defensive Pressure (V3)
-| Rank | Canonical ID | Player Name | V3 Role | Crisis Balls | Crisis Dot % | Dot Maint | Prov PRI Score | 95% CI Status | CI [Low, High] |
-| :---: | :---: | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **1** | 5379 | Mark Adair | BOWL_PRIMARY_AR | 483 | 39.75% | 1.500 | **80.96** | ESTIMATED | [35.29, 44.20] |
-| **2** | 3720 | Craig Young | BOWL_SPECIALIST | 289 | 38.75% | 1.163 | **78.27** | ESTIMATED | [33.33, 44.44] |
-| **3** | 2985 | Mark Wood | BOWL_SPECIALIST | 156 | 48.08% | 1.146 | **75.88** | ESTIMATED | [39.13, 57.14] |
-| **4** | 4837 | Obed McCoy | BOWL_SPECIALIST | 334 | 37.43% | 1.324 | **71.37** | ESTIMATED | [31.58, 43.14] |
-| **5** | 2320 | Trent Boult | BOWL_SPECIALIST | 879 | 38.34% | 1.500 | **70.79** | ESTIMATED | [34.78, 41.86] |
-| **6** | 8661 | Matheesha Pathirana | BOWL_SPECIALIST | 578 | 36.51% | 0.948 | **69.87** | ESTIMATED | [32.14, 40.82] |
-| **7** | 7741 | Gareth Delany | BOWL_PRIMARY_AR | 178 | 39.33% | 1.500 | **69.74** | ESTIMATED | [31.58, 47.37] |
-| **8** | 3629 | Corbin Bosch | BOWL_PRIMARY_AR | 164 | 39.63% | 0.829 | **69.61** | ESTIMATED | [31.82, 47.62] |
-| **9** | 22920 | Jacob Duffy | BOWL_SPECIALIST | 486 | 42.59% | 0.923 | **68.97** | ESTIMATED | [37.78, 47.62] |
-| **10** | 1487 | Adam Milne | BOWL_SPECIALIST | 362 | 43.09% | 1.065 | **67.03** | ESTIMATED | [37.50, 48.72] |
+### 6.2 Authoritative Top 10 Bowlers Under Defensive Pressure (V3 — Updated with P1.1 `MIN_NORMAL_BALLS = 100`)
+| Rank | Canonical ID | Player Name | V3 Role | Crisis Balls | Norm Balls (`>=100`) | Crisis Dot % | Raw / Capped Dot Maint | Prov PRI Score | 95% CI Status | CI [Low, High] |
+| :---: | :---: | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **1** | 8661 | Matheesha Pathirana | BOWL_SPECIALIST | 578 | 122 | 36.51% | 0.948 / 0.948 | **84.45** | ESTIMATED | [32.03, 40.96] |
+| **2** | 1944 | Keshav Maharaj | BOWL_PRIMARY_AR | 225 | 112 | 33.33% | 1.067 / 1.067 | **68.40** | ESTIMATED | [24.88, 41.10] |
+| **3** | 8380 | Mohammad Rishad Hossain | BOWL_PRIMARY_AR | 294 | 261 | 36.05% | 0.848 / 0.848 | **64.99** | ESTIMATED | [31.16, 41.23] |
+| **4** | 6464 | Arshdeep Singh | BOWL_PRIMARY_AR | 2069 | 149 | 36.93% | 0.834 / 0.834 | **64.66** | ESTIMATED | [34.55, 39.25] |
+| **5** | 7503 | Ravi Bishnoi | BOWL_PRIMARY_AR | 936 | 401 | 37.07% | 0.965 / 0.965 | **62.40** | ESTIMATED | [33.60, 40.67] |
+| **6** | 2681 | Taskin Ahmed | BOWL_PRIMARY_AR | 552 | 100 | 41.67% | 0.833 / 0.833 | **60.26** | ESTIMATED | [36.56, 46.84] |
+| **7** | 4900 | Wanindu Hasaranga | BOWL_PRIMARY_AR | 868 | 331 | 31.68% | 0.749 / 0.749 | **59.88** | ESTIMATED | [28.49, 34.92] |
+| **8** | 3653 | Avesh Khan | BOWL_SPECIALIST | 1049 | 136 | 35.46% | 0.861 / 0.861 | **59.16** | ESTIMATED | [31.79, 39.42] |
+| **9** | 2526 | Ish Sodhi | BOWL_PRIMARY_AR | 404 | 249 | 30.94% | 0.875 / 0.875 | **58.71** | ESTIMATED | [26.10, 36.39] |
+| **10** | 3276 | Gudakesh Motie | BOWL_PRIMARY_AR | 315 | 100 | 33.97% | 1.096 / 1.096 | **56.23** | ESTIMATED | [26.70, 42.49] |
 
-**Key Bowling Changes:**
-- Matheesha Pathirana (Rank 6, score 69.87), Corbin Bosch (Rank 8, score 69.61), and Adam Milne (Rank 10, score 67.03) entered the Top 10 with verified legal delivery counts and bowler-creditable dismissals.
-- Deepak Chahar (moved to Rank 12, score 66.85) and Eshan Malinga (Rank 14, score 65.40) adjusted under verified legal deliveries and unclassified exclusions.
-- Dunith Wellalage is verified as sole canonical ID 7052 (Rank 38 in bowling, score 56.42), completely separated from Donovan Ferreira (Rank 17 in batting, score 57.10).
+**Key Bowling Changes (P1.1 `MIN_NORMAL_BALLS = 100` Enforcement):**
+- Bowlers with fewer than 100 normal-pressure legal deliveries (549 of 596 bowlers, including Mark Adair [82 norm balls], Trent Boult [64 norm balls], Mark Wood [62 norm balls], Obed McCoy [46 norm balls], and Craig Young [36 norm balls]) are flagged `BOWLER_NORMAL_BASELINE_INSUFFICIENT` and excluded from composite ranking so small normal baselines cannot inflate maintenance ratios.
+- Among the 39 frontline bowlers meeting `crisis_balls >= 120`, `crisis_matches >= 5`, and `norm_balls >= 100`, Matheesha Pathirana (#1, score 84.45), Keshav Maharaj (#2, score 68.40), Mohammad Rishad Hossain (#3, score 64.99), Arshdeep Singh (#4, score 64.66), and Ravi Bishnoi (#5, score 62.40) lead the authoritative Top 10.
+- Dunith Wellalage is verified as sole canonical ID 7052, completely separated from Donovan Ferreira (ID 8182).
 
 ---
 

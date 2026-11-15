@@ -48,11 +48,13 @@ DEFAULT_BAT_THRESHOLDS = {
     'norm_balls': 30
 }
 
+MIN_NORMAL_BALLS_BOWLER = 100
+
 DEFAULT_BOWL_THRESHOLDS = {
     'crisis_balls': 120,
     'total_legal_balls': 120,
     'crisis_matches': 5,
-    'norm_balls': 30
+    'norm_balls': MIN_NORMAL_BALLS_BOWLER
 }
 
 
@@ -191,33 +193,57 @@ def compute_v3_rankings(
     bat_master['eligible_for_bat_leaderboard'] = bat_master['canonical_player_id'].apply(lambda pid: role_map.get(pid, {}).get('eligible_for_bat_leaderboard', False))
     bat_master['is_quarantined'] = bat_master['canonical_player_id'].apply(resolver.is_quarantined)
 
-    # Normal comparison validity
+    # Normal comparison validity (Batters: MIN_NORMAL_BALLS = 30, no silent baseline imputation)
+    norm_elig_bat = []
     norm_status = []
-    sr_maints = []
+    raw_sr_maints = []
+    capped_sr_maints = []
+    is_maint_capped_bat = []
     for _, r in bat_master.iterrows():
         nb = r['norm_balls']
         nsr = r['norm_sr']
         csr = r['crisis_sr']
-        if nb >= 30 and pd.notna(nsr):
+        if nb >= DEFAULT_BAT_THRESHOLDS['norm_balls'] and pd.notna(nsr) and float(nsr) > 0:
+            norm_elig_bat.append(True)
             norm_status.append('VALID_NORMAL_BASELINE')
-            safe_norm_sr = max(80.0, float(nsr))
-            maint = round(float(np.clip(csr / safe_norm_sr, 0.5, 1.5)), 3) if pd.notna(csr) else np.nan
-            sr_maints.append(maint)
+            if pd.notna(csr):
+                raw_val = float(csr) / float(nsr)
+                cap_val = float(np.clip(raw_val, 0.5, 1.5))
+                raw_sr_maints.append(round(raw_val, 3))
+                capped_sr_maints.append(round(cap_val, 3))
+                is_maint_capped_bat.append(bool(raw_val > 1.5 or raw_val < 0.5))
+            else:
+                raw_sr_maints.append(np.nan)
+                capped_sr_maints.append(np.nan)
+                is_maint_capped_bat.append(False)
         elif nb > 0:
+            norm_elig_bat.append(False)
             norm_status.append('INSUFFICIENT_NORMAL_EXPOSURE')
-            sr_maints.append(np.nan)
+            if pd.notna(nsr) and float(nsr) > 0 and pd.notna(csr):
+                raw_sr_maints.append(round(float(csr) / float(nsr), 3))
+            else:
+                raw_sr_maints.append(np.nan)
+            capped_sr_maints.append(np.nan)
+            is_maint_capped_bat.append(False)
         else:
+            norm_elig_bat.append(False)
             norm_status.append('NO_NORMAL_EXPOSURE')
-            sr_maints.append(np.nan)
+            raw_sr_maints.append(np.nan)
+            capped_sr_maints.append(np.nan)
+            is_maint_capped_bat.append(False)
 
+    bat_master['norm_baseline_eligible'] = norm_elig_bat
     bat_master['norm_baseline_status'] = norm_status
-    bat_master['sr_maintenance'] = sr_maints
+    bat_master['raw_sr_maintenance'] = raw_sr_maints
+    bat_master['capped_sr_maintenance'] = capped_sr_maints
+    bat_master['sr_maintenance'] = capped_sr_maints
+    bat_master['is_maintenance_capped'] = is_maint_capped_bat
 
     # Sample Eligibility: crisis >= 40, total >= 120, crisis matches >= 5, norm balls >= 30
     c_cb = bat_master['crisis_balls'] >= DEFAULT_BAT_THRESHOLDS['crisis_balls']
     c_tb = bat_master['total_balls'] >= DEFAULT_BAT_THRESHOLDS['total_balls']
     c_cm = bat_master['crisis_matches'] >= DEFAULT_BAT_THRESHOLDS['crisis_matches']
-    c_nb = bat_master['norm_balls'] >= DEFAULT_BAT_THRESHOLDS['norm_balls']
+    c_nb = bat_master['norm_Baseline_eligible'] if 'norm_Baseline_eligible' in bat_master else bat_master['norm_baseline_eligible']
     c_not_quar = ~bat_master['is_quarantined']
 
     bat_master['sample_eligible'] = c_cb & c_tb & c_cm & c_nb & c_not_quar
@@ -225,6 +251,10 @@ def compute_v3_rankings(
         bat_master['sample_eligible'], 'ELIGIBLE',
         np.where(bat_master['is_quarantined'], 'IDENTITY_CONFLICT_QUARANTINE',
                  np.where(bat_master['crisis_balls'] >= 15, 'PROVISIONAL_SAMPLE', 'INSUFFICIENT_SAMPLE'))
+    )
+    bat_master['final_eligibility'] = np.where(
+        bat_master['sample_eligible'] & bat_master['eligible_for_bat_leaderboard'] & (~bat_master['is_quarantined']),
+        'ELIGIBLE', 'INELIGIBLE'
     )
 
     # Detailed exclusion reason tracking
@@ -238,7 +268,7 @@ def compute_v3_rankings(
             reasons.append(f"TOTAL_BALLS<{DEFAULT_BAT_THRESHOLDS['total_balls']}")
         if r['crisis_matches'] < DEFAULT_BAT_THRESHOLDS['crisis_matches']:
             reasons.append(f"CRISIS_MATCHES<{DEFAULT_BAT_THRESHOLDS['crisis_matches']}")
-        if r['norm_balls'] < DEFAULT_BAT_THRESHOLDS['norm_balls']:
+        if not r['norm_baseline_eligible']:
             reasons.append(f"NORM_BALLS<{DEFAULT_BAT_THRESHOLDS['norm_balls']}")
         if not r['eligible_for_bat_leaderboard']:
             reasons.append(f"INELIGIBLE_ROLE_{r['v3_role']}")
@@ -261,6 +291,14 @@ def compute_v3_rankings(
     bat_master['prior_population_count'] = bat_prior_meta['prior_population_count']
     bat_master['prior_population_definition'] = bat_prior_meta['prior_population_definition']
     bat_master['shrinkage_status'] = bat_prior_meta['shrinkage_status']
+
+    # Transparency flags for crisis SR vs cohort mean
+    bat_master['crisis_sr_vs_cohort_mean'] = (bat_master['crisis_sr'] - bat_master['prior_mean']).round(2)
+    bat_master['crisis_sr_below_cohort_mean'] = bat_master['crisis_sr'] < bat_master['prior_mean']
+    bat_master['performance_anomaly_flag'] = np.where(
+        bat_master['crisis_sr'].isna(), 'NO_CRISIS_SAMPLE',
+        np.where(bat_master['crisis_sr_below_cohort_mean'], 'CRISIS_SR_BELOW_COHORT_MEAN', 'NONE')
+    )
 
     # Sample Confidence
     bat_master['sample_confidence'] = np.clip(
@@ -356,9 +394,29 @@ def compute_v3_rankings(
         bat_master['contrib_cons'] +
         bat_master['contrib_sample']
     ).round(2)
+    # Prevent insufficient normal baseline from generating an apparently reliable composite score
+    bat_master.loc[~bat_master['norm_baseline_eligible'], ['norm_maint', 'contrib_maint', 'batting_pri_provisional']] = np.nan
     bat_master['provisional_fixed_weight_score'] = bat_master['batting_pri_provisional']
     bat_master['batting_pri'] = bat_master['batting_pri_provisional']  # Backward compatibility
     bat_master['formula_status'] = 'PROVISIONAL_FIXED_WEIGHT_SCORE'
+
+    def _bat_score_explanation(r):
+        if pd.isna(r['provisional_fixed_weight_score']):
+            return f"UNRANKED_INSUFFICIENT_BASELINE ({r['norm_baseline_status']})"
+        base_str = (
+            f"Maint(35%)={r['contrib_maint']:.2f} + Abs(35%)={r['contrib_abs']:.2f} + "
+            f"Cons(20%)={r['contrib_cons']:.2f} + Sample(10%)={r['contrib_sample']:.2f} = {r['provisional_fixed_weight_score']:.2f}"
+        )
+        if r['crisis_sr_below_cohort_mean']:
+            return (
+                f"CRISIS_SR_BELOW_COHORT_MEAN ({r['crisis_sr']:.2f} vs cohort mean {r['prior_mean']:.2f}): "
+                f"{base_str}; elevated by multi-match consistency ({r['consistency_score']:.4f} -> {r['contrib_cons']:.2f} pts) "
+                f"and positive personal baseline maintenance ({r['sr_maintenance']:.3f}x over {r['norm_sr']:.2f} norm SR -> {r['contrib_maint']:.2f} pts) "
+                f"despite low absolute crisis SR contribution ({r['contrib_abs']:.2f} pts)."
+            )
+        return base_str
+
+    bat_master['component_breakdown_explanation'] = bat_master.apply(_bat_score_explanation, axis=1)
 
     # Filter strictly for Primary Eligible Batters: ELIGIBLE + Role is BAT_SPECIALIST or BAT_PRIMARY_AR
     top_batters_eligible = bat_master[
@@ -427,40 +485,64 @@ def compute_v3_rankings(
     bowl_master['eligible_for_bowl_leaderboard'] = bowl_master['canonical_player_id'].apply(lambda pid: role_map.get(pid, {}).get('eligible_for_bowl_leaderboard', False))
     bowl_master['is_quarantined'] = bowl_master['canonical_player_id'].apply(resolver.is_quarantined)
 
-    # Normal comparison validity
+    # Normal comparison validity for Bowlers (MIN_NORMAL_BALLS = 100, no silent imputation, raw vs capped kept separate)
+    norm_elig_b = []
     norm_status_b = []
-    dot_maints = []
+    raw_dot_maints = []
+    capped_dot_maints = []
+    is_maint_capped_b = []
     for _, r in bowl_master.iterrows():
         nb = r['norm_balls']
         ndot = r['norm_dot_pct']
         cdot = r['crisis_dot_pct']
-        if nb >= 30 and pd.notna(ndot):
-            norm_status_b.append('VALID_NORMAL_BASELINE')
-            safe_norm_dot = max(25.0, float(ndot))
-            maint = round(float(np.clip(cdot / safe_norm_dot, 0.5, 1.5)), 3) if pd.notna(cdot) else np.nan
-            dot_maints.append(maint)
-        elif nb > 0:
-            norm_status_b.append('INSUFFICIENT_NORMAL_EXPOSURE')
-            dot_maints.append(np.nan)
+        if nb > 0 and pd.notna(ndot) and float(ndot) > 0 and pd.notna(cdot):
+            raw_val = round(float(cdot) / float(ndot), 3)
         else:
-            norm_status_b.append('NO_NORMAL_EXPOSURE')
-            dot_maints.append(np.nan)
+            raw_val = np.nan
 
+        if nb >= MIN_NORMAL_BALLS_BOWLER and pd.notna(ndot) and float(ndot) > 0:
+            norm_elig_b.append(True)
+            norm_status_b.append('VALID_NORMAL_BASELINE')
+            raw_dot_maints.append(raw_val)
+            if pd.notna(raw_val):
+                cap_val = round(float(np.clip(float(cdot) / float(ndot), 0.5, 1.5)), 3)
+                capped_dot_maints.append(cap_val)
+                is_maint_capped_b.append(bool((float(cdot) / float(ndot) > 1.5) or (float(cdot) / float(ndot) < 0.5)))
+            else:
+                capped_dot_maints.append(np.nan)
+                is_maint_capped_b.append(False)
+        else:
+            norm_elig_b.append(False)
+            norm_status_b.append('BOWLER_NORMAL_BASELINE_INSUFFICIENT')
+            raw_dot_maints.append(raw_val)
+            # Do not treat maintenance ratio as reliable when normal balls < 100
+            capped_dot_maints.append(np.nan)
+            is_maint_capped_b.append(False)
+
+    bowl_master['norm_baseline_eligible'] = norm_elig_b
     bowl_master['norm_baseline_status'] = norm_status_b
-    bowl_master['dot_maintenance'] = dot_maints
+    bowl_master['raw_dot_maintenance'] = raw_dot_maints
+    bowl_master['capped_dot_maintenance'] = capped_dot_maints
+    bowl_master['dot_maintenance'] = capped_dot_maints
+    bowl_master['is_maintenance_capped'] = is_maint_capped_b
 
-    # Sample Eligibility: crisis >= 120, total >= 120, crisis matches >= 5, norm balls >= 30
+    # Sample Eligibility: crisis >= 120, total >= 120, crisis matches >= 5, norm balls >= 100
     c_b_cb = bowl_master['crisis_balls'] >= DEFAULT_BOWL_THRESHOLDS['crisis_balls']
     c_b_tb = bowl_master['total_legal_balls'] >= DEFAULT_BOWL_THRESHOLDS['total_legal_balls']
     c_b_cm = bowl_master['crisis_matches'] >= DEFAULT_BOWL_THRESHOLDS['crisis_matches']
-    c_b_nb = bowl_master['norm_balls'] >= DEFAULT_BOWL_THRESHOLDS['norm_balls']
+    c_b_nb = bowl_master['norm_baseline_eligible']
     c_b_not_quar = ~bowl_master['is_quarantined']
 
     bowl_master['sample_eligible'] = c_b_cb & c_b_tb & c_b_cm & c_b_nb & c_b_not_quar
     bowl_master['eligibility_status'] = np.where(
         bowl_master['sample_eligible'], 'ELIGIBLE',
         np.where(bowl_master['is_quarantined'], 'IDENTITY_CONFLICT_QUARANTINE',
-                 np.where(bowl_master['crisis_balls'] >= 15, 'PROVISIONAL_SAMPLE', 'INSUFFICIENT_SAMPLE'))
+                 np.where(~bowl_master['norm_baseline_eligible'], 'BOWLER_NORMAL_BASELINE_INSUFFICIENT',
+                          np.where(bowl_master['crisis_balls'] >= 15, 'PROVISIONAL_SAMPLE', 'INSUFFICIENT_SAMPLE')))
+    )
+    bowl_master['final_eligibility'] = np.where(
+        bowl_master['sample_eligible'] & bowl_master['eligible_for_bowl_leaderboard'] & (~bowl_master['is_quarantined']),
+        'ELIGIBLE', 'INELIGIBLE'
     )
 
     def _bowl_exclusion_reason(r):
@@ -473,15 +555,15 @@ def compute_v3_rankings(
             reasons.append(f"TOTAL_LEGAL_BALLS<{DEFAULT_BOWL_THRESHOLDS['total_legal_balls']}")
         if r['crisis_matches'] < DEFAULT_BOWL_THRESHOLDS['crisis_matches']:
             reasons.append(f"CRISIS_MATCHES<{DEFAULT_BOWL_THRESHOLDS['crisis_matches']}")
-        if r['norm_balls'] < DEFAULT_BOWL_THRESHOLDS['norm_balls']:
-            reasons.append(f"NORM_BALLS<{DEFAULT_BOWL_THRESHOLDS['norm_balls']}")
+        if not r['norm_baseline_eligible']:
+            reasons.append(f"BOWLER_NORMAL_BASELINE_INSUFFICIENT (NORM_BALLS<{MIN_NORMAL_BALLS_BOWLER})")
         if not r['eligible_for_bowl_leaderboard']:
             reasons.append(f"INELIGIBLE_ROLE_{r['v3_role']}")
         return "; ".join(reasons) if reasons else 'NONE'
 
     bowl_master['exclusion_reasons'] = bowl_master.apply(_bowl_exclusion_reason, axis=1)
 
-    # Shrunk Crisis Wicket Rate (Beta-Binomial)
+    # Shrunk Crisis Wicket Rate (Beta-Binomial) on strictly eligible frontline population
     prior_bowl_mask = bowl_master['sample_eligible'] & bowl_master['eligible_for_bowl_leaderboard'] & (bowl_master['crisis_balls'] > 0)
     shrunk_wr, bowl_prior_meta = V3ReliabilityEngine.empirical_bayes_beta_binomial_shrinkage(
         bowl_master['crisis_wickets'],
@@ -578,6 +660,8 @@ def compute_v3_rankings(
         bowl_master['contrib_cons'] +
         bowl_master['contrib_sample']
     ).round(2)
+    # Never allow an insufficient normal baseline (<100 balls) to generate an apparently reliable composite ranking
+    bowl_master.loc[~bowl_master['norm_baseline_eligible'], ['norm_maint', 'contrib_maint', 'bowling_pri_provisional']] = np.nan
     bowl_master['provisional_fixed_weight_score'] = bowl_master['bowling_pri_provisional']
     bowl_master['bowling_pri'] = bowl_master['bowling_pri_provisional']
     bowl_master['formula_status'] = 'PROVISIONAL_FIXED_WEIGHT_SCORE'
@@ -595,74 +679,179 @@ def compute_v3_rankings(
     top10_bowlers = top_bowlers_eligible.head(10).copy()
 
     # ══════════════════════════════════════════════════════════════════════════
-    # 3. PRIORITY 5 — THRESHOLD SENSITIVITY STUDY
+    # 3. PRIORITY 5 & P1.1 — EXTENDED THRESHOLD SENSITIVITY STUDY
     # ══════════════════════════════════════════════════════════════════════════
-    logging.info("Running Threshold Sensitivity Study...")
+    logging.info("Running Extended Threshold Sensitivity Study (40, 60, 80, 100, 150, 200, 250)...")
     thresh_records = []
 
-    # Batter grid: cb in [40, 60, 80, 100], cm in [5, 8, 10], nb in [30, 50, 75], tb in [120, 200, 300]
+    crisis_ball_grid = [40, 60, 80, 100, 150, 200, 250]
+    crisis_match_grid = [5, 8, 10]
+
     base_top10_bat_ids = set(top10_batters['canonical_player_id'])
-    for cb in [40, 60, 80, 100]:
-        for cm in [5, 8, 10]:
+    base_bat_ranks = top_batters_eligible.set_index('canonical_player_id')['provisional_rank'].to_dict()
+    base_bat_names = bat_master.set_index('canonical_player_id')['player_name'].to_dict()
+
+    base_top10_bowl_ids = set(top10_bowlers['canonical_player_id'])
+    base_bowl_ranks = top_bowlers_eligible.set_index('canonical_player_id')['provisional_rank'].to_dict()
+    base_bowl_names = bowl_master.set_index('canonical_player_id')['player_name'].to_dict()
+
+    # Precompute paired eligible counts for (cb, cm) at baseline normal/total cutoffs
+    paired_counts = {}
+    for cb in crisis_ball_grid:
+        for cm in crisis_match_grid:
+            b_cnt = int((
+                (bat_master['crisis_balls'] >= cb) &
+                (bat_master['crisis_matches'] >= cm) &
+                (bat_master['norm_balls'] >= DEFAULT_BAT_THRESHOLDS['norm_balls']) &
+                (bat_master['total_balls'] >= DEFAULT_BAT_THRESHOLDS['total_balls']) &
+                (bat_master['eligible_for_bat_leaderboard'] == True) &
+                (~bat_master['is_quarantined'])
+            ).sum())
+            w_cnt = int((
+                (bowl_master['crisis_balls'] >= cb) &
+                (bowl_master['crisis_matches'] >= cm) &
+                (bowl_master['norm_balls'] >= DEFAULT_BOWL_THRESHOLDS['norm_balls']) &
+                (bowl_master['total_legal_balls'] >= DEFAULT_BOWL_THRESHOLDS['total_legal_balls']) &
+                (bowl_master['eligible_for_bowl_leaderboard'] == True) &
+                (~bowl_master['is_quarantined'])
+            ).sum())
+            paired_counts[(cb, cm)] = (b_cnt, w_cnt)
+
+    # Batter grid: cb in [40, 60, 80, 100, 150, 200, 250], cm in [5, 8, 10], nb in [30, 50, 75], tb in [120, 200]
+    for cb in crisis_ball_grid:
+        for cm in crisis_match_grid:
             for nb in [30, 50, 75]:
-                for tb in [120, 200, 300]:
+                for tb in [120, 200]:
                     mask = (
                         (bat_master['crisis_balls'] >= cb) &
                         (bat_master['crisis_matches'] >= cm) &
                         (bat_master['norm_balls'] >= nb) &
                         (bat_master['total_balls'] >= tb) &
                         (bat_master['eligible_for_bat_leaderboard'] == True) &
-                        (~bat_master['is_quarantined'])
+                        (~bat_master['is_quarantined']) &
+                        (bat_master['provisional_fixed_weight_score'].notna())
                     )
-                    cand = bat_master[mask].sort_values('provisional_fixed_weight_score', ascending=False)
-                    cand_top10 = cand.head(10)
+                    cand = bat_master[mask].sort_values(
+                        by=['provisional_fixed_weight_score', 'canonical_player_id'],
+                        ascending=[False, True]
+                    ).reset_index(drop=True)
+                    cand['cand_rank'] = range(1, len(cand) + 1)
+                    # Do NOT force a Top 10 when fewer than 10 players are eligible
+                    cand_top10 = cand.head(10).copy()
                     cand_top10_ids = set(cand_top10['canonical_player_id'])
                     overlap = len(cand_top10_ids & base_top10_bat_ids)
-                    
+                    union_len = len(cand_top10_ids | base_top10_bat_ids)
+                    jaccard = round(float(overlap / union_len), 4) if union_len > 0 else 0.0
+
+                    # Rank movement among cand_top10 players
+                    rank_shifts = []
+                    shift_details = []
+                    for _, cr in cand_top10.iterrows():
+                        pid = cr['canonical_player_id']
+                        new_r = int(cr['cand_rank'])
+                        old_r = base_bat_ranks.get(pid, None)
+                        if old_r is not None:
+                            diff = abs(new_r - int(old_r))
+                            rank_shifts.append(diff)
+                            shift_details.append(f"{cr['player_name']}: #{old_r}->#{new_r} ({int(old_r)-new_r:+d})")
+                        else:
+                            shift_details.append(f"{cr['player_name']}: UNRANKED->#{new_r}")
+
+                    mean_move = round(float(np.mean(rank_shifts)), 2) if rank_shifts else 0.0
+                    max_move = int(np.max(rank_shifts)) if rank_shifts else 0
+                    entering = [base_bat_names.get(pid, str(pid)) for pid in cand_top10['canonical_player_id'] if pid not in base_top10_bat_ids]
+                    leaving = [r['player_name'] for _, r in top10_batters.iterrows() if r['canonical_player_id'] not in cand_top10_ids]
+
                     ci_widths = cand['uncertainty_width'].dropna()
                     med_ci = round(float(ci_widths.median()), 2) if len(ci_widths) > 0 else np.nan
                     max_ci = round(float(ci_widths.max()), 2) if len(ci_widths) > 0 else np.nan
                     unest_ci = int(cand['ci_status'].ne('ESTIMATED_MATCH_CLUSTER_BOOTSTRAP').sum())
 
+                    b_cnt, w_cnt = paired_counts[(cb, cm)]
                     thresh_records.append({
                         'discipline': 'Batting',
                         'min_crisis_balls': cb,
                         'min_crisis_matches': cm,
                         'min_normal_balls': nb,
                         'min_total_deliveries': tb,
+                        'is_primary_crisis_sweep': (cm == 5 and nb == 30 and tb == 120),
                         'eligible_players': len(cand),
+                        'eligible_batter_count': len(cand) if (nb == 30 and tb == 120) else b_cnt,
+                        'eligible_bowler_count': w_cnt,
                         'unique_canonical_ids': cand['canonical_player_id'].nunique(),
+                        'available_top10_count': len(cand_top10),
                         'top10_count': len(cand_top10),
                         'top10_overlap_with_baseline': overlap,
+                        'jaccard_similarity': jaccard,
+                        'mean_abs_rank_movement': mean_move,
+                        'max_rank_movement': max_move,
+                        'rank_movement_summary': "; ".join(shift_details) if shift_details else "NONE",
+                        'players_entering_top10': ", ".join(entering) if entering else "NONE",
+                        'players_leaving_top10': ", ".join(leaving) if leaving else "NONE",
                         'median_ci_width': med_ci,
                         'max_ci_width': max_ci,
                         'unestimated_ci_count': unest_ci,
-                        'top_eligible_players': ", ".join(cand_top10['player_name'].head(5).tolist())
+                        'top_eligible_players': ", ".join(cand_top10['player_name'].head(5).tolist()) if len(cand_top10) > 0 else "NONE"
                     })
 
-    # Bowler grid: cb in [60, 90, 120, 150], cm in [5, 8, 10], nb in [30, 50, 75], tb in [120, 200, 300]
-    base_top10_bowl_ids = set(top10_bowlers['canonical_player_id'])
-    for cb in [60, 90, 120, 150]:
-        for cm in [5, 8, 10]:
-            for nb in [30, 50, 75]:
-                for tb in [120, 200, 300]:
+    # Bowler grid: cb in [40, 60, 80, 100, 150, 200, 250] (plus 120 baseline), cm in [5, 8, 10], nb in [100, 125, 150], tb in [120, 200]
+    bowl_cb_grid = sorted(list(set(crisis_ball_grid + [120])))
+    for cb in bowl_cb_grid:
+        for cm in crisis_match_grid:
+            for nb in [100, 125, 150]:
+                for tb in [120, 200]:
                     mask = (
                         (bowl_master['crisis_balls'] >= cb) &
                         (bowl_master['crisis_matches'] >= cm) &
                         (bowl_master['norm_balls'] >= nb) &
                         (bowl_master['total_legal_balls'] >= tb) &
                         (bowl_master['eligible_for_bowl_leaderboard'] == True) &
-                        (~bowl_master['is_quarantined'])
+                        (~bowl_master['is_quarantined']) &
+                        (bowl_master['provisional_fixed_weight_score'].notna())
                     )
-                    cand = bowl_master[mask].sort_values('provisional_fixed_weight_score', ascending=False)
-                    cand_top10 = cand.head(10)
+                    cand = bowl_master[mask].sort_values(
+                        by=['provisional_fixed_weight_score', 'canonical_player_id'],
+                        ascending=[False, True]
+                    ).reset_index(drop=True)
+                    cand['cand_rank'] = range(1, len(cand) + 1)
+                    # Do NOT force a Top 10 when fewer than 10 players are eligible
+                    cand_top10 = cand.head(10).copy()
                     cand_top10_ids = set(cand_top10['canonical_player_id'])
                     overlap = len(cand_top10_ids & base_top10_bowl_ids)
+                    union_len = len(cand_top10_ids | base_top10_bowl_ids)
+                    jaccard = round(float(overlap / union_len), 4) if union_len > 0 else 0.0
+
+                    rank_shifts = []
+                    shift_details = []
+                    for _, cr in cand_top10.iterrows():
+                        pid = cr['canonical_player_id']
+                        new_r = int(cr['cand_rank'])
+                        old_r = base_bowl_ranks.get(pid, None)
+                        if old_r is not None:
+                            diff = abs(new_r - int(old_r))
+                            rank_shifts.append(diff)
+                            shift_details.append(f"{cr['player_name']}: #{old_r}->#{new_r} ({int(old_r)-new_r:+d})")
+                        else:
+                            shift_details.append(f"{cr['player_name']}: #{int(bowl_master.loc[bowl_master['canonical_player_id']==pid, 'crisis_balls'].iloc[0])}b->#{new_r}")
+
+                    mean_move = round(float(np.mean(rank_shifts)), 2) if rank_shifts else 0.0
+                    max_move = int(np.max(rank_shifts)) if rank_shifts else 0
+                    entering = [base_bowl_names.get(pid, str(pid)) for pid in cand_top10['canonical_player_id'] if pid not in base_top10_bowl_ids]
+                    leaving = [r['player_name'] for _, r in top10_bowlers.iterrows() if r['canonical_player_id'] not in cand_top10_ids]
 
                     ci_widths = cand['uncertainty_width'].dropna()
                     med_ci = round(float(ci_widths.median()), 2) if len(ci_widths) > 0 else np.nan
                     max_ci = round(float(ci_widths.max()), 2) if len(ci_widths) > 0 else np.nan
                     unest_ci = int(cand['ci_status'].ne('ESTIMATED_MATCH_CLUSTER_BOOTSTRAP').sum())
+
+                    b_cnt = int((
+                        (bat_master['crisis_balls'] >= cb) &
+                        (bat_master['crisis_matches'] >= cm) &
+                        (bat_master['norm_balls'] >= DEFAULT_BAT_THRESHOLDS['norm_balls']) &
+                        (bat_master['total_balls'] >= DEFAULT_BAT_THRESHOLDS['total_balls']) &
+                        (bat_master['eligible_for_bat_leaderboard'] == True) &
+                        (~bat_master['is_quarantined'])
+                    ).sum())
 
                     thresh_records.append({
                         'discipline': 'Bowling',
@@ -670,14 +859,24 @@ def compute_v3_rankings(
                         'min_crisis_matches': cm,
                         'min_normal_balls': nb,
                         'min_total_deliveries': tb,
+                        'is_primary_crisis_sweep': (cm == 5 and nb == 100 and tb == 120),
                         'eligible_players': len(cand),
+                        'eligible_batter_count': b_cnt,
+                        'eligible_bowler_count': len(cand),
                         'unique_canonical_ids': cand['canonical_player_id'].nunique(),
+                        'available_top10_count': len(cand_top10),
                         'top10_count': len(cand_top10),
                         'top10_overlap_with_baseline': overlap,
+                        'jaccard_similarity': jaccard,
+                        'mean_abs_rank_movement': mean_move,
+                        'max_rank_movement': max_move,
+                        'rank_movement_summary': "; ".join(shift_details) if shift_details else "NONE",
+                        'players_entering_top10': ", ".join(entering) if entering else "NONE",
+                        'players_leaving_top10': ", ".join(leaving) if leaving else "NONE",
                         'median_ci_width': med_ci,
                         'max_ci_width': max_ci,
                         'unestimated_ci_count': unest_ci,
-                        'top_eligible_players': ", ".join(cand_top10['player_name'].head(5).tolist())
+                        'top_eligible_players': ", ".join(cand_top10['player_name'].head(5).tolist()) if len(cand_top10) > 0 else "NONE"
                     })
 
     thresh_df = pd.DataFrame(thresh_records)
@@ -717,6 +916,10 @@ def compute_v3_rankings(
                 'v3_role': r['v3_role'],
                 'provisional_rank': r.get('provisional_rank', np.nan),
                 'provisional_fixed_weight_score': r.get('provisional_fixed_weight_score', np.nan),
+                'contrib_maint': r.get('contrib_maint', np.nan),
+                'contrib_abs': r.get('contrib_abs', np.nan),
+                'contrib_cons': r.get('contrib_cons', np.nan),
+                'contrib_sample': r.get('contrib_sample', np.nan),
                 'rank_balanced_default': r['rank_balanced_default'],
                 'rank_maintenance_heavy': r['rank_maintenance_heavy'],
                 'rank_absolute_heavy': r['rank_absolute_heavy'],
@@ -739,39 +942,61 @@ def compute_v3_rankings(
         base_top10_bowl_ids
     )
 
-    # Attach sensitivity status back to top 10
-    top10_batters['ranking_sensitivity_status'] = top10_batters['canonical_player_id'].map(
-        bat_sens.set_index('canonical_player_id')['ranking_sensitivity_status'].to_dict()
-    )
-    top10_bowlers['ranking_sensitivity_status'] = top10_bowlers['canonical_player_id'].map(
-        bowl_sens.set_index('canonical_player_id')['ranking_sensitivity_status'].to_dict()
-    )
+    # Attach sensitivity status back to top 10 and master tables
+    bat_sens_map = bat_sens.set_index('canonical_player_id')['ranking_sensitivity_status'].to_dict()
+    bowl_sens_map = bowl_sens.set_index('canonical_player_id')['ranking_sensitivity_status'].to_dict()
+    top10_batters['ranking_sensitivity_status'] = top10_batters['canonical_player_id'].map(bat_sens_map)
+    top10_bowlers['ranking_sensitivity_status'] = top10_bowlers['canonical_player_id'].map(bowl_sens_map)
+    bat_master['ranking_sensitivity_status'] = bat_master['canonical_player_id'].map(bat_sens_map).fillna('INELIGIBLE_POOL')
+    bowl_master['ranking_sensitivity_status'] = bowl_master['canonical_player_id'].map(bowl_sens_map).fillna('INELIGIBLE_POOL')
 
     weight_df = pd.DataFrame(weight_records)
     weight_df.to_csv(OUTPUTS_V3 / "RANKING_WEIGHT_SENSITIVITY.csv", index=False)
 
     # ══════════════════════════════════════════════════════════════════════════
-    # 5. PRIORITY 8 — ONE AUTHORITATIVE SOURCE OF TRUTH OUTPUTS
+    # 5. PRIORITY 8 & P1.1 — ONE AUTHORITATIVE SOURCE OF TRUTH & SYNCHRONIZED COPIES
     # ══════════════════════════════════════════════════════════════════════════
-    logging.info("Exporting Authoritative Top 10 and Source of Truth artifacts...")
-    
+    logging.info("Exporting Authoritative Top 10 and Synchronizing Downstream Copies...")
+
+    # Attach compatibility and provenance metadata columns so canonical and downstream copies are byte-for-byte identical
+    for df_b in [top10_batters, bat_master]:
+        df_b['canonical_display_name'] = df_b['player_name']
+        df_b['primary_role'] = df_b['v3_role']
+        df_b['modal_batting_position'] = df_b['modal_order']
+        df_b['source_of_truth_file'] = 'data/outputs/v3/TOP_10_BATTERS.csv'
+        df_b['pressure_model_status'] = 'PROVISIONAL_POSITION_PROXY_HEURISTIC'
+        df_b['hazard_model_status'] = 'EXPERIMENTAL_NOT_USED_FOR_RANKING'
+
+    for df_w in [top10_bowlers, bowl_master]:
+        df_w['canonical_display_name'] = df_w['player_name']
+        df_w['primary_role'] = df_w['v3_role']
+        df_w['source_of_truth_file'] = 'data/outputs/v3/TOP_10_BOWLERS.csv'
+        df_w['pressure_model_status'] = 'PROVISIONAL_POSITION_PROXY_HEURISTIC'
+        df_w['hazard_model_status'] = 'EXPERIMENTAL_NOT_USED_FOR_RANKING'
+
     # Authoritative Batter Fields
     bat_auth_cols = [
         'rank', 'provisional_rank', 'canonical_player_id', 'striker_id', 'player_name',
-        'v3_role', 'role_confidence', 'modal_order', 'eligibility_status', 'sample_eligible',
-        'eligible_for_bat_leaderboard', 'norm_baseline_status',
+        'canonical_display_name', 'v3_role', 'primary_role', 'role_confidence',
+        'modal_order', 'modal_batting_position',
+        'eligibility_status', 'final_eligibility', 'sample_eligible',
+        'eligible_for_bat_leaderboard', 'norm_baseline_eligible', 'norm_baseline_status',
         'total_balls', 'total_runs', 'total_sr', 'total_matches',
         'crisis_balls', 'crisis_runs', 'crisis_sr', 'crisis_matches',
         'norm_balls', 'norm_runs', 'norm_sr', 'norm_matches',
-        'sr_maintenance', 'shrunk_crisis_sr', 'consistency_score', 'sample_confidence',
+        'raw_sr_maintenance', 'capped_sr_maintenance', 'sr_maintenance', 'is_maintenance_capped',
+        'shrunk_crisis_sr', 'crisis_sr_vs_cohort_mean', 'crisis_sr_below_cohort_mean',
+        'performance_anomaly_flag', 'consistency_score', 'sample_confidence',
         'norm_maint', 'norm_abs', 'norm_cons', 'norm_sample',
         'contrib_maint', 'contrib_abs', 'contrib_cons', 'contrib_sample',
         'batting_pri_provisional', 'provisional_fixed_weight_score', 'batting_pri',
+        'component_breakdown_explanation',
         'ci_lower', 'ci_upper', 'uncertainty_width', 'ci_status', 'ci_method',
         'ci_confidence_level', 'ci_bootstrap_iterations', 'ci_sample_matches',
         'ci_sample_deliveries', 'ci_metric', 'ranking_sensitivity_status',
         'prior_k', 'prior_mean', 'prior_population_count', 'prior_population_definition',
-        'shrinkage_status', 'formula_status'
+        'shrinkage_status', 'formula_status', 'pressure_model_status', 'hazard_model_status',
+        'source_of_truth_file'
     ]
     top10_batters = top10_batters[bat_auth_cols].copy()
     top10_batters.to_csv(OUTPUTS_V3 / "TOP_10_BATTERS.csv", index=False)
@@ -779,12 +1004,14 @@ def compute_v3_rankings(
     # Authoritative Bowler Fields
     bowl_auth_cols = [
         'rank', 'provisional_rank', 'canonical_player_id', 'bowler_id', 'player_name',
-        'v3_role', 'role_confidence', 'eligibility_status', 'sample_eligible',
-        'eligible_for_bowl_leaderboard', 'norm_baseline_status',
+        'canonical_display_name', 'v3_role', 'primary_role', 'role_confidence',
+        'eligibility_status', 'final_eligibility', 'sample_eligible',
+        'eligible_for_bowl_leaderboard', 'norm_baseline_eligible', 'norm_baseline_status',
         'total_legal_balls', 'total_wickets', 'total_dots', 'total_dot_pct', 'total_matches',
         'crisis_balls', 'crisis_wickets', 'crisis_dot_pct', 'crisis_wicket_rate', 'crisis_matches',
         'norm_balls', 'norm_wickets', 'norm_dot_pct', 'norm_wicket_rate', 'norm_matches',
-        'dot_maintenance', 'shrunk_crisis_wr', 'consistency_score', 'sample_confidence',
+        'raw_dot_maintenance', 'capped_dot_maintenance', 'dot_maintenance', 'is_maintenance_capped',
+        'shrunk_crisis_wr', 'consistency_score', 'sample_confidence',
         'norm_maint', 'norm_abs', 'norm_cons', 'norm_sample',
         'contrib_maint', 'contrib_abs', 'contrib_cons', 'contrib_sample',
         'bowling_pri_provisional', 'provisional_fixed_weight_score', 'bowling_pri',
@@ -792,7 +1019,8 @@ def compute_v3_rankings(
         'ci_confidence_level', 'ci_bootstrap_iterations', 'ci_sample_matches',
         'ci_sample_deliveries', 'ci_metric', 'ranking_sensitivity_status',
         'prior_alpha', 'prior_beta', 'prior_mean', 'prior_population_count',
-        'shrinkage_status', 'formula_status'
+        'shrinkage_status', 'formula_status', 'pressure_model_status', 'hazard_model_status',
+        'source_of_truth_file'
     ]
     top10_bowlers = top10_bowlers[bowl_auth_cols].copy()
     top10_bowlers.to_csv(OUTPUTS_V3 / "TOP_10_BOWLERS.csv", index=False)
@@ -813,10 +1041,16 @@ def compute_v3_rankings(
             'total_deliveries': r['total_balls'],
             'crisis_matches': r['crisis_matches'],
             'normal_deliveries': r['norm_balls'],
+            'norm_baseline_eligible': r['norm_baseline_eligible'],
+            'norm_baseline_status': r['norm_baseline_status'],
+            'raw_maintenance_ratio': r['raw_sr_maintenance'],
+            'capped_maintenance_ratio': r['capped_sr_maintenance'],
+            'is_maintenance_capped': r['is_maintenance_capped'],
             'is_sample_eligible': r['sample_eligible'],
             'is_role_eligible': r['eligible_for_bat_leaderboard'],
             'is_quarantined': r['is_quarantined'],
-            'final_eligibility': 'ELIGIBLE' if (r['sample_eligible'] and r['eligible_for_bat_leaderboard'] and not r['is_quarantined']) else 'INELIGIBLE',
+            'eligibility_status': r['eligibility_status'],
+            'final_eligibility': r['final_eligibility'],
             'exclusion_reasons': r['exclusion_reasons']
         })
     for _, r in bowl_master.iterrows():
@@ -829,14 +1063,66 @@ def compute_v3_rankings(
             'total_deliveries': r['total_legal_balls'],
             'crisis_matches': r['crisis_matches'],
             'normal_deliveries': r['norm_balls'],
+            'norm_baseline_eligible': r['norm_baseline_eligible'],
+            'norm_baseline_status': r['norm_baseline_status'],
+            'raw_maintenance_ratio': r['raw_dot_maintenance'],
+            'capped_maintenance_ratio': r['capped_dot_maintenance'],
+            'is_maintenance_capped': r['is_maintenance_capped'],
             'is_sample_eligible': r['sample_eligible'],
             'is_role_eligible': r['eligible_for_bowl_leaderboard'],
             'is_quarantined': r['is_quarantined'],
-            'final_eligibility': 'ELIGIBLE' if (r['sample_eligible'] and r['eligible_for_bowl_leaderboard'] and not r['is_quarantined']) else 'INELIGIBLE',
+            'eligibility_status': r['eligibility_status'],
+            'final_eligibility': r['final_eligibility'],
             'exclusion_reasons': r['exclusion_reasons']
         })
     elig_df = pd.DataFrame(elig_records)
     elig_df.to_csv(OUTPUTS_V3 / "PLAYER_ELIGIBILITY.csv", index=False)
+
+    # Synchronize all downstream and root-level ranking copies as exact copies of canonical V3 outputs
+    import shutil
+    OUTPUTS_ROOT = DATA_DIR / "outputs"
+    OUTPUTS_ROOT.mkdir(parents=True, exist_ok=True)
+
+    bat_copy_targets = [
+        ROOT / "FINAL_TOP_10_BATTERS.csv",
+        OUTPUTS_ROOT / "FINAL_TOP_10_BATTERS.csv",
+        OUTPUTS_ROOT / "top_10_batters.csv"
+    ]
+    for tgt in bat_copy_targets:
+        shutil.copyfile(OUTPUTS_V3 / "TOP_10_BATTERS.csv", tgt)
+
+    bowl_copy_targets = [
+        ROOT / "FINAL_TOP_10_BOWLERS.csv",
+        OUTPUTS_ROOT / "FINAL_TOP_10_BOWLERS.csv",
+        OUTPUTS_ROOT / "top_10_bowlers.csv"
+    ]
+    for tgt in bowl_copy_targets:
+        shutil.copyfile(OUTPUTS_V3 / "TOP_10_BOWLERS.csv", tgt)
+
+    all_bat_copy_targets = [
+        ROOT / "ALL_BATTER_RANKINGS.csv",
+        OUTPUTS_ROOT / "ALL_BATTER_RANKINGS.csv",
+        OUTPUTS_ROOT / "batting_pressure_rankings.csv"
+    ]
+    for tgt in all_bat_copy_targets:
+        shutil.copyfile(OUTPUTS_V3 / "ALL_BATTER_METRICS.csv", tgt)
+
+    all_bowl_copy_targets = [
+        ROOT / "ALL_BOWLER_RANKINGS.csv",
+        OUTPUTS_ROOT / "ALL_BOWLER_RANKINGS.csv",
+        OUTPUTS_ROOT / "bowling_pressure_rankings.csv"
+    ]
+    for tgt in all_bowl_copy_targets:
+        shutil.copyfile(OUTPUTS_V3 / "ALL_BOWLER_METRICS.csv", tgt)
+
+    elig_copy_targets = [
+        ROOT / "PLAYER_ELIGIBILITY_REPORT.csv",
+        OUTPUTS_ROOT / "PLAYER_ELIGIBILITY_REPORT.csv"
+    ]
+    for tgt in elig_copy_targets:
+        shutil.copyfile(OUTPUTS_V3 / "PLAYER_ELIGIBILITY.csv", tgt)
+
+    shutil.copyfile(OUTPUTS_V3 / "RANKING_WEIGHT_SENSITIVITY.csv", OUTPUTS_ROOT / "PRI_SENSITIVITY_ANALYSIS.csv")
 
     # Master JSON Manifest
     manifest = {
@@ -852,6 +1138,32 @@ def compute_v3_rankings(
             'weight_sensitivity_csv': 'data/outputs/v3/RANKING_WEIGHT_SENSITIVITY.csv',
             'player_identity_crosswalk_csv': 'data/outputs/v3/PLAYER_IDENTITY_CROSSWALK.csv'
         },
+        'synchronized_downstream_copies': {
+            'top_10_batters_copies': [
+                'FINAL_TOP_10_BATTERS.csv',
+                'data/outputs/FINAL_TOP_10_BATTERS.csv',
+                'data/outputs/top_10_batters.csv'
+            ],
+            'top_10_bowlers_copies': [
+                'FINAL_TOP_10_BOWLERS.csv',
+                'data/outputs/FINAL_TOP_10_BOWLERS.csv',
+                'data/outputs/top_10_bowlers.csv'
+            ],
+            'all_batter_metrics_copies': [
+                'ALL_BATTER_RANKINGS.csv',
+                'data/outputs/ALL_BATTER_RANKINGS.csv',
+                'data/outputs/batting_pressure_rankings.csv'
+            ],
+            'all_bowler_metrics_copies': [
+                'ALL_BOWLER_RANKINGS.csv',
+                'data/outputs/ALL_BOWLER_RANKINGS.csv',
+                'data/outputs/bowling_pressure_rankings.csv'
+            ],
+            'player_eligibility_copies': [
+                'PLAYER_ELIGIBILITY_REPORT.csv',
+                'data/outputs/PLAYER_ELIGIBILITY_REPORT.csv'
+            ]
+        },
         'source_datasets': {
             'ball_by_ball': 'data/ball_by_ball_ipl_t20i.csv',
             'playing_eleven': 'data/playing_eleven_ipl_t20i.csv',
@@ -860,19 +1172,26 @@ def compute_v3_rankings(
         },
         'governance': {
             'git_baseline_commit': '537777c8436fd647a484a49cfbfa30b843c98a1c',
-            'git_branch': 'fix/v3-ranking-integrity-001',
-            'ranking_script_version': 'V3.1_INTEGRITY_REPAIRED',
-            'pressure_formula_version': 'V3_PROVISIONAL_HEURISTIC',
+            'git_branch': 'fix/v3-pre-submission-consistency-001',
+            'ranking_script_version': 'V3.1.1_PRE_SUBMISSION_CONSISTENCY_PATCH',
+            'pressure_formula_version': 'PROVISIONAL_POSITION_PROXY_HEURISTIC',
+            'hazard_model_status': 'EXPERIMENTAL_NOT_USED_FOR_RANKING',
             'identity_crosswalk_version': 'V3.1_CANONICAL',
             'ranking_score_status': 'PROVISIONAL_FIXED_WEIGHT_SCORE',
             'threshold_governance': 'PROVISIONAL_ELIGIBILITY_CONFIRMED',
-            'ranking_approval_status': 'PROVISIONAL_RELEASE_CANDIDATE'
+            'ranking_approval_status': 'P1.1 PATCH VERIFIED — PROVISIONAL MODEL',
+            'mandatory_disclosure': (
+                'Rankings are provisional. Batter ranks 5, 6, 9 and 10 are sensitive to scoring weights. '
+                'The pressure classification remains heuristic and position-proxy based. '
+                'The new score has not yet undergone independent out-of-time validation.'
+            )
         },
         'configurations': {
             'pri_weights': PRI_WEIGHTS,
             'sensitivity_configs': SENSITIVITY_CONFIGS,
             'default_batting_thresholds': DEFAULT_BAT_THRESHOLDS,
             'default_bowling_thresholds': DEFAULT_BOWL_THRESHOLDS,
+            'min_normal_balls_bowler': MIN_NORMAL_BALLS_BOWLER,
             'shrinkage_configuration': {
                 'batting_method': 'FIXED_K_NORMAL_SHRINKAGE',
                 'prior_k': 25.0,
@@ -899,10 +1218,10 @@ def compute_v3_rankings(
 
     logging.info("V3 Universal Rankings execution complete!")
     print("\n=== TOP 10 BATTERS UNDER PRESSURE (V3 AUTHORITATIVE) ===")
-    print(top10_batters[['rank', 'canonical_player_id', 'player_name', 'v3_role', 'crisis_balls', 'crisis_sr', 'sr_maintenance', 'provisional_fixed_weight_score', 'ci_status']].to_string())
+    print(top10_batters[['rank', 'canonical_player_id', 'player_name', 'v3_role', 'crisis_balls', 'crisis_sr', 'raw_sr_maintenance', 'sr_maintenance', 'provisional_fixed_weight_score', 'performance_anomaly_flag']].to_string())
 
-    print("\n=== TOP 10 BOWLERS UNDER PRESSURE (V3 AUTHORITATIVE) ===")
-    print(top10_bowlers[['rank', 'canonical_player_id', 'player_name', 'v3_role', 'crisis_balls', 'crisis_dot_pct', 'dot_maintenance', 'provisional_fixed_weight_score', 'ci_status']].to_string())
+    print("\n=== TOP 10 BOWLERS UNDER PRESSURE (V3 AUTHORITATIVE, MIN_NORMAL_BALLS=100) ===")
+    print(top10_bowlers[['rank', 'canonical_player_id', 'player_name', 'v3_role', 'crisis_balls', 'norm_balls', 'crisis_dot_pct', 'raw_dot_maintenance', 'dot_maintenance', 'is_maintenance_capped', 'provisional_fixed_weight_score']].to_string())
 
     return top10_batters, top10_bowlers, bat_master, bowl_master, elig_df
 

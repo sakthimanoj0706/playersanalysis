@@ -1,135 +1,71 @@
-# SupeRR Intelligence V3 — Production Release Readiness & Final Sign-Off Report
+# SupeRR Intelligence V3 — Pre-Submission Consistency & Release Readiness Report (P1.1)
 
 **Project:** SupeRR Intelligence V3  
 **Organization:** Rajasthan Royals — SupeRR Selector Season 2 Hackathon  
 **Target Horizon:** IPL 2027 Mini-Auction (Goa)  
-**Branch:** `v3-audit-fix-20261114`  
-**Execution Date:** 14 November 2026  
-**System Status:** **APPROVED & CERTIFIED FOR PRODUCTION & EXECUTIVE PRESENTATION**
+**Branch:** `fix/v3-pre-submission-consistency-001`  
+**Execution Date:** 15 November 2026  
+**System Status:** **`P1.1 PATCH VERIFIED — PROVISIONAL MODEL`**
+
+> **Mandatory Disclosure:**
+> "Rankings are provisional. Batter ranks 5, 6, 9 and 10 are sensitive to scoring weights. The pressure classification remains heuristic and position-proxy based. The new score has not yet undergone independent out-of-time validation."
 
 ---
 
 ## 1. Executive Summary & Verification Sign-Off
 
-The **SupeRR Intelligence V3** platform has undergone a comprehensive repository audit, repair, empirical reconciliation, mathematical validation, and test execution.
-
-The platform rigorously satisfies the dual-system architecture mandate:
-- **System A — Universal Cricket Intelligence:** Independent, context-benchmarked evaluation of all 1,118 classified players across 837 T20 matches (IPL & T20I 2022–2026), producing separate Top 10 Batters and Top 10 Bowlers under pressure with zero overlap, five mutually exclusive role classifications, hierarchical performance modeling, discrete-time wicket hazard estimation, tail-risk CVaR analysis, and non-parametric bootstrap confidence intervals.
-- **System B — Rajasthan Royals Team Intelligence:** Independent, squad-first empirical analysis of RR's 16-match 2026 IPL campaign (3rd place finish, 3,788 deliveries), identifying 4 verified tactical gaps, evaluating 13 watchlist candidates through constraint-aware multi-criteria optimization, and calculating exact retention and auction purse scenarios for the 2027 mini-auction in Goa.
-
-Universal rankings and RR team requirements are strictly decoupled; universal player evaluation is never distorted by RR's positional needs.
+The **SupeRR Intelligence V3** platform has completed the **P1.1 Pre-Submission Consistency & Ranking Reliability Patch** (`fix/v3-pre-submission-consistency-001`), resolving stale documentation, synchronizing all Top-10 ranking files to a single canonical source of truth, enforcing `MIN_NORMAL_BALLS = 100` for bowlers, extending threshold sensitivity across `40, 60, 80, 100, 150, 200, 250` crisis balls, exposing component-level breakdowns for weight-sensitive ranks (including Iftikhar Ahmed #9), and reclassifying experimental models (`EXPERIMENTAL_NOT_USED_FOR_RANKING`).
 
 ---
 
 ## 2. Master Verification Checklist & Compliance Matrix
 
-| Priority / Phase | Description | Key Artifact | Status | Audit Verification Evidence |
+| Priority / Gate | Description | Key Artifact | Status | Audit Verification Evidence |
 | :--- | :--- | :--- | :---: | :--- |
-| **Priority 1: Entity Crosswalk** | Resolve canonical dataset IDs vs reference brief IDs; correct misattributions | `data/outputs/v3/RR_PLAYER_ID_CROSSWALK.csv` | **PASSED** | 40 entities mapped; Prasidh Krishna corrected to 4489 (separated from Kuldeep Sen 7545); test `test_player_id_crosswalk_integrity` passes. |
-| **Priority 2: Audited Appearances** | Differentiate squad selected, starting XI, impact sub, batted, and bowled | `data/outputs/v3/rr_2026_player_appearances.csv` | **PASSED** | Adam Milne correctly verified at 1 match played (3.2 overs bowled), selected in 16 squad sheets; test `test_rr_appearances_adam_milne` passes. |
-| **Priority 3: Batting Dismissals** | Disentangle striker dismissal from partner run-outs | `data/outputs/v3/rr_2026_batting_stats.csv` | **PASSED** | Dhruv Jurel verified at 515 runs, 14 dismissals, 2 not outs, average **36.79**, SR 154.65 (exact match to brief); test `test_dhruv_jurel_batting_average_dismissal_attribution` passes. |
-| **Priority 4: Score & Phase Contract** | Label runs off bat as `team_batter_runs`; preserve extras quarantine | `data/outputs/v3/rr_2026_phase_analysis.csv` | **PASSED** | Extras 1–7 never summed as runs; bowling economy and dynamic RRR quarantined; explicit data contract notes attached. |
-| **Priority 5: Candidate Player Fit** | Structured provenance-aware dataset with canonical IDs | `data/outputs/v3/RR_PLAYER_FIT.csv` | **PASSED** | 13 candidate dossiers with canonical keys, source documents, injury evidence, and recommendation tiers; test `test_candidate_player_fit_canonical_ids_and_schema` passes. |
-| **Priority 6: V3 Model Physics** | Revalidate all 7 mathematical and statistical models | `data/reports/v3/V3_MODEL_REVALIDATION.md` | **PASSED** | Zero target leakage proven; 5-state mutually exclusive roles; discrete-time hazard Log-Loss 0.178; EVT CVaR90 Pareto frontier generated. |
-| **Priority 7: RR Squad Analysis** | Phase deficiency audit and salary concentration | `data/outputs/v3/RR_REQUIRED_ROLES.csv` | **PASSED** | 4 verified gaps: Indian Frontline Pacer, Overseas Death Specialist, Middle Spinner, Domestic Finisher. |
-| **Priority 8: Retention & Auction** | Purse arithmetic and regulatory compliance | `data/outputs/v3/RR_RETENTION_SCENARIOS.csv`<br>`RR_AUCTION_BUDGET_SCENARIOS.csv` | **PASSED** | Freed purse: ₹24.95 Cr + ₹2.65 Cr carried = ₹27.60 Cr base purse (or ₹32.60 Cr with +₹5 Cr cap); Shanaka/Curran conflict flagged. |
-| **Priority 9: Executive Dashboard** | Streamlit UI reflecting audited data without hardcoding | `dashboard/app.py` | **PASSED** | Interactive 5-section sequence; crosswalk, appearances, phase runs, and audited averages live at `http://localhost:8501`. |
-| **Priority 10: Automated Tests** | Regression tests for all mismatches | `tests/test_v3_audit_repairs.py` | **PASSED** | Full suite expanded to **34 passed tests** (`pytest 8.4.2`). |
+| **P0: Authoritative Ranking Source** | Canonical `TOP_10_BATTERS.csv` & `TOP_10_BOWLERS.csv` synchronized byte-for-byte across all 14 copies | `data/outputs/v3/RANKING_SOURCE_OF_TRUTH.json` | **PASSED** | `scripts/verify_v3_rankings.py` Gate 6 verifies SHA-256 parity across all root and `data/outputs/` copies. |
+| **P0: Hazard Model Governance** | Reclassify hazard, joint, and LightGBM models as `EXPERIMENTAL_NOT_USED_FOR_RANKING`; report actual wicket mismatch | `data/reports/v3/WICKET_HAZARD_VALIDATION.md` | **PASSED** | AUC: `0.572`, Log-Loss: `0.692`, Expected Wickets: `26,843` vs Actual: `2,931` (`9.16x` inflation from `class_weight='balanced'`). |
+| **P1: Bowler Normal Baseline (`>=100`)** | Enforce `MIN_NORMAL_BALLS = 100` for bowlers; flag `<100` as `BOWLER_NORMAL_BASELINE_INSUFFICIENT` | `data/outputs/v3/ALL_BOWLER_METRICS.csv`<br>`TOP_10_BOWLERS.csv` | **PASSED** | 549 bowlers with `<100` normal balls flagged and excluded from composite score; 39 eligible frontline bowlers ranked. |
+| **P1: Extended Threshold Sensitivity** | Crisis-ball sweep `40, 60, 80, 100, 150, 200, 250` $\times$ `5, 8, 10` matches | `data/outputs/v3/RANKING_THRESHOLD_SENSITIVITY.csv` | **PASSED** | 270 grid combinations with unforced `available_top10_count`, Jaccard similarity, rank shifts, and entering/leaving players. |
+| **P1: Ranking Transparency** | Flag weight-sensitive batter ranks (#5, #6, #9, #10) and expose #9 Iftikhar Ahmed component breakdown | `data/outputs/v3/TOP_10_BATTERS.csv` | **PASSED** | Iftikhar Ahmed (`3056`) flagged `CRISIS_SR_BELOW_COHORT_MEAN` (127.50 vs 140.20 cohort mean); components `20.95 + 14.71 + 20.00 + 6.72 = 62.38`. |
+| **P1: Pressure Model Limitations** | Document position-proxy heuristic and missing chase leverage (`PROVISIONAL_POSITION_PROXY_HEURISTIC`) | `data/reports/v3/PRESSURE_MODEL_VALIDATION.md` | **PASSED** | Explicitly documented across README, methodology reports, PDF summaries, and dashboard. |
+| **P1: RR Audited Entities & Purse Provenance** | Canonical ID crosswalk, Dhruv Jurel avg `36.79`, Adam Milne `1` match played, purse assumptions labelled | `data/reference/rr_2027_auction_assumptions.csv` | **PASSED** | Purse figures (`₹2.65 Cr`, `₹24.95 Cr`, `₹27.60 Cr`, `₹32.60 Cr`) labelled `UNVERIFIED_USER_BRIEF_SCENARIO` with checked date `2026-11-15`. |
+| **P1: Automated Tests & Determinism** | Full pytest suite + 2-run SHA-256 determinism check | `tests/` (17 test files) | **PASSED** | **64 passed in 4.07s** (`0 failed`); two consecutive runs produce identical SHA-256 hashes. |
 
 ---
 
-## 3. Automated Test Suite Verification
+## 3. Authoritative Universal Top 10 Leaderboards (`data/outputs/v3/TOP_10_*.csv`)
 
-```
-============================= test session starts =============================
-platform win32 -- Python 3.10.0, pytest-8.4.2, pluggy-1.7.0 -- D:\rrhackthon\.venv\Scripts\python.exe
-rootdir: D:\rrhackthon
-collected 34 items
+### 3.1 Authoritative Top 10 Batters Under Pressure (`TOP_10_BATTERS.csv`)
+| Rank | Canonical ID | Player Name | V3 Role | Crisis Balls (Matches) | Crisis SR | Normal SR ($\ge 30$b) | Raw / Capped Maint. (Capped?) | Provisional Score (`PRI`) | 95% Match-Cluster CI | Sensitivity & Flags |
+| :---: | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
+| **1** | `7897` | **Tilak Varma** | `BAT_PRIMARY_AR` | 60 (18) | 196.67 | 144.47 | 1.361x / 1.361x (No) | **94.29** | [157.62, 251.16] | `ROBUST_ACROSS_WEIGHTS` |
+| **2** | `796` | **Matthew Wade** | `BAT_SPECIALIST` | 50 (15) | 172.00 | 144.49 | 1.190x / 1.190x (No) | **77.35** | [105.70, 213.93] | `ROBUST_ACROSS_WEIGHTS` |
+| **3** | `4106` | **Daryl Mitchell** | `BAT_PRIMARY_AR` | 44 (12) | 177.27 | 147.10 | 1.205x / 1.205x (No) | **72.55** | [117.22, 237.04] | `ROBUST_ACROSS_WEIGHTS` |
+| **4** | `4391` | **Liam Livingstone** | `BAT_PRIMARY_AR` | 60 (14) | 175.00 | 161.29 | 1.085x / 1.085x (No) | **68.92** | [106.81, 221.52] | `ROBUST_ACROSS_WEIGHTS` |
+| **5** | `4773` | **Jaker Ali Anik** | `BAT_SPECIALIST` | 63 (15) | 139.68 | 122.38 | 1.141x / 1.141x (No) | **65.13** | [100.00, 181.64] | `RANKING_SENSITIVE_TO_WEIGHTS`; `CRISIS_SR_BELOW_COHORT_MEAN` |
+| **6** | `7446` | **Abdul Samad** | `BAT_SPECIALIST` | 69 (23) | 169.57 | 168.67 | 1.005x / 1.005x (No) | **64.51** | [128.57, 206.50] | `RANKING_SENSITIVE_TO_WEIGHTS` |
+| **7** | `1077` | **David Miller** | `BAT_SPECIALIST` | 56 (17) | 166.07 | 156.15 | 1.064x / 1.064x (No) | **63.35** | [100.00, 218.65] | `ROBUST_ACROSS_WEIGHTS` |
+| **8** | `8` | **MS Dhoni** | `BAT_SPECIALIST` | 133 (35) | 154.89 | 140.94 | 1.099x / 1.099x (No) | **62.51** | [119.66, 187.59] | `ROBUST_ACROSS_WEIGHTS` |
+| **9** | `3056` | **Iftikhar Ahmed** | `BAT_PRIMARY_AR` | 40 (11) | 127.50 | 120.96 | 1.054x / 1.054x (No) | **62.38** | [92.72, 158.34] | `RANKING_SENSITIVE_TO_WEIGHTS`; `CRISIS_SR_BELOW_COHORT_MEAN` |
+| **10** | `3916` | **Jitesh Sharma** | `BAT_SPECIALIST` | 51 (22) | 172.55 | 155.53 | 1.109x / 1.109x (No) | **62.01** | [108.69, 236.85] | `RANKING_SENSITIVE_TO_WEIGHTS` |
 
-tests/test_context_engine.py (3 tests) .................................. PASSED
-tests/test_preprocessing.py (7 tests) ................................... PASSED
-tests/test_pressure_model.py (1 test) ................................... PASSED
-tests/test_rankings.py (4 tests) ........................................ PASSED
-tests/test_role_classifier.py (2 tests) ................................. PASSED
-tests/test_scouting.py (2 tests) ........................................ PASSED
-tests/test_v3_audit_repairs.py (4 tests) ................................ PASSED
-tests/test_v3_joint_performance.py (1 test) ............................. PASSED
-tests/test_v3_lightgbm.py (1 test) ...................................... PASSED
-tests/test_v3_pressure_model.py (1 test) ................................ PASSED
-tests/test_v3_reliability.py (2 tests) .................................. PASSED
-tests/test_v3_role_classifier.py (2 tests) .............................. PASSED
-tests/test_v3_rr_player_fit.py (2 tests) ................................ PASSED
-tests/test_v3_tail_risk.py (1 test) ..................................... PASSED
-tests/test_v3_wicket_hazard.py (1 test) ................................. PASSED
-
-======================= 34 passed in 2.56s =======================
-```
-
----
-
-## 4. Key Metric & Intelligence Sign-Off
-
-### 4.1 System A: Universal Top 10 Under Pressure
-
-#### Universal Top 10 Batters
-| Rank | Player Name | V3 Role | Crisis Balls Faced | Crisis SR | Normal SR | Maintenance Ratio | 95% Confidence Interval |
-| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **1** | **Tilak Varma** | BAT_SPECIALIST | 48 | 179.2 | 144.1 | 1.24x | [168.0, 192.5] |
-| **2** | **Matthew Wade** | BAT_SPECIALIST | 43 | 162.8 | 134.6 | 1.21x | [149.2, 178.4] |
-| **3** | **Daryl Mitchell** | BAT_SPECIALIST | 84 | 158.3 | 139.8 | 1.13x | [146.5, 171.0] |
-| **4** | **Liam Livingstone** | BAT_PRIMARY_AR | 48 | 154.2 | 145.0 | 1.06x | [141.0, 169.5] |
-| **5** | **MS Dhoni** | BAT_SPECIALIST | 50 | 152.0 | 155.0 | 0.98x | [138.5, 167.2] |
-| **6** | **Abdul Samad** | BAT_PRIMARY_AR | 48 | 150.0 | 152.0 | 0.99x | [135.0, 166.0] |
-| **7** | **Jaker Ali Anik** | BAT_SPECIALIST | 46 | 147.8 | 132.5 | 1.12x | [133.2, 163.5] |
-| **8** | **David Miller** | BAT_SPECIALIST | 91 | 147.3 | 141.2 | 1.04x | [135.8, 159.4] |
-| **9** | **Rinku Singh** | BAT_SPECIALIST | 74 | 145.9 | 146.8 | 0.99x | [134.0, 158.6] |
-| **10** | **Ramandeep Singh** | BAT_PRIMARY_AR | 40 | 145.0 | 160.0 | 0.91x | [130.0, 162.0] |
-
-*Role Governance Confirmation:* Gudakesh Motie and Akeal Hosein are classified as `BOWL_SPECIALIST` and are excluded.
-
-#### Universal Top 10 Bowlers
-| Rank | Player Name | V3 Role | Defensive Balls Bowled | Dot Ball % | Wickets Taken | Dot Maintenance | 95% Confidence Interval |
-| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **1** | **Craig Young** | BOWL_SPECIALIST | 57 | 45.6% | 7 | 1.08x | [39.0%, 53.0%] |
-| **2** | **Mark Adair** | BOWL_PRIMARY_AR | 57 | 42.1% | 8 | 1.04x | [35.5%, 49.0%] |
-| **3** | **Gareth Delany** | BOWL_PRIMARY_AR | 44 | 40.9% | 5 | 1.02x | [33.0%, 49.5%] |
-| **4** | **Mark Wood** | BOWL_SPECIALIST | 52 | 40.4% | 5 | 0.98x | [32.5%, 48.8%] |
-| **5** | **Trent Boult** | BOWL_SPECIALIST | 185 | 39.5% | 12 | 0.95x | [34.8%, 44.5%] |
-| **6** | **Obed McCoy** | BOWL_SPECIALIST | 46 | 39.1% | 5 | 0.96x | [31.0%, 48.0%] |
-| **7** | **Jacob Duffy** | BOWL_SPECIALIST | 47 | 38.3% | 4 | 0.94x | [30.2%, 47.1%] |
-| **8** | **Deepak Chahar** | BOWL_SPECIALIST | 68 | 38.2% | 5 | 0.93x | [31.5%, 45.8%] |
-| **9** | **Eshan Malinga** | BOWL_SPECIALIST | 42 | 38.1% | 3 | 0.92x | [29.5%, 47.5%] |
-| **10** | **Lungi Ngidi** | BOWL_SPECIALIST | 42 | 38.1% | 4 | 0.92x | [29.5%, 47.5%] |
-
-*Role Governance Confirmation:* Harry Tector is classified as `BAT_PRIMARY_AR` and is excluded. **Leaderboard overlap is exactly 0.**
+### 3.2 Authoritative Top 10 Bowlers Under Pressure (`TOP_10_BOWLERS.csv`, `MIN_NORMAL_BALLS = 100`)
+| Rank | Canonical ID | Player Name | V3 Role | Crisis Balls (Matches) | Normal Balls (`>=100`) | Normal Baseline Status | Crisis Dot % | Normal Dot % | Raw / Capped Dot Maint. (Capped?) | Provisional Score (`PRI`) | 95% Match-Cluster CI | Weight Sensitivity |
+| :---: | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
+| **1** | `8661` | **Matheesha Pathirana** | `BOWL_SPECIALIST` | 578 (49) | 122 | `VALID_NORMAL_BASELINE` | 36.51% | 38.52% | 0.948x / 0.948x (No) | **84.45** | [32.03%, 40.96%] | `ROBUST_ACROSS_WEIGHTS` |
+| **2** | `1944` | **Keshav Maharaj** | `BOWL_PRIMARY_AR` | 225 (26) | 112 | `VALID_NORMAL_BASELINE` | 33.33% | 31.25% | 1.067x / 1.067x (No) | **68.40** | [24.88%, 41.10%] | `ROBUST_ACROSS_WEIGHTS` |
+| **3** | `8380` | **Mohammad Rishad Hossain** | `BOWL_PRIMARY_AR` | 294 (40) | 261 | `VALID_NORMAL_BASELINE` | 36.05% | 42.53% | 0.848x / 0.848x (No) | **64.99** | [31.16%, 41.23%] | `ROBUST_ACROSS_WEIGHTS` |
+| **4** | `6464` | **Arshdeep Singh** | `BOWL_PRIMARY_AR` | 2069 (141) | 149 | `VALID_NORMAL_BASELINE` | 36.93% | 44.30% | 0.834x / 0.834x (No) | **64.66** | [34.55%, 39.25%] | `ROBUST_ACROSS_WEIGHTS` |
+| **5** | `7503` | **Ravi Bishnoi** | `BOWL_PRIMARY_AR` | 936 (94) | 401 | `VALID_NORMAL_BASELINE` | 37.07% | 38.40% | 0.965x / 0.965x (No) | **62.40** | [33.60%, 40.67%] | `RANKING_SENSITIVE_TO_WEIGHTS` |
+| **6** | `2681` | **Taskin Ahmed** | `BOWL_PRIMARY_AR` | 552 (46) | 100 | `VALID_NORMAL_BASELINE` | 41.67% | 50.00% | 0.833x / 0.833x (No) | **60.26** | [36.56%, 46.84%] | `ROBUST_ACROSS_WEIGHTS` |
+| **7** | `4900` | **Wanindu Hasaranga** | `BOWL_PRIMARY_AR` | 868 (82) | 331 | `VALID_NORMAL_BASELINE` | 31.68% | 42.30% | 0.749x / 0.749x (No) | **59.88** | [28.49%, 34.92%] | `RANKING_SENSITIVE_TO_WEIGHTS` |
+| **8** | `3653` | **Avesh Khan** | `BOWL_SPECIALIST` | 1049 (77) | 136 | `VALID_NORMAL_BASELINE` | 35.46% | 41.18% | 0.861x / 0.861x (No) | **59.16** | [31.79%, 39.42%] | `ROBUST_ACROSS_WEIGHTS` |
+| **9** | `2526` | **Ish Sodhi** | `BOWL_PRIMARY_AR` | 404 (46) | 249 | `VALID_NORMAL_BASELINE` | 30.94% | 35.34% | 0.875x / 0.875x (No) | **58.71** | [26.10%, 36.39%] | `RANKING_SENSITIVE_TO_WEIGHTS` |
+| **10** | `3276` | **Gudakesh Motie** | `BOWL_PRIMARY_AR` | 315 (32) | 100 | `VALID_NORMAL_BASELINE` | 33.97% | 31.00% | 1.096x / 1.096x (No) | **56.23** | [26.70%, 42.49%] | `RANKING_SENSITIVE_TO_WEIGHTS` |
 
 ---
 
-### 4.2 System B: Rajasthan Royals 2026 Season & Auction Intelligence
+## 4. Formal Governance Sign-Off
 
-- **Matches:** 16 matches (14 league games + Eliminator victory + Qualifier 2 defeat).
-- **Orange Cap & Tournament MVP:** **Vaibhav Sooryavanshi** — 16 matches, 776 runs, 327 balls, SR 237.31, avg 48.50, 72 sixes.
-- **Top Batting Contributors:**
-  - Dhruv Jurel: 16 matches, 515 runs, 333 balls, SR 154.65, **average 36.79** (14 dismissals, 2 not outs).
-  - Yashasvi Jaiswal: 16 matches, 427 runs, 280 balls, SR 152.50, avg 30.50.
-  - Donovan Ferreira: 13 inns, 317 runs, 177 balls, SR 179.10, avg 35.22, 23 sixes.
-  - Riyan Parag: 14 matches, 309 runs, 196 balls, SR 157.65, avg 23.77.
-  - Ravindra Jadeja: 11 inns, 266 runs, 197 balls, SR 135.03, avg 66.50 (7 not outs).
-- **Bowling Leader:** **Jofra Archer** — 16 matches, 25 bowler-creditable wickets (29 total wickets in over).
-- **Appearances:** Adam Milne selected in 16 squad sheets, played **exactly 1 match** (3.2 overs, 0 wickets).
-- **Target Watchlist Fit:**
-  - Indian Frontline Pacer: **Prasidh Krishna** (Target: ₹8.5–10.5 Cr) or **Avesh Khan** (Target: ₹8.0–10.0 Cr).
-  - Overseas Death Bowler: **Matheesha Pathirana** (Target: ₹8.0–9.5 Cr) or **Nuwan Thushara** (Target: ₹4.5–5.5 Cr).
-  - Middle Spinner: **R Sai Kishore** (Target: ₹3.5–4.5 Cr).
-  - Domestic Finisher: **Ashutosh Sharma** (Target: ₹2.5–3.5 Cr).
-- **Purse:** ₹24.95 Cr freed + ₹2.65 Cr carried = **₹27.60 Cr** base purse (or **₹32.60 Cr** expanded).
-- **Regulatory Alert:** Sam Curran vs Dasun Shanaka temporary replacement contract flag.
-
----
-
-## 5. Formal Sign-Off
-
-I hereby certify that **SupeRR Intelligence V3** has completed all required audits, entity reconciliations, dismissal adjustments, and data contract updates. All 34 automated unit and regression tests pass without errors, and the interactive dashboard is live and operational.
-
-**Sign-Off Status:** **PRODUCTION READY & CERTIFIED**  
-**Date:** 14 November 2026
+- **Sign-Off Status:** **`P1.1 PATCH VERIFIED — PROVISIONAL MODEL`**  
+- **Date:** 15 November 2026

@@ -1,11 +1,9 @@
-"""Participant Technical Methodology Report Generator (Markdown and PDF).
+"""Participant Technical Methodology Report Generator (Markdown and PDF) — P1.1 Patch.
 
 SupeRR Intelligence - Rajasthan Royals SupeRR Selector Season 2
-Generates:
-1. FINAL_SUPERR_METHODOLOGY_REPORT.pdf (Publication-grade 3-page dossier with zero blank pages)
-2. FINAL_SUPERR_METHODOLOGY_REPORT.md
-3. PROJECT_CHANGELOG.md
-4. DASHBOARD_VALIDATION_REPORT.md
+Generates directly from authoritative V3 canonical outputs:
+1. FINAL_SUPERR_METHODOLOGY_REPORT.pdf (and synchronizes all PDF copies)
+2. FINAL_SUPERR_METHODOLOGY_REPORT.md (and synchronizes all MD copies)
 """
 import os
 import sys
@@ -21,167 +19,197 @@ import pandas as pd
 from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
 from reportlab.platypus import (
-    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, KeepTogether, HRFlowable
+    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, HRFlowable
 )
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 
 from src.config import OUTPUTS_DIR, REPORTS_DIR
 
+OUTPUTS_V3 = PROJECT_ROOT / "data" / "outputs" / "v3"
+
+
+def _df_to_md(df: pd.DataFrame) -> str:
+    """Format a DataFrame as a GitHub-flavored Markdown table without external dependencies."""
+    cols = list(df.columns)
+    header = "| " + " | ".join(str(c) for c in cols) + " |"
+    sep = "| " + " | ".join("---" for _ in cols) + " |"
+    rows = [header, sep]
+    for _, row in df.iterrows():
+        vals = []
+        for c in cols:
+            v = row[c]
+            if isinstance(v, float):
+                vals.append(f"{v:.4f}".rstrip('0').rstrip('.') if pd.notna(v) else "NaN")
+            else:
+                vals.append(str(v))
+        rows.append("| " + " | ".join(vals) + " |")
+    return "\n".join(rows)
+
 
 def generate_markdown_report() -> Path:
-    """Generate comprehensive Markdown methodology and evidence dossier."""
+    """Generate comprehensive Markdown methodology and evidence dossier from canonical V3 CSVs."""
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     report_path = REPORTS_DIR / "FINAL_SUPERR_METHODOLOGY_REPORT.md"
 
-    # Load ranking tables
-    top_bat = pd.read_csv(OUTPUTS_DIR / "FINAL_TOP_10_BATTERS.csv")
-    top_bowl = pd.read_csv(OUTPUTS_DIR / "FINAL_TOP_10_BOWLERS.csv")
-    low_bat = pd.read_csv(OUTPUTS_DIR / "LOWER_ORDER_PRESSURE_IMPACT.csv")
-    em_bowl = pd.read_csv(OUTPUTS_DIR / "EMERGING_AND_PART_TIME_BOWLERS.csv")
-    press_val = pd.read_csv(OUTPUTS_DIR / "PRESSURE_MODEL_VALIDATION.csv")
-    sens_df = pd.read_csv(OUTPUTS_DIR / "PRI_SENSITIVITY_ANALYSIS.csv")
+    # Load authoritative canonical V3 ranking tables
+    top_bat = pd.read_csv(OUTPUTS_V3 / "TOP_10_BATTERS.csv")
+    top_bowl = pd.read_csv(OUTPUTS_V3 / "TOP_10_BOWLERS.csv")
+    thresh_df = pd.read_csv(OUTPUTS_V3 / "RANKING_THRESHOLD_SENSITIVITY.csv")
+    weight_df = pd.read_csv(OUTPUTS_V3 / "RANKING_WEIGHT_SENSITIVITY.csv")
 
-    content = f"""# SupeRR Intelligence: Pressure Reliability Analytics & Player Scouting
-## Official Technical Methodology Report & Evidence Dossier
+    bat_sweep = thresh_df[(thresh_df['discipline'] == 'Batting') & (thresh_df['is_primary_crisis_sweep'] == True)][[
+        'min_crisis_balls', 'min_crisis_matches', 'eligible_batter_count', 'eligible_bowler_count',
+        'available_top10_count', 'top10_overlap_with_baseline', 'jaccard_similarity',
+        'mean_abs_rank_movement', 'max_rank_movement', 'players_entering_top10', 'players_leaving_top10'
+    ]]
+    bowl_sweep = thresh_df[(thresh_df['discipline'] == 'Bowling') & (thresh_df['is_primary_crisis_sweep'] == True)][[
+        'min_crisis_balls', 'min_crisis_matches', 'eligible_batter_count', 'eligible_bowler_count',
+        'available_top10_count', 'top10_overlap_with_baseline', 'jaccard_similarity',
+        'mean_abs_rank_movement', 'max_rank_movement', 'players_entering_top10', 'players_leaving_top10'
+    ]]
+
+    bat_top_table = _df_to_md(top_bat[[
+        'rank', 'canonical_player_id', 'player_name', 'v3_role', 'crisis_balls', 'crisis_matches',
+        'crisis_sr', 'norm_sr', 'raw_sr_maintenance', 'sr_maintenance', 'is_maintenance_capped',
+        'shrunk_crisis_sr', 'consistency_score', 'provisional_fixed_weight_score',
+        'ci_lower', 'ci_upper', 'ranking_sensitivity_status', 'performance_anomaly_flag'
+    ]])
+
+    bowl_top_table = _df_to_md(top_bowl[[
+        'rank', 'canonical_player_id', 'player_name', 'v3_role', 'crisis_balls', 'crisis_matches',
+        'norm_balls', 'norm_baseline_status', 'crisis_dot_pct', 'norm_dot_pct',
+        'raw_dot_maintenance', 'capped_dot_maintenance', 'is_maintenance_capped',
+        'crisis_wicket_rate', 'shrunk_crisis_wr', 'consistency_score',
+        'provisional_fixed_weight_score', 'ci_lower', 'ci_upper', 'ranking_sensitivity_status'
+    ]])
+
+    bat_weight_top10 = _df_to_md(weight_df[weight_df['discipline'] == 'Batting'].head(10)[[
+        'provisional_rank', 'canonical_player_id', 'player_name', 'provisional_fixed_weight_score',
+        'contrib_maint', 'contrib_abs', 'contrib_cons', 'contrib_sample',
+        'rank_balanced_default', 'rank_maintenance_heavy', 'rank_absolute_heavy',
+        'rank_consistency_heavy', 'rank_equal_weights', 'max_rank_shift', 'ranking_sensitivity_status'
+    ]])
+
+    content = f"""# SupeRR Intelligence V3: Pressure Reliability Analytics & Player Scouting
+## Official Technical Methodology Report & Evidence Dossier (P1.1 Patch)
 **Target Event:** Rajasthan Royals — SupeRR Selector Season 2 Hackathon  
 **Target Scope:** Historical IPL & Men's T20I (2022 – 2026)  
-**Deliverable Type:** Reproducible Analytics Methodology & Decision Support System  
-**System Status:** Complete, Audited & Scientifically Defensible  
+**Authoritative Source Manifest:** `data/outputs/v3/RANKING_SOURCE_OF_TRUTH.json`  
+**System Status:** `P1.1 PATCH VERIFIED — PROVISIONAL MODEL`  
+
+> **Mandatory Provisional Model Disclosure:**
+> "Rankings are provisional. Batter ranks 5, 6, 9 and 10 are sensitive to scoring weights. The pressure classification remains heuristic and position-proxy based. The new score has not yet undergone independent out-of-time validation."
 
 ---
 
-## 1. Executive Summary & Cricket Philosophy
+## 1. Executive Summary & Governance Architecture
 
-Standard cricket statistics (total runs, nominal strike rates, aggregate wickets) are heavily distorted by unconstrained play in low-leverage match situations.
-Under the official Round 1 problem statement of the Rajasthan Royals hackathon, **true pressure reliability is defined as the capacity to maintain or elevate performance under high-leverage crisis states relative to one's own normal baseline**.
+Standard cricket statistics (total runs, nominal strike rates, aggregate wickets) are heavily distorted by unconstrained play in low-leverage match situations. Under the Rajasthan Royals problem statement, pressure reliability evaluates how players sustain or elevate performance in high-pressure states relative to their personal normal baselines.
 
-SupeRR Intelligence establishes:
-1. **Dual Independent Pressure Formulations:** Batting collapse crisis and bowling defensive pressure are evaluated via independent models with zero target leakage.
-2. **Empirical Bayesian Shrinkage:** Replaces arbitrary cutoffs with statistical shrinkage towards empirical population priors (Normal-Normal for strike rate, Beta-Binomial for wicket rate).
-3. **Exposure-Adjusted Match Consistency:** Multi-match dispersion metric continuous in (0, 1] eliminating zero-consistency anomalies.
-4. **Role-Aware Dual Leaderboard Architecture:** Distinguishes frontline regular performers from lower-order impact hitters and part-time bowling options while retaining complete transparency across all 1,118 audited players.
+SupeRR Intelligence V3 enforces:
+1. **Canonical Player Identity Resolution (`src/identity/player_identity.py`):** Consolidates verified multi-ID provider records before aggregation (`PLAYER_IDENTITY_CROSSWALK.csv`) while quarantining unresolved identity collisions.
+2. **Pre-Delivery Heuristic Pressure Stratification (`PROVISIONAL_POSITION_PROXY_HEURISTIC`):** Mutually exclusive pre-delivery batting crisis and bowling defensive pressure tiers with zero post-delivery target leakage and explicit missing-feature quarantine (`batting_pressure_data_valid`, `bowling_pressure_data_valid`).
+3. **Separate Normal-Baseline Reliability Gating (`MIN_NORMAL_BALLS = 100` for Bowlers, `30` for Batters):** Prevents small-sample normal baselines from distorting maintenance ratios. Raw and capped (`[0.50, 1.50]`) maintenance ratios are reported separately.
+4. **Empirical Bayes Shrinkage & Match-Clustered Bootstrap CIs:** Priors estimated strictly on the eligible role-gated population ($K=25.0$ Normal shrinkage for batting SR; Method-of-Moments Beta-Binomial shrinkage for bowling wicket rate) and 2,000-iteration match-clustered bootstrap 95% confidence intervals.
 
 ---
 
 ## 2. Dataset Scope & Data Governance Audit
 
-The platform ingests the official dataset across **853 matches** (837 with ball-by-ball delivery logs) and **193,988 regular deliveries**.
+The platform ingests **853 matches** (837 with ball-by-ball delivery logs) and **193,988 regular deliveries** (after quarantining 26 Super Over deliveries in innings 3 and 4).
 
-### Surgical Governance Disclosures
-1. **`extras1_runs` is Categorical, NOT a Run Count:** Source data integer codes (1: Overstep, 2: wide, 3: legbyes, 4: byes, 5: other, 6: None, 7: Penalty) represent an enum codebook. **Never summed as runs.**
-2. **Quarantined Metrics:** Because total extras semantics remain unconfirmed, derived team totals, required run rates, and bowler economy rates are withheld from ranking formulas to ensure zero false precision.
-3. **Non-Bowler Dismissals Filtered:** 571 run outs, 6 retired outs, and 2 obstructing-the-field events excluded from bowler wickets. Only genuine bowler wickets (Caught, Bowled, LBW, Stumped, Hit Wicket) are retained. Stumpings on wide balls are properly attributed.
-4. **Boundary Discrepancies Reconciled:** 23 flagged boundary anomalies (20 fours, 3 sixes with runs==4/6 but false flags) reconciled via validated boolean flags.
-5. **Super Overs Quarantined:** Innings 3 and 4 (26 balls) quarantined from 20-over tactical ratings.
-
----
-
-## 3. Dual Independent Pressure Models
-
-### A. Batting Crisis Model (0–10 Scale)
-Evaluates batting crisis from pre-delivery context:
-- **Wickets Fallen Before Delivery (0–3.5 pts):** 0 wkts = 0.0, 1–2 wkts = 0.5, 3–4 wkts = 1.5, 5–6 wkts = 2.5, 7+ wkts = 3.5.
-- **Recent 12-Legal-Ball Collapse Cluster (0–2.0 pts):** 1 wkt = 0.8, 2 wkts = 1.5, 3+ wkts = 2.0.
-- **Batter Novelty / Entry Vulnerability (0–1.5 pts):** Balls faced <= 6 = 1.5, balls 7-12 = 0.8.
-- **Dot-Ball Stagnation Streak (0–1.5 pts):** 4+ consecutive team dots = 1.0, 6+ dots = 1.5.
-- **Phase Multiplier:** Death overs (16–20) receive 1.25x multiplier.
-- **Deliveries Classified:** High + Extreme crisis accounts for 15,464 balls (7.97% of regular deliveries).
-
-### B. Bowling Defensive Pressure Model (0–10 Scale)
-Evaluates high-leverage defensive constraints:
-- **Opponent Resource Threat (0–3.0 pts):** Opponent batting depth (8–10 wickets in hand = 3.0 pts; 5–7 wkts = 1.5 pts).
-- **Critical Innings Phase (1.0–3.0 pts):** Death overs (16–20) = 3.0 pts; Powerplay (1–6) = 2.0 pts; Middle = 1.0 pt.
-- **Opponent Boundary Momentum (0–2.5 pts):** 3+ boundaries in last 12 legal balls = 2.5 pts; 2 boundaries = 1.5 pts.
-- **Run-Flow Threat (0–1.5 pts):** Opponent running at $\ge 1.8$ runs/ball = 1.5 pts.
-- **Deliveries Classified:** High + Extreme defensive pressure accounts for 101,935 balls (52.55% of regular deliveries).
-
-### Pressure Distribution Validation Summary
-{press_val.to_markdown(index=False)}
+1. **`extras1_runs` is Categorical, NOT a Run Count:** Source data integer codes (1: Overstep, 2: wide, 3: legbyes, 4: byes, 5: other, 6: None, 7: Penalty) represent an enum codebook and are never summed as numeric runs.
+2. **Quarantined Metrics & Pressure-Model Limitation (`PROVISIONAL_POSITION_PROXY_HEURISTIC`):**
+   - Because total extras semantics remain unconfirmed, cumulative scoreboard totals, second-innings target, dynamic required run rate (RRR), full chase leverage, and bowler economy rates are withheld from ranking formulas.
+   - Consequently, **the current pressure model is a position-proxy and pre-delivery state heuristic, not a fully calibrated match-leverage model**.
+   - Batting position is a role proxy, not direct evidence of match pressure; positional crisis distributions must not be presented as calibrated player-level crisis probabilities.
+3. **Dismissal Attribution:** 581 non-bowler dismissals (573 run outs, 6 retired outs, 2 obstructing the field) are excluded from bowler wickets. Partner run-outs are excluded from striker batting average denominators.
+4. **Wicket Hazard Model Governance (`EXPERIMENTAL_NOT_USED_FOR_RANKING`):**
+   - On chronological out-of-sample evaluation (`src/models/v3_wicket_hazard.py`), the discrete-time logistic hazard model with `class_weight='balanced'` yields **ROC-AUC = 0.572**, **Log-Loss = 0.692**, and **Expected Wickets = 26,843 vs Actual Wickets = 2,931** (a **9.16x over-prediction** due to uncalibrated balanced class weights).
+   - The hazard model, hierarchical joint model, and LightGBM challenger are strictly marked **`EXPERIMENTAL_NOT_USED_FOR_RANKING`** and are not used as production ranking components.
 
 ---
 
-## 4. Mathematical Formulation of Pressure Reliability Index (PRI)
+## 3. Provisional Fixed-Weight Score Formulation (`PROVISIONAL_FIXED_WEIGHT_SCORE`)
 
-$$\\text{{PRI}} = 100 \\times \\left( 0.35 M_{{\\text{{norm}}}} + 0.35 A_{{\\text{{norm}}}} + 0.20 C_{{\\text{{norm}}}} + 0.10 S_{{\\text{{norm}}}} \\right)$$
+$$\\text{{Score}}_{{\\text{{provisional}}}} = 100 \\times \\left( 0.35 M_{{\\text{{norm}}}} + 0.35 A_{{\\text{{norm}}}} + 0.20 C_{{\\text{{norm}}}} + 0.10 S_{{\\text{{norm}}}} \\right)$$
 
 1. **Performance Maintenance ($M$, 35%):**
-   - Batting: $\\text{{SR}}_{{\\text{{crisis}}}} / \\text{{SR}}_{{\\text{{norm}}}}$, softly clipped to $[0.5, 1.5]$.
-   - Bowling: $\\text{{Dot}}_{{\\text{{crisis}}}} / \\text{{Dot}}_{{\\text{{norm}}}}$, softly clipped to $[0.5, 1.5]$.
+   - Batting: $\\text{{SR}}_{{\\text{{crisis}}}} / \\text{{SR}}_{{\\text{{norm}}}}$ for batters with $\\ge 30$ normal balls. Raw (`raw_sr_maintenance`) and capped (`capped_sr_maintenance` in $[0.50, 1.50]$) ratios are reported separately alongside `is_maintenance_capped`.
+   - Bowling: $\\text{{Dot}}_{{\\text{{crisis}}}} / \\text{{Dot}}_{{\\text{{norm}}}}$ strictly for bowlers with $\\ge 100$ normal balls (`MIN_NORMAL_BALLS = 100`). Bowlers with $< 100$ normal balls are flagged `BOWLER_NORMAL_BASELINE_INSUFFICIENT`, receive `NaN` for `capped_dot_maintenance`, and are excluded from composite ranking.
 2. **Absolute Pressure Performance ($A$, 35%):**
-   - Batting: Empirical Bayes Normal-Normal shrinkage ($K = 25.0$) shrinking observed strike rate towards population mean:
-     $$w_i = \\frac{{n_i}}{{n_i + 25.0}}, \\quad \\hat{{\\mu}}_i = w_i \\bar{{x}}_i + (1 - w_i) \\mu_{{\\text{{pop}}}}$$
-   - Bowling: Empirical Bayes Beta-Binomial conjugate shrinkage with Method-of-Moments prior estimation for crisis wicket rate.
+   - Batting: Fixed-$K$ Normal shrinkage ($K = 25.0$) toward the eligible batting cohort mean ($140.20$).
+   - Bowling: Beta-Binomial Empirical Bayes shrinkage toward the eligible bowling cohort mean ($5.52\\%$).
 3. **Exposure-Adjusted Match Consistency ($C$, 20%):**
    $$\\text{{Consistency}}_i = \\exp(-\\text{{CV}}_i) \\cdot \\sqrt{{\\frac{{m_i}}{{m_i + 3}}}}$$
-   Guaranteed strictly positive in $(0, 1]$, non-degenerating, and rewarding sustained multi-match reliability.
 4. **Sample Size Confidence ($S$, 10%):**
    $$\\text{{Sample Confidence}}_i = \\min\\left(1.0, \\frac{{\\ln(1 + n_i)}}{{\\ln(1 + 250)}}\\right)$$
 
----
-
-## 5. Official Primary Top 10 Batters Under Crisis Pressure (Positions 1–7)
-
-{top_bat[['rank', 'canonical_display_name', 'primary_role', 'modal_batting_position', 'crisis_balls', 'crisis_matches', 'crisis_sr', 'norm_sr', 'sr_maintenance', 'consistency_score', 'batting_pri']].to_markdown(index=False)}
+*Validation Governance Note:* Legacy PRI hold-out Spearman correlations from earlier prototypes are **not** used as validation evidence for this V3 score. The V3 score remains explicitly provisional pending independent out-of-time validation.
 
 ---
 
-## 6. Official Primary Top 10 Bowlers Under Defensive Pressure (Frontline, 120+ Balls)
+## 4. Authoritative Top 10 Batters Under Crisis Pressure (`data/outputs/v3/TOP_10_BATTERS.csv`)
 
-{top_bowl[['rank', 'canonical_display_name', 'primary_role', 'crisis_balls', 'crisis_matches', 'crisis_wicket_rate', 'norm_wicket_rate', 'crisis_dot_pct', 'consistency_score', 'bowling_pri']].to_markdown(index=False)}
+{bat_top_table}
 
----
-
-## 7. Dual Leaderboard Separation Rationale
-
-### A. Gudakesh Motie & Akeal Hosein (Lower-Order Impact)
-- **Observation:** Gudakesh Motie (modal pos 9) and Akeal Hosein (modal pos 10) demonstrated elite crisis strike rates (170.2 and 136.0) from lower-order batting appearances.
-- **Statistical Dilemma:** Specialist bowlers only enter the crease when multiple top-order wickets have already fallen (100% crisis exposure), skewing baseline strike rate maintenance ratios relative to top-seven batters.
-- **Resolution:** Motie and Hosein are ranked #1 and #2 on the **Lower-Order Pressure Impact Leaderboard** (`LOWER_ORDER_PRESSURE_IMPACT.csv`), preserving their genuine clutch contributions without distorting the primary top-seven leaderboard.
-
-### B. Harry Tector (Emerging & Part-Time Bowling)
-- **Observation:** Harry Tector (Ireland middle-order batter, modal pos 4) recorded 54 defensive crisis bowling deliveries with a high wicket rate (9.26%).
-- **Statistical Dilemma:** Tector's primary workload is batting (857 balls faced vs 248 bowled). With only 54 crisis balls bowled, his sample size is insufficient to represent a frontline T20 tournament bowling option.
-- **Resolution:** By requiring 120 crisis legal deliveries for frontline bowling eligibility, Tector is appropriately ranked #1 on the **Emerging & Part-Time Bowlers Leaderboard** (`EMERGING_AND_PART_TIME_BOWLERS.csv`), while the Primary Top 10 consists strictly of genuine frontline bowlers (Adair, Young, Wood, McCoy, Boult, Malinga, etc.).
-
-### Top 5 Lower-Order Pressure Impact Batters
-{low_bat[['lower_order_rank', 'canonical_display_name', 'primary_role', 'modal_batting_position', 'crisis_balls', 'crisis_sr', 'batting_pri', 'eligibility_status']].head(5).to_markdown(index=False)}
-
-### Top 5 Emerging & Part-Time Bowlers
-{em_bowl[['emerging_rank', 'canonical_display_name', 'primary_role', 'crisis_balls', 'crisis_wicket_rate', 'bowling_pri', 'eligibility_status']].head(5).to_markdown(index=False)}
+### Transparency & Iftikhar Ahmed (`canonical_player_id=3056`, Rank #9) Component Breakdown
+- **Weight-Sensitive Batter Ranks:** Ranks **#5 Jaker Ali Anik**, **#6 Abdul Samad**, **#9 Iftikhar Ahmed**, and **#10 Jitesh Sharma** shift by $\\ge 5$ places across the 5 weight configurations and are flagged `RANKING_SENSITIVE_TO_WEIGHTS`.
+- **Iftikhar Ahmed (#9) Component Breakdown:**
+  - Crisis Strike Rate: **127.50** (40 balls across 11 matches), which is **below the eligible cohort mean of 140.20** (flagged `CRISIS_SR_BELOW_COHORT_MEAN`).
+  - Component Contributions: `contrib_maint = 20.95` (1.054x maintenance over 120.96 normal SR) + `contrib_abs = 14.71` (shrunk crisis SR 132.39) + `contrib_cons = 20.00` (match consistency 0.5497, #1 in eligible cohort) + `contrib_sample = 6.72` = **62.38**. His #9 rank is driven by top-of-cohort multi-match consistency and positive personal baseline maintenance offsetting low absolute strike rate.
 
 ---
 
-## 8. Sensitivity Analysis Across 5 Weight Configurations
+## 5. Authoritative Top 10 Bowlers Under Defensive Pressure (`data/outputs/v3/TOP_10_BOWLERS.csv`, `MIN_NORMAL_BALLS = 100`)
 
-{sens_df.head(10).to_markdown(index=False)}
-
-Spearman rank correlations across all 5 weighting schemes exceed **0.88 for batters** and **0.91 for bowlers**, proving mathematical stability against weight perturbation.
+{bowl_top_table}
 
 ---
 
-## 9. Reproducibility & Engineering Integrity
+## 6. Extended Crisis-Ball Threshold Sensitivity (`40, 60, 80, 100, 150, 200, 250`)
 
-Every calculation in this report is produced directly from the underlying dataset via automated Python scripts and validated by the unit test suite:
-- Pipeline execution: `python scripts/compute_rankings.py`
-- Test suite: `pytest tests/ -v` (19 passing unit tests)
-- All rankings generated dynamically without hardcoded constants or manual overrides.
+### 6.1 Batting Primary Crisis-Ball Sweep (`crisis_matches >= 5, norm_balls >= 30, total_balls >= 120`)
+{_df_to_md(bat_sweep)}
+
+### 6.2 Bowling Primary Crisis-Ball Sweep (`crisis_matches >= 5, norm_balls >= 100, total_legal_balls >= 120`)
+{_df_to_md(bowl_sweep)}
+
+*Note:* Top 10 is never forced when fewer than 10 players are eligible (`available_top10_count = 8` at 100 crisis balls for batters, `6` at 120 balls, and `0` at 150–250 balls). A 10/10 overlap at the baseline threshold (`40` balls) is not proof of stability across higher thresholds.
+
+---
+
+## 7. Weight Sensitivity Analysis Across 5 Prespecified Configurations (`RANKING_WEIGHT_SENSITIVITY.csv`)
+
+{bat_weight_top10}
+
+---
+
+## 8. Reproducibility & Verification Gates
+
+- Pipeline execution: `.venv\\Scripts\\python scripts/compute_v3_rankings.py`
+- Independent verification: `.venv\\Scripts\\python scripts/verify_v3_rankings.py`
+- Automated test suite: `.venv\\Scripts\\python -m pytest tests/ -v` (**64 passed**)
 """
     with open(report_path, "w", encoding="utf-8") as f:
         f.write(content)
 
-    # Copy to project root and outputs
-    shutil.copy(report_path, PROJECT_ROOT / "FINAL_SUPERR_METHODOLOGY_REPORT.md")
-    shutil.copy(report_path, OUTPUTS_DIR / "FINAL_SUPERR_METHODOLOGY_REPORT.md")
+    # Copy to project root, outputs, and reports
+    for md_tgt in [
+        PROJECT_ROOT / "FINAL_SUPERR_METHODOLOGY_REPORT.md",
+        OUTPUTS_DIR / "FINAL_SUPERR_METHODOLOGY_REPORT.md",
+        REPORTS_DIR / "SUPERR_INTELLIGENCE_METHODOLOGY_REPORT.md",
+    ]:
+        shutil.copy(report_path, md_tgt)
     print(f"Markdown methodology report written to: {report_path}")
     return report_path
 
 
 def generate_pdf_report() -> Path:
-    """Generate publication-grade 3-page PDF dossier with zero empty pages."""
+    """Generate publication-grade 3-page PDF dossier directly from canonical V3 CSVs."""
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     pdf_path = REPORTS_DIR / "FINAL_SUPERR_METHODOLOGY_REPORT.pdf"
 
-    # Setup 3-page document template
     doc = SimpleDocTemplate(
         str(pdf_path),
         pagesize=letter,
@@ -191,7 +219,6 @@ def generate_pdf_report() -> Path:
         bottomMargin=28,
     )
 
-    # Color Palette: Rajasthan Royals Navy & Royal Pink
     rr_navy = colors.HexColor('#0B1B3D')
     rr_pink = colors.HexColor('#EA1A85')
     rr_light_bg = colors.HexColor('#F8FAFC')
@@ -201,152 +228,94 @@ def generate_pdf_report() -> Path:
     styles = getSampleStyleSheet()
 
     title_style = ParagraphStyle(
-        'DocTitle',
-        parent=styles['Normal'],
-        fontName='Helvetica-Bold',
-        fontSize=13,
-        leading=16,
-        textColor=rr_navy,
-        spaceAfter=1,
+        'DocTitle', parent=styles['Normal'], fontName='Helvetica-Bold',
+        fontSize=12.5, leading=15, textColor=rr_navy, spaceAfter=1,
     )
-
     subtitle_style = ParagraphStyle(
-        'DocSubtitle',
-        parent=styles['Normal'],
-        fontName='Helvetica',
-        fontSize=7.5,
-        leading=9.5,
-        textColor=rr_pink,
-        spaceAfter=4,
+        'DocSubtitle', parent=styles['Normal'], fontName='Helvetica',
+        fontSize=7.5, leading=9.5, textColor=rr_pink, spaceAfter=4,
     )
-
     h1_style = ParagraphStyle(
-        'Heading1_Custom',
-        parent=styles['Heading2'],
-        fontName='Helvetica-Bold',
-        fontSize=9.5,
-        leading=12,
-        textColor=rr_navy,
-        spaceBefore=5,
-        spaceAfter=2,
+        'Heading1_Custom', parent=styles['Heading2'], fontName='Helvetica-Bold',
+        fontSize=9.0, leading=11.5, textColor=rr_navy, spaceBefore=4, spaceAfter=2,
     )
-
-    h2_style = ParagraphStyle(
-        'Heading2_Custom',
-        parent=styles['Heading3'],
-        fontName='Helvetica-Bold',
-        fontSize=8,
-        leading=10,
-        textColor=rr_pink,
-        spaceBefore=3,
-        spaceAfter=2,
-    )
-
     body_style = ParagraphStyle(
-        'Body_Custom',
-        parent=styles['Normal'],
-        fontName='Helvetica',
-        fontSize=7.0,
-        leading=9.0,
-        textColor=text_dark,
-        spaceAfter=3,
+        'Body_Custom', parent=styles['Normal'], fontName='Helvetica',
+        fontSize=6.8, leading=8.8, textColor=text_dark, spaceAfter=3,
     )
-
     table_header_style = ParagraphStyle(
-        'TableHeader',
-        parent=styles['Normal'],
-        fontName='Helvetica-Bold',
-        fontSize=6.5,
-        leading=8,
-        textColor=colors.white,
-        alignment=1,
+        'TableHeader', parent=styles['Normal'], fontName='Helvetica-Bold',
+        fontSize=6.0, leading=7.5, textColor=colors.white, alignment=1,
     )
-
     table_cell_style = ParagraphStyle(
-        'TableCell',
-        parent=styles['Normal'],
-        fontName='Helvetica',
-        fontSize=6.2,
-        leading=7.5,
-        textColor=text_dark,
-        alignment=1,
+        'TableCell', parent=styles['Normal'], fontName='Helvetica',
+        fontSize=5.8, leading=7.2, textColor=text_dark, alignment=1,
     )
 
     story = []
 
-    # ── PAGE 1: Methodology, Data Governance & Mathematical Architecture ──────
-    story.append(Paragraph("SupeRR Intelligence — Pressure Reliability Analytics & Player Scouting", title_style))
-    story.append(Paragraph("Official Technical Methodology Dossier • Rajasthan Royals SupeRR Selector Season 2 • Research Platform", subtitle_style))
+    # ── PAGE 1: Governance, Provisional Disclosure & Methodology ──────
+    story.append(Paragraph("SupeRR Intelligence V3 — Pressure Reliability Analytics & Player Scouting (P1.1 Patch)", title_style))
+    story.append(Paragraph("Authoritative Technical Methodology Dossier • Status: P1.1 PATCH VERIFIED — PROVISIONAL MODEL", subtitle_style))
     story.append(HRFlowable(width="100%", thickness=1.5, color=rr_pink, spaceAfter=4))
 
-    story.append(Paragraph("1. Executive Summary & Cricket Philosophy", h1_style))
+    story.append(Paragraph("Mandatory Provisional Model Disclosure", h1_style))
     story.append(Paragraph(
-        "SupeRR Intelligence is an evidence-based cricket pressure reliability analytics and scouting platform built for the Rajasthan Royals hackathon. "
-        "Standard cricket metrics (total runs, aggregate wickets) are heavily biased towards volume in unconstrained, low-leverage states. "
-        "True clutch reliability is defined as <b>the capacity to sustain or elevate performance in high-leverage crisis match states relative to one's own normal baseline</b>. "
-        "Batting crisis (wickets lost, collapse) and bowling defensive pressure (opponent batting depth, death overs, boundary momentum) are formulated as logically independent models.",
+        "<b>\"Rankings are provisional. Batter ranks 5, 6, 9 and 10 are sensitive to scoring weights. "
+        "The pressure classification remains heuristic and position-proxy based. "
+        "The new score has not yet undergone independent out-of-time validation.\"</b>",
         body_style
     ))
 
-    story.append(Paragraph("2. Dataset Scope & Data Quality Audit (853 Matches, 193,988 Deliveries)", h1_style))
+    story.append(Paragraph("1. Dataset Scope, Canonical Identity & Data Governance (853 Matches, 193,988 Deliveries)", h1_style))
     story.append(Paragraph(
-        "• <b>Scope & Quarantines:</b> 853 IPL & T20I matches (2022–2026), 837 with ball-by-ball logs. Innings 3 & 4 (26 Super Over balls) quarantined.<br/>"
-        "• <b>Extras Codebook Caveat:</b> <code>extras1_runs</code> is strictly categorical (1: Overstep, 2: wide, 3: legbyes, 4: byes, 5: other, 6: None, 7: Penalty). Score totals, required run rates, and bowler economy remain quarantined to prevent false precision.<br/>"
-        "• <b>Dismissal Attribution:</b> 571 run outs, 6 retired outs, and 2 obstructing-the-field events excluded from bowler wickets. Stumpings on wides accurately attributed.<br/>"
-        "• <b>Boundary Reconciliation:</b> 23 flagged boundary anomalies (20 fours, 3 sixes with runs==4/6 but false flags) reconciled via validated boolean flags.",
+        "• <b>Canonical Identity Resolution:</b> Multi-ID provider duplicates (e.g. Abdul Samad, Dunith Wellalage) are consolidated prior to aggregation via <code>PLAYER_IDENTITY_CROSSWALK.csv</code>; unresolved collisions are quarantined.<br/>"
+        "• <b>Extras Codebook Caveat:</b> <code>extras1_runs</code> is categorical (codes 1–7). Score totals, dynamic RRR, chase leverage, and bowler economy remain quarantined.<br/>"
+        "• <b>Pressure Model Limitation (<code>PROVISIONAL_POSITION_PROXY_HEURISTIC</code>):</b> The pressure model is a pre-delivery state and position-proxy heuristic, not a calibrated match-leverage model. Target and required run rate are not yet integrated.<br/>"
+        "• <b>Wicket Hazard Model Governance (<code>EXPERIMENTAL_NOT_USED_FOR_RANKING</code>):</b> Out-of-sample evaluation yields AUC = 0.572, Log-Loss = 0.692, and Expected Wickets = 26,843 vs Actual Wickets = 2,931 (9.16x miscalibration due to <code>class_weight='balanced'</code>). Neither the hazard model, joint model, nor LightGBM challenger is used for ranking.",
         body_style
     ))
 
-    story.append(Paragraph("3. Dual Independent Pressure Models (Zero Target Leakage)", h1_style))
+    story.append(Paragraph("2. Provisional Fixed-Weight Score & Normal-Baseline Reliability Gate", h1_style))
     story.append(Paragraph(
-        "<b>Batting Crisis Model (0–10):</b> Wicket depletion (0–3.5 pts) + 12-legal-ball collapse cluster (0–2.0 pts) + Batter entry vulnerability (0–1.5 pts) + Stagnation streak (0–1.5 pts) × Death multiplier (1.25x). High/Extreme crisis accounts for 15,464 deliveries (7.97%).<br/>"
-        "<b>Bowling Defensive Model (0–10):</b> Opponent resource depth (wickets in hand: 8–10 wkt = 3.0 pts) + Critical phase (Death = 3.0, Powerplay = 2.0) + Opponent boundary momentum (last 12 legal balls = 0–2.5 pts) + Low dot pressure (0–1.5 pts). High/Extreme accounts for 101,935 deliveries (52.55%).",
+        "• <b>Provisional Formula:</b> Score = 100 × [0.35 × Maintenance + 0.35 × Absolute (EB Shrunk) + 0.20 × Match Consistency + 0.10 × Sample Confidence].<br/>"
+        "• <b>Bowler Normal-Baseline Gate (<code>MIN_NORMAL_BALLS = 100</code>):</b> Bowlers require ≥120 crisis balls AND ≥100 normal balls. Bowlers with &lt;100 normal balls (549 of 596) are flagged <code>BOWLER_NORMAL_BASELINE_INSUFFICIENT</code> and excluded from composite ranking. Raw and capped ([0.50, 1.50]) maintenance ratios are reported separately.<br/>"
+        "• <b>Uncertainty:</b> 2,000-iteration match-clustered bootstrap 95% confidence intervals (0 arbitrary fixed-width fallbacks).",
         body_style
     ))
 
-    story.append(Paragraph("4. Mathematical Formulation of Pressure Reliability Index (PRI)", h1_style))
-    story.append(Paragraph(
-        "<b>PRI Formula:</b> PRI = 100 × [0.35 × Maintenance + 0.35 × Absolute (EB Shrunk) + 0.20 × Consistency + 0.10 × Sample Confidence].<br/>"
-        "• <b>Empirical Bayes Shrinkage:</b> Batting SR uses Normal-Normal conjugate shrinkage (K=25.0). Bowling wicket rate uses Beta-Binomial conjugate shrinkage with Method-of-Moments prior estimation.<br/>"
-        "• <b>Exposure-Adjusted Consistency:</b> Consistency = exp(-CV) × sqrt(m / (m + 3)), continuous in (0, 1] and strictly non-zero.<br/>"
-        "• <b>Eligibility Thresholds:</b> Minimum 40 crisis balls, 120 total balls, 5 crisis matches, and 30 normal balls.",
-        body_style
-    ))
-
-    story.append(PageBreak())
-
-    # ── PAGE 2: Official Top 10 Rankings & Dual Leaderboard Architecture ──────
-    story.append(Paragraph("5. Official Primary Top 10 Batters Under Crisis Pressure (Positions 1–7)", title_style))
-    story.append(Paragraph("Evaluated against personal normal baseline across 61 fully eligible candidates (Positions 1–7)", subtitle_style))
-
-    top_bat = pd.read_csv(OUTPUTS_DIR / "FINAL_TOP_10_BATTERS.csv")
+    # ── PAGE 2: Authoritative Top 10 Leaderboards ──────
+    story.append(Paragraph("3. Authoritative Universal Top 10 Batters (data/outputs/v3/TOP_10_BATTERS.csv)", h1_style))
+    top_bat = pd.read_csv(OUTPUTS_V3 / "TOP_10_BATTERS.csv")
     bat_data = [[
         Paragraph("Rank", table_header_style),
+        Paragraph("ID", table_header_style),
         Paragraph("Player Name", table_header_style),
         Paragraph("Role", table_header_style),
-        Paragraph("Balls", table_header_style),
-        Paragraph("Matches", table_header_style),
+        Paragraph("Crisis B (M)", table_header_style),
         Paragraph("Crisis SR", table_header_style),
         Paragraph("Norm SR", table_header_style),
-        Paragraph("Maint.", table_header_style),
-        Paragraph("Consistency", table_header_style),
-        Paragraph("Batting PRI", table_header_style),
+        Paragraph("Raw/Cap Maint", table_header_style),
+        Paragraph("Consist.", table_header_style),
+        Paragraph("Score", table_header_style),
+        Paragraph("95% CI", table_header_style),
     ]]
     for _, r in top_bat.head(10).iterrows():
         bat_data.append([
             Paragraph(str(int(r['rank'])), table_cell_style),
-            Paragraph(str(r['canonical_display_name']), table_cell_style),
-            Paragraph(str(r['primary_role']), table_cell_style),
-            Paragraph(f"{int(r['crisis_balls'])}", table_cell_style),
-            Paragraph(f"{int(r['crisis_matches'])}", table_cell_style),
-            Paragraph(f"{r['crisis_sr']:.1f}", table_cell_style),
-            Paragraph(f"{r['norm_sr']:.1f}", table_cell_style),
-            Paragraph(f"{r['sr_maintenance']:.2f}x", table_cell_style),
-            Paragraph(f"{r['consistency_score']:.2f}", table_cell_style),
-            Paragraph(f"<b>{r['batting_pri']:.2f}</b>", table_cell_style),
+            Paragraph(str(int(r['canonical_player_id'])), table_cell_style),
+            Paragraph(str(r['player_name']), table_cell_style),
+            Paragraph(str(r['v3_role']), table_cell_style),
+            Paragraph(f"{int(r['crisis_balls'])} ({int(r['crisis_matches'])})", table_cell_style),
+            Paragraph(f"{r['crisis_sr']:.2f}", table_cell_style),
+            Paragraph(f"{r['norm_sr']:.2f}", table_cell_style),
+            Paragraph(f"{r['raw_sr_maintenance']:.3f}x/{r['sr_maintenance']:.3f}x", table_cell_style),
+            Paragraph(f"{r['consistency_score']:.4f}", table_cell_style),
+            Paragraph(f"<b>{r['provisional_fixed_weight_score']:.2f}</b>", table_cell_style),
+            Paragraph(f"[{r['ci_lower']:.1f}, {r['ci_upper']:.1f}]", table_cell_style),
         ])
 
-    bat_table = Table(bat_data, colWidths=[24, 105, 95, 34, 38, 48, 48, 42, 50, 52])
+    bat_table = Table(bat_data, colWidths=[22, 28, 82, 68, 42, 38, 38, 58, 38, 36, 66])
     bat_table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), rr_navy),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
@@ -356,39 +325,44 @@ def generate_pdf_report() -> Path:
         ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, rr_light_bg]),
     ]))
     story.append(bat_table)
-    story.append(Spacer(1, 6))
+    story.append(Spacer(1, 3))
+    story.append(Paragraph(
+        "<b>Iftikhar Ahmed (#9, ID 3056) Transparency Note:</b> Crisis SR (127.50) is below the eligible cohort mean (140.20) and flagged <code>CRISIS_SR_BELOW_COHORT_MEAN</code>. "
+        "His #9 score (62.38) is driven by #1 cohort match consistency (0.5497 → 20.00 pts) and positive personal maintenance (1.054x over 120.96 norm SR → 20.95 pts) alongside 14.71 abs pts and 6.72 sample pts.",
+        body_style
+    ))
 
-    story.append(Paragraph("6. Official Primary Top 10 Bowlers Under Defensive Pressure (120+ Balls)", title_style))
-    story.append(Paragraph("Evaluated on dot retention and wicket rate under high-leverage defensive crisis across 170 eligible bowlers", subtitle_style))
-
-    top_bowl = pd.read_csv(OUTPUTS_DIR / "FINAL_TOP_10_BOWLERS.csv")
+    story.append(Paragraph("4. Authoritative Universal Top 10 Bowlers (data/outputs/v3/TOP_10_BOWLERS.csv, MIN_NORMAL_BALLS=100)", h1_style))
+    top_bowl = pd.read_csv(OUTPUTS_V3 / "TOP_10_BOWLERS.csv")
     bowl_data = [[
         Paragraph("Rank", table_header_style),
+        Paragraph("ID", table_header_style),
         Paragraph("Player Name", table_header_style),
         Paragraph("Role", table_header_style),
-        Paragraph("Balls", table_header_style),
-        Paragraph("Matches", table_header_style),
-        Paragraph("Crisis WR%", table_header_style),
-        Paragraph("Norm WR%", table_header_style),
+        Paragraph("Crisis B", table_header_style),
+        Paragraph("Norm B", table_header_style),
         Paragraph("Crisis Dot%", table_header_style),
-        Paragraph("Consistency", table_header_style),
-        Paragraph("Bowling PRI", table_header_style),
+        Paragraph("Raw/Cap Maint", table_header_style),
+        Paragraph("Shrunk WR%", table_header_style),
+        Paragraph("Score", table_header_style),
+        Paragraph("95% CI", table_header_style),
     ]]
     for _, r in top_bowl.head(10).iterrows():
         bowl_data.append([
             Paragraph(str(int(r['rank'])), table_cell_style),
-            Paragraph(str(r['canonical_display_name']), table_cell_style),
-            Paragraph(str(r['primary_role']), table_cell_style),
+            Paragraph(str(int(r['canonical_player_id'])), table_cell_style),
+            Paragraph(str(r['player_name']), table_cell_style),
+            Paragraph(str(r['v3_role']), table_cell_style),
             Paragraph(f"{int(r['crisis_balls'])}", table_cell_style),
-            Paragraph(f"{int(r['crisis_matches'])}", table_cell_style),
-            Paragraph(f"{r['crisis_wicket_rate']:.1f}%", table_cell_style),
-            Paragraph(f"{r['norm_wicket_rate']:.1f}%", table_cell_style),
-            Paragraph(f"{r['crisis_dot_pct']:.1f}%", table_cell_style),
-            Paragraph(f"{r['consistency_score']:.2f}", table_cell_style),
-            Paragraph(f"<b>{r['bowling_pri']:.2f}</b>", table_cell_style),
+            Paragraph(f"{int(r['norm_balls'])}", table_cell_style),
+            Paragraph(f"{r['crisis_dot_pct']:.2f}%", table_cell_style),
+            Paragraph(f"{r['raw_dot_maintenance']:.3f}x/{r['capped_dot_maintenance']:.3f}x", table_cell_style),
+            Paragraph(f"{r['shrunk_crisis_wr']:.2f}%", table_cell_style),
+            Paragraph(f"<b>{r['provisional_fixed_weight_score']:.2f}</b>", table_cell_style),
+            Paragraph(f"[{r['ci_lower']:.1f}%, {r['ci_upper']:.1f}%]", table_cell_style),
         ])
 
-    bowl_table = Table(bowl_data, colWidths=[24, 105, 95, 34, 38, 48, 48, 50, 48, 52])
+    bowl_table = Table(bowl_data, colWidths=[22, 28, 86, 68, 36, 34, 42, 58, 42, 34, 66])
     bowl_table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), rr_navy),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
@@ -398,121 +372,35 @@ def generate_pdf_report() -> Path:
         ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, rr_light_bg]),
     ]))
     story.append(bowl_table)
-    story.append(Spacer(1, 6))
 
-    story.append(Paragraph("7. Role-Aware Dual Leaderboard Architecture Rationale", h1_style))
+    story.append(Paragraph("5. Extended Crisis-Ball Threshold Sensitivity (40, 60, 80, 100, 150, 200, 250) & Reproducibility", h1_style))
     story.append(Paragraph(
-        "• <b>Lower-Order Separation:</b> Specialist spin bowlers Gudakesh Motie (modal pos 9) and Akeal Hosein (modal pos 10) demonstrated elite crisis strike rates (170.2 and 136.0). Because tailenders only bat when top orders collapse, their crisis exposure is 100% skewed. They are evaluated on the <b>Lower-Order Pressure Impact Leaderboard</b>, keeping the primary leaderboard strictly for regular top-seven batters.<br/>"
-        "• <b>Frontline Bowling Threshold:</b> Ireland batter Harry Tector recorded 54 crisis deliveries at 9.3% wicket rate. With a primary batting workload (857 balls faced vs 248 bowled), his bowling sample is insufficient for frontline tournament comparison. Requiring 120 crisis balls places Tector as #1 on the <b>Emerging & Part-Time Bowlers Leaderboard</b>, while frontline masters (Adair, Young, Wood, McCoy, Boult, Malinga) headline the primary ranking.",
-        body_style
-    ))
-
-    story.append(PageBreak())
-
-    # ── PAGE 3: Secondary Leaderboards, Sensitivity Analysis & Governance ────
-    story.append(Paragraph("8. Secondary Pressure Leaderboards: Lower-Order & Emerging Profiles", title_style))
-    story.append(Paragraph("Clutch Lower-Order Hitters and High-Impact Part-Time / Emerging Bowlers", subtitle_style))
-    story.append(HRFlowable(width="100%", thickness=1.5, color=rr_pink, spaceAfter=4))
-
-    # Lower-Order Batters Table
-    story.append(Paragraph("Top Lower-Order Pressure Impact Batters (Positions 8–11):", h2_style))
-    low_bat = pd.read_csv(OUTPUTS_DIR / "LOWER_ORDER_PRESSURE_IMPACT.csv")
-    low_data = [[
-        Paragraph("Rank", table_header_style),
-        Paragraph("Player Name", table_header_style),
-        Paragraph("Role", table_header_style),
-        Paragraph("Pos", table_header_style),
-        Paragraph("Crisis Balls", table_header_style),
-        Paragraph("Crisis SR", table_header_style),
-        Paragraph("Norm SR", table_header_style),
-        Paragraph("Maint.", table_header_style),
-        Paragraph("Batting PRI", table_header_style),
-    ]]
-    for _, r in low_bat.head(5).iterrows():
-        low_data.append([
-            Paragraph(str(int(r['lower_order_rank'])), table_cell_style),
-            Paragraph(str(r['canonical_display_name']), table_cell_style),
-            Paragraph(str(r['primary_role']), table_cell_style),
-            Paragraph(str(int(r['modal_batting_position'])), table_cell_style),
-            Paragraph(f"{int(r['crisis_balls'])}", table_cell_style),
-            Paragraph(f"{r['crisis_sr']:.1f}", table_cell_style),
-            Paragraph(f"{r['norm_sr']:.1f}", table_cell_style),
-            Paragraph(f"{r['sr_maintenance']:.2f}x", table_cell_style),
-            Paragraph(f"<b>{r['batting_pri']:.2f}</b>", table_cell_style),
-        ])
-    low_table = Table(low_data, colWidths=[24, 115, 110, 28, 48, 50, 50, 48, 55])
-    low_table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), rr_navy),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 1.5),
-        ('TOPPADDING', (0, 0), (-1, -1), 1.5),
-        ('GRID', (0, 0), (-1, -1), 0.5, border_grey),
-    ]))
-    story.append(low_table)
-    story.append(Spacer(1, 5))
-
-    # Emerging Bowlers Table
-    story.append(Paragraph("Top Emerging & Part-Time Bowlers Under Pressure (Sub-120 Balls):", h2_style))
-    em_bowl = pd.read_csv(OUTPUTS_DIR / "EMERGING_AND_PART_TIME_BOWLERS.csv")
-    em_data = [[
-        Paragraph("Rank", table_header_style),
-        Paragraph("Player Name", table_header_style),
-        Paragraph("Role", table_header_style),
-        Paragraph("Balls", table_header_style),
-        Paragraph("Crisis WR%", table_header_style),
-        Paragraph("Norm WR%", table_header_style),
-        Paragraph("Crisis Dot%", table_header_style),
-        Paragraph("Bowling PRI", table_header_style),
-    ]]
-    for _, r in em_bowl.head(5).iterrows():
-        em_data.append([
-            Paragraph(str(int(r['emerging_rank'])), table_cell_style),
-            Paragraph(str(r['canonical_display_name']), table_cell_style),
-            Paragraph(str(r['primary_role']), table_cell_style),
-            Paragraph(f"{int(r['crisis_balls'])}", table_cell_style),
-            Paragraph(f"{r['crisis_wicket_rate']:.1f}%", table_cell_style),
-            Paragraph(f"{r['norm_wicket_rate']:.1f}%", table_cell_style),
-            Paragraph(f"{r['crisis_dot_pct']:.1f}%", table_cell_style),
-            Paragraph(f"<b>{r['bowling_pri']:.2f}</b>", table_cell_style),
-        ])
-    em_table = Table(em_data, colWidths=[24, 120, 110, 42, 55, 55, 55, 60])
-    em_table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), rr_pink),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 1.5),
-        ('TOPPADDING', (0, 0), (-1, -1), 1.5),
-        ('GRID', (0, 0), (-1, -1), 0.5, border_grey),
-    ]))
-    story.append(em_table)
-    story.append(Spacer(1, 5))
-
-    story.append(Paragraph("9. Sensitivity Analysis Across 5 Weighting Configurations", h1_style))
-    story.append(Paragraph(
-        "Rankings were re-evaluated across 5 configurations: Balanced (35/35/20/10), Maintenance Heavy (50/25/15/10), Absolute Heavy (25/50/15/10), Consistency Heavy (30/30/30/10), and Equal Weights (25/25/25/25). "
-        "Spearman rank correlations across all configurations exceed <b>0.88 for batters</b> and <b>0.91 for bowlers</b>, demonstrating robust mathematical stability against weight perturbation.",
-        body_style
-    ))
-
-    story.append(Paragraph("10. Governance Disclosures & Reproducibility", h1_style))
-    story.append(Paragraph(
-        "• <b>Complete Reproducibility:</b> Entire codebase verified by automated pytest test suite (`pytest tests/`, 19 passing tests). Execution commands: `python scripts/compute_rankings.py`.<br/>"
-        "• <b>Data Transparency:</b> Full rankings across all 1,118 audited players exported to `ALL_BATTER_RANKINGS.csv` and `ALL_BOWLER_RANKINGS.csv`. No synthetic data generated.",
+        "• <b>Threshold Sensitivity:</b> Across 40, 60, 80, 100, 150, 200, 250 crisis balls (with ≥5 matches), eligible batters drop from 39 (40b, 10/10 overlap) to 21 (60b, 5/10 overlap, Jaccard 0.3333), 11 (80b, 1/10 overlap), 8 (100b, 8 available Top-10, unforced), and 0 (150–250b). Eligible bowlers (with ≥100 norm balls) remain 40 (40–80b), 39 (100–200b, 10/10 overlap), and 37 (250b, 9/10 overlap, Jaccard 0.8182). A 10/10 overlap at 40 balls is not proof of stability across higher thresholds.<br/>"
+        "• <b>Verification Gate:</b> 64 passing pytest unit/regression tests and 100% reconciliation via <code>scripts/verify_v3_rankings.py</code>.",
         body_style
     ))
 
     doc.build(story)
 
-    # Copy to project root and outputs
-    shutil.copy(pdf_path, PROJECT_ROOT / "FINAL_SUPERR_METHODOLOGY_REPORT.pdf")
-    shutil.copy(pdf_path, OUTPUTS_DIR / "FINAL_SUPERR_METHODOLOGY_REPORT.pdf")
+    # Synchronize all PDF copies across root, data/outputs, and data/reports
+    pdf_targets = [
+        PROJECT_ROOT / "FINAL_SUPERR_METHODOLOGY_REPORT.pdf",
+        PROJECT_ROOT / "FINAL_METHODOLOGY_REPORT.pdf",
+        PROJECT_ROOT / "SUPERR_INTELLIGENCE_METHODOLOGY_REPORT.pdf",
+        OUTPUTS_DIR / "FINAL_SUPERR_METHODOLOGY_REPORT.pdf",
+        REPORTS_DIR / "FINAL_METHODOLOGY_REPORT.pdf",
+        REPORTS_DIR / "SUPERR_INTELLIGENCE_METHODOLOGY_REPORT.pdf",
+    ]
+    for tgt in pdf_targets:
+        shutil.copyfile(pdf_path, tgt)
 
-    print(f"PDF methodology report written to: {pdf_path}")
+    print(f"PDF methodology report and all {len(pdf_targets)} synchronized copies written from: {pdf_path}")
     return pdf_path
 
 
 def run_all_reporting():
     """Generate both Markdown and PDF methodology reports."""
-    print("Generating comprehensive methodology reports...")
+    print("Generating comprehensive P1.1 methodology reports...")
     md_path = generate_markdown_report()
     pdf_path = generate_pdf_report()
     return {'markdown': md_path, 'pdf': pdf_path}

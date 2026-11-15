@@ -50,7 +50,7 @@ def test_no_player_eligible_for_both_leaderboards():
 
 
 def test_low_sample_players_cannot_enter_final_top10():
-    """Verify that players with <40 crisis balls cannot enter Top 10 Batters, and <120 crisis balls cannot enter Top 10 Bowlers."""
+    """Verify that players with <40 crisis balls cannot enter Top 10 Batters, and <120 crisis balls or <100 norm balls cannot enter Top 10 Bowlers."""
     top_bat = pd.read_csv(OUTPUTS_V3 / "TOP_10_BATTERS.csv")
     top_bowl = pd.read_csv(OUTPUTS_V3 / "TOP_10_BOWLERS.csv")
 
@@ -61,5 +61,52 @@ def test_low_sample_players_cannot_enter_final_top10():
 
     assert (top_bowl['crisis_balls'] >= 120).all()
     assert (top_bowl['crisis_matches'] >= 5).all()
-    assert (top_bowl['norm_balls'] >= 30).all()
+    assert (top_bowl['norm_balls'] >= 100).all()
+    assert (top_bowl['norm_baseline_eligible'] == True).all()
     assert (top_bowl['sample_eligible'] == True).all()
+
+
+def test_bowler_normal_baseline_min_100_balls_and_raw_vs_capped_maintenance():
+    """Verify MIN_NORMAL_BALLS=100 for bowlers, BOWLER_NORMAL_BASELINE_INSUFFICIENT flag, and separate raw/capped ratios."""
+    all_bowl = pd.read_csv(OUTPUTS_V3 / "ALL_BOWLER_METRICS.csv")
+
+    insuff = all_bowl[all_bowl['norm_balls'] < 100]
+    suff = all_bowl[all_bowl['norm_balls'] >= 100]
+
+    assert len(insuff) > 0
+    assert (insuff['norm_baseline_eligible'] == False).all()
+    assert (insuff['norm_baseline_status'] == 'BOWLER_NORMAL_BASELINE_INSUFFICIENT').all()
+    assert (insuff['sample_eligible'] == False).all()
+    assert insuff['capped_dot_maintenance'].isna().all()
+    assert insuff['dot_maintenance'].isna().all()
+    assert insuff['provisional_fixed_weight_score'].isna().all()
+
+    assert (suff['norm_baseline_eligible'] == True).all()
+    assert (suff['norm_baseline_status'] == 'VALID_NORMAL_BASELINE').all()
+    valid_suff = suff[suff['raw_dot_maintenance'].notna()]
+    expected_capped = np.clip(valid_suff['raw_dot_maintenance'], 0.5, 1.5).round(3)
+    assert (valid_suff['capped_dot_maintenance'].round(3) == expected_capped).all()
+    expected_flag = (valid_suff['raw_dot_maintenance'] > 1.5) | (valid_suff['raw_dot_maintenance'] < 0.5)
+    assert (valid_suff['is_maintenance_capped'] == expected_flag).all()
+
+
+def test_extended_threshold_sensitivity_grid_and_no_forced_top10():
+    """Verify crisis-ball threshold grid includes 40, 60, 80, 100, 150, 200, 250 and does not force Top 10 when <10 eligible."""
+    thresh = pd.read_csv(OUTPUTS_V3 / "RANKING_THRESHOLD_SENSITIVITY.csv")
+    req_grid = {40, 60, 80, 100, 150, 200, 250}
+
+    bat_grid = set(thresh[thresh['discipline'] == 'Batting']['min_crisis_balls'].unique())
+    bowl_grid = set(thresh[thresh['discipline'] == 'Bowling']['min_crisis_balls'].unique())
+    assert req_grid.issubset(bat_grid)
+    assert req_grid.issubset(bowl_grid)
+
+    for col in [
+        'eligible_batter_count', 'eligible_bowler_count', 'available_top10_count',
+        'top10_overlap_with_baseline', 'jaccard_similarity', 'mean_abs_rank_movement',
+        'max_rank_movement', 'players_entering_top10', 'players_leaving_top10'
+    ]:
+        assert col in thresh.columns
+
+    sub10 = thresh[thresh['eligible_players'] < 10]
+    assert len(sub10) > 0
+    assert (sub10['available_top10_count'] == sub10['eligible_players']).all()

@@ -60,3 +60,44 @@ def test_deterministic_sorting():
     top_bowl = pd.read_csv(OUTPUTS_V3 / "TOP_10_BOWLERS.csv")
     bowl_scores = top_bowl['provisional_fixed_weight_score'].values
     assert (np.diff(bowl_scores) <= 0).all(), "Bowling rankings are not sorted descending by score!"
+
+
+def test_iftikhar_ahmed_transparency_and_weight_sensitive_batters():
+    """Verify Iftikhar Ahmed (#9) component breakdown, below-mean crisis SR flag, and weight-sensitive batter identification."""
+    top_bat = pd.read_csv(OUTPUTS_V3 / "TOP_10_BATTERS.csv")
+    ift = top_bat[top_bat['canonical_player_id'] == 3056]
+    assert len(ift) == 1
+    row = ift.iloc[0]
+    assert int(row['rank']) == 9
+    assert row['crisis_sr'] < row['prior_mean']
+    assert row['crisis_sr_below_cohort_mean'] == True
+    assert row['performance_anomaly_flag'] == 'CRISIS_SR_BELOW_COHORT_MEAN'
+    assert "CRISIS_SR_BELOW_COHORT_MEAN" in str(row['component_breakdown_explanation'])
+
+    # Weight-sensitive Top-10 batters (#5 Jaker Ali, #6 Abdul Samad, #9 Iftikhar Ahmed, #10 Jitesh Sharma)
+    sens_ranks = set(top_bat[top_bat['ranking_sensitivity_status'] == 'RANKING_SENSITIVE_TO_WEIGHTS']['rank'].astype(int))
+    assert {5, 6, 9, 10}.issubset(sens_ranks)
+
+
+def test_downstream_ranking_copies_match_canonical_v3_outputs():
+    """Verify all root-level and data/outputs ranking copies are byte-for-byte identical to canonical V3 CSVs."""
+    import hashlib
+
+    def _sha256(p: Path) -> str:
+        return hashlib.sha256(p.read_bytes()).hexdigest()
+
+    pairs = [
+        (OUTPUTS_V3 / "TOP_10_BATTERS.csv", Path("FINAL_TOP_10_BATTERS.csv")),
+        (OUTPUTS_V3 / "TOP_10_BATTERS.csv", Path("data/outputs/FINAL_TOP_10_BATTERS.csv")),
+        (OUTPUTS_V3 / "TOP_10_BATTERS.csv", Path("data/outputs/top_10_batters.csv")),
+        (OUTPUTS_V3 / "TOP_10_BOWLERS.csv", Path("FINAL_TOP_10_BOWLERS.csv")),
+        (OUTPUTS_V3 / "TOP_10_BOWLERS.csv", Path("data/outputs/FINAL_TOP_10_BOWLERS.csv")),
+        (OUTPUTS_V3 / "TOP_10_BOWLERS.csv", Path("data/outputs/top_10_bowlers.csv")),
+        (OUTPUTS_V3 / "ALL_BATTER_METRICS.csv", Path("ALL_BATTER_RANKINGS.csv")),
+        (OUTPUTS_V3 / "ALL_BATTER_METRICS.csv", Path("data/outputs/ALL_BATTER_RANKINGS.csv")),
+        (OUTPUTS_V3 / "ALL_BOWLER_METRICS.csv", Path("ALL_BOWLER_RANKINGS.csv")),
+        (OUTPUTS_V3 / "ALL_BOWLER_METRICS.csv", Path("data/outputs/ALL_BOWLER_RANKINGS.csv")),
+    ]
+    for canon, copy in pairs:
+        assert copy.exists(), f"Missing copy: {copy}"
+        assert _sha256(canon) == _sha256(copy), f"Copy mismatch: {copy} != {canon}"

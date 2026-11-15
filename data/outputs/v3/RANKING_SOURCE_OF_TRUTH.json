@@ -1,6 +1,6 @@
 {
   "manifest_title": "SupeRR Intelligence V3 Universal Player Ranking Single Source of Truth",
-  "generation_timestamp_utc": "2026-11-14T15:44:47.678129Z",
+  "generation_timestamp_utc": "2026-11-15T04:33:06.516953Z",
   "authoritative_artifacts": {
     "top_10_batters_csv": "data/outputs/v3/TOP_10_BATTERS.csv",
     "top_10_bowlers_csv": "data/outputs/v3/TOP_10_BOWLERS.csv",
@@ -11,6 +11,32 @@
     "weight_sensitivity_csv": "data/outputs/v3/RANKING_WEIGHT_SENSITIVITY.csv",
     "player_identity_crosswalk_csv": "data/outputs/v3/PLAYER_IDENTITY_CROSSWALK.csv"
   },
+  "synchronized_downstream_copies": {
+    "top_10_batters_copies": [
+      "FINAL_TOP_10_BATTERS.csv",
+      "data/outputs/FINAL_TOP_10_BATTERS.csv",
+      "data/outputs/top_10_batters.csv"
+    ],
+    "top_10_bowlers_copies": [
+      "FINAL_TOP_10_BOWLERS.csv",
+      "data/outputs/FINAL_TOP_10_BOWLERS.csv",
+      "data/outputs/top_10_bowlers.csv"
+    ],
+    "all_batter_metrics_copies": [
+      "ALL_BATTER_RANKINGS.csv",
+      "data/outputs/ALL_BATTER_RANKINGS.csv",
+      "data/outputs/batting_pressure_rankings.csv"
+    ],
+    "all_bowler_metrics_copies": [
+      "ALL_BOWLER_RANKINGS.csv",
+      "data/outputs/ALL_BOWLER_RANKINGS.csv",
+      "data/outputs/bowling_pressure_rankings.csv"
+    ],
+    "player_eligibility_copies": [
+      "PLAYER_ELIGIBILITY_REPORT.csv",
+      "data/outputs/PLAYER_ELIGIBILITY_REPORT.csv"
+    ]
+  },
   "source_datasets": {
     "ball_by_ball": "data/ball_by_ball_ipl_t20i.csv",
     "playing_eleven": "data/playing_eleven_ipl_t20i.csv",
@@ -19,13 +45,15 @@
   },
   "governance": {
     "git_baseline_commit": "537777c8436fd647a484a49cfbfa30b843c98a1c",
-    "git_branch": "fix/v3-ranking-integrity-001",
-    "ranking_script_version": "V3.1_INTEGRITY_REPAIRED",
-    "pressure_formula_version": "V3_PROVISIONAL_HEURISTIC",
+    "git_branch": "fix/v3-pre-submission-consistency-001",
+    "ranking_script_version": "V3.1.1_PRE_SUBMISSION_CONSISTENCY_PATCH",
+    "pressure_formula_version": "PROVISIONAL_POSITION_PROXY_HEURISTIC",
+    "hazard_model_status": "EXPERIMENTAL_NOT_USED_FOR_RANKING",
     "identity_crosswalk_version": "V3.1_CANONICAL",
     "ranking_score_status": "PROVISIONAL_FIXED_WEIGHT_SCORE",
     "threshold_governance": "PROVISIONAL_ELIGIBILITY_CONFIRMED",
-    "ranking_approval_status": "PROVISIONAL_RELEASE_CANDIDATE"
+    "ranking_approval_status": "P1.1 PATCH VERIFIED \u2014 PROVISIONAL MODEL",
+    "mandatory_disclosure": "Rankings are provisional. Batter ranks 5, 6, 9 and 10 are sensitive to scoring weights. The pressure classification remains heuristic and position-proxy based. The new score has not yet undergone independent out-of-time validation."
   },
   "configurations": {
     "pri_weights": {
@@ -76,18 +104,19 @@
       "crisis_balls": 120,
       "total_legal_balls": 120,
       "crisis_matches": 5,
-      "norm_balls": 30
+      "norm_balls": 100
     },
+    "min_normal_balls_bowler": 100,
     "shrinkage_configuration": {
       "batting_method": "FIXED_K_NORMAL_SHRINKAGE",
       "prior_k": 25.0,
       "batting_prior_mean": 140.2,
       "batting_prior_pop_count": 39,
       "bowling_method": "BETA_BINOMIAL_EMPIRICAL_BAYES",
-      "bowling_prior_alpha": 5.6652,
-      "bowling_prior_beta": 94.3348,
-      "bowling_prior_mean": 5.67,
-      "bowling_prior_pop_count": 130
+      "bowling_prior_alpha": 5.5151,
+      "bowling_prior_beta": 94.4849,
+      "bowling_prior_mean": 5.52,
+      "bowling_prior_pop_count": 39
     },
     "bootstrap_configuration": {
       "method": "MATCH_CLUSTERED_BOOTSTRAP",

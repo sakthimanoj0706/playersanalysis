@@ -193,7 +193,7 @@ st.markdown("""
 <div class="rr-header">
     <div class="rr-title">SupeRR Intelligence V3</div>
     <div class="rr-subtitle">Joint Performance, Pressure Intelligence & Rajasthan Royals Player-Fit Platform</div>
-    <div class="rr-badge">Rajasthan Royals • SupeRR Selector Season 2 • Production Release</div>
+    <div class="rr-badge">Rajasthan Royals • SupeRR Selector Season 2 • P1.1 Patch Verified — Provisional Model</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -276,39 +276,43 @@ if section == "Section 1: Universal Player Intelligence":
             st.warning("Top 10 Batters data not loaded.")
 
         st.markdown("""
-        **Key Insights:**
-        - **Tilak Varma (#1, PRI 91.30):** Outstanding crisis strike rate of 196.7 vs 144.5 normal (1.36x maintenance ratio) across 18 matches, 95% CI [158.2, 235.0].
-        - **Matthew Wade (#2, PRI 74.76):** High-leverage finishing specialist with 172.0 crisis strike rate across 15 matches.
-        - **MS Dhoni (#5, PRI 66.20):** Deepest crisis sample in the cohort (133 crisis balls across 35 matches), striking at 154.9 under collapse conditions.
-        - **Gated Exclusion:** Tailenders (e.g., Gudakesh Motie, Akeal Hosein) are excluded from the batting leaderboard because their role is `BOWL_SPECIALIST`.
+        > **Mandatory Provisional Disclosure:** *"Rankings are provisional. Batter ranks 5, 6, 9 and 10 are sensitive to scoring weights. The pressure classification remains heuristic and position-proxy based. The new score has not yet undergone independent out-of-time validation."*
+
+        **Key Insights (Canonical `TOP_10_BATTERS.csv`):**
+        - **Tilak Varma (#1, ID `7897`, Score 94.29):** Crisis SR 196.67 vs 144.47 normal (1.361x maintenance ratio) across 60 crisis balls / 18 matches, 95% CI [157.62, 251.16].
+        - **Matthew Wade (#2, ID `796`, Score 77.35):** High-leverage finishing specialist with 172.00 crisis strike rate vs 144.49 normal (1.190x maintenance) across 50 balls / 15 matches, 95% CI [105.70, 213.93].
+        - **MS Dhoni (#8, ID `8`, Score 62.51):** Deepest crisis sample in the cohort (133 crisis balls across 35 matches), striking at 154.89 under collapse conditions, 95% CI [119.66, 187.59].
+        - **Weight-Sensitive Ranks & Iftikhar Ahmed (#9, ID `3056`, Score 62.38):** Batter ranks **#5 Jaker Ali Anik**, **#6 Abdul Samad**, **#9 Iftikhar Ahmed**, and **#10 Jitesh Sharma** are flagged `RANKING_SENSITIVE_TO_WEIGHTS`. Iftikhar Ahmed is additionally flagged `CRISIS_SR_BELOW_COHORT_MEAN` (crisis SR 127.50 vs eligible cohort mean 140.20, $-12.70$); he reaches #9 via positive maintenance (`1.054x` -> `20.95 pts`) and ceiling match-cluster consistency (`0.5497` -> `20.00 pts`).
+        - **Gated Exclusion:** Tailenders (e.g., Gudakesh Motie, Akeal Hosein) are excluded from the batting leaderboard because their role is not `BAT_SPECIALIST` or `BAT_PRIMARY_AR`.
         """)
 
     # 2. Top 10 Bowlers
     with u_tab2:
         st.markdown("### 🎯 Universal Top 10 Bowlers Under Pressure")
-        st.caption("Eligibility: ≥120 defensive crisis balls, ≥120 total balls, ≥5 crisis matches, ≥30 normal balls. Role: BOWL_SPECIALIST or BOWL_PRIMARY_AR.")
+        st.caption("Eligibility: ≥120 defensive crisis balls, ≥120 total balls, ≥5 crisis matches, ≥100 normal balls (MIN_NORMAL_BALLS = 100). Role: BOWL_SPECIALIST or BOWL_PRIMARY_AR.")
         
         if 'top_bowl' in data and not data['top_bowl'].empty:
             tw_disp = data['top_bowl'][[
-                'rank', 'player_name', 'v3_role', 'crisis_balls', 'crisis_matches',
-                'crisis_dot_pct', 'norm_dot_pct', 'dot_maintenance', 'consistency_score',
-                'ci_lower', 'ci_upper', 'bowling_pri'
+                'rank', 'player_name', 'v3_role', 'crisis_balls', 'norm_balls', 'crisis_matches',
+                'crisis_dot_pct', 'norm_dot_pct', 'raw_dot_maintenance', 'capped_dot_maintenance',
+                'is_maintenance_capped', 'norm_baseline_status', 'ci_lower', 'ci_upper', 'provisional_fixed_weight_score'
             ]].copy()
             tw_disp.columns = [
-                'Rank', 'Player Name', 'Role', 'Crisis Balls', 'Matches',
-                'Crisis Dot%', 'Norm Dot%', 'Dot Maint.', 'Consistency',
-                '95% CI Lower', '95% CI Upper', 'Bowling PRI'
+                'Rank', 'Player Name', 'Role', 'Crisis Balls', 'Norm Balls', 'Matches',
+                'Crisis Dot%', 'Norm Dot%', 'Raw Maint.', 'Capped Maint.',
+                'Capped?', 'Norm Status', '95% CI Lower', '95% CI Upper', 'Provisional Score'
             ]
             st.dataframe(
                 tw_disp.style.format({
-                    'Crisis Dot%': '{:.1f}%',
-                    'Norm Dot%': '{:.1f}%',
-                    'Dot Maint.': '{:.2f}x',
-                    'Consistency': '{:.2f}',
-                    '95% CI Lower': '{:.1f}%',
-                    '95% CI Upper': '{:.1f}%',
-                    'Bowling PRI': '{:.2f}',
+                    'Crisis Dot%': '{:.2f}%',
+                    'Norm Dot%': '{:.2f}%',
+                    'Raw Maint.': '{:.3f}x',
+                    'Capped Maint.': '{:.3f}x',
+                    '95% CI Lower': '{:.2f}%',
+                    '95% CI Upper': '{:.2f}%',
+                    'Provisional Score': '{:.2f}',
                     'Crisis Balls': '{:.0f}',
+                    'Norm Balls': '{:.0f}',
                     'Matches': '{:.0f}',
                 }),
                 use_container_width=True,
@@ -318,11 +322,11 @@ if section == "Section 1: Universal Player Intelligence":
             st.warning("Top 10 Bowlers data not loaded.")
 
         st.markdown("""
-        **Key Insights:**
-        - **Craig Young (#1, PRI 86.12):** 289 defensive pressure deliveries across 23 matches, 36.3% dot ball retention and 9.0% crisis wicket rate.
-        - **Mark Adair (#2, PRI 84.60):** Enormous workload of 483 defensive pressure deliveries across 40 matches with 1.48x dot maintenance.
-        - **Trent Boult (#5, PRI 77.14):** Premier tournament spearhead with 879 defensive pressure balls across 70 matches, maintaining 36.7% dot balls.
-        - **Gated Exclusion:** Part-time bowlers (e.g., Harry Tector) are excluded from the bowling leaderboard because their role is `BAT_PRIMARY_AR`.
+        **Key Insights (Canonical `TOP_10_BOWLERS.csv`, `MIN_NORMAL_BALLS = 100`):**
+        - **Matheesha Pathirana (#1, ID `8661`, Score 84.45):** 578 defensive crisis deliveries and 122 normal deliveries across 31 matches, 36.51% crisis dot rate vs 38.52% normal (0.948x maintenance), 95% CI [32.03%, 40.96%].
+        - **Keshav Maharaj (#2, ID `1944`, Score 68.40):** 225 crisis balls and 112 normal balls across 16 matches, elevating dot percentage from 31.25% normal to 33.33% under pressure (1.067x maintenance).
+        - **Arshdeep Singh (#4, ID `6464`, Score 64.66) & Ravi Bishnoi (#5, ID `7503`, Score 62.40):** High-volume tournament spearheads with 2,069 and 936 crisis balls respectively and verified normal baselines (149 and 401 normal balls).
+        - **Normal-Baseline Reliability Gate (`MIN_NORMAL_BALLS = 100`):** Bowlers with fewer than 100 normal-pressure legal deliveries (e.g., Mark Adair [82], Trent Boult [64], Mark Wood [62], Obed McCoy [46], Craig Young [36]) are flagged `BOWLER_NORMAL_BASELINE_INSUFFICIENT` and excluded from composite rankings so small normal denominators cannot inflate maintenance ratios.
         """)
 
     # 3. Performance Breakdown
@@ -386,12 +390,12 @@ if section == "Section 1: Universal Player Intelligence":
 
     # 5. Pressure Methodology
     with u_tab5:
-        st.markdown("### 📐 Dual Pre-Delivery Pressure Models")
+        st.markdown("### 📐 Dual Pre-Delivery Pressure Models (`PROVISIONAL_POSITION_PROXY_HEURISTIC`)")
         st.markdown("""
         **Zero Target Leakage Guarantee:** All situational features are observable strictly *before* the delivery is bowled.
         
         - **Batting Crisis Score (0 to 10):**
-          - Wickets fallen before delivery (0 to 3.5 pts)
+          - Wickets fallen before delivery / batting position proxy (0 to 3.5 pts)
           - Recent 12-ball cluster collapse (0 to 2.0 pts)
           - Batter novelty in first 5 balls faced (0 to 1.5 pts)
           - Dot-ball stagnation in last 12 balls (0 to 1.5 pts)
@@ -402,6 +406,12 @@ if section == "Section 1: Universal Player Intelligence":
           - Phase leverage / field restrictions: Death = 3.0, Powerplay = 2.0, Middle = 1.0
           - Opponent boundary momentum in last 12 balls (0 to 2.5 pts)
           - Strike-rotation / lack-of-dots pressure (0 to 1.5 pts)
+          
+        **Documented Limitations (`PROVISIONAL_POSITION_PROXY_HEURISTIC`):**
+        1. Not a fully calibrated match-leverage or win-probability-added (WPA) model.
+        2. Batting position (`max(0, batting_position - 2)`) is a proxy for wickets fallen, not direct evidence of scoreboard leverage.
+        3. Second-innings target, required run rate (RRR), and chase leverage are not yet integrated due to categorical extras encoding (`extras1_runs` codes 1–7).
+        4. Positional compression compresses defensive pressure into high-pressure tiers for bowlers operating primarily in Powerplay and Death phases, requiring the explicit `MIN_NORMAL_BALLS = 100` eligibility gate.
         """)
 
     # 6. Reliability & Uncertainty
@@ -662,8 +672,9 @@ elif section == "Section 4: RR Player Fit & Auction Strategy":
     with af_tab3:
         st.markdown("### 💼 Retention & Purse Arithmetic Scenarios")
         st.markdown("""
-        **Purse Formula:**
+        **Purse Formula (Unverified Scenario Assumptions — Source: `data/reference/rr_2027_auction_assumptions.csv`, Checked Date: `2026-11-15`):**
         $$\\text{Available Purse} = \\text{Carried Purse (₹2.65 Cr)} + \\sum \\text{Freed Salaries (₹24.95 Cr)} + \\text{Cap Increase Scenario}$$
+        *Provenance Note: All salary, purse, and cap figures represent user-brief scenario assumptions (`USER_BRIEF_SCENARIO_ASSUMPTION_UNVERIFIED`) rather than official BCCI/IPL audited financial disclosures.*
         """)
         
         c1, c2 = st.columns(2)
@@ -746,15 +757,15 @@ elif section == "Section 5: Data & Model Transparency":
             st.dataframe(data['crosswalk'], use_container_width=True, hide_index=True)
 
     with dt_tab3:
-        st.markdown("### ✅ V3 Model Validation Status Matrix")
+        st.markdown("### ✅ V3 Model Validation & Governance Status Matrix")
         model_matrix = [
-            {'Model': 'Dual Pre-Delivery Pressure Model', 'Type': 'Ex-Ante Proxy', 'Validation Split': 'Chronological Match', 'Leakage': 'Zero', 'Status': 'PRODUCTION_VALIDATED'},
-            {'Model': 'Five-State Role Classifier', 'Type': 'Empirical Classification', 'Validation Split': 'Multi-Season Workload', 'Leakage': 'Zero', 'Status': 'PRODUCTION_VALIDATED'},
-            {'Model': 'Hierarchical Joint Model', 'Type': 'Ridge Regression', 'Validation Split': 'Chronological Match', 'Leakage': 'Zero', 'Status': 'RESEARCH_VALIDATED'},
-            {'Model': 'Discrete-Time Hazard Model', 'Type': 'Logistic Regression', 'Validation Split': 'Chronological Match', 'Leakage': 'Zero', 'Status': 'PRODUCTION_VALIDATED'},
-            {'Model': 'Bowling Tail-Risk / CVaR', 'Type': 'Extreme Value Theory', 'Validation Split': 'Over-Level Distribution', 'Leakage': 'Zero', 'Status': 'PRODUCTION_VALIDATED'},
-            {'Model': 'LightGBM Challenger', 'Type': 'Gradient Boosted Trees', 'Validation Split': 'Chronological Match', 'Leakage': 'Zero', 'Status': 'CHALLENGER_BENCHMARK'},
-            {'Model': 'Match-Clustered Bootstrap', 'Type': 'Non-Parametric Resampling', 'Validation Split': 'Cluster Match Bootstrap', 'Leakage': 'Zero', 'Status': 'PRODUCTION_VALIDATED'},
+            {'Model': 'Dual Pre-Delivery Pressure Model', 'Type': 'Ex-Ante Position-Proxy Heuristic', 'Validation Split': 'Chronological Match', 'Leakage': 'Zero', 'Status': 'PROVISIONAL_POSITION_PROXY_HEURISTIC'},
+            {'Model': 'Five-State Role Classifier', 'Type': 'Empirical Classification', 'Validation Split': 'Multi-Season Workload', 'Leakage': 'Zero', 'Status': 'VERIFIED_ROLE_GATING'},
+            {'Model': 'Hierarchical Joint Model', 'Type': 'Ridge Regression', 'Validation Split': 'Chronological Match', 'Leakage': 'Zero', 'Status': 'EXPERIMENTAL_NOT_USED_FOR_RANKING'},
+            {'Model': 'Discrete-Time Hazard Model (AUC 0.572, Log-Loss 0.692, Exp Wkts 26,843 vs Act 2,931)', 'Type': 'Un-recalibrated Balanced Logistic', 'Validation Split': 'Chronological Match', 'Leakage': 'Zero', 'Status': 'EXPERIMENTAL_NOT_USED_FOR_RANKING'},
+            {'Model': 'Bowling Tail-Risk / CVaR', 'Type': 'Extreme Value Theory', 'Validation Split': 'Over-Level Distribution', 'Leakage': 'Zero', 'Status': 'DESCRIPTIVE_SUPPLEMENT'},
+            {'Model': 'LightGBM Challenger', 'Type': 'Gradient Boosted Trees', 'Validation Split': 'Chronological Match', 'Leakage': 'Zero', 'Status': 'EXPERIMENTAL_NOT_USED_FOR_RANKING'},
+            {'Model': 'Match-Clustered Bootstrap (2,000 iter)', 'Type': 'Non-Parametric Resampling', 'Validation Split': 'Cluster Match Bootstrap', 'Leakage': 'Zero', 'Status': 'ESTIMATED_MATCH_CLUSTER_BOOTSTRAP'},
         ]
         st.dataframe(pd.DataFrame(model_matrix), use_container_width=True, hide_index=True)
 
