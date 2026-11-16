@@ -1,39 +1,54 @@
-"""SupeRR Intelligence V4.2 — Professional Cricket Analytics Platform.
+"""SupeRR Intelligence V4.2 — Professional Cricket Analytics SaaS UI.
 
 Light-mode, deep-navy + restrained RR-pink executive analytics platform.
-Reads authoritative V4.2 outputs from data/outputs/final/ (plus validation/audit
-tables from data/outputs/v4_2/ and RR 2026 context from data/outputs/v3/).
 """
 
 from __future__ import annotations
 
-import json
+import sys
 from pathlib import Path
-from typing import Any
 
-import numpy as np
 import pandas as pd
-import plotly.graph_objects as go
 import streamlit as st
 
 ROOT = Path(__file__).resolve().parents[1]
-FINAL_DIR = ROOT / "data/outputs/final"
-V42_DIR = ROOT / "data/outputs/v4_2"
-V3_DIR = ROOT / "data/outputs/v3"
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
-NAVY = "#0B1B3D"
-NAVY_MID = "#1E3A6D"
-RR_PINK = "#EA1A85"
-SLATE_BG = "#F8FAFC"
-CARD_BORDER = "#E2E8F0"
-TEXT_MAIN = "#0F172A"
-TEXT_MUTED = "#475569"
-TEAL_POS = "#0F766E"
-AMBER_WARN = "#B45309"
+from dashboard.charts import (
+    comparison_sample_chart,
+    dataset_coverage_chart,
+    dumbbell_shift_chart,
+    eb_forest_chart,
+    rr_2026_contrib_chart,
+    rr_component_chart,
+)
+from dashboard.data_loader import (
+    AMBER_WARN,
+    BAT_MU0,
+    BOWL_MU0,
+    CARD_BORDER,
+    NAVY,
+    NAVY_MID,
+    RR_PINK,
+    SLATE_BG,
+    TEAL_POS,
+    TEXT_MAIN,
+    TEXT_MUTED,
+    esc,
+    fmt_int,
+    fmt_num,
+    initials_badge,
+    load_all_data,
+)
 
-BAT_MU0 = -36.124
-BOWL_MU0 = -50.884
-
+NAV_PAGES = [
+    "1. Overview",
+    "2. Universal Top 10",
+    "3. Player Explorer & Comparison",
+    "4. Rajasthan Royals Intelligence",
+    "5. Methodology & Transparency",
+]
 
 st.set_page_config(
     page_title="SupeRR Intelligence V4.2",
@@ -44,7 +59,6 @@ st.set_page_config(
 st.markdown(
     f"""
     <style>
-    /* Force clean light theme even when OS prefers dark mode */
     header[data-testid="stHeader"] {{
         background-color: {SLATE_BG} !important;
         border-bottom: 1px solid {CARD_BORDER};
@@ -57,24 +71,6 @@ st.markdown(
         color: {NAVY} !important;
         letter-spacing: -0.01em;
     }}
-    .stApp p, .stApp li, .stApp label,
-    [data-testid="stMetricLabel"], [data-testid="stMetricValue"],
-    button[data-baseweb="tab"] p {{
-        color: {TEXT_MAIN} !important;
-    }}
-    /* Light-mode form inputs & dropdowns */
-    .stApp [data-baseweb="select"] > div,
-    .stApp [data-baseweb="input"] > div,
-    .stApp [data-baseweb="base-input"] > input {{
-        background-color: #FFFFFF !important;
-        color: {TEXT_MAIN} !important;
-        border-color: #CBD5E1 !important;
-    }}
-    .stApp [data-baseweb="select"] span,
-    .stApp [data-baseweb="select"] div {{
-        color: {TEXT_MAIN} !important;
-    }}
-    /* Sidebar */
     section[data-testid="stSidebar"] {{
         background-color: {NAVY} !important;
         color: #FFFFFF !important;
@@ -82,7 +78,13 @@ st.markdown(
     section[data-testid="stSidebar"] * {{
         color: #F8FAFC !important;
     }}
-    /* Header & Cards */
+    [data-testid="stSidebar"] code {{
+        background-color: rgba(255, 255, 255, 0.16) !important;
+        color: #F8FAFC !important;
+        border: 1px solid rgba(255, 255, 255, 0.28) !important;
+        border-radius: 4px;
+        padding: 1px 5px;
+    }}
     .superr-header {{
         background: #FFFFFF;
         border: 1px solid {CARD_BORDER};
@@ -100,7 +102,7 @@ st.markdown(
         font-size: 11px;
         padding: 4px 10px;
         border-radius: 999px;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.4px;
     }}
     .kpi-card {{
         background: #FFFFFF;
@@ -159,86 +161,82 @@ st.markdown(
         font-size: 13px;
         color: {TEXT_MAIN};
     }}
+    .gap-card {{
+        background: #FFFFFF;
+        border: 1px solid {CARD_BORDER};
+        border-radius: 8px;
+        padding: 12px 14px;
+        margin-bottom: 10px;
+    }}
+    .pill-crit {{
+        background: #FEE2E2;
+        color: #991B1B;
+        font-weight: 700;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+    }}
+    .pill-imp {{
+        background: #FEF3C7;
+        color: {AMBER_WARN};
+        font-weight: 700;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+    }}
+    .pill-depth {{
+        background: #E0F2FE;
+        color: #075985;
+        font-weight: 700;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+    }}
     </style>
     """,
     unsafe_allow_html=True,
 )
 
+try:
+    D = load_all_data()
+except FileNotFoundError as exc:
+    st.error(f"Dashboard data initialization error: {exc}. Please regenerate authoritative outputs and restart.")
+    st.stop()
+except Exception:
+    st.error("Unable to load authoritative analytics artifacts. Please verify CSV/JSON integrity and restart.")
+    st.stop()
 
-def fmt_num(val: Any, fmt: str = "{:.2f}", unavailable: str = "Unavailable") -> str:
-    """Format numeric value safely without ever turning NaN/None into 0."""
-    if val is None or pd.isna(val):
-        return unavailable
-    try:
-        return fmt.format(float(val))
-    except (TypeError, ValueError):
-        return unavailable
-
-
-def fmt_int(val: Any, unavailable: str = "Unavailable") -> str:
-    if val is None or pd.isna(val):
-        return unavailable
-    try:
-        return f"{int(round(float(val))):,}"
-    except (TypeError, ValueError):
-        return unavailable
+if "nav_page" not in st.session_state:
+    st.session_state["nav_page"] = NAV_PAGES[0]
 
 
-def initials_badge(name: str) -> str:
-    parts = [p for p in str(name).strip().split() if p]
-    if not parts:
-        initials = "?"
-    elif len(parts) == 1:
-        initials = parts[0][:2].upper()
-    else:
-        initials = (parts[0][0] + parts[-1][0]).upper()
-    return f'<span class="avatar-circle">{initials}</span>'
+def _go_to_page(page_name: str) -> None:
+    """Callback-safe navigation update executed before widgets re-instantiate."""
+    st.session_state["nav_page"] = page_name
 
 
-@st.cache_data(show_spinner=False)
-def load_all_data() -> dict[str, Any]:
-    sot = json.loads((FINAL_DIR / "FINAL_RANKING_SOURCE_OF_TRUTH.json").read_text(encoding="utf-8"))
-    return {
-        "sot": sot,
-        "top_bat": pd.read_csv(FINAL_DIR / "FINAL_TOP_10_BATTERS.csv"),
-        "top_bowl": pd.read_csv(FINAL_DIR / "FINAL_TOP_10_BOWLERS.csv"),
-        "all_est": pd.read_csv(FINAL_DIR / "ALL_PLAYER_FINAL_ESTIMATES.csv"),
-        "rr_req": pd.read_csv(FINAL_DIR / "RR_TEAM_REQUIREMENTS.csv"),
-        "rr_top10": pd.read_csv(FINAL_DIR / "RR_TOP10_CANDIDATE_FIT.csv"),
-        "rr_outside": pd.read_csv(FINAL_DIR / "RR_BEST_OUTSIDE_TOP10_CANDIDATES.csv"),
-        "rr_squad": pd.read_csv(FINAL_DIR / "RR_RECOMMENDED_SQUAD.csv"),
-        "star_audit": pd.read_csv(ROOT / "STAR_PLAYER_ELIGIBILITY_AUDIT.csv"),
-        "method_cmp": pd.read_csv(ROOT / "PRESSURE_METHODOLOGY_COMPARISON.csv"),
-        "val_matrix": pd.read_csv(V42_DIR / "V4_2_VALIDATION_MATRIX.csv"),
-        "score_audit": pd.read_csv(V42_DIR / "V4_2_SCORE_ENRICHMENT_AUDIT.csv"),
-        "rr_2026_str": pd.read_csv(V3_DIR / "rr_2026_team_strengths.csv"),
-        "rr_2026_wk": pd.read_csv(V3_DIR / "rr_2026_team_weaknesses.csv"),
-    }
-
-
-D = load_all_data()
+def _reset_top10_filters(discipline_label: str) -> None:
+    """Callback-safe filter reset executed before widgets re-instantiate."""
+    st.session_state[f"search_{discipline_label}"] = ""
+    st.session_state[f"conf_{discipline_label}"] = "All"
+    st.session_state[f"trade_{discipline_label}"] = "All"
+    st.session_state[f"sort_{discipline_label}"] = "Official Rank (EB Δ)"
 
 # Sidebar navigation
 st.sidebar.markdown("## SupeRR Intelligence")
 st.sidebar.caption("V4.2 PROVISIONAL — RESOURCE STRESS")
-section = st.sidebar.radio(
-    "Workspace",
-    [
-        "1. Overview",
-        "2. Universal Top 10",
-        "3. Player Explorer & Comparison",
-        "4. Rajasthan Royals Intelligence",
-        "5. Methodology & Transparency",
-    ],
-)
+section = st.sidebar.radio("Workspace", NAV_PAGES, key="nav_page")
 st.sidebar.markdown("---")
 st.sidebar.caption(
-    "Authoritative outputs: `data/outputs/final/`\n\n"
-    "Eligibility floor: `n_hi >= 50`, `n_lo >= 30`, `cs_matches >= 8`, `se_delta <= 25.0`.\n\n"
+    "Operational Eligibility Floor:\n"
+    "- High-stress balls: `n_hi >= 50`\n"
+    "- Normal-stress balls: `n_lo >= 30`\n"
+    "- Common-support matches: `>= 8`\n"
+    "- Max SE: `se_delta <= 25.0`\n\n"
     "RR scouting is strictly secondary and never modifies Universal Top 10 ranks."
 )
 
-# Top Header Banner
+# Persistent Top Header
 st.markdown(
     """
     <div class="superr-header">
@@ -285,31 +283,49 @@ def render_overview() -> None:
     ]
     for col, (lbl, val, sub) in zip([c1, c2, c3, c4], kpis):
         col.markdown(
-            f'<div class="kpi-card"><div class="kpi-label">{lbl}</div>'
-            f'<div class="kpi-val">{val}</div><div class="kpi-sub">{sub}</div></div>',
+            f'<div class="kpi-card"><div class="kpi-label">{esc(lbl)}</div>'
+            f'<div class="kpi-val">{esc(val)}</div><div class="kpi-sub">{esc(sub)}</div></div>',
             unsafe_allow_html=True,
         )
 
     st.markdown(
         """
         <div class="status-strip">
-            <b>Provisional Scope:</b> Because chase targets/required run rates fail reconciliation on 342/390 non-DLS chases
-            (<code>MARGIN_MISMATCH_BLOCKED</code>), V4.2 evaluates pre-delivery <b>BATTING_RESOURCE_STRESS</b> (wicket-depletion anomaly)
-            and <b>BOWLING_SCORING_THREAT</b> (expected scoring environment) rather than calibrated Win-Probability Leverage.
+            <b>Executive Summary & Provisional Scope:</b> High-stress T20 states depress scoring/economy across the entire player pool
+            (cohort stress tax <b>μ₀ = -36.12</b> for batters; <b>μ₀ = -50.88</b> for bowlers). Rather than ranking career averages or raw crisis strike rates,
+            V4.2 estimates each player's <i>within-player shift</i> from normal to high stress after removing match, phase, innings, and opponent confounders.
+            Because chase targets fail reconciliation on 342/390 non-DLS chases (<code>MARGIN_MISMATCH_BLOCKED</code>), V4.2 uses pre-delivery
+            <b>BATTING_RESOURCE_STRESS</b> and <b>BOWLING_SCORING_THREAT</b> proxies.
         </div>
         """,
         unsafe_allow_html=True,
     )
 
+    cov_col, ins_col = st.columns([1.3, 1.0])
+    with cov_col:
+        st.plotly_chart(dataset_coverage_chart(), use_container_width=True)
+    with ins_col:
+        st.subheader("Key Analytical Findings")
+        st.markdown(
+            "- **Top Batter (#1 David Miller):** `EB Δ = -29.39` (`+6.73` vs cohort `μ₀`) across 81 common-support matches.\n"
+            "- **Top Bowler (#1 Matheesha Pathirana):** `EB Δ = -34.95` (`+15.94` vs cohort `μ₀`), `P(Top 10) = 0.790`.\n"
+            "- **Famous Players Audited Transparently:** Jasprit Bumrah ranks **#4** (`-38.13`); Virat Kohli (`#54`), MS Dhoni (`#82`), and Rohit Sharma (`#104`) show larger negative stress shifts than the Top 10; Yashasvi Jaiswal is ineligible (`n_hi = 27 < 50`)."
+        )
+
+    nav1, nav2, nav3 = st.columns(3)
+    nav1.button("Explore Top 10 Batters", key="ov_btn_bat", on_click=_go_to_page, args=(NAV_PAGES[1],), use_container_width=True)
+    nav2.button("Explore Top 10 Bowlers", key="ov_btn_bowl", on_click=_go_to_page, args=(NAV_PAGES[1],), use_container_width=True)
+    nav3.button("Open Player Explorer", key="ov_btn_exp", on_click=_go_to_page, args=(NAV_PAGES[2],), use_container_width=True)
+
     col_b, col_w = st.columns(2)
     with col_b:
-        st.subheader("Universal Batters — Top 5")
+        st.subheader("Universal Batters — Top 5 Preview")
         st.dataframe(_preview_table(D["top_bat"].head(5)), use_container_width=True, hide_index=True)
     with col_w:
-        st.subheader("Universal Bowlers — Top 5")
+        st.subheader("Universal Bowlers — Top 5 Preview")
         st.dataframe(_preview_table(D["top_bowl"].head(5)), use_container_width=True, hide_index=True)
 
-    st.subheader("Data Integrity & Identity Verification")
+    st.subheader("Data Integrity & Governance Checks")
     q1, q2, q3 = st.columns(3)
     q1.markdown(
         '<div class="kpi-card"><div class="kpi-label">SUPER OVER ISOLATION</div>'
@@ -328,140 +344,43 @@ def render_overview() -> None:
     )
 
 
-def _dumbbell_chart(df: pd.DataFrame, is_bowler: bool, title: str) -> go.Figure:
-    """Normal -> High-Stress Dumbbell Shift in natural positive cricket units."""
-    plot_df = df.sort_values("shortlist_rank_display", ascending=False).copy()
-    if is_bowler:
-        # Convert negative suppression units back to positive batter-runs conceded/100b
-        lo_vals = -plot_df["raw_lo_perf"]
-        hi_vals = -plot_df["raw_hi_perf"]
-        lo_lbl = "Normal Baseline (Runs Conceded/100b)"
-        hi_lbl = "High-Threat (Runs Conceded/100b)"
-        x_title = "Batter Runs Conceded per 100 Legal Balls (lower = tighter)"
-    else:
-        lo_vals = plot_df["raw_lo_perf"]
-        hi_vals = plot_df["raw_hi_perf"]
-        lo_lbl = "Normal Baseline (Strike Rate)"
-        hi_lbl = "High-Stress (Strike Rate)"
-        x_title = "Batting Strike Rate (Runs per 100 Balls Faced)"
-
-    fig = go.Figure()
-    for name, x0, x1 in zip(plot_df["player_name"], lo_vals, hi_vals):
-        if pd.notna(x0) and pd.notna(x1):
-            fig.add_trace(
-                go.Scatter(
-                    x=[x0, x1],
-                    y=[name, name],
-                    mode="lines",
-                    line=dict(color="#CBD5E1", width=3),
-                    showlegend=False,
-                    hoverinfo="skip",
-                )
-            )
-    fig.add_trace(
-        go.Scatter(
-            x=lo_vals,
-            y=plot_df["player_name"],
-            mode="markers",
-            name=lo_lbl,
-            marker=dict(color="#64748B", size=10),
-        )
-    )
-    fig.add_trace(
-        go.Scatter(
-            x=hi_vals,
-            y=plot_df["player_name"],
-            mode="markers",
-            name=hi_lbl,
-            marker=dict(color=RR_PINK, size=11, symbol="diamond"),
-        )
-    )
-    fig.update_layout(
-        template="plotly_white",
-        title=dict(text=title, font=dict(color=NAVY, size=14)),
-        xaxis=dict(title=x_title, title_font=dict(color=NAVY), tickfont=dict(color=NAVY), gridcolor="#E2E8F0"),
-        yaxis=dict(tickfont=dict(color=NAVY), gridcolor="#F1F5F9"),
-        height=390,
-        margin=dict(l=10, r=10, t=48, b=10),
-        plot_bgcolor="#FFFFFF",
-        paper_bgcolor="#FFFFFF",
-        font=dict(color=NAVY),
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(color=NAVY, size=11)),
-    )
-    return fig
-
-
-def _eb_forest_chart(df: pd.DataFrame, mu0: float, title: str) -> go.Figure:
-    """EB Delta Forest Plot with 95% Bootstrap CI and Cohort Mean mu0 reference line."""
-    plot_df = df.sort_values("shortlist_rank_display", ascending=False).copy()
-    fig = go.Figure()
-    fig.add_trace(
-        go.Scatter(
-            x=plot_df["eb_delta"],
-            y=plot_df["player_name"],
-            mode="markers",
-            name="EB Δ (FWL + REML)",
-            marker=dict(color=NAVY, size=10),
-            error_x=dict(
-                type="data",
-                symmetric=False,
-                array=(plot_df["eb_boot_ci_high"] - plot_df["eb_delta"]).fillna(0).clip(lower=0),
-                arrayminus=(plot_df["eb_delta"] - plot_df["eb_boot_ci_low"]).fillna(0).clip(lower=0),
-                color="#94A3B8",
-                thickness=1.8,
-            ),
-        )
-    )
-    fig.add_vline(
-        x=mu0,
-        line_width=2,
-        line_dash="dash",
-        line_color=RR_PINK,
-        annotation_text=f"Cohort Mean μ₀ = {mu0:.2f}",
-        annotation_position="top left",
-        annotation_font=dict(color=RR_PINK, size=11),
-    )
-    fig.update_layout(
-        template="plotly_white",
-        title=dict(text=title, font=dict(color=NAVY, size=14)),
-        xaxis=dict(
-            title="EB Δ (95% Match-Cluster Bootstrap CI; right of μ₀ = outperforms cohort)",
-            title_font=dict(color=NAVY),
-            tickfont=dict(color=NAVY),
-            gridcolor="#E2E8F0",
-        ),
-        yaxis=dict(tickfont=dict(color=NAVY), gridcolor="#F1F5F9"),
-        height=390,
-        margin=dict(l=10, r=10, t=48, b=10),
-        plot_bgcolor="#FFFFFF",
-        paper_bgcolor="#FFFFFF",
-        font=dict(color=NAVY),
-        showlegend=False,
-    )
-    return fig
-
-
 def _render_top10_discipline(df: pd.DataFrame, discipline_label: str, filename: str) -> None:
     is_bowler = discipline_label == "Bowlers"
     mu0 = BOWL_MU0 if is_bowler else BAT_MU0
 
-    f1, f2, f3, f4 = st.columns([2, 1.5, 1.5, 2])
-    search_q = f1.text_input(f"Filter {discipline_label} by name", key=f"search_{discipline_label}")
+    k_search = f"search_{discipline_label}"
+    k_conf = f"conf_{discipline_label}"
+    k_trade = f"trade_{discipline_label}"
+    k_sort = f"sort_{discipline_label}"
+
+    f1, f2, f3, f4, f5 = st.columns([2.0, 1.5, 1.4, 1.8, 0.9])
+    search_q = f1.text_input(f"Search {discipline_label}", key=k_search, placeholder="e.g., Miller, Bumrah")
     conf_filter = f2.selectbox(
         "Sample Confidence",
         ["All", "HIGH", "MODERATE", "PROVISIONAL_BOUNDARY"],
-        key=f"conf_{discipline_label}",
+        key=k_conf,
     )
     tradeoff_filter = f3.selectbox(
-        "Tradeoff Flag",
+        "Tradeoff Status",
         ["All", "Clean Only", "Flagged Only"],
-        key=f"trade_{discipline_label}",
+        key=k_trade,
     )
     sort_col = f4.selectbox(
         "Sort By",
         ["Official Rank (EB Δ)", "Raw High−Low Δ", "P(Top 10)", "Common-Support Matches"],
-        key=f"sort_{discipline_label}",
+        key=k_sort,
     )
+    f5.button(
+        "Reset",
+        key=f"reset_{discipline_label}",
+        on_click=_reset_top10_filters,
+        args=(discipline_label,),
+        use_container_width=True,
+    )
+
+    active_filters = sum([bool(search_q.strip()), conf_filter != "All", tradeoff_filter != "All"])
+    if active_filters:
+        st.info(f"Active filters: {active_filters} | Showing subset of authoritative {discipline_label} Top 10.")
 
     view = df.copy()
     if search_q.strip():
@@ -483,7 +402,7 @@ def _render_top10_discipline(df: pd.DataFrame, discipline_label: str, filename: 
         view = view.sort_values("cs_matches", ascending=False)
 
     if view.empty:
-        st.warning("No shortlisted players match the current filter selection.")
+        st.warning("No shortlisted players match the active filters. Click Reset to view all 10.")
         return
 
     lo_col = "Raw Lo (-Runs/100b)" if is_bowler else "Raw Lo (Runs/100b)"
@@ -492,6 +411,7 @@ def _render_top10_discipline(df: pd.DataFrame, discipline_label: str, filename: 
         {
             "Rank": view["shortlist_rank_display"].apply(fmt_int),
             "Player": view["player_name"],
+            "ID": view["player_id"].apply(fmt_int),
             "Matches": view["cs_matches"].apply(fmt_int),
             "High-Stress Balls": view["n_hi"].apply(fmt_int),
             lo_col: view["raw_lo_perf"].apply(fmt_num),
@@ -512,49 +432,60 @@ def _render_top10_discipline(df: pd.DataFrame, discipline_label: str, filename: 
     c_left, c_right = st.columns(2)
     with c_left:
         st.plotly_chart(
-            _dumbbell_chart(view, is_bowler=is_bowler, title="Normal vs High-Stress Shift (Raw Baseline)"),
+            dumbbell_shift_chart(view, is_bowler=is_bowler, title="Normal vs High-Stress Shift (Raw Baseline)"),
             use_container_width=True,
         )
     with c_right:
         st.plotly_chart(
-            _eb_forest_chart(view, mu0=mu0, title="Adjusted EB Δ vs Cohort Mean (μ₀)"),
+            eb_forest_chart(view, mu0=mu0, title="Adjusted EB Δ vs Cohort Mean (μ₀)"),
             use_container_width=True,
         )
 
-    # Selected-Player Scouting Dossier (replaces 10 stacked expanders)
     st.markdown(f"#### {discipline_label[:-1]} Scouting Dossier")
     pick_name = st.selectbox(
-        f"Inspect full justification & match consistency for a shortlisted {discipline_label[:-1].lower()}",
+        f"Select a shortlisted {discipline_label[:-1].lower()} to inspect full justification",
         view["player_name"].tolist(),
         key=f"dossier_{discipline_label}",
     )
     r = view[view["player_name"] == pick_name].iloc[0]
-    cons_pct = fmt_num(r["claim_b_high_stress_pos_share"] * 100, "{:.1f}%") if pd.notna(r["claim_b_high_stress_pos_share"]) else "Unavailable"
+    cons_pct = (
+        fmt_num(r["claim_b_high_stress_pos_share"] * 100, "{:.1f}%")
+        if pd.notna(r["claim_b_high_stress_pos_share"])
+        else "Unavailable"
+    )
     st.markdown(
         f"""
         <div class="dossier-card">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-                <div>{initials_badge(r['player_name'])} <b style="font-size:17px; color:{NAVY};">#{int(r['shortlist_rank_display'])} {r['player_name']}</b>
-                <span style="color:{TEXT_MUTED}; font-size:13px;"> (ID {int(r['player_id'])} | {r['sample_confidence']})</span></div>
-                <span style="font-weight:700; color:{TEAL_POS};">EB vs Pop μ₀: {fmt_num(r['eb_vs_pop_mean_delta'], '{:+.2f}')}</span>
+                <div>{initials_badge(r['player_name'])} <b style="font-size:17px; color:{NAVY};">#{int(r['shortlist_rank_display'])} {esc(r['player_name'])}</b>
+                <span style="color:{TEXT_MUTED}; font-size:13px;"> (ID {int(r['player_id'])} | {esc(r['sample_confidence'])})</span></div>
+                <span style="font-weight:700; color:{TEAL_POS};">EB vs Pop μ₀: {esc(fmt_num(r['eb_vs_pop_mean_delta'], '{:+.2f}'))}</span>
             </div>
             <p style="margin:10px 0 6px 0; font-size:13.5px;">
-                <b>Normal Baseline:</b> {fmt_num(r['raw_lo_perf'])} &nbsp;|&nbsp;
-                <b>High-Stress:</b> {fmt_num(r['raw_hi_perf'])} &nbsp;|&nbsp;
-                <b>EB Δ:</b> {fmt_num(r['eb_delta'])} &nbsp;|&nbsp;
-                <b>Boot Rank 95% CI:</b> [{fmt_int(r['boot_rank_ci_low'])}, {fmt_int(r['boot_rank_ci_high'])}] &nbsp;|&nbsp;
-                <b>Within-Match Consistency:</b> {cons_pct}
+                <b>Normal Baseline:</b> {esc(fmt_num(r['raw_lo_perf']))} &nbsp;|&nbsp;
+                <b>High-Stress:</b> {esc(fmt_num(r['raw_hi_perf']))} &nbsp;|&nbsp;
+                <b>EB Δ:</b> {esc(fmt_num(r['eb_delta']))} &nbsp;|&nbsp;
+                <b>Boot Rank 95% CI:</b> [{esc(fmt_int(r['boot_rank_ci_low']))}, {esc(fmt_int(r['boot_rank_ci_high']))}] &nbsp;|&nbsp;
+                <b>Within-Match Consistency:</b> {esc(cons_pct)}
             </p>
-            <p style="margin:0; font-size:13.5px; color:{TEXT_MAIN};">{r['player_explanation']}</p>
+            <p style="margin:0; font-size:13.5px; color:{TEXT_MAIN};">{esc(r['player_explanation'])}</p>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
-    st.download_button(
-        label=f"Download {filename}",
-        data=df.to_csv(index=False).encode("utf-8"),
-        file_name=filename,
+    dl1, dl2 = st.columns([1.4, 2.6])
+    export_scope = dl1.radio(
+        "CSV Export Scope",
+        ["Full Authoritative Top 10", "Filtered Visible Rows"],
+        horizontal=True,
+        key=f"exp_scope_{discipline_label}",
+    )
+    export_df = df if export_scope == "Full Authoritative Top 10" else view
+    dl2.download_button(
+        label=f"Download {filename} ({len(export_df)} rows — {export_scope})",
+        data=export_df.to_csv(index=False).encode("utf-8"),
+        file_name=filename if export_scope == "Full Authoritative Top 10" else f"filtered_{filename}",
         mime="text/csv",
         key=f"dl_{filename}",
     )
@@ -577,9 +508,9 @@ def render_explorer() -> None:
     st.subheader("Player Explorer & Same-Discipline Comparison")
     all_est = D["all_est"].copy()
 
-    c1, c2, c3 = st.columns([1.4, 1.4, 3.2])
-    disc = c1.selectbox("Discipline", ["All", "batter", "bowler"])
-    elig_opt = c2.selectbox("Eligibility", ["All", "Eligible Only", "Ineligible Only"])
+    c1, c2, c3 = st.columns([1.3, 1.3, 3.4])
+    disc = c1.selectbox("Discipline", ["All", "batter", "bowler"], key="exp_disc")
+    elig_opt = c2.selectbox("Eligibility", ["All", "Eligible Only", "Ineligible Only"], key="exp_elig")
 
     pool = all_est.copy()
     if disc != "All":
@@ -595,59 +526,63 @@ def render_explorer() -> None:
         axis=1,
     )
     options = pool["label"].tolist()
+    if not options:
+        st.warning("No players match the selected discipline/eligibility filter.")
+        return
+
     default_idx = next((i for i, lbl in enumerate(options) if "Virat Kohli" in lbl), 0)
     selected_lbl = c3.selectbox(
         "Search any player (e.g., Virat Kohli, MS Dhoni, Jasprit Bumrah, Patrick Cummins)",
         options,
-        index=default_idx if options else 0,
+        index=default_idx,
+        key="exp_player_pick",
     )
 
-    if selected_lbl:
-        row = pool[pool["label"] == selected_lbl].iloc[0]
-        st.markdown(
-            f"### {initials_badge(row['player_name'])} {row['player_name']} ({row['role'].title()})",
+    row = pool[pool["label"] == selected_lbl].iloc[0]
+    st.markdown(
+        f"### {initials_badge(row['player_name'])} {esc(row['player_name'])} ({esc(str(row['role']).title())})",
+        unsafe_allow_html=True,
+    )
+    m_cards = [
+        ("ELIGIBILITY", "Eligible" if row["eligible"] else "Ineligible", f"Role: {row['role']}"),
+        ("GLOBAL EB RANK", fmt_int(row["eb_rank"]), "Within-discipline"),
+        ("EB Δ (WITHIN-PLAYER)", fmt_num(row["eb_delta"]), "Complete FWL + REML"),
+        ("EB vs Pop μ₀", fmt_num(row["eb_vs_pop_mean_delta"], "{:+.2f}"), "Relative to cohort mean"),
+    ]
+    for col, (lbl, val, sub) in zip(st.columns(4), m_cards):
+        col.markdown(
+            f'<div class="kpi-card"><div class="kpi-label">{esc(lbl)}</div>'
+            f'<div class="kpi-val">{esc(val)}</div><div class="kpi-sub">{esc(sub)}</div></div>',
             unsafe_allow_html=True,
         )
-        m_cards = [
-            ("ELIGIBILITY", "Eligible" if row["eligible"] else "Ineligible", f"Role: {row['role']}"),
-            ("GLOBAL EB RANK", fmt_int(row["eb_rank"]), "Within-discipline"),
-            ("EB Δ (WITHIN-PLAYER)", fmt_num(row["eb_delta"]), "Complete FWL + REML"),
-            ("EB vs Pop μ₀", fmt_num(row["eb_vs_pop_mean_delta"], "{:+.2f}"), "Relative to cohort mean"),
-        ]
-        for col, (lbl, val, sub) in zip(st.columns(4), m_cards):
-            col.markdown(
-                f'<div class="kpi-card"><div class="kpi-label">{lbl}</div>'
-                f'<div class="kpi-val">{val}</div><div class="kpi-sub">{sub}</div></div>',
-                unsafe_allow_html=True,
-            )
-        st.markdown("<div style='height:8px;'></div>", unsafe_allow_html=True)
-        d_cards = [
-            ("P(TOP 10)", fmt_num(row["prob_top_10"], "{:.3f}"), "Bootstrap probability"),
-            ("RAW OVERALL", fmt_num(row["raw_overall_perf"]), "All regular balls"),
-            ("NORMAL BASELINE", fmt_num(row["raw_lo_perf"]), "Low-stress tier"),
-            ("HIGH-STRESS PERF", fmt_num(row["raw_hi_perf"]), f"{fmt_int(row['n_hi'])} balls / {fmt_int(row['cs_matches'])} matches"),
-        ]
-        for col, (lbl, val, sub) in zip(st.columns(4), d_cards):
-            col.markdown(
-                f'<div class="kpi-card"><div class="kpi-label">{lbl}</div>'
-                f'<div class="kpi-val">{val}</div><div class="kpi-sub">{sub}</div></div>',
-                unsafe_allow_html=True,
-            )
+    st.markdown("<div style='height:8px;'></div>", unsafe_allow_html=True)
+    d_cards = [
+        ("P(TOP 10)", fmt_num(row["prob_top_10"], "{:.3f}"), "Bootstrap probability"),
+        ("RAW OVERALL", fmt_num(row["raw_overall_perf"]), "All regular balls"),
+        ("NORMAL BASELINE", fmt_num(row["raw_lo_perf"]), "Low-stress tier"),
+        ("HIGH-STRESS PERF", fmt_num(row["raw_hi_perf"]), f"{fmt_int(row['n_hi'])} balls / {fmt_int(row['cs_matches'])} matches"),
+    ]
+    for col, (lbl, val, sub) in zip(st.columns(4), d_cards):
+        col.markdown(
+            f'<div class="kpi-card"><div class="kpi-label">{esc(lbl)}</div>'
+            f'<div class="kpi-val">{esc(val)}</div><div class="kpi-sub">{esc(sub)}</div></div>',
+            unsafe_allow_html=True,
+        )
 
-        if not row["eligible"]:
-            st.warning(f"Exclusion Reason: {row['exclusion_reason']}")
-        elif pd.notna(row["shortlist_rank_display"]):
-            st.success(f"Universal Top 10 Member: Ranked #{int(row['shortlist_rank_display'])} among eligible {row['role']}s.")
-        else:
-            st.info(
-                f"Eligible outside Top 10 (Rank #{fmt_int(row['eb_rank'])}) — "
-                f"95% Boot CI [{fmt_num(row['eb_boot_ci_low'])}, {fmt_num(row['eb_boot_ci_high'])}], "
-                f"Rank CI [{fmt_int(row['boot_rank_ci_low'])}, {fmt_int(row['boot_rank_ci_high'])}]."
-            )
+    if not row["eligible"]:
+        st.warning(f"Exclusion Reason: {row['exclusion_reason']}")
+    elif pd.notna(row["shortlist_rank_display"]):
+        st.success(f"Universal Top 10 Member: Ranked #{int(row['shortlist_rank_display'])} among eligible {row['role']}s.")
+    else:
+        st.info(
+            f"Eligible outside Top 10 (Rank #{fmt_int(row['eb_rank'])}) — "
+            f"95% Boot CI [{fmt_num(row['eb_boot_ci_low'])}, {fmt_num(row['eb_boot_ci_high'])}], "
+            f"Rank CI [{fmt_int(row['boot_rank_ci_low'])}, {fmt_int(row['boot_rank_ci_high'])}]."
+        )
 
     st.markdown("---")
-    st.markdown("### Same-Discipline Comparison (2–4 Players)")
-    cmp_role = st.radio("Comparison Discipline", ["batter", "bowler"], horizontal=True)
+    st.markdown("### Player Comparison Studio (2–4 Same-Discipline Players)")
+    cmp_role = st.radio("Comparison Discipline", ["batter", "bowler"], horizontal=True, key="cmp_role")
     cmp_pool = all_est[(all_est["role"] == cmp_role) & (all_est["eligible"] == True)].sort_values("eb_rank")
     default_picks = ["David Miller", "Andre Russell", "Virat Kohli"] if cmp_role == "batter" else ["Matheesha Pathirana", "Jasprit Bumrah", "Patrick Cummins"]
 
@@ -656,24 +591,25 @@ def render_explorer() -> None:
         cmp_pool["player_name"].tolist(),
         default=[p for p in default_picks if p in cmp_pool["player_name"].values][:3],
         max_selections=4,
+        key=f"cmp_multi_{cmp_role}",
     )
     if len(selected_names) >= 2:
         sub = cmp_pool[cmp_pool["player_name"].isin(selected_names)].copy()
-        sub["shortlist_rank_display"] = sub["eb_rank"]  # reuse dumbbell helper cleanly
+        sub["shortlist_rank_display"] = sub["eb_rank"]
         is_bowl = cmp_role == "bowler"
         mu0 = BOWL_MU0 if is_bowl else BAT_MU0
         c_l, c_r = st.columns(2)
         with c_l:
             st.plotly_chart(
-                _dumbbell_chart(sub, is_bowler=is_bowl, title=f"Normal vs High-Stress Shift ({cmp_role.title()}s)"),
+                dumbbell_shift_chart(sub, is_bowler=is_bowl, title=f"Normal vs High-Stress Shift ({cmp_role.title()}s)"),
                 use_container_width=True,
             )
         with c_r:
             st.plotly_chart(
-                _eb_forest_chart(sub, mu0=mu0, title=f"Adjusted EB Δ vs Cohort Mean ({cmp_role.title()}s)"),
+                eb_forest_chart(sub, mu0=mu0, title=f"Adjusted EB Δ vs Cohort Mean ({cmp_role.title()}s)"),
                 use_container_width=True,
             )
-
+        st.plotly_chart(comparison_sample_chart(sub), use_container_width=True)
         cmp_disp = pd.DataFrame(
             {
                 "Player": sub["player_name"],
@@ -686,25 +622,40 @@ def render_explorer() -> None:
                 "EB Δ": sub["eb_delta"].apply(fmt_num),
                 "EB vs Pop μ₀": sub["eb_vs_pop_mean_delta"].apply(lambda x: fmt_num(x, "{:+.2f}")),
                 "P(Top 10)": sub["prob_top_10"].apply(lambda x: fmt_num(x, "{:.3f}")),
+                "Confidence": sub["sample_confidence"],
             }
         )
         st.dataframe(cmp_disp, use_container_width=True, hide_index=True)
     else:
-        st.info("Select at least 2 players to render comparison charts.")
+        st.info("Select at least 2 players from the same discipline to unlock side-by-side comparison charts.")
 
-    with st.expander("Star-Player Eligibility Audit (21 Audited IPL/International Stars)"):
-        sa = D["star_audit"]
+    st.markdown("---")
+    st.markdown("### Star-Player Eligibility Audit (21 Audited Players)")
+    sa = D["star_audit"].copy()
+    s1, s2 = st.columns([2, 1.2])
+    sa_q = s1.text_input("Filter Star Audit by player name", key="sa_search", placeholder="e.g., Kohli, Cummins, Jaiswal")
+    sa_elig = s2.selectbox("Audit Status", ["All", "Eligible Only", "Excluded Only"], key="sa_elig")
+    if sa_q.strip():
+        sa = sa[sa["player_name"].str.contains(sa_q.strip(), case=False, na=False)]
+    if sa_elig == "Eligible Only":
+        sa = sa[sa["eligible"] == True]
+    elif sa_elig == "Excluded Only":
+        sa = sa[sa["eligible"] == False]
+
+    if sa.empty:
+        st.warning("No audited star players match your filter.")
+    else:
         sa_disp = pd.DataFrame(
             {
                 "Player": sa["player_name"],
-                "Discipline": sa["discipline"],
+                "Discipline": sa["discipline"].str.title(),
                 "Canonical ID": sa["canonical_player_id"].apply(fmt_int),
-                "Eligible": sa["eligible"],
+                "Status": sa["eligible"].map({True: "Eligible", False: "Excluded"}),
                 "EB Rank": sa["eb_rank"].apply(fmt_int),
                 "High-Stress Balls": sa["n_hi"].apply(fmt_int),
                 "Matches": sa["cs_matches"].apply(fmt_int),
                 "EB Δ": sa["eb_delta"].apply(fmt_num),
-                "Exclusion / Status": sa["exclusion_reason"].fillna("Eligible"),
+                "Exclusion / Status Detail": sa["exclusion_reason"].fillna("Eligible"),
                 "Audit Explanation": sa["explanation"],
             }
         )
@@ -714,74 +665,68 @@ def render_explorer() -> None:
 def render_rr() -> None:
     st.subheader("Rajasthan Royals Intelligence (Secondary Application)")
     st.markdown(
-        '<div class="status-strip"><b>Strict Decoupling:</b> RR scouting evaluates both Universal Top 10 leaders and eligible specialists outside the Top 10 '
-        'using V4.2 complete-FWL estimates plus phase and pace/spin profiles. It never alters Universal Top 10 ranks.</div>',
+        '<div class="status-strip"><b>Strict Independence Guarantee:</b> Universal Top 10 rankings and RR-specific squad fit scoring are independent systems. '
+        'RR scouting evaluates both Universal Top 10 leaders and eligible specialists outside the Top 10, and never alters Universal Top 10 ranks.</div>',
         unsafe_allow_html=True,
     )
 
+    # Block A: RR 2026 Team Performance Analysis
+    st.markdown("### A. RR 2026 Team Performance Analysis")
     c1, c2 = st.columns(2)
     with c1:
-        st.markdown("#### RR 2026 Team Weaknesses")
-        st.dataframe(D["rr_2026_wk"], use_container_width=True, hide_index=True)
+        st.markdown("#### Observed Weaknesses")
+        wk = D["rr_2026_wk"].rename(columns={"dimension": "Dimension", "metric": "Metric", "empirical_evidence": "Empirical Evidence", "sample_size": "Sample"})
+        st.dataframe(wk[["Dimension", "Metric", "Empirical Evidence", "Sample"]], use_container_width=True, hide_index=True)
     with c2:
-        st.markdown("#### RR 2026 Team Strengths")
-        st.dataframe(D["rr_2026_str"], use_container_width=True, hide_index=True)
+        st.markdown("#### Observed Strengths")
+        st_df = D["rr_2026_str"].rename(columns={"dimension": "Dimension", "metric": "Metric", "empirical_evidence": "Empirical Evidence", "sample_size": "Sample"})
+        st.dataframe(st_df[["Dimension", "Metric", "Empirical Evidence", "Sample"]], use_container_width=True, hide_index=True)
 
-    st.markdown("#### Tactical Gaps & Scouting Requirements")
-    req_disp = D["rr_req"].rename(
-        columns={
-            "priority": "Priority",
-            "role_title": "Target Role",
-            "urgency": "Urgency",
-            "tactical_objective": "Tactical Objective",
-            "existing_rr_cover": "Existing RR Cover",
-            "budget_allocation_cr": "Target Allocation (Cr)",
-            "scouting_priority_weight": "Weight",
-        }
-    )[["Priority", "Target Role", "Urgency", "Tactical Objective", "Existing RR Cover", "Target Allocation (Cr)", "Weight"]]
-    st.dataframe(req_disp, use_container_width=True, hide_index=True)
+    st.plotly_chart(rr_2026_contrib_chart(D["rr_2026_contrib"]), use_container_width=True)
 
+    # Block B: Tactical Gap Recruitment Board
+    st.markdown("### B. Tactical Gap Recruitment Board")
+    req = D["rr_req"]
+    cols = st.columns(len(req))
+    for col, (_, r) in zip(cols, req.iterrows()):
+        urg = str(r["urgency"]).upper()
+        pill_cls = "pill-crit" if "CRIT" in urg else ("pill-imp" if "IMP" in urg else "pill-depth")
+        col.markdown(
+            f"""
+            <div class="gap-card">
+                <span class="{pill_cls}">P{int(r['priority'])} · {esc(urg)}</span>
+                <div style="font-weight:700; color:{NAVY}; margin:6px 0 4px 0; font-size:13.5px;">{esc(r['role_title'])}</div>
+                <div style="font-size:12px; color:{TEXT_MUTED}; margin-bottom:6px;">{esc(r['tactical_objective'])}</div>
+                <div style="font-size:11.5px; color:{TEXT_MAIN};">
+                    <b>Cover:</b> {esc(r['existing_rr_cover'])}<br>
+                    <b>Target Budget:</b> {esc(r['budget_allocation_cr'])} Cr &nbsp;|&nbsp; <b>Wt:</b> {esc(fmt_num(r['scouting_priority_weight']))}
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    # Block C: Sensitivity & Component Diagnostics
+    st.markdown("### C. RR Fit Sensitivity & Component Diagnostics")
     weight_mode = st.selectbox(
-        "RR Fit Weight Sensitivity Profile",
+        "Weight Sensitivity Profile",
         [
             "Baseline (35% Phase / 25% Role Need / 20% V4.2 Pressure / 10% Confidence / 10% T20 Balance)",
             "Pressure-Heavy (25% Phase / 20% Role Need / 35% V4.2 Pressure / 10% Confidence / 10% T20 Balance)",
             "Role-Heavy (40% Phase / 35% Role Need / 10% V4.2 Pressure / 10% Confidence / 5% T20 Balance)",
         ],
+        key="rr_weight_mode",
     )
     score_col = (
         "RR_PLAYER_FIT_SCORE"
         if weight_mode.startswith("Baseline")
         else ("fit_score_pressure_heavy" if weight_mode.startswith("Pressure-Heavy") else "fit_score_role_heavy")
     )
-
-    # Stacked RR Fit Component Chart (top 10 combined non-RR candidates)
     top_pool = pd.concat([D["rr_top10"][~D["rr_top10"]["already_rr_2026"]], D["rr_outside"]], ignore_index=True)
-    top_pool = top_pool.sort_values(score_col, ascending=False).head(10).iloc[::-1]
-    fig_rr = go.Figure()
-    for col_name, lbl, clr in [
-        ("phase_exec_score", "Phase Execution", NAVY),
-        ("role_need_score", "Tactical Role Need", NAVY_MID),
-        ("pressure_v42_score", "V4.2 Pressure", RR_PINK),
-        ("sample_conf_score", "Sample Confidence", "#64748B"),
-        ("balance_ipl_score", "T20 Exposure", "#94A3B8"),
-    ]:
-        fig_rr.add_trace(go.Bar(name=lbl, y=top_pool["player_name"], x=top_pool[col_name], orientation="h", marker_color=clr))
-    fig_rr.update_layout(
-        template="plotly_white",
-        barmode="stack",
-        title=dict(text="Top 10 Non-RR Scouting Targets — Component Breakdown", font=dict(color=NAVY, size=14)),
-        xaxis=dict(title="Component Score Sum (Unweighted Diagnostic)", title_font=dict(color=NAVY), tickfont=dict(color=NAVY), gridcolor="#E2E8F0"),
-        yaxis=dict(tickfont=dict(color=NAVY)),
-        height=370,
-        margin=dict(l=10, r=10, t=46, b=10),
-        plot_bgcolor="#FFFFFF",
-        paper_bgcolor="#FFFFFF",
-        font=dict(color=NAVY),
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(color=NAVY, size=11)),
-    )
-    st.plotly_chart(fig_rr, use_container_width=True)
+    st.plotly_chart(rr_component_chart(top_pool, score_col=score_col), use_container_width=True)
 
+    # Block D: Recruitment Shortlists
+    st.markdown("### D. Recruitment Shortlists")
     t1, t2, t3 = st.tabs(
         [
             "Universal Top 10 RR Fit",
@@ -794,8 +739,8 @@ def render_rr() -> None:
         disp1 = pd.DataFrame(
             {
                 "Player": df1["player_name"],
-                "Role": df1["role"].str.title(),
-                "Top-10 Rank": df1["shortlist_rank_display"].apply(fmt_int),
+                "Discipline": df1["role"].str.title(),
+                "Universal Rank": df1["shortlist_rank_display"].apply(fmt_int),
                 "RR Target Role": df1["rr_target_role"],
                 "RR 2026?": df1["already_rr_2026"].map({True: "Yes", False: "No"}),
                 "EB Δ": df1["eb_delta"].apply(fmt_num),
@@ -809,12 +754,12 @@ def render_rr() -> None:
         disp2 = pd.DataFrame(
             {
                 "Player": df2["player_name"],
-                "Role": df2["role"].str.title(),
+                "Discipline": df2["role"].str.title(),
                 "Global Rank": df2["eb_rank"].apply(fmt_int),
                 "RR Target Role": df2["rr_target_role"],
                 "EB Δ": df2["eb_delta"].apply(fmt_num),
                 "RR Fit Score": df2[score_col].apply(fmt_num),
-                "Tactical Fit Rationale": df2["why_better_rr_fit_than_some_top10"],
+                "Tactical Fit Explanation": df2["why_better_rr_fit_than_some_top10"],
             }
         )
         st.dataframe(disp2, use_container_width=True, hide_index=True)
@@ -827,6 +772,7 @@ def render_rr() -> None:
                 "Source Pool": df3["selection_pool"],
                 "Squad Role": df3["squad_role"],
                 "Global Rank": df3["eb_rank"].apply(fmt_int),
+                "RR Target Role": df3["rr_target_role"],
                 "EB Δ": df3["eb_delta"].apply(fmt_num),
                 "RR Fit Score": df3["RR_PLAYER_FIT_SCORE"].apply(fmt_num),
             }
@@ -834,54 +780,92 @@ def render_rr() -> None:
         st.dataframe(disp3, use_container_width=True, hide_index=True)
 
     st.caption(
-        "Auction Assumptions Disclosure: Purse constraints and player availability remain unverified external assumptions "
-        "stored in `data/reference/rr_2027_auction_assumptions.csv` and kept strictly configurable."
+        "Unverified Auction Scenarios Disclosure: Purse constraints, retention slots, and player availability remain unverified external assumptions "
+        "(configurable in reference scenario tables) and are never presented as confirmed auction facts."
     )
 
 
 def render_methodology() -> None:
-    st.subheader("Methodology, Validation & Artifact Provenance")
-    st.markdown(
-        """
-        - **Primary Estimator (`OPTION_A_COMPLETE_PENALIZED_FWL_REML`):** Residualizes both the ball-by-ball outcome `y` and the resource-stress/scoring-threat predictor `p` against identical state, match, player, and opponent nuisance designs, then applies REML Empirical Bayes shrinkage across eligible players.
-        - **`EB Δ` vs `EB vs Pop μ₀`:** `EB vs Pop μ₀ = EB Δ − μ₀` measures each player's deviation from the pooled eligible cohort stress tax (`μ₀ = -36.12` batters; `-50.88` bowlers). Across all 20 shortlisted batters and bowlers, `EB vs Pop μ₀` is positive while their `absolute effect remains negative`.
-        - **Operational Eligibility Gate:** `n_hi >= 50`, `n_lo >= 30`, `cs_matches >= 8`, and `se_delta <= 25.0`.
-        """
+    st.subheader("Methodology, Governance & Artifact Provenance")
+
+    m_tab1, m_tab2, m_tab3, m_tab4 = st.tabs(
+        [
+            "1. Estimator & Proxies",
+            "2. Metric Glossary & Eligibility",
+            "3. Validation & Score Audit",
+            "4. Artifact Provenance (SHA-256)",
+        ]
     )
 
-    st.markdown("#### 1. Pressure Methodology Comparison")
-    mc = D["method_cmp"]
-    mc_disp = pd.DataFrame(
-        {
-            "Methodology": mc["methodology_id"],
-            "Discipline": mc["discipline"],
-            "Eligible": mc["eligible_players"].apply(fmt_int),
-            "REML μ₀": mc["reml_mu0"].apply(fmt_num),
-            "REML τ": mc["reml_tau"].apply(fmt_num),
-            "I² (%)": mc["reml_i2_pct"].apply(lambda x: fmt_num(x, "{:.1f}%")),
-            "OOT ρ": mc["oot_claim_c_rho"].apply(lambda x: fmt_num(x, "{:.3f}")),
-            "Spearman vs V4.2": mc["spearman_vs_v42_baseline"].apply(lambda x: fmt_num(x, "{:.3f}")),
-            "Status": mc["selection_status"],
-        }
-    )
-    st.dataframe(mc_disp, use_container_width=True, hide_index=True)
+    with m_tab1:
+        st.markdown(
+            """
+            - **Primary Estimator (`OPTION_A_COMPLETE_PENALIZED_FWL_REML`):** Residualizes both the ball-by-ball outcome `y` and the resource-stress/scoring-threat predictor `p` against identical state, match, player, and opponent nuisance designs via Schur-complement normal equations, then applies REML Empirical Bayes shrinkage across eligible players.
+            - **Batting Proxy (`BATTING_WICKET_DEPLETION_ANOMALY`):** Excess wickets lost relative to a typical innings at `(innings, overid)`. Cannot distinguish needing 12 vs 70 runs when overs and wickets remaining are identical.
+            - **Bowling Proxy (`BOWLING_EXPECTED_SCORING_THREAT`):** Pre-delivery expected batter runs/100 legal balls from phase, innings, format, wickets remaining, and balls remaining. Primary bowler outcome is negated batter runs conceded per 100 legal balls (`-100 * batter_runs / legal_ball`), not full bowling economy with multi-run extras.
+            """
+        )
+        with st.expander("View Complete FWL & Empirical Bayes Equations"):
+            st.latex(r"\tilde{y} = y - Z\hat{\theta}_y, \qquad \tilde{W} = W - Z\hat{\theta}_W, \qquad \Delta_{\text{unshrunk}, i} = 0.75\,\hat{\beta}_{\text{FWL}, i}")
+            st.latex(r"\text{EB }\Delta_i = w_i\,\Delta_{\text{unshrunk}, i} + (1 - w_i)\,\mu_0, \qquad w_i = \frac{\tau^2}{\tau^2 + \text{SE}_i^2}")
 
-    st.markdown("#### 2. Chase-Score Reconstruction Audit (`MARGIN_MISMATCH_BLOCKED`)")
-    st.dataframe(D["score_audit"], use_container_width=True, hide_index=True)
+    with m_tab2:
+        st.markdown(
+            """
+            | Term | Exact Definition & Interpretation |
+            |---|---|
+            | **`EB Δ`** | Shrinkage-stabilized absolute within-player shift from P12.5 to P87.5 stress vs the player's own baseline. Used for official ranking. |
+            | **`EB vs Pop μ₀ = EB Δ − μ₀`** | Deviation from the pooled eligible cohort average stress tax (`μ₀ = -36.12` batters; `-50.88` bowlers). Across all 20 shortlisted players, `EB vs Pop μ₀` is positive while their `absolute effect remains negative`. |
+            | **`P(Top 10)`** | Match-cluster bootstrap probability (`B = 2,000`) of entering the Top 10 candidate group. Never interpret or present `P(Top 10)` as `P(Δ > 0)`. |
+            | **Operational Eligibility Gate** | `n_hi >= 50` high-stress balls, `n_lo >= 30` normal-stress balls, `cs_matches >= 8` common-support matches, and `se_delta <= 25.0`. |
+            """
+        )
 
-    st.markdown("#### 3. Out-of-Time & Robustness Validation Matrix")
-    st.dataframe(D["val_matrix"], use_container_width=True, hide_index=True)
+    with m_tab3:
+        st.markdown("#### Pressure Methodology Comparison")
+        mc = D["method_cmp"]
+        mc_disp = pd.DataFrame(
+            {
+                "Methodology": mc["methodology_id"],
+                "Discipline": mc["discipline"],
+                "Eligible": mc["eligible_players"].apply(fmt_int),
+                "REML μ₀": mc["reml_mu0"].apply(fmt_num),
+                "REML τ": mc["reml_tau"].apply(fmt_num),
+                "I² (%)": mc["reml_i2_pct"].apply(lambda x: fmt_num(x, "{:.1f}%")),
+                "OOT ρ": mc["oot_claim_c_rho"].apply(lambda x: fmt_num(x, "{:.3f}")),
+                "Spearman vs V4.2": mc["spearman_vs_v42_baseline"].apply(lambda x: fmt_num(x, "{:.3f}")),
+                "Status": mc["selection_status"],
+            }
+        )
+        st.dataframe(mc_disp, use_container_width=True, hide_index=True)
 
-    st.markdown("#### 4. Authoritative Artifact Provenance (`FINAL_RANKING_SOURCE_OF_TRUTH.json`)")
-    sot = D["sot"]
-    prov_rows = [
-        {"Artifact": k, "Scope": "Universal Rankings", "SHA-256": v}
-        for k, v in sot.get("hashes", {}).items()
-    ] + [
-        {"Artifact": k, "Scope": "RR Secondary Module", "SHA-256": v}
-        for k, v in sot.get("rr_hashes", {}).items()
-    ]
-    st.dataframe(pd.DataFrame(prov_rows), use_container_width=True, hide_index=True)
+        st.markdown("#### Chase-Score Reconstruction Audit (`MARGIN_MISMATCH_BLOCKED`)")
+        st.dataframe(D["score_audit"], use_container_width=True, hide_index=True)
+
+        st.markdown("#### Out-of-Time & Robustness Validation Matrix")
+        vm = D["val_matrix"].copy()
+        disc_vm = st.selectbox("Filter Validation Matrix by Discipline", ["All", "batter", "bowler", "both"], key="vm_disc")
+        if disc_vm != "All" and "role" in vm.columns:
+            vm = vm[vm["role"].astype(str).str.lower() == disc_vm]
+        st.dataframe(vm, use_container_width=True, hide_index=True)
+        st.download_button(
+            "Download PRESSURE_METHODOLOGY_COMPARISON.csv",
+            data=mc.to_csv(index=False).encode("utf-8"),
+            file_name="PRESSURE_METHODOLOGY_COMPARISON.csv",
+            mime="text/csv",
+            key="dl_method_cmp",
+        )
+
+    with m_tab4:
+        sot = D["sot"]
+        prov_rows = [
+            {"Artifact": k, "Scope": "Universal Rankings", "SHA-256": v}
+            for k, v in sot.get("hashes", {}).items()
+        ] + [
+            {"Artifact": k, "Scope": "RR Secondary Module", "SHA-256": v}
+            for k, v in sot.get("rr_hashes", {}).items()
+        ]
+        st.dataframe(pd.DataFrame(prov_rows), use_container_width=True, hide_index=True)
 
 
 if section.startswith("1."):

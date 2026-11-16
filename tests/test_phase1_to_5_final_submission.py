@@ -66,9 +66,18 @@ def test_phase4_rr_spinners_and_decoupling() -> None:
 
 
 def test_phase5_dashboard_compiles_and_nan_not_zero() -> None:
-    app_path = ROOT / "dashboard/app.py"
-    py_compile.compile(str(app_path), doraise=True)
-    src = app_path.read_text(encoding="utf-8")
-    assert "data/outputs/final" in src or 'ROOT / "data/outputs/final"' in src
-    assert 'unavailable: str = "Unavailable"' in src
-    assert '"RANKING_SOURCE_OF_TRUTH.json"' not in src
+    for fname in ["dashboard/app.py", "dashboard/data_loader.py", "dashboard/charts.py"]:
+        py_compile.compile(str(ROOT / fname), doraise=True)
+    loader_src = (ROOT / "dashboard/data_loader.py").read_text(encoding="utf-8")
+    assert "data/outputs/final" in loader_src
+    assert 'unavailable: str = "Unavailable"' in loader_src
+    assert '"RANKING_SOURCE_OF_TRUTH.json"' not in loader_src
+
+    from dashboard.data_loader import esc, fmt_num, load_all_data
+
+    assert fmt_num(float("nan")) == "Unavailable"
+    assert fmt_num(None) == "Unavailable"
+    assert "&lt;script&gt;" in esc("<script>")
+    loaded = load_all_data()
+    assert len(loaded["top_bat"]) == 10
+    assert len(loaded["top_bowl"]) == 10
