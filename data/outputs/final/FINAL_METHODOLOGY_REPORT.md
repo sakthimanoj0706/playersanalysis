@@ -1,11 +1,11 @@
 # SupeRR Intelligence V4.2 — Methodology Report
 
 **Release Status:** **`V4.2 PROVISIONAL — RESOURCE STRESS`**  
-**Target Branch:** `fix/v4-2-statistical-corrections-20261115`  
-**Authoritative Shortlist:** [V4_2_FINAL_SHORTLIST.csv](data/outputs/v4_2/V4_2_FINAL_SHORTLIST.csv)  
-**Individual Player Justifications:** [V4_2_PLAYER_JUSTIFICATIONS.md](data/reports/v4_2/V4_2_PLAYER_JUSTIFICATIONS.md)  
-**Release Audit Memo:** [V4_2_RELEASE_DECISION.md](data/reports/v4_2/V4_2_RELEASE_DECISION.md)  
-**Machine Provenance:** [V4_2_SOURCE_OF_TRUTH.json](data/outputs/v4_2/V4_2_SOURCE_OF_TRUTH.json)
+**Target Branch:** `feat/v5-final-audit-rr-redesign-20261116`  
+**Authoritative Shortlists:** [FINAL_TOP_10_BATTERS.csv](FINAL_TOP_10_BATTERS.csv) | [FINAL_TOP_10_BOWLERS.csv](FINAL_TOP_10_BOWLERS.csv)  
+**Individual Player Justifications:** [FINAL_PLAYER_JUSTIFICATIONS.md](FINAL_PLAYER_JUSTIFICATIONS.md)  
+**Release Audit Memo:** [V4_2_RELEASE_DECISION.md](../../reports/v4_2/V4_2_RELEASE_DECISION.md)  
+**Machine Provenance:** [FINAL_RANKING_SOURCE_OF_TRUTH.json](FINAL_RANKING_SOURCE_OF_TRUTH.json)
 
 ---
 
@@ -18,7 +18,7 @@ Mandatory deliverables:
 2. A separate ordered Top 10 list of bowlers who perform most consistently under pressure.
 3. A methodology report explaining how pressure is defined, how players are rated, how pressure performance is compared with normal performance, and why the selected players belong in the Top 10.
 
-Rajasthan Royals (RR) squad suitability/scouting in [dashboard/app.py](dashboard/app.py) is a **secondary application module** and never overrides or filters the universal Top 10 deliverables.
+Rajasthan Royals (RR) squad suitability/scouting in [dashboard/app.py](../../../dashboard/app.py) is a **secondary application module** and never overrides or filters the universal Top 10 deliverables.
 
 ---
 
@@ -156,7 +156,7 @@ Secondary outcomes are estimated via the same Option A FWL+REML pipeline with **
 
 ## 13. Final Provisional Top 10 Batters (`BATTING_WICKET_DEPLETION_ANOMALY`)
 
-*(Source: [V4_2_FINAL_SHORTLIST.csv](data/outputs/v4_2/V4_2_FINAL_SHORTLIST.csv); `μ₀ = -36.12`, eligible `n = 106`)*
+*(Source: [FINAL_TOP_10_BATTERS.csv](FINAL_TOP_10_BATTERS.csv); `μ₀ = -36.12`, eligible `n = 106`)*
 
 | Rank | ID | Player | Matches (`CS`) | `n_hi / n_lo` | Raw Hi−Lo | Unshrunk Δ | `EB Δ` | `EB vs Pop μ₀` | Boot 95% CI | Rank 95% CI | `P(Top 10)` [MCSE] |
 |---:|---:|---|---:|---:|---:|---:|---:|---:|---|---|---|
@@ -175,7 +175,7 @@ Secondary outcomes are estimated via the same Option A FWL+REML pipeline with **
 
 ## 14. Final Provisional Top 10 Bowlers (`BOWLING_EXPECTED_SCORING_THREAT`)
 
-*(Source: [V4_2_FINAL_SHORTLIST.csv](data/outputs/v4_2/V4_2_FINAL_SHORTLIST.csv); `μ₀ = -50.88`, eligible `n = 136`)*
+*(Source: [FINAL_TOP_10_BOWLERS.csv](FINAL_TOP_10_BOWLERS.csv); `μ₀ = -50.88`, eligible `n = 136`)*
 
 | Rank | ID | Player | Matches (`CS`) | `n_hi / n_lo` | Raw Hi−Lo | Unshrunk Δ | `EB Δ` | `EB vs Pop μ₀` | Boot 95% CI | Rank 95% CI | `P(Top 10)` [MCSE] |
 |---:|---:|---|---:|---:|---:|---:|---:|---:|---|---|---|
@@ -195,7 +195,7 @@ Secondary outcomes are estimated via the same Option A FWL+REML pipeline with **
 ## 15. Individual Player Justification Links
 
 Complete 20-point evidence sheets and mandatory caveats for all 10 batters and all 10 bowlers are published in:
-- [V4_2_PLAYER_JUSTIFICATIONS.md](data/reports/v4_2/V4_2_PLAYER_JUSTIFICATIONS.md)
+- [FINAL_PLAYER_JUSTIFICATIONS.md](FINAL_PLAYER_JUSTIFICATIONS.md)
 
 ---
 

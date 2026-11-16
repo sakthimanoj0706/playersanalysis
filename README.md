@@ -1,6 +1,6 @@
 # SupeRR Intelligence V4.2
 
-**Current Release:** **`V4.2 PROVISIONAL — RESOURCE STRESS`** (`fix/v4-2-statistical-corrections-20261115`)  
+**Current Release:** **`V4.2 PROVISIONAL — RESOURCE STRESS`** (`feat/v5-final-audit-rr-redesign-20261116`)  
 **Official Hackathon Objective:** *"Identify the batters and bowlers who perform most consistently under pressure compared with their own usual performance levels."*
 
 > **Mandatory Provisional Disclosure:** Complete innings-total and chase-target reconstruction from the raw ball-by-ball dataset is blocked (`0/837` zero-extras matches; `342/390` non-DLS run-margin checks fail). Because runs required and required run rate are unavailable across deliveries, **no calibrated match-leverage variable exists**. V4.2 estimates relative player resilience under **pre-delivery resource-stress proxies** (`BATTING_WICKET_DEPLETION_ANOMALY` and `BOWLING_EXPECTED_SCORING_THREAT`).
