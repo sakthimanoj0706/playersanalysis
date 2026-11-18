@@ -1,0 +1,68 @@
+{
+  "authoritative_output_dir": "data/outputs/final",
+  "model_version": "V4.2",
+  "release_status": "V4.2 PROVISIONAL \u2014 RESOURCE STRESS",
+  "chase_score_reconstruction_blocked": true,
+  "estimator": "OPTION_A_COMPLETE_PENALIZED_FWL_REML",
+  "derived_from_v42_source_of_truth": "data/outputs/v4_2/V4_2_SOURCE_OF_TRUTH.json",
+  "v42_shortlist_sha256": "7259fa0c5bc6536eb84699271ffcaa648537b6ffee71df9b9c9abc9135dc1917",
+  "top10_batters": [
+    1077,
+    7059,
+    152,
+    4904,
+    1318,
+    6512,
+    3489,
+    25213,
+    24017,
+    4812
+  ],
+  "top10_batter_names": [
+    "David Miller",
+    "Nehal Wadhera",
+    "Ravindra Jadeja",
+    "Kamindu Mendis",
+    "Andre Russell",
+    "Michael Bracewell",
+    "Salman Agha",
+    "Dewald Brevis",
+    "Brian Bennett",
+    "Harry Tector"
+  ],
+  "top10_bowlers": [
+    8661,
+    7364,
+    4641,
+    2933,
+    19316,
+    7967,
+    3275,
+    2687,
+    6628,
+    3720
+  ],
+  "top10_bowler_names": [
+    "Matheesha Pathirana",
+    "Haris Rauf",
+    "Lungi Ngidi",
+    "Jasprit Bumrah",
+    "Maheesh Theekshana",
+    "Noor Ahmad",
+    "Alzarri Joseph",
+    "Roston Chase",
+    "Gerald Coetzee",
+    "Craig Young"
+  ],
+  "hashes": {
+    "FINAL_TOP_10_BATTERS.csv": "1cc15bac016a960d4057b72698359aa5bca2c5b01f36e8b75abbe5a42094c3bb",
+    "FINAL_TOP_10_BOWLERS.csv": "cb1afeb7ad015c4269994363c691bf642943f8e2e30062ed973eec05044427f6",
+    "ALL_PLAYER_FINAL_ESTIMATES.csv": "5ba55fe84bebf43582cc01ae2fe209b051183ba4b1dce3b583f3298eaed56ab5"
+  },
+  "rr_hashes": {
+    "RR_TEAM_REQUIREMENTS.csv": "0aaa316227516e6102d30e2dd90c4363cdd6e358ee951baf14ca5c316edc0dae",
+    "RR_TOP10_CANDIDATE_FIT.csv": "38b4e1a439db15ebedd69d5d37031721efc4d49422b6d1d487fa9c74b688ee4a",
+    "RR_BEST_OUTSIDE_TOP10_CANDIDATES.csv": "17c043dbdaaa19973738d8805e3fafb283b01b8f2a66c3b37301d3cd37377f81",
+    "RR_RECOMMENDED_SQUAD.csv": "26fc0d86ad16219ecf0e37a4cb79c3242d27a3e2ee5feeca000898686b3a04e8"
+  }
+}

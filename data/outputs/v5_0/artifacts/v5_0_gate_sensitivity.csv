@@ -1,0 +1,7 @@
+gate,role,n_eligible,n_excluded
+Permissive (50/200/8),batter,131,652
+Permissive (50/200/8),bowler,132,435
+Primary (100/300/12),batter,89,694
+Primary (100/300/12),bowler,82,485
+Strict (150/500/15),batter,46,737
+Strict (150/500/15),bowler,60,507

@@ -1,0 +1,10 @@
+{
+  "regular_innings_total": 1652,
+  "verified_exact_innings": 11,
+  "verified_exact_matches": 0,
+  "blocked_innings": 1641,
+  "non_dls_run_margin_matches": 390,
+  "non_dls_run_margin_exact": 48,
+  "non_dls_run_margin_fail": 342,
+  "score_dependent_wp_blocked": true
+}

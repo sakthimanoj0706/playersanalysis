@@ -17,6 +17,7 @@ env/
 *.bak
 data/scratch/
 data/outputs_backup*/
+data/external/cricsheet/*.zip
 
 # OS generated files
 .DS_Store

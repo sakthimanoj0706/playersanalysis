@@ -1,0 +1,11 @@
+stage,count,notes
+raw_pack_total_matches,883,matches.csv in raw hackathon pack
+excluded_non_ipl_t20i_matches,-30,"comp_id in (2670,3289): Emerging/Rising T20"
+scoped_ipl_t20i_matches,853,matches_ipl_t20i.csv (IPL + T20I >= 2022)
+scoped_matches_with_deliveries,837,Distinct match_id present in scoped BBB
+scoped_matches_abandoned_no_bbb,16,Matches with zero deliveries in BBB
+raw_pack_total_deliveries,200999,ball_by_ball.csv in raw hackathon pack
+excluded_non_ipl_t20i_deliveries,-6985,"reg=6973, SO=12"
+scoped_ipl_t20i_deliveries,194014,data/ball_by_ball_ipl_t20i.csv (README figure)
+separated_super_over_deliveries,-26,"innings 3=19, innings 4=7"
+regular_innings_deliveries,193988,"innings 1=102054, innings 2=91934 (exact diff 194014 - 193988 = 26)"

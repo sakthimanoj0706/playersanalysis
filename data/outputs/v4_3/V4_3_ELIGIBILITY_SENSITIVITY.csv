@@ -1,0 +1,9 @@
+role,min_legal_balls_threshold,n_eligible,median_boot_se,top10_players
+batter,150,241,7.1134,"Vaibhav Sooryavanshi, Abhishek Sharma, Tim David, Priyansh Arya, Finn Allen, Suryakumar Yadav, Travis Head, Phil Salt, Heinrich Klaasen, Andre Russell"
+batter,300,169,6.9521,"Vaibhav Sooryavanshi, Abhishek Sharma, Tim David, Priyansh Arya, Finn Allen, Suryakumar Yadav, Travis Head, Phil Salt, Heinrich Klaasen, Andre Russell"
+batter,500,121,6.4723,"Vaibhav Sooryavanshi, Abhishek Sharma, Tim David, Finn Allen, Suryakumar Yadav, Travis Head, Phil Salt, Heinrich Klaasen, Andre Russell, Rajat Patidar"
+batter,750,81,5.8016,"Abhishek Sharma, Tim David, Finn Allen, Suryakumar Yadav, Travis Head, Phil Salt, Heinrich Klaasen, Rajat Patidar, Mitchell Marsh, Tim Seifert"
+bowler,150,258,7.2329,"Jasprit Bumrah, Sunil Narine, Sufiyan Muqeem, Noor Ahmad, Blessing Muzarabani, Abrar Ahmed, Saqib Mahmood, Kuldeep Yadav, Shakib Al Hasan, Varun Chakravarthy"
+bowler,300,180,6.8376,"Jasprit Bumrah, Sunil Narine, Sufiyan Muqeem, Noor Ahmad, Blessing Muzarabani, Abrar Ahmed, Kuldeep Yadav, Shakib Al Hasan, Varun Chakravarthy, Rashid Khan"
+bowler,500,120,6.3329,"Jasprit Bumrah, Sunil Narine, Noor Ahmad, Blessing Muzarabani, Abrar Ahmed, Kuldeep Yadav, Varun Chakravarthy, Rashid Khan, Matheesha Pathirana, Josh Hazlewood"
+bowler,750,84,5.8895,"Jasprit Bumrah, Sunil Narine, Noor Ahmad, Blessing Muzarabani, Abrar Ahmed, Kuldeep Yadav, Varun Chakravarthy, Rashid Khan, Matheesha Pathirana, Josh Hazlewood"

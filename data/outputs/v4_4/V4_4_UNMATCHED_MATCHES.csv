@@ -1,0 +1,96 @@
+match_id,match_date,match_format,home_team,away_team,result,reason
+15609,2022-06-11,T20I,Zimbabwe,Afghanistan,Afghanistan Won by 6 Wickets,no_exact_date_and_team_pair_in_cricsheet
+15610,2022-06-12,T20I,Zimbabwe,Afghanistan,Afghanistan Won by 21 Runs,no_exact_date_and_team_pair_in_cricsheet
+15611,2022-06-14,T20I,Zimbabwe,Afghanistan,Afghanistan Won by 35 Runs,no_exact_date_and_team_pair_in_cricsheet
+16653,2022-08-27,T20I,Sri Lanka,Afghanistan,Afghanistan Won by 8 Wickets,no_exact_date_and_team_pair_in_cricsheet
+16655,2022-08-30,T20I,Bangladesh,Afghanistan,Afghanistan Won by 7 wickets,no_exact_date_and_team_pair_in_cricsheet
+16659,2022-09-03,T20I,Sri Lanka,Afghanistan,Sri Lanka Won by 4 Wickets,no_exact_date_and_team_pair_in_cricsheet
+16662,2022-09-07,T20I,Pakistan,Afghanistan,Pakistan Won by 1 Wicket,no_exact_date_and_team_pair_in_cricsheet
+16663,2022-09-08,T20I,India,Afghanistan,India Won by 101 Runs,no_exact_date_and_team_pair_in_cricsheet
+16683,2022-08-11,T20I,West Indies,New Zealand,New Zealand Won by 13 Runs,no_exact_date_and_team_pair_in_cricsheet
+16684,2022-08-13,T20I,West Indies,New Zealand,New Zealand Won by 90 Runs,no_exact_date_and_team_pair_in_cricsheet
+16685,2022-08-15,T20I,West Indies,New Zealand,West Indies Won by 8 Wickets,no_exact_date_and_team_pair_in_cricsheet
+16750,2022-08-09,T20I,Ireland,Afghanistan,Ireland Won by 7 Wickets,no_exact_date_and_team_pair_in_cricsheet
+16751,2022-08-11,T20I,Ireland,Afghanistan,Ireland Won by 5 Wickets,no_exact_date_and_team_pair_in_cricsheet
+16752,2022-08-12,T20I,Ireland,Afghanistan,Afghanistan Won by 22 Runs,no_exact_date_and_team_pair_in_cricsheet
+16753,2022-08-15,T20I,Ireland,Afghanistan,Afghanistan Won by 27 Runs,no_exact_date_and_team_pair_in_cricsheet
+16754,2022-08-17,T20I,Ireland,Afghanistan,Ireland Won by 7 Wickets(D/L Method),no_exact_date_and_team_pair_in_cricsheet
+20878,2023-03-24,T20I,Afghanistan,Pakistan,Afghanistan Won by 6 Wickets,no_exact_date_and_team_pair_in_cricsheet
+20879,2023-03-26,T20I,Afghanistan,Pakistan,Afghanistan Won by 7 Wickets,no_exact_date_and_team_pair_in_cricsheet
+20880,2023-03-27,T20I,Afghanistan,Pakistan,Pakistan Won by 66 Runs,no_exact_date_and_team_pair_in_cricsheet
+23673,2023-07-14,T20I,Bangladesh,Afghanistan,Bangladesh Won by 2 wickets,no_exact_date_and_team_pair_in_cricsheet
+23674,2023-07-16,T20I,Bangladesh,Afghanistan,Bangladesh Won by 6 Wickets(D/L Method),no_exact_date_and_team_pair_in_cricsheet
+28063,2023-12-13,T20I,West Indies,England,West Indies Won by 4 Wickets,no_exact_date_and_team_pair_in_cricsheet
+28066,2023-12-20,T20I,West Indies,England,England Won by 75 Runs,no_exact_date_and_team_pair_in_cricsheet
+28067,2023-12-22,T20I,West Indies,England,West Indies Won by 4 Wickets,no_exact_date_and_team_pair_in_cricsheet
+28960,2024-01-11,T20I,India,Afghanistan,India Won by 6 Wickets,no_exact_date_and_team_pair_in_cricsheet
+28961,2024-01-14,T20I,India,Afghanistan,India Won by 6 Wickets,no_exact_date_and_team_pair_in_cricsheet
+28962,2024-01-17,T20I,India,Afghanistan,India Won Super Over By 10 Runs,no_exact_date_and_team_pair_in_cricsheet
+31281,2024-05-13,T20,Gujarat Titans,Kolkata Knight Riders,Match Abandoned,no_exact_date_and_team_pair_in_cricsheet
+31284,2024-05-16,T20,Sunrisers Hyderabad,Gujarat Titans,Match Abandoned,no_exact_date_and_team_pair_in_cricsheet
+31288,2024-05-19,T20,Rajasthan Royals,Kolkata Knight Riders,Match Abandoned,no_exact_date_and_team_pair_in_cricsheet
+29924,2024-02-17,T20I,Sri Lanka,Afghanistan,Sri Lanka Won by 4 runs,no_exact_date_and_team_pair_in_cricsheet
+29925,2024-02-19,T20I,Sri Lanka,Afghanistan,Sri Lanka Won by 72 Runs,no_exact_date_and_team_pair_in_cricsheet
+29926,2024-02-21,T20I,Sri Lanka,Afghanistan,Afghanistan won by 3 runs,no_exact_date_and_team_pair_in_cricsheet
+30728,2024-03-15,T20I,Afghanistan,Ireland,Ireland won by 38 runs,no_exact_date_and_team_pair_in_cricsheet
+30729,2024-03-17,T20I,Afghanistan,Ireland,Afghanistan Won By 10Runs,no_exact_date_and_team_pair_in_cricsheet
+30730,2024-03-18,T20I,Afghanistan,Ireland,Afghanistan won by 57 runs,no_exact_date_and_team_pair_in_cricsheet
+32610,2024-05-22,T20I,England,Pakistan,Match Abandoned,no_exact_date_and_team_pair_in_cricsheet
+32612,2024-05-28,T20I,England,Pakistan,Match Abandoned,no_exact_date_and_team_pair_in_cricsheet
+32622,2024-05-20,T20I,Ireland,Scotland,Match Abandoned,no_exact_date_and_team_pair_in_cricsheet
+38797,2024-12-14,T20I,South Africa,Pakistan,Match Abandoned,no_exact_date_and_team_pair_in_cricsheet
+32617,2024-05-24,T20I,West Indies,South Africa,West Indies Won by 28 runs,no_exact_date_and_team_pair_in_cricsheet
+32619,2024-05-27,T20I,West Indies,South Africa,West Indies Won by 8 wickets,no_exact_date_and_team_pair_in_cricsheet
+36096,2024-08-24,T20I,West Indies,South Africa,West Indies Won by 7 wickets,no_exact_date_and_team_pair_in_cricsheet
+36097,2024-08-26,T20I,West Indies,South Africa,West Indies Won by 30 runs,no_exact_date_and_team_pair_in_cricsheet
+36098,2024-08-28,T20I,West Indies,South Africa,West Indies Won by 8 wickets (DLS),no_exact_date_and_team_pair_in_cricsheet
+37350,2024-11-11,T20I,West Indies,England,England Won by 7 wickets,no_exact_date_and_team_pair_in_cricsheet
+37351,2024-11-15,T20I,West Indies,England,England Won by 3 wickets,no_exact_date_and_team_pair_in_cricsheet
+37353,2024-11-18,T20I,West Indies,England,No Result,no_exact_date_and_team_pair_in_cricsheet
+38842,2024-12-16,T20I,West Indies,Bangladesh,Bangladesh Won by 7 runs,no_exact_date_and_team_pair_in_cricsheet
+38843,2024-12-18,T20I,West Indies,Bangladesh,Bangladesh Won by 27 runs,no_exact_date_and_team_pair_in_cricsheet
+38844,2024-12-20,T20I,West Indies,Bangladesh,Bangladesh Won by 80 runs,no_exact_date_and_team_pair_in_cricsheet
+36564,2024-09-15,T20I,England,Australia,Match Abandoned,no_exact_date_and_team_pair_in_cricsheet
+36210,2025-09-14,T20I,England,South Africa,Match Abandoned,no_exact_date_and_team_pair_in_cricsheet
+40761,2025-05-17,T20,Royal Challengers Bengaluru,Kolkata Knight Riders,Match Abandoned,no_exact_date_and_team_pair_in_cricsheet
+38626,2024-12-09,T20I,Zimbabwe,Afghanistan,Zimbabwe Won by 4 wickets,no_exact_date_and_team_pair_in_cricsheet
+38627,2024-12-11,T20I,Zimbabwe,Afghanistan,Afghanistan Won by 50 runs,no_exact_date_and_team_pair_in_cricsheet
+38628,2024-12-12,T20I,Zimbabwe,Afghanistan,Afghanistan Won by 3 wickets,no_exact_date_and_team_pair_in_cricsheet
+41502,2025-06-12,T20I,Ireland,West Indies,Match Abandoned,no_exact_date_and_team_pair_in_cricsheet
+41503,2025-06-14,T20I,Ireland,West Indies,Match Abandoned,no_exact_date_and_team_pair_in_cricsheet
+41851,2026-02-01,T20I,South Africa,West Indies,West Indies Won by 6 runs(DLS Method),no_exact_date_and_team_pair_in_cricsheet
+42030,2025-12-17,T20I,India,South Africa,Match Abandoned,no_exact_date_and_team_pair_in_cricsheet
+45495,2025-09-09,T20I,Afghanistan,Hong Kong,Afghanistan Won by 94 runs,no_exact_date_and_team_pair_in_cricsheet
+45503,2025-09-16,T20I,Bangladesh,Afghanistan,Bangladesh Won by 8 runs,no_exact_date_and_team_pair_in_cricsheet
+45505,2025-09-18,T20I,Sri Lanka,Afghanistan,Sri Lanka Won by 6 wickets,no_exact_date_and_team_pair_in_cricsheet
+45851,2025-08-29,T20I,Afghanistan,Pakistan,Pakistan Won by 39 runs,no_exact_date_and_team_pair_in_cricsheet
+45853,2025-09-01,T20I,United Arab Emirates,Afghanistan,Afghanistan Won by 38 runs,no_exact_date_and_team_pair_in_cricsheet
+45854,2025-09-02,T20I,Pakistan,Afghanistan,Afghanistan Won by 18 runs,no_exact_date_and_team_pair_in_cricsheet
+45856,2025-09-05,T20I,Afghanistan,United Arab Emirates,Afghanistan Won by 4 runs,no_exact_date_and_team_pair_in_cricsheet
+45857,2025-09-07,T20I,Afghanistan,Pakistan,Pakistan Won by 75 runs,no_exact_date_and_team_pair_in_cricsheet
+46008,2025-09-19,T20I,Ireland,England,Match Abandoned,no_exact_date_and_team_pair_in_cricsheet
+46250,2025-09-28,T20I,Nepal,West Indies,Nepal Won by 90 runs,no_exact_date_and_team_pair_in_cricsheet
+46753,2025-10-02,T20I,Afghanistan,Bangladesh,Bangladesh Won by 4 wickets,no_exact_date_and_team_pair_in_cricsheet
+46754,2025-10-03,T20I,Afghanistan,Bangladesh,Bangladesh Won by 2 wickets,no_exact_date_and_team_pair_in_cricsheet
+46755,2025-10-05,T20I,Afghanistan,Bangladesh,Bangladesh Won by 6 wickets,no_exact_date_and_team_pair_in_cricsheet
+46941,2025-10-30,T20I,Bangladesh,West Indies,West Indies Won by 14 runs,no_exact_date_and_team_pair_in_cricsheet
+46942,2025-11-01,T20I,Bangladesh,West Indies,West Indies Won by 5 wickets,no_exact_date_and_team_pair_in_cricsheet
+47260,2025-10-29,T20I,Zimbabwe,Afghanistan,Afghanistan Won by 53 runs,no_exact_date_and_team_pair_in_cricsheet
+47261,2025-10-31,T20I,Zimbabwe,Afghanistan,Afghanistan Won by 7 wickets,no_exact_date_and_team_pair_in_cricsheet
+47262,2025-11-02,T20I,Zimbabwe,Afghanistan,Afghanistan Won by 9 runs,no_exact_date_and_team_pair_in_cricsheet
+47976,2025-11-17,T20I,Pakistan,Zimbabwe,Pakistan Won by 5 wickets,no_exact_date_and_team_pair_in_cricsheet
+47977,2025-11-19,T20I,Sri Lanka,Zimbabwe,Zimbabwe Won by 67 runs,no_exact_date_and_team_pair_in_cricsheet
+48513,2026-01-10,T20I,Sri Lanka,Pakistan,Match Abandoned,no_exact_date_and_team_pair_in_cricsheet
+48514,2026-01-12,T20I,Sri Lanka,Pakistan,Sri Lanka Won by 14 runs,no_exact_date_and_team_pair_in_cricsheet
+48596,2026-01-19,T20I,Afghanistan,West Indies,Afghanistan Won by 38 runs,no_exact_date_and_team_pair_in_cricsheet
+48597,2026-01-21,T20I,Afghanistan,West Indies,Afghanistan Won by 39 runs,no_exact_date_and_team_pair_in_cricsheet
+48598,2026-01-22,T20I,Afghanistan,West Indies,West Indies Won by 13 runs,no_exact_date_and_team_pair_in_cricsheet
+50189,2026-04-29,T20I,Bangladesh,New Zealand,Match Abandoned,no_exact_date_and_team_pair_in_cricsheet
+50503,2026-06-12,T20I,West Indies,Sri Lanka,West Indies Won by 7 wickets,no_exact_date_and_team_pair_in_cricsheet
+50505,2026-06-15,T20I,West Indies,Sri Lanka,West Indies Won by 5 wickets,no_exact_date_and_team_pair_in_cricsheet
+54408,2026-09-13,T20I,Afghanistan,India,India Won by 7 wickets,no_exact_date_and_team_pair_in_cricsheet
+54409,2026-09-15,T20I,Afghanistan,India,India Won by 7 wickets,no_exact_date_and_team_pair_in_cricsheet
+54410,2026-09-17,T20I,Afghanistan,India,India Won by 127 runs,no_exact_date_and_team_pair_in_cricsheet
+55559,2026-10-27,T20I,Afghanistan,Zimbabwe,Afghanistan Won by 37 runs,no_exact_date_and_team_pair_in_cricsheet
+55560,2026-10-29,T20I,Afghanistan,Zimbabwe,Afghanistan Won by 19 runs,no_exact_date_and_team_pair_in_cricsheet
+55561,2026-11-01,T20I,Afghanistan,Zimbabwe,Afghanistan Won by 7 wickets,no_exact_date_and_team_pair_in_cricsheet

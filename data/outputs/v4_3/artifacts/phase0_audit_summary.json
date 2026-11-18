@@ -1,0 +1,33 @@
+{
+  "counts": {
+    "matches_table": 853,
+    "matches_with_deliveries": 837,
+    "regular_matches": 837,
+    "regular_innings": 1652,
+    "regular_delivery_rows": 193988,
+    "regular_legal_deliveries": 185951,
+    "super_over_matches": 4,
+    "super_over_rows": 26
+  },
+  "extras_audit": {
+    "extras1_codebook_mismatches": 0,
+    "wide_events": 7474,
+    "legbye_events": 2661,
+    "bye_events": 505,
+    "overstep_events": 565,
+    "other_events": 260,
+    "penalty_events": 1,
+    "extras_2_runs_nonzero": 35
+  },
+  "phase_decisions": {
+    "phase_0_data_audit": "GO",
+    "phase_1_score_reconstruction": "CONDITIONAL_GO_WITH_BLOCK",
+    "phase_2_eb_par_and_er_batter_runs": "CONDITIONAL_GO_BATTER_RUNS_ONLY",
+    "phase_3_score_aware_win_probability": "BLOCKED_ON_REAL_DATA_DIAGNOSTIC_ONLY",
+    "phase_4_expected_leverage_index": "BLOCKED_BY_PHASE_3",
+    "phase_5_delta_re_batter_runs": "CONDITIONAL_GO_BATTER_RUNS_ONLY",
+    "phase_6_joint_ridge_rapm": "CONDITIONAL_GO_OBSERVABLE_STATE_ONLY",
+    "phase_7_uncertainty_and_v42_comparison": "CONDITIONAL_GO",
+    "phase_8_dashboard_integration": "CONDITIONAL_GO_WITH_WARNINGS"
+  }
+}

@@ -1,0 +1,9 @@
+grouping,subgroup,n_deliveries,n_matches,mae,rmse,mean_residual
+by_innings,"(1,)",100044,818,16.5427,23.3572,0.8636
+by_innings,"(2,)",90436,796,18.1131,24.1888,0.511
+by_format,"('T20',)",86750,363,16.7782,22.7545,0.6447
+by_format,"('T20I',)",103730,455,17.7148,24.5617,0.7393
+by_innings_format,"(np.int64(1), 'T20')",45103,363,16.0823,22.0539,0.8194
+by_innings_format,"(np.int64(1), 'T20I')",54941,455,16.9207,24.3752,0.8999
+by_innings_format,"(np.int64(2), 'T20')",41647,359,17.532,23.4896,0.4554
+by_innings_format,"(np.int64(2), 'T20I')",48789,437,18.6091,24.77,0.5584

@@ -1,838 +1,1179 @@
-"""SupeRR Intelligence V3 - Joint Performance, Pressure Intelligence & Rajasthan Royals Player-Fit Platform.
+"""SupeRR Intelligence V4.2 — Professional Cricket Analytics SaaS UI.
 
-Rajasthan Royals SupeRR Selector Season 2 Hackathon
-Professional Cricket Pressure Reliability Analytics & Squad Scouting Platform.
+Light-mode, deep-navy + restrained RR-pink executive analytics platform.
 """
+
+from __future__ import annotations
+
 import sys
 from pathlib import Path
 
-# Add project root to sys.path
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
-
-import streamlit as st
-import pandas as pd
 import numpy as np
-import plotly.express as px
-import plotly.graph_objects as go
+import pandas as pd
+import streamlit as st
 
-# ── PAGE CONFIGURATION ──────────────────────────────────────────────────────
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from dashboard.charts import (
+    comparison_sample_chart,
+    dataset_coverage_chart,
+    dumbbell_shift_chart,
+    eb_forest_chart,
+    rank_uncertainty_chart,
+    rr_2026_contrib_chart,
+    rr_component_chart,
+    shrinkage_comparison_chart,
+)
+from dashboard.data_loader import (
+    AMBER_WARN,
+    BAT_MU0,
+    BOWL_MU0,
+    CARD_BORDER,
+    CONFIDENCE_LABELS,
+    IDENTITY_LABELS,
+    NAVY,
+    NAVY_MID,
+    POOL_LABELS,
+    RR_PINK,
+    SLATE_BG,
+    TEAL_POS,
+    TEXT_MAIN,
+    TEXT_MUTED,
+    TRADEOFF_LABELS,
+    esc,
+    fmt_int,
+    fmt_num,
+    humanize_code,
+    initials_badge,
+    load_all_data,
+    load_rr_scouting_enrichment,
+)
+
+NAV_PAGES = [
+    "1. Overview",
+    "2. Universal Top 10",
+    "3. Player Explorer & Comparison",
+    "4. Rajasthan Royals Intelligence",
+    "5. Methodology & Transparency",
+]
+
 st.set_page_config(
-    page_title="SupeRR Intelligence V3 | Rajasthan Royals Analytics",
-    page_icon="👑",
+    page_title="SupeRR Intelligence V4.2",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-# ── PROFESSIONAL DESIGN SYSTEM (Navy & Royal Pink Palette) ──────────────────
-st.markdown("""
-<style>
-    /* Global Container */
-    .main {
-        background-color: #FFFFFF;
-        color: #0F172A;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-    
-    /* Header Banner */
-    .rr-header {
-        background: linear-gradient(135deg, #0B1B3D 0%, #15274D 100%);
-        padding: 24px 28px;
-        border-radius: 10px;
-        color: white;
-        margin-bottom: 22px;
-        border-left: 6px solid #EA1A85;
-        box-shadow: 0 4px 14px rgba(11, 27, 61, 0.08);
-    }
-    .rr-title {
-        font-size: 2.1rem;
-        font-weight: 800;
-        letter-spacing: -0.5px;
-        color: #FFFFFF;
-        margin: 0;
-    }
-    .rr-subtitle {
-        font-size: 1.0rem;
-        font-weight: 400;
-        color: #CBD5E1;
-        margin-top: 5px;
-    }
-    .rr-badge {
-        background-color: #EA1A85;
-        color: white;
-        font-size: 0.75rem;
-        font-weight: 700;
-        padding: 3px 10px;
-        border-radius: 999px;
-        display: inline-block;
-        margin-top: 8px;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-    }
-    
-    /* Executive Metric Cards */
-    .metric-card {
-        background-color: #F8FAFC;
-        border: 1px solid #E2E8F0;
+st.markdown(
+    f"""
+    <style>
+    header[data-testid="stHeader"] {{
+        background-color: {SLATE_BG} !important;
+        border-bottom: 1px solid {CARD_BORDER};
+    }}
+    .stApp {{
+        background-color: {SLATE_BG} !important;
+        color: {TEXT_MAIN};
+    }}
+    .stApp h1, .stApp h2, .stApp h3, .stApp h4 {{
+        color: {NAVY} !important;
+        letter-spacing: -0.01em;
+    }}
+    section[data-testid="stSidebar"] {{
+        background-color: {NAVY} !important;
+        color: #FFFFFF !important;
+    }}
+    section[data-testid="stSidebar"] * {{
+        color: #F8FAFC !important;
+    }}
+    section[data-testid="stSidebar"] [data-baseweb="select"] div,
+    section[data-testid="stSidebar"] input {{
+        color: #0F172A !important;
+    }}
+    [data-testid="stSidebar"] code {{
+        background-color: rgba(255, 255, 255, 0.16) !important;
+        color: #F8FAFC !important;
+        border: 1px solid rgba(255, 255, 255, 0.28) !important;
+        border-radius: 4px;
+        padding: 1px 5px;
+    }}
+    .superr-header {{
+        background: #FFFFFF;
+        border: 1px solid {CARD_BORDER};
+        border-left: 5px solid {NAVY};
         border-radius: 8px;
-        padding: 14px 16px;
-        text-align: center;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.03);
-    }
-    .metric-lbl {
-        font-size: 0.75rem;
-        color: #64748B;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        font-weight: 600;
-    }
-    .metric-val {
-        font-size: 1.55rem;
+        padding: 16px 22px;
+        margin-bottom: 14px;
+    }}
+    .superr-badge {{
+        display: inline-block;
+        background: #FDF2F8;
+        color: {RR_PINK} !important;
+        border: 1px solid #FBCFE8;
         font-weight: 700;
-        color: #0B1B3D;
-        margin: 4px 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    .metric-sub {
-        font-size: 0.8rem;
-        color: #EA1A85;
-        font-weight: 600;
-    }
-    
-    /* Tag Styling */
-    .tag-strong {
-        background-color: #DCFCE7;
-        color: #166534;
+        font-size: 11px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        letter-spacing: 0.4px;
+    }}
+    .kpi-card {{
+        background: #FFFFFF;
+        border: 1px solid {CARD_BORDER};
+        border-radius: 8px;
+        padding: 13px 15px;
+        height: 100%;
+    }}
+    .kpi-label {{
+        font-size: 11px;
         font-weight: 700;
-        padding: 2px 8px;
-        border-radius: 4px;
-        font-size: 0.8rem;
-    }
-    .tag-conditional {
-        background-color: #FEF9C3;
-        color: #854D0E;
+        color: {TEXT_MUTED} !important;
+        letter-spacing: 0.4px;
+    }}
+    .kpi-val {{
+        font-size: 22px;
+        font-weight: 800;
+        color: {NAVY} !important;
+        font-variant-numeric: tabular-nums;
+        margin: 4px 0 2px 0;
+    }}
+    .kpi-sub {{
+        font-size: 12px;
+        color: {TEXT_MUTED} !important;
+    }}
+    .avatar-circle {{
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: {NAVY};
+        color: #FFFFFF !important;
         font-weight: 700;
-        padding: 2px 8px;
-        border-radius: 4px;
-        font-size: 0.8rem;
-    }
-    .tag-low {
-        background-color: #F1F5F9;
-        color: #475569;
-        font-weight: 700;
-        padding: 2px 8px;
-        border-radius: 4px;
-        font-size: 0.8rem;
-    }
-    
-    /* Navigation Sidebar */
-    [data-testid="stSidebar"] {
-        background-color: #F8FAFC;
-        border-right: 1px solid #E2E8F0;
-    }
-    
-    /* Table Styling */
-    .stDataFrame {
+        font-size: 13px;
+        margin-right: 10px;
+        border: 2px solid {RR_PINK};
+        vertical-align: middle;
+    }}
+    .dossier-card {{
+        background: #FFFFFF;
+        border: 1px solid {CARD_BORDER};
+        border-left: 4px solid {RR_PINK};
+        border-radius: 8px;
+        padding: 16px 18px;
+        margin-top: 8px;
+    }}
+    .status-strip {{
+        background: #FFFFFF;
+        border: 1px solid {CARD_BORDER};
+        border-left: 4px solid {NAVY_MID};
         border-radius: 6px;
-        overflow: hidden;
-    }
-</style>
-""", unsafe_allow_html=True)
+        padding: 10px 14px;
+        margin: 10px 0 14px 0;
+        font-size: 13px;
+        color: {TEXT_MAIN};
+    }}
+    .gap-card {{
+        background: #FFFFFF;
+        border: 1px solid {CARD_BORDER};
+        border-radius: 8px;
+        padding: 12px 14px;
+        margin-bottom: 10px;
+    }}
+    .pill-crit {{
+        background: #FEE2E2;
+        color: #991B1B;
+        font-weight: 700;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+    }}
+    .pill-imp {{
+        background: #FEF3C7;
+        color: {AMBER_WARN};
+        font-weight: 700;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+    }}
+    .pill-depth {{
+        background: #E0F2FE;
+        color: #075985;
+        font-weight: 700;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
-# ── DATA PATHS & CACHED LOADERS ─────────────────────────────────────────────
-DATA_DIR = PROJECT_ROOT / "data"
-OUTPUTS_V3 = DATA_DIR / "outputs" / "v3"
-REPORTS_V3 = DATA_DIR / "reports" / "v3"
-REF_DIR = DATA_DIR / "reference"
+try:
+    D = load_all_data()
+except FileNotFoundError as exc:
+    st.error(f"Dashboard data initialization error: {exc}. Please regenerate authoritative outputs and restart.")
+    st.stop()
+except Exception:
+    st.error("Unable to load authoritative analytics artifacts. Please verify CSV/JSON integrity and restart.")
+    st.stop()
 
-@st.cache_data
-def load_v3_data():
-    """Load all V3 versioned outputs and reference datasets."""
-    files = {}
-    try:
-        files['top_bat'] = pd.read_csv(OUTPUTS_V3 / "TOP_10_BATTERS.csv")
-        files['top_bowl'] = pd.read_csv(OUTPUTS_V3 / "TOP_10_BOWLERS.csv")
-        files['all_bat'] = pd.read_csv(OUTPUTS_V3 / "ALL_BATTER_METRICS.csv")
-        files['all_bowl'] = pd.read_csv(OUTPUTS_V3 / "ALL_BOWLER_METRICS.csv")
-        files['roles'] = pd.read_csv(OUTPUTS_V3 / "player_roles.csv")
-        files['eligibility'] = pd.read_csv(OUTPUTS_V3 / "PLAYER_ELIGIBILITY.csv")
-        
-        # RR 2026 Data
-        files['rr_matches'] = pd.read_csv(OUTPUTS_V3 / "rr_2026_matches.csv")
-        files['rr_bat'] = pd.read_csv(OUTPUTS_V3 / "rr_2026_batting_stats.csv")
-        files['rr_bowl'] = pd.read_csv(OUTPUTS_V3 / "rr_2026_bowling_stats.csv")
-        files['rr_phase'] = pd.read_csv(OUTPUTS_V3 / "rr_2026_phase_analysis.csv")
-        files['rr_contrib'] = pd.read_csv(OUTPUTS_V3 / "rr_2026_player_contribution.csv")
-        files['rr_strengths'] = pd.read_csv(OUTPUTS_V3 / "rr_2026_team_strengths.csv")
-        files['rr_weaknesses'] = pd.read_csv(OUTPUTS_V3 / "rr_2026_team_weaknesses.csv")
-        files['rr_provenance'] = pd.read_csv(OUTPUTS_V3 / "rr_2026_data_provenance.csv")
-        
-        # RR Strategy
-        files['rr_required_roles'] = pd.read_csv(OUTPUTS_V3 / "RR_REQUIRED_ROLES.csv")
-        files['rr_player_fit'] = pd.read_csv(OUTPUTS_V3 / "RR_PLAYER_FIT.csv")
-        files['rr_retention'] = pd.read_csv(OUTPUTS_V3 / "RR_RETENTION_SCENARIOS.csv")
-        files['rr_budget'] = pd.read_csv(OUTPUTS_V3 / "RR_AUCTION_BUDGET_SCENARIOS.csv")
-        files['crosswalk'] = pd.read_csv(OUTPUTS_V3 / "RR_PLAYER_ID_CROSSWALK.csv")
-        files['apps'] = pd.read_csv(OUTPUTS_V3 / "rr_2026_player_appearances.csv")
-        
-        # Reference
-        files['user_brief'] = pd.read_csv(REF_DIR / "rr_2026_user_brief.csv")
-        files['auction_assumptions'] = pd.read_csv(REF_DIR / "rr_2027_auction_assumptions.csv")
-        files['cohort_manifest'] = pd.read_csv(REPORTS_V3 / "MATCH_COHORT_MANIFEST.csv")
+if "nav_page" not in st.session_state:
+    st.session_state["nav_page"] = NAV_PAGES[0]
+if "top10_disc" not in st.session_state:
+    st.session_state["top10_disc"] = "Top 10 Batters"
 
-        import json, hashlib
-        manifest_path = OUTPUTS_V3 / "RANKING_SOURCE_OF_TRUTH.json"
-        if manifest_path.exists():
-            with open(manifest_path, "r") as mf:
-                files['manifest'] = json.load(mf)
-            # Hash-lock drift check against canonical CSVs
-            for fname, expected_sha in files['manifest'].get('artifact_sha256', {}).items():
-                fpath = OUTPUTS_V3 / fname
-                if expected_sha and fpath.exists():
-                    actual_sha = hashlib.sha256(fpath.read_bytes()).hexdigest()
-                    if actual_sha != expected_sha:
-                        st.error(f"STALE_ARTIFACT_ERROR: {fname} SHA-256 does not match RANKING_SOURCE_OF_TRUTH.json!")
-    except Exception as e:
-        st.error(f"Error loading V3 data files: {e}")
-    return files
 
-data = load_v3_data()
+def _go_to_page(page_name: str, top10_disc: str | None = None) -> None:
+    """Callback-safe navigation update executed before widgets re-instantiate."""
+    st.session_state["nav_page"] = page_name
+    if top10_disc is not None:
+        st.session_state["top10_disc"] = top10_disc
 
-# ── TOP EXECUTIVE BANNER ────────────────────────────────────────────────────
-status_badge = data.get('manifest', {}).get('governance', {}).get('ranking_approval_status', 'V3.3 GOLDFISH TRIZ VERIFIED — PROVISIONAL MODEL')
-st.markdown(f"""
-<div class="rr-header">
-    <div class="rr-title">SupeRR Intelligence V3</div>
-    <div class="rr-subtitle">Joint Performance, Pressure Intelligence & Rajasthan Royals Player-Fit Platform</div>
-    <div class="rr-badge">Rajasthan Royals • SupeRR Selector Season 2 • {status_badge}</div>
-</div>
-""", unsafe_allow_html=True)
 
-# ── 5-SECTION SIDEBAR NAVIGATION (STRICT ORDER) ─────────────────────────────
-with st.sidebar:
-    st.markdown("### 👑 Analytics Navigation")
-    section = st.radio(
-        "Select Analytical Section:",
-        [
-            "Section 1: Universal Player Intelligence",
-            "Section 2: Rajasthan Royals 2026 Analysis",
-            "Section 3: RR Team Requirements",
-            "Section 4: RR Player Fit & Auction Strategy",
-            "Section 5: Data & Model Transparency",
-        ],
-        index=0
+def _reset_top10_filters(discipline_label: str) -> None:
+    """Callback-safe filter reset executed before widgets re-instantiate."""
+    st.session_state[f"search_{discipline_label}"] = ""
+    st.session_state[f"conf_{discipline_label}"] = "All"
+    st.session_state[f"trade_{discipline_label}"] = "All"
+    st.session_state[f"sort_{discipline_label}"] = "Official Rank (EB Δ)"
+
+# Sidebar navigation
+st.sidebar.markdown("## SupeRR Intelligence")
+engine_choice = st.sidebar.selectbox(
+    "Analytics Engine",
+    ["V4.2 Provisional (Resource Stress)", "V5.0 Universal T20 Pressure Engine (Track A)"],
+    index=0,
+    key="engine_version",
+)
+if engine_choice == "V5.0 Universal T20 Pressure Engine (Track A)":
+    from dashboard.v5_0_panel import render_v50_dashboard
+    render_v50_dashboard()
+    st.stop()
+
+st.sidebar.caption("V4.2 PROVISIONAL — RESOURCE STRESS")
+section = st.sidebar.radio("Workspace", NAV_PAGES, key="nav_page")
+st.sidebar.markdown("---")
+st.sidebar.caption(
+    "Operational Eligibility Floor:\n"
+    "- High-stress balls: `n_hi >= 50`\n"
+    "- Normal-stress balls: `n_lo >= 30`\n"
+    "- Common-support matches: `>= 8`\n"
+    "- Max SE: `se_delta <= 25.0`\n\n"
+    "RR scouting is strictly secondary and never modifies Universal Top 10 ranks."
+)
+
+# Persistent Top Header
+st.markdown(
+    """
+    <div class="superr-header">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+            <div>
+                <h1 style="margin:0; font-size:24px; color:#0B1B3D;">SupeRR Intelligence</h1>
+                <p style="margin:4px 0 0 0; color:#475569; font-size:13.5px;">
+                    Official Objective: Identify the batters and bowlers who perform most consistently under pressure compared with their own usual performance levels.
+                </p>
+            </div>
+            <span class="superr-badge">V4.2 PROVISIONAL — RESOURCE STRESS</span>
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+
+def _preview_table(df: pd.DataFrame) -> pd.DataFrame:
+    return pd.DataFrame(
+        {
+            "Rank": df["shortlist_rank_display"].apply(fmt_int),
+            "Player": df["player_name"],
+            "Matches": df["cs_matches"].apply(fmt_int),
+            "EB Δ": df["eb_delta"].apply(fmt_num),
+            "vs Pop μ₀": df["eb_vs_pop_mean_delta"].apply(lambda x: fmt_num(x, "{:+.2f}")),
+            "P(Top 10)": df["prob_top_10"].apply(lambda x: fmt_num(x, "{:.3f}")),
+            "Confidence": df["sample_confidence"].apply(lambda x: humanize_code(x, CONFIDENCE_LABELS)),
+        }
     )
-    st.markdown("---")
-    st.markdown("### 📋 Platform Metadata")
-    st.caption("**Framework:** V3 Joint Performance & Pressure")
-    st.caption("**Universal Roster:** 1,100 Players Classified")
-    st.caption("**RR 2026 Data:** 16 Matches (3,788 Balls)")
-    st.caption("**Auction Horizon:** IPL 2027 Mini-Auction")
-    st.markdown("---")
-    st.caption("Developed for Rajasthan Royals SupeRR Selector")
 
 
-# ════════════════════════════════════════════════════════════════════════════
-# SECTION 1 — UNIVERSAL PLAYER INTELLIGENCE
-# ════════════════════════════════════════════════════════════════════════════
-if section == "Section 1: Universal Player Intelligence":
-    st.markdown("## 🌐 Section 1: Universal Player Intelligence")
-    st.markdown("""
-    **Analytical Framework:** Universal performance modeling across all 837 matches (IPL & T20I 2022–2026).
-    Evaluates individual player performance under pre-delivery pressure benchmarked against unconstrained normal baselines.
-    Features **strict role gating**: batters are limited to `BAT_SPECIALIST` and `BAT_PRIMARY_AR`; bowlers are limited to `BOWL_SPECIALIST` and `BOWL_PRIMARY_AR`.
-    """)
+def render_overview() -> None:
+    all_est = D["all_est"]
+    elig_bat = all_est[(all_est["role"] == "batter") & (all_est["eligible"] == True)]
+    elig_bowl = all_est[(all_est["role"] == "bowler") & (all_est["eligible"] == True)]
+    n_matches = int(D["score_audit"]["match_id"].nunique()) if "match_id" in D["score_audit"].columns else 837
 
-    u_tab1, u_tab2, u_tab3, u_tab4, u_tab5, u_tab6 = st.tabs([
-        "🏏 Top 10 Batters Under Pressure",
-        "🎯 Top 10 Bowlers Under Pressure",
-        "📊 Player Performance Breakdown",
-        "🏷️ Role Classification & Eligibility",
-        "📐 Pressure Methodology & Models",
-        "🔬 Reliability & Uncertainty (Bootstrap CIs)"
-    ])
+    c1, c2, c3, c4 = st.columns(4)
+    kpis = [
+        ("DATASET COVERAGE", f"{n_matches:,} Matches", "193,988 regular + 26 Super Over balls"),
+        ("ELIGIBLE BATTERS", f"{len(elig_bat)}", "10 shortlisted (n_hi≥50, n_lo≥30, ≥8 matches)"),
+        ("ELIGIBLE BOWLERS", f"{len(elig_bowl)}", "10 shortlisted (n_hi≥50, n_lo≥30, ≥8 matches)"),
+        ("PRIMARY ESTIMATOR", "Complete FWL", "Option A Penalized FWL + REML EB"),
+    ]
+    for col, (lbl, val, sub) in zip([c1, c2, c3, c4], kpis):
+        col.markdown(
+            f'<div class="kpi-card"><div class="kpi-label">{esc(lbl)}</div>'
+            f'<div class="kpi-val">{esc(val)}</div><div class="kpi-sub">{esc(sub)}</div></div>',
+            unsafe_allow_html=True,
+        )
 
-    # 1. Top 10 Batters
-    with u_tab1:
-        st.markdown("### 🏏 Universal Top 10 Batters Under Pressure")
-        bat_thresh = data.get('manifest', {}).get('configurations', {}).get('default_batting_thresholds', {})
+    st.markdown(
+        """
+        <div class="status-strip">
+            <b>Pressure Evaluation: Resource-Stress Proxy — Provisional</b> &nbsp;|&nbsp;
+            <code>CHASE_SCORE_RECONSTRUCTION_BLOCKED = True</code><br>
+            <b>Documented Evidence:</b> 0/837 matches have zero-extras score coverage; 342/390 non-DLS run-margin checks fail reconciliation (<code>MARGIN_MISMATCH_BLOCKED</code>);
+            <code>extras1_runs</code> is a categorical codebook (1–7), not numeric extra runs; complete target and required-run-rate (RRR) reconstruction is unavailable.<br>
+            <b>Batters (<code>BATTING_WICKET_DEPLETION_ANOMALY</code>):</b> Pre-delivery wicket-depletion anomaly (not calibrated chase leverage; sensitivity vs. <code>BAT_DEPLETION_FULL_RUW</code>: Spearman <code>0.699</code>, <code>5/10</code> Top-10 overlap). Identical overs &amp; wickets remaining can correspond to different runs-required situations.<br>
+            <b>Bowlers (<code>BOWLING_EXPECTED_SCORING_THREAT</code>):</b> Pre-delivery expected scoring rate; cannot distinguish defending 10 runs vs. 35 runs in the final over. Bowler outcome <code>y_bowl = -100 * batter_runs / legal_ball</code> excludes wides, no-balls, and multi-run extras (batter-run suppression proxy, not full bowling economy).<br>
+            <b>OOT Generalization:</b> Claim A general skill replicates (Batters <code>ρ = 0.539</code>, Bowlers <code>ρ = 0.459</code>), whereas Claim C within-player pressure slopes do not (<code>CLAIM_C_OOT_UNPREDICTABLE_UNDER_RESOURCE_STRESS</code>: Batters <code>n=10, ρ=-0.358, p=0.310</code>; Bowlers <code>n=18, ρ=+0.106, p=0.675</code>).
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    cov_col, ins_col = st.columns([1.3, 1.0])
+    with cov_col:
+        st.plotly_chart(dataset_coverage_chart(), use_container_width=True)
+    with ins_col:
+        st.subheader("Key Analytical Findings")
+        st.markdown(
+            "- **Top Batter (#1 David Miller):** `EB Δ = -29.39` (`+6.73` vs cohort `μ₀`) across 81 common-support matches.\n"
+            "- **Top Bowler (#1 Matheesha Pathirana):** `EB Δ = -34.95` (`+15.94` vs cohort `μ₀`), `P(Top 10) = 0.790`.\n"
+            "- **Star Audit:** Jasprit Bumrah ranks **#4** (`-38.13`); Virat Kohli (`#54`), MS Dhoni (`#82`), and Rohit Sharma (`#104`) show larger negative stress shifts than the Top 10; Yashasvi Jaiswal is ineligible (`n_hi = 27 < 50`)."
+        )
+
+    nav1, nav2, nav3 = st.columns(3)
+    nav1.button("Explore Top 10 Batters", key="ov_btn_bat", on_click=_go_to_page, args=(NAV_PAGES[1], "Top 10 Batters"), use_container_width=True)
+    nav2.button("Explore Top 10 Bowlers", key="ov_btn_bowl", on_click=_go_to_page, args=(NAV_PAGES[1], "Top 10 Bowlers"), use_container_width=True)
+    nav3.button("Open Player Explorer", key="ov_btn_exp", on_click=_go_to_page, args=(NAV_PAGES[2],), use_container_width=True)
+
+    col_b, col_w = st.columns(2)
+    with col_b:
+        st.subheader("Universal Batters — Top 5 Preview")
+        st.dataframe(_preview_table(D["top_bat"].head(5)), use_container_width=True, hide_index=True)
+    with col_w:
+        st.subheader("Universal Bowlers — Top 5 Preview")
+        st.dataframe(_preview_table(D["top_bowl"].head(5)), use_container_width=True, hide_index=True)
+
+    st.subheader("Data Integrity & Governance Checks")
+    q1, q2, q3 = st.columns(3)
+    q1.markdown(
+        '<div class="kpi-card"><div class="kpi-label">SUPER OVER ISOLATION</div>'
+        '<div class="kpi-val">26 Balls</div><div class="kpi-sub">Innings &gt; 2 isolated from regular baselines</div></div>',
+        unsafe_allow_html=True,
+    )
+    q2.markdown(
+        '<div class="kpi-card"><div class="kpi-label">IDENTITY RESOLUTION</div>'
+        '<div class="kpi-val">0 Duplicates</div><div class="kpi-sub">Pat Cummins = Patrick Cummins (ID 1758)</div></div>',
+        unsafe_allow_html=True,
+    )
+    q3.markdown(
+        '<div class="kpi-card"><div class="kpi-label">RR DECOUPLING</div>'
+        '<div class="kpi-val">100% Isolated</div><div class="kpi-sub">Scouting never alters Universal Top 10</div></div>',
+        unsafe_allow_html=True,
+    )
+
+
+def _render_top10_discipline(df: pd.DataFrame, discipline_label: str, filename: str) -> None:
+    is_bowler = discipline_label == "Bowlers"
+    mu0 = BOWL_MU0 if is_bowler else BAT_MU0
+
+    k_search = f"search_{discipline_label}"
+    k_conf = f"conf_{discipline_label}"
+    k_trade = f"trade_{discipline_label}"
+    k_sort = f"sort_{discipline_label}"
+
+    f1, f2, f3, f4, f5 = st.columns([2.0, 1.5, 1.4, 1.8, 0.9])
+    search_q = f1.text_input(f"Search {discipline_label}", key=k_search, placeholder="e.g., Miller, Bumrah")
+    conf_filter = f2.selectbox(
+        "Sample Confidence",
+        ["All", "High", "Moderate", "Provisional (Boundary)"],
+        key=k_conf,
+    )
+    tradeoff_filter = f3.selectbox(
+        "Tradeoff Status",
+        ["All", "Clean Only", "Flagged Only"],
+        key=k_trade,
+    )
+    sort_col = f4.selectbox(
+        "Sort By",
+        ["Official Rank (EB Δ)", "Raw High−Low Δ", "P(Top 10)", "Common-Support Matches"],
+        key=k_sort,
+    )
+    f5.button(
+        "Reset",
+        key=f"reset_{discipline_label}",
+        on_click=_reset_top10_filters,
+        args=(discipline_label,),
+        use_container_width=True,
+    )
+
+    active_filters = sum([bool(search_q.strip()), conf_filter != "All", tradeoff_filter != "All"])
+    if active_filters:
+        st.info(f"Active filters: {active_filters} | Showing subset of authoritative {discipline_label} Top 10.")
+
+    view = df.copy()
+    if search_q.strip():
+        view = view[view["player_name"].str.contains(search_q.strip(), case=False, na=False)]
+    if conf_filter != "All":
+        conf_rev = {v: k for k, v in CONFIDENCE_LABELS.items()}
+        target_conf = conf_rev.get(conf_filter, conf_filter.upper())
+        view = view[view["sample_confidence"].astype(str).str.upper() == target_conf]
+    if tradeoff_filter == "Clean Only":
+        view = view[view["secondary_tradeoff_flag"].astype(str).str.lower() == "none"]
+    elif tradeoff_filter == "Flagged Only":
+        view = view[view["secondary_tradeoff_flag"].astype(str).str.lower() != "none"]
+
+    if sort_col == "Official Rank (EB Δ)":
+        view = view.sort_values("shortlist_rank_display", ascending=True)
+    elif sort_col == "Raw High−Low Δ":
+        view = view.sort_values("raw_hi_minus_lo", ascending=False)
+    elif sort_col == "P(Top 10)":
+        view = view.sort_values("prob_top_10", ascending=False)
+    else:
+        view = view.sort_values("cs_matches", ascending=False)
+
+    if view.empty:
+        st.warning("No shortlisted players match the active filters. Click Reset to view all 10.")
+        return
+
+    lo_col = "Raw Lo (-Runs/100b)" if is_bowler else "Raw Lo (Runs/100b)"
+    hi_col = "Raw Hi (-Runs/100b)" if is_bowler else "Raw Hi (Runs/100b)"
+    disp = pd.DataFrame(
+        {
+            "Rank": view["shortlist_rank_display"].apply(fmt_int),
+            "Player": view["player_name"],
+            "Matches": view["cs_matches"].apply(fmt_int),
+            "Balls (Hi / Lo)": view.apply(lambda r: f"{fmt_int(r['n_hi'])} / {fmt_int(r['n_lo'])}", axis=1),
+            lo_col: view["raw_lo_perf"].apply(fmt_num),
+            hi_col: view["raw_hi_perf"].apply(fmt_num),
+            "Raw FWL Δ": view["delta_unshrunk"].apply(fmt_num),
+            "EB Δ (Abs)": view["eb_delta"].apply(fmt_num),
+            "EB vs Pop μ₀": view["eb_vs_pop_mean_delta"].apply(lambda x: fmt_num(x, "{:+.2f}")),
+            "P(Top 10)": view["prob_top_10"].apply(lambda x: fmt_num(x, "{:.3f}")),
+            "P(Δ > 0)": view["prob_positive_effect"].apply(lambda x: "<0.001" if pd.notna(x) and float(x) < 0.001 else fmt_num(x, "{:.3f}")),
+            "Rank 95% CI": view.apply(
+                lambda r: f"[{fmt_int(r['boot_rank_ci_low'])}, {fmt_int(r['boot_rank_ci_high'])}]", axis=1
+            ),
+            "Confidence": view["sample_confidence"].apply(lambda x: humanize_code(x, CONFIDENCE_LABELS)),
+            "Tradeoff": view["secondary_tradeoff_flag"].apply(lambda x: humanize_code(x, TRADEOFF_LABELS)),
+        }
+    )
+    st.dataframe(disp, use_container_width=True, hide_index=True)
+    if is_bowler:
         st.caption(
-            f"Eligibility: ≥{bat_thresh.get('crisis_balls', 60)} crisis balls, "
-            f"≥{bat_thresh.get('total_balls', 120)} total balls, "
-            f"≥{bat_thresh.get('crisis_matches', 5)} crisis matches, "
-            f"≥{bat_thresh.get('norm_balls', 60)} normal balls. Role: BAT_SPECIALIST or BAT_PRIMARY_AR."
+            "Bowler Outcome Unit: `y_bowl = -100 * batter_runs / legal_ball` (batter-run suppression proxy per 100 legal balls; excludes wides, no-balls, and multi-run extras — not complete bowling economy). "
+            "Table shows negated values (higher = tighter); the Dumbbell chart below plots positive conceded runs/100b (lower = tighter)."
         )
-        
-        if 'top_bat' in data and not data['top_bat'].empty:
-            tb_disp = data['top_bat'][[
-                'rank', 'player_name', 'v3_role', 'crisis_balls', 'crisis_matches',
-                'crisis_sr', 'norm_sr', 'sr_maintenance', 'consistency_score',
-                'ci_lower', 'ci_upper', 'batting_pri'
-            ]].copy()
-            tb_disp.columns = [
-                'Rank', 'Player Name', 'Role', 'Crisis Balls', 'Matches',
-                'Crisis SR', 'Norm SR', 'Maint. Ratio', 'Consistency',
-                '95% CI Lower', '95% CI Upper', 'Batting PRI'
-            ]
-            st.dataframe(
-                tb_disp.style.format({
-                    'Crisis SR': '{:.1f}',
-                    'Norm SR': '{:.1f}',
-                    'Maint. Ratio': '{:.2f}x',
-                    'Consistency': '{:.2f}',
-                    '95% CI Lower': '{:.1f}',
-                    '95% CI Upper': '{:.1f}',
-                    'Batting PRI': '{:.2f}',
-                    'Crisis Balls': '{:.0f}',
-                    'Matches': '{:.0f}',
-                }),
-                use_container_width=True,
-                hide_index=True
-            )
-        else:
-            st.warning("Top 10 Batters data not loaded.")
-
-        disclosure = data.get('manifest', {}).get('governance', {}).get(
-            'mandatory_disclosure',
-            "Rankings are provisional and have not yet undergone independent out-of-time validation."
+    else:
+        st.caption(
+            "Batter Proxy: `BATTING_WICKET_DEPLETION_ANOMALY` (sensitivity vs. `BAT_DEPLETION_FULL_RUW`: Spearman 0.699, 5/10 Top-10 overlap). "
+            "Identical overs & wickets remaining can correspond to different runs-required situations."
         )
-        st.markdown(f"> **Mandatory Provisional Disclosure:** *{disclosure}*")
 
-        if 'top_bat' in data and not data['top_bat'].empty:
-            st.markdown("**Key Insights (Live from Canonical `TOP_10_BATTERS.csv`):**")
-            for _, r in data['top_bat'].head(4).iterrows():
-                st.markdown(
-                    f"- **#{int(r['rank'])} {r['player_name']} (`ID={int(r['canonical_player_id'])}`, Score {r['batting_pri']:.2f}):** "
-                    f"Crisis SR **{r['crisis_sr']:.2f}** vs **{r['norm_sr']:.2f}** normal ({r['raw_sr_maintenance']:.3f}x) "
-                    f"across {int(r['crisis_balls'])} crisis balls / {int(r['crisis_matches'])} matches, "
-                    f"95% CI `[{r['ci_lower']:.2f}, {r['ci_upper']:.2f}]` (`{r['performance_anomaly_flag']}`)."
-                )
-        if 'top_bat' in data and not data['top_bat'].empty and 'component_breakdown_explanation' in data['top_bat'].columns:
-            with st.expander("🔍 Individual Selection Rationales — Top 10 Batters"):
-                for _, r in data['top_bat'].head(10).iterrows():
-                    st.markdown(f"- **#{int(r['rank'])} {r['player_name']} (`ID={int(r['canonical_player_id'])}`, `{r['v3_role']}`):** `{r['component_breakdown_explanation']}` (`{r['ranking_sensitivity_status']}`)")
-
-    # 2. Top 10 Bowlers
-    with u_tab2:
-        st.markdown("### 🎯 Universal Top 10 Bowlers Under Pressure")
-        st.caption("Eligibility: ≥120 defensive crisis balls, ≥120 total legal balls, ≥5 crisis matches. Role: BOWL_SPECIALIST or BOWL_PRIMARY_AR (Prior-Anchored Specialist weighting for <100 normal balls).")
-        
-        if 'top_bowl' in data and not data['top_bowl'].empty:
-            tw_disp = data['top_bowl'][[
-                'rank', 'player_name', 'v3_role', 'crisis_balls', 'norm_balls', 'crisis_matches',
-                'crisis_dot_pct', 'norm_dot_pct', 'raw_dot_maintenance', 'capped_dot_maintenance',
-                'is_maintenance_capped', 'norm_baseline_status', 'ci_lower', 'ci_upper', 'provisional_fixed_weight_score'
-            ]].copy()
-            tw_disp.columns = [
-                'Rank', 'Player Name', 'Role', 'Crisis Balls', 'Norm Balls', 'Matches',
-                'Crisis Dot%', 'Norm Dot%', 'Raw Maint.', 'Capped Maint.',
-                'Capped?', 'Norm Status', '95% CI Lower', '95% CI Upper', 'Provisional Score'
-            ]
-            st.dataframe(
-                tw_disp.style.format({
-                    'Crisis Dot%': '{:.2f}%',
-                    'Norm Dot%': '{:.2f}%',
-                    'Raw Maint.': '{:.3f}x',
-                    'Capped Maint.': '{:.3f}x',
-                    '95% CI Lower': '{:.2f}%',
-                    '95% CI Upper': '{:.2f}%',
-                    'Provisional Score': '{:.2f}',
-                    'Crisis Balls': '{:.0f}',
-                    'Norm Balls': '{:.0f}',
-                    'Matches': '{:.0f}',
-                }),
-                use_container_width=True,
-                hide_index=True
-            )
-        else:
-            st.warning("Top 10 Bowlers data not loaded.")
-
-        if 'top_bowl' in data and not data['top_bowl'].empty:
-            st.markdown("**Key Insights (Live from Canonical `TOP_10_BOWLERS.csv`):**")
-            for _, r in data['top_bowl'].head(4).iterrows():
-                st.markdown(
-                    f"- **#{int(r['rank'])} {r['player_name']} (`ID={int(r['canonical_player_id'])}`, Score {r['provisional_fixed_weight_score']:.2f}):** "
-                    f"**{int(r['crisis_balls'])}** crisis balls, **{int(r['norm_balls'])}** normal balls (`{r['norm_baseline_status']}`), "
-                    f"**{r['crisis_dot_pct']:.2f}%** crisis dot% vs **{r['norm_dot_pct']:.2f}%** normal, "
-                    f"shrunk WR **{r['shrunk_crisis_wr']:.2f}%**, 95% CI `[{r['ci_lower']:.2f}%, {r['ci_upper']:.2f}%]`."
-                )
-        if 'top_bowl' in data and not data['top_bowl'].empty and 'component_breakdown_explanation' in data['top_bowl'].columns:
-            with st.expander("🔍 Individual Selection Rationales — Top 10 Bowlers"):
-                for _, r in data['top_bowl'].head(10).iterrows():
-                    st.markdown(f"- **#{int(r['rank'])} {r['player_name']} (`ID={int(r['canonical_player_id'])}`, `{r['v3_role']}`):** `{r['component_breakdown_explanation']}` (`{r['ranking_sensitivity_status']}`)")
-
-    # 3. Performance Breakdown
-    with u_tab3:
-        st.markdown("### 📊 Player Performance Deep-Dive")
-        col_s1, col_s2 = st.columns(2)
-        with col_s1:
-            if 'all_bat' in data and not data['all_bat'].empty:
-                el_bat = data['all_bat'][data['all_bat']['final_eligibility'] == 'ELIGIBLE'].copy()
-                fig_b = px.scatter(
-                    el_bat,
-                    x='norm_sr',
-                    y='crisis_sr',
-                    size='crisis_balls',
-                    color='v3_role',
-                    hover_name='player_name',
-                    hover_data=['crisis_matches', 'provisional_fixed_weight_score'],
-                    title="Batters: Crisis Strike Rate vs Normal Baseline (Eligible Cohort)",
-                    labels={'norm_sr': 'Normal Baseline Strike Rate', 'crisis_sr': 'Crisis Strike Rate'},
-                    height=450
-                )
-                fig_b.add_shape(type="line", line=dict(dash='dash', color='#94A3B8'), x0=80, y0=80, x1=210, y1=210)
-                st.plotly_chart(fig_b, use_container_width=True)
-
-        with col_s2:
-            if 'all_bowl' in data and not data['all_bowl'].empty:
-                el_bowl = data['all_bowl'][data['all_bowl']['final_eligibility'] == 'ELIGIBLE'].copy()
-                fig_w = px.scatter(
-                    el_bowl,
-                    x='norm_dot_pct',
-                    y='crisis_dot_pct',
-                    size='crisis_balls',
-                    color='v3_role',
-                    hover_name='player_name',
-                    hover_data=['crisis_matches', 'provisional_fixed_weight_score'],
-                    title="Bowlers: Crisis Dot% vs Normal Baseline (Eligible Cohort)",
-                    labels={'norm_dot_pct': 'Normal Baseline Dot %', 'crisis_dot_pct': 'Crisis Dot %'},
-                    height=450
-                )
-                fig_w.add_shape(type="line", line=dict(dash='dash', color='#94A3B8'), x0=15, y0=15, x1=55, y1=55)
-                st.plotly_chart(fig_w, use_container_width=True)
-
-    # 4. Role Classification & Eligibility
-    with u_tab4:
-        st.markdown("### 🏷️ Five-State Role Classification & Eligibility Audit")
-        if 'roles' in data and not data['roles'].empty:
-            rc1, rc2, rc3 = st.columns(3)
-            with rc1:
-                st.metric("Total Players Classified", f"{len(data['roles']):,}")
-            with rc2:
-                st.metric("Eligible for Bat Leaderboard", f"{data['roles']['eligible_for_bat_leaderboard'].sum():,}")
-            with rc3:
-                st.metric("Eligible for Bowl Leaderboard", f"{data['roles']['eligible_for_bowl_leaderboard'].sum():,}")
-
-            role_dist = data['roles']['v3_role'].value_counts().reset_index()
-            role_dist.columns = ['V3 Role', 'Player Count']
-            fig_r = px.bar(role_dist, x='V3 Role', y='Player Count', color='V3 Role', title="Roster Distribution Across 5 Mutually Exclusive Roles")
-            st.plotly_chart(fig_r, use_container_width=True)
-
-            st.dataframe(data['roles'].head(25), use_container_width=True, hide_index=True)
-
-    # 5. Pressure Methodology
-    with u_tab5:
-        st.markdown("### 📐 Dual Pre-Delivery Pressure & Chase Leverage Models (`V3.3_GOLDFISH_CHASE_LEVERAGE`)")
-        st.markdown("""
-        **Zero Target Leakage Guarantee:** All situational features are observable strictly *before* the delivery is bowled.
-        
-        - **Batting Crisis Score (0 to 10; Crisis `> 5.2`, Normal `<= 3.5`):**
-          - Wickets fallen before delivery: `clip(0.50 * wickets_fallen_before, 0, 3.5)` pts
-          - Recent 12-legal-ball cluster collapse: `2.2` pts (`>=2` wickets) or `1.0` pt (`1` wicket)
-          - Batter entry vulnerability in first 6 balls faced: `1.5 * (1 - balls_faced / 6)` pts
-          - Dot-ball stagnation in last 12 legal balls: `clip(0.35 * consecutive_dots + 0.90 * (dots_12 / 12), 0, 1.8)` pts
-          - Innings phase multiplier: Death = `1.25x`, Middle = `1.05x`, Powerplay = `1.00x`
-          - 2nd-innings clean chase leverage (`clean_rrr_deficit`): `[-0.8, +1.2]` pts
-        
-        - **Bowling Defensive Pressure Score (0 to 10; Crisis `> 5.5`, Normal `<= 4.5`):**
-          - Opponent wickets in hand: `2.2` (`>=8`), `1.4` (`>=6`), `0.8` (`>=4`), `0.2` (`<4`) pts
-          - Rebalanced phase field-restriction leverage: Death = `2.8`, Powerplay = `2.4`, Middle = `1.0` pts
-          - Opponent boundary momentum in last 12 legal balls: `2.8` (`>=3`), `1.8` (`2`), `0.7` (`1`), `0.0` (`0`) pts
-          - Strike-rotation / lack-of-dots pressure: `0.8 * (1 - dots_12 / 12)` pts
-          - 2nd-innings tight-chase leverage (`clean_rrr_deficit`): `[-0.8, +1.0]` pts
-          
-        **Documented Limitations (`V3.3_GOLDFISH_CHASE_LEVERAGE`):**
-        1. Not a fully calibrated win-probability-added (WPA) model.
-        2. `clean_rrr_deficit` is a lower-bound, non-DLS-adjusted chase proxy (excludes categorical byes/leg-byes in `extras1_runs` codes 1–7).
-        3. Bowlers with `< 100` normal balls are retained as `PRIOR_ANCHORED_SPECIALIST` with reliability-attenuated maintenance weights (`effective_w_maint`).
-        """)
-
-    # 6. Reliability & Uncertainty
-    with u_tab6:
-        st.markdown("### 🔬 Statistical Reliability & Bootstrap Uncertainty")
-        st.markdown("""
-        **Match-Clustered Resampling:** 2,000 bootstrap iterations per player resampling entire match clusters (`random_state=42`) to preserve intra-match serial dependence.
-        """)
-        col_ci1, col_ci2 = st.columns(2)
-        with col_ci1:
-            if 'top_bat' in data and not data['top_bat'].empty:
-                st.markdown("#### Top 10 Batters: 95% Confidence Intervals (Crisis SR)")
-                fig_ci = go.Figure()
-                for _, r in data['top_bat'].head(10).iterrows():
-                    fig_ci.add_trace(go.Scatter(
-                        x=[r['ci_lower'], r['crisis_sr'], r['ci_upper']],
-                        y=[r['player_name'], r['player_name'], r['player_name']],
-                        mode='lines+markers',
-                        marker=dict(size=[6, 12, 6], color=['#EA1A85', '#0B1B3D', '#EA1A85']),
-                        line=dict(color='#0B1B3D', width=2),
-                        name=r['player_name'],
-                        showlegend=False
-                    ))
-                fig_ci.update_layout(title="Top 10 Batters: Point Estimate & 95% Match-Clustered Bootstrap CI", xaxis_title="Crisis Strike Rate", height=420)
-                st.plotly_chart(fig_ci, use_container_width=True)
-        with col_ci2:
-            if 'top_bowl' in data and not data['top_bowl'].empty:
-                st.markdown("#### Top 10 Bowlers: 95% Confidence Intervals (Crisis Dot %)")
-                fig_ci_b = go.Figure()
-                for _, r in data['top_bowl'].head(10).iterrows():
-                    fig_ci_b.add_trace(go.Scatter(
-                        x=[r['ci_lower'], r['crisis_dot_pct'], r['ci_upper']],
-                        y=[r['player_name'], r['player_name'], r['player_name']],
-                        mode='lines+markers',
-                        marker=dict(size=[6, 12, 6], color=['#EA1A85', '#0B1B3D', '#EA1A85']),
-                        line=dict(color='#0B1B3D', width=2),
-                        name=r['player_name'],
-                        showlegend=False
-                    ))
-                fig_ci_b.update_layout(title="Top 10 Bowlers: Point Estimate & 95% Match-Clustered Bootstrap CI", xaxis_title="Crisis Dot Ball %", height=420)
-                st.plotly_chart(fig_ci_b, use_container_width=True)
-
-
-# ════════════════════════════════════════════════════════════════════════════
-# SECTION 2 — RAJASTHAN ROYALS 2026 ANALYSIS
-# ════════════════════════════════════════════════════════════════════════════
-elif section == "Section 2: Rajasthan Royals 2026 Analysis":
-    st.markdown("## 🏰 Section 2: Rajasthan Royals IPL 2026 Season Analysis")
-    st.markdown("""
-    **Empirical Season Review:** Grounded in all 16 matches (14 league matches, Eliminator victory, Qualifier 2) and 3,788 ball-by-ball delivery records in IPL 2026.
-    """)
-
-    rr_tab1, rr_tab2, rr_tab3, rr_tab4, rr_tab5, rr_tab6, rr_tab7 = st.tabs([
-        "🏆 RR Season Overview & Results",
-        "🏏 RR Batting Performance",
-        "🎯 RR Bowling Performance",
-        "⚡ Phase-Wise Team Performance",
-        "📋 Audited Player Appearances",
-        "👥 Player Contribution Breakdown",
-        "⚖️ Empirical Strengths & Weaknesses"
-    ])
-
-    with rr_tab1:
-        st.markdown("### 🏆 Tournament Campaign Overview")
-        c1, c2, c3, c4 = st.columns(4)
-        with c1:
-            st.markdown("""<div class="metric-card"><div class="metric-lbl">Overall Finish</div><div class="metric-val">3rd Place</div><div class="metric-sub">Playoff Qualifier</div></div>""", unsafe_allow_html=True)
-        with c2:
-            st.markdown("""<div class="metric-card"><div class="metric-lbl">League Stage Record</div><div class="metric-val">8 Wins / 14 Matches</div><div class="metric-sub">4th in Standings</div></div>""", unsafe_allow_html=True)
-        with c3:
-            st.markdown("""<div class="metric-card"><div class="metric-lbl">Eliminator</div><div class="metric-val">Won by 47 runs</div><div class="metric-sub">vs Sunrisers Hyderabad</div></div>""", unsafe_allow_html=True)
-        with c4:
-            st.markdown("""<div class="metric-card"><div class="metric-lbl">Qualifier 2</div><div class="metric-val">Lost by 7 wkts</div><div class="metric-sub">vs Gujarat Titans</div></div>""", unsafe_allow_html=True)
-
-        st.markdown("---")
-        st.markdown("#### 📅 Match-by-Match Results (16 Games)")
-        if 'rr_matches' in data and not data['rr_matches'].empty:
-            st.dataframe(data['rr_matches'], use_container_width=True, hide_index=True)
-
-    with rr_tab2:
-        st.markdown("### 🏏 RR Batting Aggregates (IPL 2026)")
-        if 'rr_bat' in data and not data['rr_bat'].empty:
-            b_disp = data['rr_bat'][[
-                'player_name', 'matches_appeared', 'innings_batted', 'runs', 'balls_faced',
-                'batting_average', 'strike_rate', 'sixes', 'pp_sr', 'middle_sr', 'death_sr'
-            ]].copy()
-            b_disp.columns = ['Player', 'Matches', 'Innings', 'Runs', 'Balls', 'Average', 'SR', 'Sixes', 'PP SR', 'Middle SR', 'Death SR']
-            st.dataframe(
-                b_disp.style.format({
-                    'Average': lambda x: f"{x:.2f}" if pd.notna(x) else "—",
-                    'SR': '{:.2f}',
-                    'PP SR': '{:.2f}',
-                    'Middle SR': '{:.2f}',
-                    'Death SR': '{:.2f}',
-                }),
-                use_container_width=True,
-                hide_index=True
-            )
-
-            st.info("""
-            **Reconciliation Confirmation:**
-            - **Vaibhav Sooryavanshi:** 776 runs, average 48.50, strike rate 237.31, 72 sixes (Orange Cap & MVP).
-            - **Dhruv Jurel:** 515 runs, average 36.79 (14 dismissals, 2 not outs; partner run-outs excluded), strike rate 154.65.
-            - **Yashasvi Jaiswal:** 427 runs, average 30.50, strike rate 152.50.
-            - **Donovan Ferreira:** 317 runs, average 35.22, strike rate 179.10.
-            - **Riyan Parag:** 309 runs, average 23.77, strike rate 157.65.
-            - **Ravindra Jadeja:** 266 runs, average 66.50, strike rate 135.03.
-            """)
-
-    with rr_tab3:
-        st.markdown("### 🎯 RR Bowling Aggregates (IPL 2026)")
-        if 'rr_bowl' in data and not data['rr_bowl'].empty:
-            bw_disp = data['rr_bowl'][[
-                'player_name', 'matches_appeared', 'overs', 'bowler_creditable_wickets',
-                'dot_balls', 'dot_ball_pct', 'bowling_strike_rate', 'pp_wickets', 'middle_wickets', 'death_wickets',
-                'economy_rate_status'
-            ]].copy()
-            bw_disp.columns = ['Player', 'Matches', 'Overs', 'Wickets (Bowler)', 'Dots', 'Dot %', 'Strike Rate', 'PP Wkts', 'Mid Wkts', 'Death Wkts', 'Economy Status']
-            st.dataframe(
-                bw_disp.style.format({
-                    'Dot %': '{:.1f}%',
-                    'Strike Rate': lambda x: f"{x:.1f}" if pd.notna(x) else "—",
-                }),
-                use_container_width=True,
-                hide_index=True
-            )
-
-            st.info("""
-            **Reconciliation Confirmation (Bowler-Creditable Wickets):**
-            - **Jofra Archer:** 25 wickets (3rd on Purple Cap leaderboard).
-            - **Brijesh Sharma:** 14 wickets in 13 matches (uncapped breakthrough).
-            - **Nandre Burger:** 14 wickets in 13 matches.
-            - **Ravi Bishnoi:** 11 wickets in 9 matches.
-            - **Ravindra Jadeja:** 10 wickets in 12 matches.
-            - **Sandeep Sharma:** 5 wickets in 6 matches.
-            - **Tushar Deshpande:** 4 wickets in 7 matches.
-            - **Adam Milne:** 1 match appeared, 3.2 overs, 0 wickets.
-            - *Note on Bowling Economy:* Quarantined from derived totals due to categorical extras representation; user-provided economy figures preserved under reference files.
-            """)
-
-    with rr_tab4:
-        st.markdown("### ⚡ RR Phase-Wise Performance (IPL 2026)")
-        st.markdown("""
-        **Data Contract Compliance:** Runs represent audited `team_batter_runs` off the bat. Full team totals including extras are quarantined.
-        """)
-        if 'rr_phase' in data and not data['rr_phase'].empty:
-            st.dataframe(data['rr_phase'], use_container_width=True, hide_index=True)
-
-    with rr_tab5:
-        st.markdown("### 📋 Audited Player Appearances (16 RR Matches)")
-        st.markdown("""
-        **Appearance Semantics:** Distinguishes matches listed in match squad sheet, starting XI, impact sub entries, matches with batting participation, and matches with bowling participation.
-        """)
-        if 'apps' in data and not data['apps'].empty:
-            st.dataframe(data['apps'], use_container_width=True, hide_index=True)
-
-    with rr_tab6:
-        st.markdown("### 👥 Player Contribution Share & Salary Efficiency")
-        if 'rr_contrib' in data and not data['rr_contrib'].empty:
-            st.dataframe(data['rr_contrib'], use_container_width=True, hide_index=True)
-
-    with rr_tab7:
-        st.markdown("### ⚖️ Empirical Strengths & Weaknesses")
-        col_st, col_wk = st.columns(2)
-        with col_st:
-            st.markdown("#### ✅ Validated Team Strengths")
-            if 'rr_strengths' in data and not data['rr_strengths'].empty:
-                st.dataframe(data['rr_strengths'], use_container_width=True, hide_index=True)
-        with col_wk:
-            st.markdown("#### ⚠️ Validated Team Weaknesses")
-            if 'rr_weaknesses' in data and not data['rr_weaknesses'].empty:
-                st.dataframe(data['rr_weaknesses'], use_container_width=True, hide_index=True)
-
-
-# ════════════════════════════════════════════════════════════════════════════
-# SECTION 3 — RR TEAM REQUIREMENTS
-# ════════════════════════════════════════════════════════════════════════════
-elif section == "Section 3: RR Team Requirements":
-    st.markdown("## 🎯 Section 3: Rajasthan Royals Team Requirements & Squad Gaps")
-    st.markdown("""
-    **Governing Rule:** Derived *exclusively* from the Phase 12 empirical season analysis.
-    Identifies the exact tactical deficiencies that RR must solve in the IPL 2027 recruitment window.
-    """)
-
-    if 'rr_required_roles' in data and not data['rr_required_roles'].empty:
-        st.dataframe(data['rr_required_roles'], use_container_width=True, hide_index=True)
-
-        st.markdown("---")
-        st.markdown("### 🔍 In-Depth Gap Evaluations")
-        
-        c1, c2 = st.columns(2)
-        with c1:
-            st.markdown("""
-            #### 1. Indian Frontline Fast Bowler (CRITICAL — Priority 1)
-            - **Why Needed:** Tushar Deshpande and Sandeep Sharma managed only 9 wickets across 13 appearances, leaking high boundary rates.
-            - **Current Cover:** Deshpande (₹6.5 Cr) and Sandeep (₹4.0 Cr).
-            - **Target Allocation:** ₹10.0 – ₹13.0 Cr.
-            - **Profile Required:** 140+ kph Indian pacer capable of taking the new ball and executing death overs.
-            """)
-            
-            st.markdown("""
-            #### 2. Overseas Death-Over Specialist (CRITICAL — Priority 2)
-            - **Why Needed:** Nandre Burger is a new-ball enforcer; RR had no secondary death bowler to pair with Jofra Archer in overs 16–20.
-            - **Current Cover:** Burger (₹3.5 Cr) and Adam Milne (₹2.4 Cr, 1 match).
-            - **Target Allocation:** ₹8.0 – ₹11.0 Cr.
-            - **Profile Required:** Elite slinger or yorker specialist with low CVaR tail risk.
-            """)
-
-        with c2:
-            st.markdown("""
-            #### 3. Economical Middle-Over Spinner (IMPORTANT — Priority 3)
-            - **Why Needed:** Ravi Bishnoi was benched in 7 matches due to team balance; attack lacked an economical finger spinner to choke scoring rate.
-            - **Current Cover:** Bishnoi (₹7.2 Cr) and Jadeja (₹14.0 Cr).
-            - **Target Allocation:** ₹3.0 – ₹5.0 Cr.
-            - **Profile Required:** Left-arm orthodox finger spinner or mystery spinner.
-            """)
-
-            st.markdown("""
-            #### 4. Domestic Lower-Order Finisher (IMPORTANT — Priority 4)
-            - **Why Needed:** Shimron Hetmyer scored only 78 runs in 8 matches (₹11.0 Cr). Signing a domestic finisher frees the overseas slot for an elite pacer.
-            - **Current Cover:** Shubham Dubey (₹80 L) and Donovan Ferreira (overseas).
-            - **Target Allocation:** ₹2.0 – ₹3.0 Cr.
-            - **Profile Required:** Indian power hitter for overs 16–20 striking at 170+ SR.
-            """)
-
-
-# ════════════════════════════════════════════════════════════════════════════
-# SECTION 4 — RR PLAYER FIT AND AUCTION STRATEGY
-# ════════════════════════════════════════════════════════════════════════════
-elif section == "Section 4: RR Player Fit & Auction Strategy":
-    st.markdown("## 💰 Section 4: RR Player Fit & Auction Strategy (IPL 2027)")
-    st.markdown("""
-    **Governing Principle:** Candidate players are evaluated *strictly against the 4 verified squad requirements* established in Section 3.
-    Universal rankings remain 100% separate from RR-specific fit suitability.
-    """)
-
-    af_tab1, af_tab2, af_tab3, af_tab4 = st.tabs([
-        "🎯 Player Fit Evaluation Matrix",
-        "⚖️ Candidate-by-Candidate Comparisons",
-        "💼 Retention, Purse & Release Scenarios",
-        "📋 Final Auction Game Plan & Strongest XI"
-    ])
-
-    with af_tab1:
-        st.markdown("### 🎯 Watchlist Candidates Evaluated Against RR Gaps")
-        if 'rr_player_fit' in data and not data['rr_player_fit'].empty:
-            pf_disp = data['rr_player_fit'][[
-                'player_name', 'target_gap', 'primary_role', 'is_overseas',
-                'estimated_price_range', 'recommendation_category', 'fit_reasoning'
-            ]].copy()
-            st.dataframe(pf_disp, use_container_width=True, hide_index=True)
-
-    with af_tab2:
-        st.markdown("### ⚖️ Head-to-Head Candidate Comparisons by Role Gap")
-        gap_choice = st.selectbox(
-            "Select Target Role Gap to Inspect Candidates:",
-            [
-                "Indian Frontline Fast Bowler",
-                "Overseas Death-Over Specialist",
-                "Economical Middle-Over Spinner",
-                "Domestic Lower-Order Finisher"
-            ]
+    c_left, c_right = st.columns(2)
+    with c_left:
+        st.plotly_chart(
+            dumbbell_shift_chart(view, is_bowler=is_bowler, title="Normal vs High-Stress Shift (Raw Baseline)"),
+            use_container_width=True,
         )
-        if 'rr_player_fit' in data and not data['rr_player_fit'].empty:
-            sub_fit = data['rr_player_fit'][data['rr_player_fit']['target_gap'] == gap_choice]
-            for _, cand in sub_fit.iterrows():
-                with st.expander(f"{cand['player_name']} — {cand['recommendation_category']} ({cand['estimated_price_range']})"):
-                    st.markdown(f"**Primary Role:** {cand['primary_role']} | **Overseas Slot:** {'Yes' if cand['is_overseas'] else 'No'}")
-                    st.markdown(f"**Key Phase:** {cand['key_phase']}")
-                    st.markdown(f"**Historical Evidence:** {cand['historical_evidence']}")
-                    st.markdown(f"**Strengths:** {cand['strengths']}")
-                    st.markdown(f"**Weaknesses & Injury Risk:** {cand['weaknesses']} (Risk: {cand['injury_risk']})")
-                    st.markdown(f"**Expected Role in XI:** {cand['expected_role_xi']}")
-                    st.markdown(f"**Tactical Fit Rationale:** {cand['fit_reasoning']}")
+    with c_right:
+        st.plotly_chart(
+            eb_forest_chart(view, mu0=mu0, title="Adjusted EB Δ vs Cohort Mean (μ₀)"),
+            use_container_width=True,
+        )
 
-    with af_tab3:
-        st.markdown("### 💼 Retention & Purse Arithmetic Scenarios")
-        st.markdown("""
-        **Purse Formula (Unverified Scenario Assumptions — Source: `data/reference/rr_2027_auction_assumptions.csv`, Checked Date: `2026-11-15`):**
-        $$\\text{Available Purse} = \\text{Carried Purse (₹2.65 Cr)} + \\sum \\text{Freed Salaries (₹24.95 Cr)} + \\text{Cap Increase Scenario}$$
-        *Provenance Note: All salary, purse, and cap figures represent user-brief scenario assumptions (`USER_BRIEF_SCENARIO_ASSUMPTION_UNVERIFIED`) rather than official BCCI/IPL audited financial disclosures.*
-        """)
-        
-        c1, c2 = st.columns(2)
-        with c1:
-            st.markdown("#### 📋 Candidate Release Actions")
-            if 'rr_retention' in data and not data['rr_retention'].empty:
-                st.dataframe(data['rr_retention'], use_container_width=True, hide_index=True)
-        with c2:
-            st.markdown("#### 📊 Auction Budget Scenarios")
-            if 'rr_budget' in data and not data['rr_budget'].empty:
-                st.dataframe(data['rr_budget'], use_container_width=True, hide_index=True)
+    cohort_n = 136 if is_bowler else 106
+    s_left, s_right = st.columns(2)
+    with s_left:
+        st.plotly_chart(
+            shrinkage_comparison_chart(view, mu0=mu0, title="Empirical Bayes Shrinkage: Raw FWL Δ → EB Δ"),
+            use_container_width=True,
+        )
+    with s_right:
+        st.plotly_chart(
+            rank_uncertainty_chart(view, cohort_size=cohort_n, title="Rank Stability & Uncertainty (95% Boot Rank CI)"),
+            use_container_width=True,
+        )
 
-        st.warning("""
-        **Contract Conflict Flag:** Dasun Shanaka was a temporary replacement for Sam Curran (groin injury). 
-        RR management must clarify Curran's medical status before 17 November 2026. Curran and Shanaka cannot both be retained permanently under IPL regulations.
-        """)
+    if is_bowler:
+        st.info(
+            f"**Shrinkage & Rank Uncertainty (Bowlers, N={cohort_n}):** Pooled mean `μ₀ = -50.884`. Top-10 `eb_weight` spans "
+            f"`0.193–0.510` (all 10 have `EB Δ < 0` and `P(Δ > 0) < 0.001`). Bootstrap rank 95% CIs span `[1, 33]` to `[2, 82]` across the 136-bowler cohort."
+        )
+    else:
+        st.info(
+            f"**Shrinkage & Rank Uncertainty (Batters, N={cohort_n}):** Pooled mean `μ₀ = -36.124`. Top-10 `eb_weight` spans "
+            f"`0.111–0.262` (~74%–89% shrinkage toward `μ₀`), compressing Top-10 `EB Δ` into `[-29.39, -30.67]` (a `1.28`-run spread—adjacent ranks are not strongly separated). "
+            f"All 10 have `P(Δ > 0) < 0.001`; bootstrap rank CIs span `[1, 56]` to `[2, 67]` across 106 batters (e.g., #3 Ravindra Jadeja `P(Top 10) = 0.281`)."
+        )
 
-    with af_tab4:
-        st.markdown("### 📋 Final Auction Strategy & Projected Strongest XI (2027)")
-        
-        col_strat, col_xi = st.columns(2)
-        with col_strat:
-            st.markdown("""
-            #### 🎯 4-Step Auction Execution Strategy
-            1. **Step 1 (Indian Pacer):** Aggressively pursue **Prasidh Krishna** or **Avesh Khan** up to ₹10.50 Cr. Securing an Indian frontline pacer to partner Archer is the primary prerequisite.
-            2. **Step 2 (Overseas Death Bowler):** Bid for **Matheesha Pathirana** up to ₹9.50 Cr. If bidding exceeds ₹11.00 Cr, immediately pivot to **Nuwan Thushara** at ₹4.50–₹5.50 Cr.
-            3. **Step 3 (Middle Spinner):** Secure **R Sai Kishore** at ₹3.50–₹4.50 Cr for elite left-arm finger spin control.
-            4. **Step 4 (Domestic Finisher):** Sign **Ashutosh Sharma** at ₹2.50–₹3.50 Cr to cement the No. 6/7 finishing role, allowing the overseas slot to remain with Pathirana.
-            """)
+    st.markdown(f"#### {discipline_label[:-1]} Scouting Dossier")
+    pick_name = st.selectbox(
+        f"Select a shortlisted {discipline_label[:-1].lower()} to inspect full justification",
+        view["player_name"].tolist(),
+        key=f"dossier_{discipline_label}",
+    )
+    r = view[view["player_name"] == pick_name].iloc[0]
+    cons_pct = (
+        fmt_num(r["claim_b_high_stress_pos_share"] * 100, "{:.1f}%")
+        if pd.notna(r["claim_b_high_stress_pos_share"])
+        else "Unavailable"
+    )
+    unit_lbl = "Batter-Run Suppression Proxy (-Runs/100 Legal Balls, Excl. Extras)" if is_bowler else "Strike Rate (Runs/100 Balls Faced)"
+    st.markdown(
+        f"""
+        <div class="dossier-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                <div>{initials_badge(r['player_name'])} <b style="font-size:17px; color:{NAVY};">#{int(r['shortlist_rank_display'])} {esc(r['player_name'])}</b>
+                <span style="color:{TEXT_MUTED}; font-size:13px;"> (ID {int(r['player_id'])} | {esc(humanize_code(r['sample_confidence'], CONFIDENCE_LABELS))})</span></div>
+                <span style="font-weight:700; color:{TEAL_POS};">EB vs Pop μ₀: {esc(fmt_num(r['eb_vs_pop_mean_delta'], '{:+.2f}'))}</span>
+            </div>
+            <p style="margin:10px 0 6px 0; font-size:13.5px;">
+                <b>Unit:</b> {esc(unit_lbl)}<br>
+                <b>Normal Baseline:</b> {esc(fmt_num(r['raw_lo_perf']))} &nbsp;|&nbsp;
+                <b>High-Stress:</b> {esc(fmt_num(r['raw_hi_perf']))} &nbsp;|&nbsp;
+                <b>Raw FWL Δ:</b> {esc(fmt_num(r['delta_unshrunk']))} &nbsp;|&nbsp;
+                <b>EB Δ (Abs):</b> {esc(fmt_num(r['eb_delta']))} (w={esc(fmt_num(r['eb_weight'], '{:.3f}'))}) &nbsp;|&nbsp;
+                <b>P(Top 10):</b> {esc(fmt_num(r['prob_top_10'], '{:.3f}'))} &nbsp;|&nbsp;
+                <b>P(Δ &gt; 0):</b> {esc('<0.001' if pd.notna(r['prob_positive_effect']) and float(r['prob_positive_effect']) < 0.001 else fmt_num(r['prob_positive_effect'], '{:.3f}'))} &nbsp;|&nbsp;
+                <b>Boot Rank 95% CI:</b> [{esc(fmt_int(r['boot_rank_ci_low']))}, {esc(fmt_int(r['boot_rank_ci_high']))}] &nbsp;|&nbsp;
+                <b>Within-Match Consistency:</b> {esc(cons_pct)}
+            </p>
+            <p style="margin:0; font-size:13.5px; color:{TEXT_MAIN};">{esc(r['player_explanation'])}</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-        with col_xi:
-            st.markdown("""
-            #### 👑 Projected Strongest Rajasthan Royals Playing XI (2027)
-            1. **Yashasvi Jaiswal** (LHB, Top-Order)
-            2. **Vaibhav Sooryavanshi** (LHB, Top-Order)
-            3. **Dhruv Jurel** (RHB, Wicketkeeper)
-            4. **Riyan Parag** (RHB, Captain)
-            5. **Donovan Ferreira** ✈️ (RHB, Finisher)
-            6. **Ashutosh Sharma** (RHB, Finisher)
-            7. **Ravindra Jadeja** (LHB, Left-Arm Orthodox)
-            8. **R Sai Kishore** / **Ravi Bishnoi** (Spin)
-            9. **Jofra Archer** ✈️ (Right-Arm Fast)
-            10. **Prasidh Krishna** / **Avesh Khan** (Right-Arm Fast)
-            11. **Matheesha Pathirana** ✈️ / **Nuwan Thushara** ✈️ (Right-Arm Sling)
-            *Tactical Impact Sub:* **Brijesh Sharma** (Spin) / **Nandre Burger** ✈️ (Pace)
-            """)
+    dl1, dl2 = st.columns([1.4, 2.6])
+    export_scope = dl1.radio(
+        "CSV Export Scope",
+        ["Full Authoritative Top 10", "Filtered Visible Rows"],
+        horizontal=True,
+        key=f"exp_scope_{discipline_label}",
+    )
+    export_df = df if export_scope == "Full Authoritative Top 10" else view
+    export_label = f"Download {filename} ({len(export_df)} rows — {export_scope})"
+    if is_bowler:
+        export_label += " [y_bowl: -Runs/100 Legal Balls, Excl. Extras]"
+    dl2.download_button(
+        label=export_label,
+        data=export_df.to_csv(index=False).encode("utf-8"),
+        file_name=filename if export_scope == "Full Authoritative Top 10" else f"filtered_{filename}",
+        mime="text/csv",
+        key=f"dl_{filename}",
+    )
 
 
-# ════════════════════════════════════════════════════════════════════════════
-# SECTION 5 — DATA AND MODEL TRANSPARENCY
-# ════════════════════════════════════════════════════════════════════════════
-elif section == "Section 5: Data & Model Transparency":
-    st.markdown("## 🛡️ Section 5: Data & Model Transparency")
-    st.markdown("""
-    **Governance Disclosure:** Full data provenance, model validation status, and strict quarantine documentation.
-    """)
+def render_top10() -> None:
+    st.subheader("Universal Top 10 Leaderboards (Official Deliverable)")
+    st.markdown(
+        """
+        <div class="status-strip">
+            <b>Pressure Evaluation: Resource-Stress Proxy — Provisional</b> &nbsp;|&nbsp; <code>CHASE_SCORE_RECONSTRUCTION_BLOCKED = True</code><br>
+            Pooled cohort stress means: <b>Batter μ₀ = -36.124</b>, <b>Bowler μ₀ = -50.884</b>. All 20 shortlisted players have <b>negative absolute EB Δ</b>
+            and <b>P(Δ &gt; 0) &lt; 0.001</b> — they rank highly because their deterioration is smaller than peers (<code>EB vs Pop μ₀ &gt; 0</code>),
+            <b>not</b> because they improve under pressure. Do not interpret official display ranks as certain positions.
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    picked_disc = st.radio(
+        "Leaderboard Discipline",
+        ["Top 10 Batters", "Top 10 Bowlers"],
+        horizontal=True,
+        key="top10_disc",
+        label_visibility="collapsed",
+    )
+    if picked_disc == "Top 10 Batters":
+        _render_top10_discipline(D["top_bat"], "Batters", "FINAL_TOP_10_BATTERS.csv")
+    else:
+        _render_top10_discipline(D["top_bowl"], "Bowlers", "FINAL_TOP_10_BOWLERS.csv")
 
-    dt_tab1, dt_tab2, dt_tab3, dt_tab4 = st.tabs([
-        "📋 Match Cohort & Provenance",
-        "🏷️ Player ID Crosswalk & Resolution",
-        "✅ Model Validation Status",
-        "🚫 Quarantined Metrics & Known Limitations"
-    ])
 
-    with dt_tab1:
-        st.markdown("### 📋 Match Cohort Manifest (853 Matches Audited)")
-        if 'cohort_manifest' in data and not data['cohort_manifest'].empty:
-            cm = data['cohort_manifest']
-            st.metric("Total Source Matches", f"{len(cm)}")
-            st.caption("Included: 790 matches | Excluded (no BBB): 16 matches | Quarantined Abandoned: 24 | Flagged DLS: 23")
-            st.dataframe(cm.head(50), use_container_width=True, hide_index=True)
+def render_explorer() -> None:
+    st.subheader("Player Explorer & Same-Discipline Comparison")
+    all_est = D["all_est"].copy()
 
-    with dt_tab2:
-        st.markdown("### 🏷️ Verified Player Entity Crosswalk (40 Resolved Entities)")
-        st.markdown("""
-        **Resolution Standard:** Canonical dataset player IDs are used for all database and model joins. 
-        Resolves historical reference ID discrepancies (e.g. Sooryavanshi 50284 vs 281699; Jurel 7260 vs 7825; Archer 3298 vs 3262) and eliminates candidate misattributions.
-        """)
-        if 'crosswalk' in data and not data['crosswalk'].empty:
-            st.dataframe(data['crosswalk'], use_container_width=True, hide_index=True)
+    c1, c2, c3 = st.columns([1.3, 1.3, 3.4])
+    disc_ui = c1.selectbox("Discipline", ["All", "Batter", "Bowler"], key="exp_disc")
+    disc = disc_ui.lower() if disc_ui != "All" else "All"
+    elig_opt = c2.selectbox("Eligibility", ["All", "Eligible Only", "Ineligible Only"], key="exp_elig")
 
-    with dt_tab3:
-        st.markdown("### ✅ V3 Model Validation & Governance Status Matrix")
-        model_matrix = [
-            {'Model': 'Dual Pre-Delivery Pressure & Chase Leverage Model', 'Type': 'Ex-Ante State + Clean Chase Heuristic', 'Validation Split': 'Chronological Match', 'Leakage': 'Zero', 'Status': 'V3.3_GOLDFISH_CHASE_LEVERAGE'},
-            {'Model': 'Five-State Role Classifier', 'Type': 'Empirical Classification', 'Validation Split': 'Multi-Season Workload', 'Leakage': 'Zero', 'Status': 'VERIFIED_ROLE_GATING'},
-            {'Model': 'Hierarchical Joint Model', 'Type': 'Ridge Regression', 'Validation Split': 'Chronological Match', 'Leakage': 'Zero', 'Status': 'EXPERIMENTAL_NOT_USED_FOR_RANKING'},
-            {'Model': 'Discrete-Time Hazard Model (AUC 0.572, Log-Loss 0.692, Exp Wkts 26,843 vs Act 2,931)', 'Type': 'Un-recalibrated Balanced Logistic', 'Validation Split': 'Chronological Match', 'Leakage': 'Zero', 'Status': 'EXPERIMENTAL_NOT_USED_FOR_RANKING'},
-            {'Model': 'Bowling Tail-Risk / CVaR', 'Type': 'Extreme Value Theory', 'Validation Split': 'Over-Level Distribution', 'Leakage': 'Zero', 'Status': 'DESCRIPTIVE_SUPPLEMENT'},
-            {'Model': 'LightGBM Challenger', 'Type': 'Gradient Boosted Trees', 'Validation Split': 'Chronological Match', 'Leakage': 'Zero', 'Status': 'EXPERIMENTAL_NOT_USED_FOR_RANKING'},
-            {'Model': 'Match-Clustered Bootstrap (2,000 iter)', 'Type': 'Non-Parametric Resampling', 'Validation Split': 'Cluster Match Bootstrap', 'Leakage': 'Zero', 'Status': 'ESTIMATED_MATCH_CLUSTER_BOOTSTRAP'},
+    pool = all_est.copy()
+    if disc != "All":
+        pool = pool[pool["role"] == disc]
+    if elig_opt == "Eligible Only":
+        pool = pool[pool["eligible"] == True]
+    elif elig_opt == "Ineligible Only":
+        pool = pool[pool["eligible"] == False]
+
+    pool = pool.sort_values(["role", "eb_rank", "total_balls"], ascending=[True, True, False], na_position="last")
+    pool["label"] = pool.apply(
+        lambda r: f"{r['player_name']} ({r['role']} | {'Eligible #' + fmt_int(r['eb_rank']) if r['eligible'] else 'Ineligible'})",
+        axis=1,
+    )
+    options = pool["label"].tolist()
+    if not options:
+        st.warning("No players match the selected discipline/eligibility filter.")
+        return
+
+    default_idx = next((i for i, lbl in enumerate(options) if "Virat Kohli" in lbl), 0)
+    selected_lbl = c3.selectbox(
+        "Search any player (e.g., Virat Kohli, MS Dhoni, Jasprit Bumrah, Patrick Cummins)",
+        options,
+        index=default_idx,
+        key="exp_player_pick",
+    )
+
+    row = pool[pool["label"] == selected_lbl].iloc[0]
+    st.markdown(
+        f"### {initials_badge(row['player_name'])} {esc(row['player_name'])} ({esc(str(row['role']).title())})",
+        unsafe_allow_html=True,
+    )
+    m_cards = [
+        ("ELIGIBILITY", "Eligible" if row["eligible"] else "Ineligible", f"Role: {row['role']}"),
+        ("GLOBAL EB RANK", fmt_int(row["eb_rank"]), "Within-discipline"),
+        ("EB Δ (WITHIN-PLAYER)", fmt_num(row["eb_delta"]), "Complete FWL + REML"),
+        ("EB vs Pop μ₀", fmt_num(row["eb_vs_pop_mean_delta"], "{:+.2f}"), "Relative to cohort mean"),
+    ]
+    for col, (lbl, val, sub) in zip(st.columns(4), m_cards):
+        col.markdown(
+            f'<div class="kpi-card"><div class="kpi-label">{esc(lbl)}</div>'
+            f'<div class="kpi-val">{esc(val)}</div><div class="kpi-sub">{esc(sub)}</div></div>',
+            unsafe_allow_html=True,
+        )
+    st.markdown("<div style='height:8px;'></div>", unsafe_allow_html=True)
+    is_row_bowl = str(row["role"]).lower() == "bowler"
+    unit_sub = "Batter-Run Suppression Proxy (Conceded/100 Legal Balls, Excl. Extras)" if is_row_bowl else "Strike Rate (Runs/100 Balls Faced)"
+    raw_ov = -row["raw_overall_perf"] if is_row_bowl and pd.notna(row["raw_overall_perf"]) else row["raw_overall_perf"]
+    raw_lo = -row["raw_lo_perf"] if is_row_bowl and pd.notna(row["raw_lo_perf"]) else row["raw_lo_perf"]
+    raw_hi = -row["raw_hi_perf"] if is_row_bowl and pd.notna(row["raw_hi_perf"]) else row["raw_hi_perf"]
+    d_cards = [
+        ("P(TOP 10)", fmt_num(row["prob_top_10"], "{:.3f}"), "Bootstrap Top-10 prob (not P(Δ>0))"),
+        ("RAW OVERALL", fmt_num(raw_ov), unit_sub),
+        ("NORMAL BASELINE", fmt_num(raw_lo), f"Low-stress ({unit_sub})"),
+        ("HIGH-STRESS PERF", fmt_num(raw_hi), f"{fmt_int(row['n_hi'])} balls / {fmt_int(row['cs_matches'])} matches"),
+    ]
+    for col, (lbl, val, sub) in zip(st.columns(4), d_cards):
+        col.markdown(
+            f'<div class="kpi-card"><div class="kpi-label">{esc(lbl)}</div>'
+            f'<div class="kpi-val">{esc(val)}</div><div class="kpi-sub">{esc(sub)}</div></div>',
+            unsafe_allow_html=True,
+        )
+
+    if not row["eligible"]:
+        st.warning(f"Exclusion Reason: {row['exclusion_reason']}")
+    elif pd.notna(row["shortlist_rank_display"]):
+        st.success(f"Universal Top 10 Member: Ranked #{int(row['shortlist_rank_display'])} among eligible {row['role']}s.")
+    else:
+        st.info(
+            f"Eligible outside Top 10 (Rank #{fmt_int(row['eb_rank'])}) — "
+            f"95% Boot CI [{fmt_num(row['eb_boot_ci_low'])}, {fmt_num(row['eb_boot_ci_high'])}], "
+            f"Rank CI [{fmt_int(row['boot_rank_ci_low'])}, {fmt_int(row['boot_rank_ci_high'])}]."
+        )
+
+    # Eligibility Transparency View (per-player gate audit + documented boundary cases)
+    st.markdown("#### Eligibility Precision & Boundary-Case Audit (`OPERATIONAL_PRECISION_FLOOR_NOT_EMPIRICALLY_OPTIMAL`)")
+    st.caption(
+        "Operational floor (`n_hi >= 50`, `n_lo >= 30`, `cs_matches >= 8`, `se_delta <= 25.0`) is a heuristic, not an empirically proven optimal cutoff."
+    )
+    nh_v, nl_v, cs_v, se_v = row.get("n_hi"), row.get("n_lo"), row.get("cs_matches"), row.get("se_delta")
+    wm_v = row.get("within_match_hilo_matches")
+    gate_df = pd.DataFrame(
+        [
+            {"Criterion": "High-Stress Balls (n_hi >= 50)", "Observed": fmt_int(nh_v), "Status": "PASS" if pd.notna(nh_v) and nh_v >= 50 else "FAIL"},
+            {"Criterion": "Normal-Stress Balls (n_lo >= 30)", "Observed": fmt_int(nl_v), "Status": "PASS" if pd.notna(nl_v) and nl_v >= 30 else "FAIL"},
+            {"Criterion": "Common-Support Matches (cs_matches >= 8)", "Observed": fmt_int(cs_v), "Status": "PASS" if pd.notna(cs_v) and cs_v >= 8 else "FAIL"},
+            {"Criterion": "Precision Cap (se_delta <= 25.0)", "Observed": fmt_num(se_v), "Status": "PASS" if pd.notna(se_v) and se_v <= 25.0 else "FAIL"},
+            {"Criterion": "Paired Within-Match Hi/Lo Matches", "Observed": fmt_int(wm_v, "Missing (NaN)"), "Status": "COMPLETE" if pd.notna(wm_v) else "BOUNDARY_MISSING"},
         ]
-        st.dataframe(pd.DataFrame(model_matrix), use_container_width=True, hide_index=True)
+    )
+    st.dataframe(gate_df, use_container_width=True, hide_index=True)
+    if row["eligible"] and (pd.isna(wm_v) or (pd.notna(nl_v) and nl_v < 50) or str(row["sample_confidence"]) == "PROVISIONAL_BOUNDARY"):
+        st.warning(
+            f"Boundary-Case Warning for {row['player_name']}: Eligible under operational floor, but exhibits boundary sample completeness "
+            f"(n_lo={fmt_int(nl_v)}, within_match_hilo_matches={fmt_int(wm_v, 'Missing')}, confidence={humanize_code(row['sample_confidence'], CONFIDENCE_LABELS)}). "
+            f"Do not treat as equivalent to robustly sampled players."
+        )
+    with st.expander("Documented Boundary-Case Examples (Michael Bracewell & Brian Bennett)"):
+        b_cases = all_est[all_est["player_name"].isin(["Michael Bracewell", "Brian Bennett"])][
+            ["player_name", "role", "eligible", "n_hi", "n_lo", "cs_matches", "se_delta", "within_match_hilo_matches", "sample_confidence", "exclusion_reason"]
+        ].copy()
+        st.dataframe(b_cases, use_container_width=True, hide_index=True)
 
-    with dt_tab4:
-        st.markdown("### 🚫 Quarantined Metrics & Limitations")
-        st.markdown("""
-        1. **`extras1_runs` is Categorical (Codes 1–7):** Never summed as runs.
-        2. **Bowling Economy Quarantined:** Because total delivery runs conceded cannot be verified without codebook extras runs, dynamic economy rates are quarantined. User-provided economy figures are preserved as reference data only.
-        3. **Full Scoreboard RRR Quarantined (Clean-Channel Proxy Active):** Full scoreboard RRR dependent on `extras1_runs` remains quarantined; 2nd-innings leverage uses the lower-bound, non-DLS-adjusted `clean_rrr_deficit` proxy (`V3.3_GOLDFISH_CHASE_LEVERAGE`).
-        4. **Super Overs Quarantined:** Innings 3 & 4 (26 balls) segregated from standard 20-over tactical ratings.
-        5. **Non-Bowler Dismissals Excluded:** 573 Run Outs, 6 Retired Outs, and 2 Obstructing the field are excluded from bowler wicket tallies.
-        """)
+    st.markdown("---")
+    st.markdown("### Player Comparison Studio (2–4 Same-Discipline Players)")
+    cmp_role_ui = st.radio("Comparison Discipline", ["Batter", "Bowler"], horizontal=True, key="cmp_role")
+    cmp_role = cmp_role_ui.lower()
+    cmp_pool = all_est[(all_est["role"] == cmp_role) & (all_est["eligible"] == True)].sort_values("eb_rank")
+    default_picks = ["David Miller", "Andre Russell", "Virat Kohli"] if cmp_role == "batter" else ["Matheesha Pathirana", "Jasprit Bumrah", "Patrick Cummins"]
 
-# ── FOOTER ──────────────────────────────────────────────────────────────────
-st.markdown("---")
-st.caption("SupeRR Intelligence V3 • Rajasthan Royals SupeRR Selector Season 2 • Built with Statistical Rigor & Scientific Defensibility")
+    selected_names = st.multiselect(
+        f"Pick 2 to 4 eligible {cmp_role}s",
+        cmp_pool["player_name"].tolist(),
+        default=[p for p in default_picks if p in cmp_pool["player_name"].values][:3],
+        max_selections=4,
+        key=f"cmp_multi_{cmp_role}",
+    )
+    if len(selected_names) >= 2:
+        sub = cmp_pool[cmp_pool["player_name"].isin(selected_names)].copy()
+        sub["shortlist_rank_display"] = sub["eb_rank"]
+        is_bowl = cmp_role == "bowler"
+        mu0 = BOWL_MU0 if is_bowl else BAT_MU0
+        c_l, c_r = st.columns(2)
+        with c_l:
+            st.plotly_chart(
+                dumbbell_shift_chart(sub, is_bowler=is_bowl, title=f"Normal vs High-Stress Shift ({cmp_role.title()}s)"),
+                use_container_width=True,
+            )
+        with c_r:
+            st.plotly_chart(
+                eb_forest_chart(sub, mu0=mu0, title=f"Adjusted EB Δ vs Cohort Mean ({cmp_role.title()}s)"),
+                use_container_width=True,
+            )
+        st.plotly_chart(comparison_sample_chart(sub), use_container_width=True)
+        cmp_disp = pd.DataFrame(
+            {
+                "Player": sub["player_name"],
+                "EB Rank": sub["eb_rank"].apply(fmt_int),
+                "Matches": sub["cs_matches"].apply(fmt_int),
+                "High-Stress Balls": sub["n_hi"].apply(fmt_int),
+                "Normal Baseline": sub["raw_lo_perf"].apply(fmt_num),
+                "High-Stress Perf": sub["raw_hi_perf"].apply(fmt_num),
+                "Raw High−Low Δ": sub["raw_hi_minus_lo"].apply(fmt_num),
+                "EB Δ": sub["eb_delta"].apply(fmt_num),
+                "EB vs Pop μ₀": sub["eb_vs_pop_mean_delta"].apply(lambda x: fmt_num(x, "{:+.2f}")),
+                "P(Top 10)": sub["prob_top_10"].apply(lambda x: fmt_num(x, "{:.3f}")),
+                "Confidence": sub["sample_confidence"].apply(lambda x: humanize_code(x, CONFIDENCE_LABELS)),
+            }
+        )
+        st.dataframe(cmp_disp, use_container_width=True, hide_index=True)
+    else:
+        st.info("Select at least 2 players from the same discipline to unlock side-by-side comparison charts.")
+
+    st.markdown("---")
+    st.markdown("### Star-Player Eligibility Audit (21 Audited Players)")
+    sa = D["star_audit"].copy()
+    s1, s2 = st.columns([2, 1.2])
+    sa_q = s1.text_input("Filter Star Audit by player name", key="sa_search", placeholder="e.g., Kohli, Cummins, Jaiswal")
+    sa_elig = s2.selectbox("Audit Status", ["All", "Eligible Only", "Excluded Only"], key="sa_elig")
+    if sa_q.strip():
+        sa = sa[sa["player_name"].str.contains(sa_q.strip(), case=False, na=False)]
+    if sa_elig == "Eligible Only":
+        sa = sa[sa["eligible"] == True]
+    elif sa_elig == "Excluded Only":
+        sa = sa[sa["eligible"] == False]
+
+    if sa.empty:
+        st.warning("No audited star players match your filter.")
+    else:
+        sa_disp = pd.DataFrame(
+            {
+                "Player": sa["player_name"],
+                "Discipline": sa["discipline"].str.title(),
+                "Canonical ID": sa["canonical_player_id"].apply(fmt_int),
+                "Status": sa["eligible"].map({True: "Eligible", False: "Excluded"}),
+                "EB Rank": sa["eb_rank"].apply(fmt_int),
+                "High-Stress Balls": sa["n_hi"].apply(fmt_int),
+                "Matches": sa["cs_matches"].apply(fmt_int),
+                "EB Δ": sa["eb_delta"].apply(fmt_num),
+                "Exclusion / Status Detail": sa["exclusion_reason"].fillna("Eligible"),
+                "Audit Explanation": sa["explanation"],
+            }
+        )
+        st.dataframe(sa_disp, use_container_width=True, hide_index=True)
+
+
+def _enrich_rr_df(df: pd.DataFrame, extra: dict, avail_os_slots: int = 0) -> pd.DataFrame:
+    out = df.merge(extra["rep"], on="player_id", how="left")
+    out = out.merge(extra["bat_splits"], on="player_id", how="left")
+    out = out.merge(extra["bowl_splits"], on="player_id", how="left")
+    out["nationality"] = out["identity_category"].apply(lambda x: humanize_code(x, IDENTITY_LABELS))
+    out["is_indian"] = out["identity_category"].isin(["VERIFIED_INDIA_INTL", "IPL_DOMESTIC_POOL"])
+    out["slot_feasible"] = out["is_indian"] | (avail_os_slots > 0)
+    out["slot_status"] = np.where(
+        out["is_indian"],
+        "FEASIBLE (Indian Slot)",
+        np.where(avail_os_slots > 0, f"FEASIBLE (Uses 1 of {avail_os_slots} OS Slot)", "BLOCKED (0 OS Slots Available)"),
+    )
+    out["availability_status"] = "UNVERIFIED_SCENARIO_INPUT"
+    return out
+
+
+def _format_phase_split(r: pd.Series) -> str:
+    if str(r["role"]).lower() == "batter":
+        return f"Pace SR {fmt_num(r.get('pace_sr'), '{:.1f}', '—')} | Spin SR {fmt_num(r.get('spin_sr'), '{:.1f}', '—')}"
+    return f"PP {fmt_num(r.get('pp_econ'), '{:.2f}', '—')} | Mid {fmt_num(r.get('mid_econ'), '{:.2f}', '—')} | Death {fmt_num(r.get('death_econ'), '{:.2f}', '—')}"
+
+
+def render_rr() -> None:
+    st.subheader("Rajasthan Royals Intelligence (Secondary Application)")
+    extra = load_rr_scouting_enrichment()
+    assump = extra["assumptions"]
+
+    st.markdown(
+        """
+        <div class="status-strip">
+            <b>Three Independent Recruitment Questions (Never Collapsed Into One Score):</b><br>
+            1. <b>Tactical Fit:</b> How well does a player fit RR's empirical role gaps?<br>
+            2. <b>Slot Feasibility:</b> Does the player fit within available Indian / overseas squad slots?<br>
+            3. <b>Auction Availability (<code>UNVERIFIED_SCENARIO_INPUT</code>):</b> Is the player actually released/available at auction? Currently <b>unverified</b> across all candidates.
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # Block A: RR 2026 Team Performance Analysis
+    st.markdown("### A. RR 2026 Team Performance Analysis")
+    c1, c2 = st.columns(2)
+    with c1:
+        st.markdown("#### Observed Weaknesses")
+        wk = D["rr_2026_wk"].rename(columns={"dimension": "Dimension", "metric": "Metric", "empirical_evidence": "Empirical Evidence", "sample_size": "Sample"})
+        st.dataframe(wk[["Dimension", "Metric", "Empirical Evidence", "Sample"]], use_container_width=True, hide_index=True)
+    with c2:
+        st.markdown("#### Observed Strengths")
+        st_df = D["rr_2026_str"].rename(columns={"dimension": "Dimension", "metric": "Metric", "empirical_evidence": "Empirical Evidence", "sample_size": "Sample"})
+        st.dataframe(st_df[["Dimension", "Metric", "Empirical Evidence", "Sample"]], use_container_width=True, hide_index=True)
+
+    st.plotly_chart(rr_2026_contrib_chart(D["rr_2026_contrib"]), use_container_width=True)
+
+    # Block B: Tactical Gap Recruitment Board + Auction Planning Context
+    st.markdown("### B. Auction Planning Context & Tactical Gap Board (`UNVERIFIED_SCENARIO_INPUT`)")
+    purse_base = assump.get("total_purse_scenario_base", "27.60")
+    purse_cap = assump.get("total_purse_scenario_cap_inc", "32.60")
+    os_used_default = int(float(assump.get("overseas_slots_occupied", "8")))
+    max_os_cap = 8
+
+    ap1, ap2, ap3, ap4 = st.columns([1.2, 1.2, 1.3, 1.3])
+    avail_os_slots = ap1.number_input(
+        "Available Overseas Slots (Configurable)",
+        min_value=0,
+        max_value=8,
+        value=max(0, max_os_cap - os_used_default),
+        step=1,
+        key="rr_avail_os_slots",
+        help="Default 0 because 8/8 overseas slots are occupied. Increase to simulate overseas releases (e.g., 2).",
+    )
+    os_used_now = max_os_cap - int(avail_os_slots)
+    ap2.metric("Scenario Purse (Unverified)", f"₹{purse_base}–{purse_cap} Cr", "Base vs Cap-Inc")
+    ap3.metric("Overseas Slots Used / Max", f"{os_used_now} / {max_os_cap}", f"{int(avail_os_slots)} slot(s) remaining")
+    ap4.metric("Availability Verification", "UNVERIFIED", "UNVERIFIED_SCENARIO_INPUT")
+
+    if avail_os_slots == 0:
+        st.warning(
+            "Squad Feasibility Warning (`UNVERIFIED_SCENARIO_INPUT`): All 8/8 overseas slots are occupied. "
+            "Overseas targets are **slot-infeasible** unless overseas releases (e.g., Hetmyer / Milne) are simulated above."
+        )
+
+    req = D["rr_req"]
+    cols = st.columns(len(req))
+    for col, (_, r) in zip(cols, req.iterrows()):
+        urg = str(r["urgency"]).upper()
+        pill_cls = "pill-crit" if "CRIT" in urg else ("pill-imp" if "IMP" in urg else "pill-depth")
+        col.markdown(
+            f"""
+            <div class="gap-card">
+                <span class="{pill_cls}">P{int(r['priority'])} · {esc(urg)}</span>
+                <div style="font-weight:700; color:{NAVY}; margin:6px 0 4px 0; font-size:13.5px;">{esc(r['role_title'])}</div>
+                <div style="font-size:12px; color:{TEXT_MUTED}; margin-bottom:6px;">{esc(r['tactical_objective'])}</div>
+                <div style="font-size:11.5px; color:{TEXT_MAIN};">
+                    <b>Cover:</b> {esc(r['existing_rr_cover'])}<br>
+                    <b>Sim. Budget*:</b> ₹{esc(r['budget_allocation_cr'])} Cr &nbsp;|&nbsp; <b>Status:</b> UNVERIFIED_SCENARIO_INPUT
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    # Block C: Sensitivity & Component Diagnostics
+    st.markdown("### C. RR Fit Sensitivity & Component Diagnostics")
+    s1, s2 = st.columns([2.2, 1.2])
+    weight_mode = s1.selectbox(
+        "Weight Sensitivity Profile",
+        [
+            "Baseline (35% Phase / 25% Role Need / 20% V4.2 Pressure / 10% Confidence / 10% T20 Balance)",
+            "Pressure-Heavy (25% Phase / 20% Role Need / 35% V4.2 Pressure / 10% Confidence / 10% T20 Balance)",
+            "Role-Heavy (40% Phase / 35% Role Need / 10% V4.2 Pressure / 10% Confidence / 5% T20 Balance)",
+        ],
+        key="rr_weight_mode",
+    )
+    nat_filter = s2.selectbox(
+        "Nationality / Slot Filter",
+        ["All Candidates", "Indian Only (Intl + Domestic)", "Overseas Only"],
+        key="rr_nat_filter",
+    )
+    if weight_mode.startswith("Baseline"):
+        score_col = "RR_PLAYER_FIT_SCORE"
+        active_weights = {"phase_exec_score": 0.35, "role_need_score": 0.25, "pressure_v42_score": 0.20, "sample_conf_score": 0.10, "balance_ipl_score": 0.10}
+    elif weight_mode.startswith("Pressure-Heavy"):
+        score_col = "fit_score_pressure_heavy"
+        active_weights = {"phase_exec_score": 0.25, "role_need_score": 0.20, "pressure_v42_score": 0.35, "sample_conf_score": 0.10, "balance_ipl_score": 0.10}
+    else:
+        score_col = "fit_score_role_heavy"
+        active_weights = {"phase_exec_score": 0.40, "role_need_score": 0.35, "pressure_v42_score": 0.10, "sample_conf_score": 0.10, "balance_ipl_score": 0.05}
+
+    rr_t10 = _enrich_rr_df(D["rr_top10"], extra, avail_os_slots=int(avail_os_slots))
+    rr_out = _enrich_rr_df(D["rr_outside"], extra, avail_os_slots=int(avail_os_slots))
+    rr_sqd = _enrich_rr_df(D["rr_squad"], extra, avail_os_slots=int(avail_os_slots))
+
+    def _apply_nat(df_in: pd.DataFrame) -> pd.DataFrame:
+        if nat_filter.startswith("Indian"):
+            return df_in[df_in["is_indian"]]
+        if nat_filter == "Overseas Only":
+            return df_in[~df_in["is_indian"]]
+        return df_in
+
+    all_rr_pool = pd.concat([rr_t10[~rr_t10["already_rr_2026"]], rr_out], ignore_index=True).drop_duplicates("player_id")
+    top_pool = _apply_nat(all_rr_pool)
+    if not top_pool.empty:
+        st.plotly_chart(rr_component_chart(top_pool, score_col=score_col, weights=active_weights), use_container_width=True)
+
+    # Block D: Recruitment Shortlists (4-Stage Distinction)
+    st.markdown("### D. Recruitment Shortlists (Analytical vs. Slot-Feasible vs. Availability-Verified)")
+    t_an, t_slot, t_avail, t_static = st.tabs(
+        [
+            "1. Analytical Shortlist (Tactical Fit)",
+            "2. Slot-Feasible Shortlist (Live Constraint)",
+            "3. Availability-Verified Shortlist",
+            "4. Static Precomputed RR_RECOMMENDED_SQUAD.csv",
+        ]
+    )
+    with t_an:
+        df_an = _apply_nat(all_rr_pool).sort_values(score_col, ascending=False)
+        disp_an = pd.DataFrame(
+            {
+                "Player": df_an["player_name"],
+                "Discipline": df_an["role"].str.title(),
+                "Nationality": df_an["nationality"],
+                "Pool": df_an["in_universal_top10"].map({True: "Universal Top 10", False: "Outside Top 10"}),
+                "Global Rank": df_an["eb_rank"].apply(fmt_int),
+                "RR Target Role": df_an["rr_target_role"],
+                "EB Δ": df_an["eb_delta"].apply(fmt_num),
+                "Death SR / Econ": df_an["death_sr_or_econ"].apply(lambda x: fmt_num(x, "{:.1f}")),
+                "Matchup / Phase Splits": df_an.apply(_format_phase_split, axis=1),
+                "RR Fit": df_an[score_col].apply(fmt_num),
+                "Slot Feasibility": df_an["slot_status"],
+                "Availability": df_an["availability_status"],
+            }
+        )
+        st.dataframe(disp_an, use_container_width=True, hide_index=True)
+
+    with t_slot:
+        df_slot = _apply_nat(all_rr_pool[all_rr_pool["slot_feasible"]]).sort_values(score_col, ascending=False)
+        st.caption(
+            f"Showing **{len(df_slot)}** slot-feasible candidates under `Available Overseas Slots = {int(avail_os_slots)}` "
+            f"(Indian candidates always slot-feasible; overseas candidates require `>= 1` available OS slot)."
+        )
+        if df_slot.empty:
+            st.warning("No candidates match the active Nationality filter and Overseas Slot constraint.")
+        else:
+            disp_slot = pd.DataFrame(
+                {
+                    "Player": df_slot["player_name"],
+                    "Discipline": df_slot["role"].str.title(),
+                    "Nationality": df_slot["nationality"],
+                    "RR Target Role": df_slot["rr_target_role"],
+                    "Slot Status": df_slot["slot_status"],
+                    "EB Δ": df_slot["eb_delta"].apply(fmt_num),
+                    "Death SR / Econ": df_slot["death_sr_or_econ"].apply(lambda x: fmt_num(x, "{:.1f}")),
+                    "RR Fit": df_slot[score_col].apply(fmt_num),
+                    "Availability": df_slot["availability_status"],
+                }
+            )
+            st.dataframe(disp_slot, use_container_width=True, hide_index=True)
+
+    with t_avail:
+        st.warning(
+            "**0 Candidates Availability-Verified (`UNVERIFIED_SCENARIO_INPUT`):** External auction release lists, retention picks, "
+            "and player availability are not verified in the dataset. All candidates remain visibly unverified below and cannot be promoted to a final executable auction recommendation."
+        )
+        df_av = _apply_nat(all_rr_pool).sort_values(score_col, ascending=False)
+        disp_av = pd.DataFrame(
+            {
+                "Player": df_av["player_name"],
+                "Nationality": df_av["nationality"],
+                "RR Target Role": df_av["rr_target_role"],
+                "RR Fit": df_av[score_col].apply(fmt_num),
+                "Slot Status": df_av["slot_status"],
+                "Availability Status": df_av["availability_status"],
+            }
+        )
+        st.dataframe(disp_av, use_container_width=True, hide_index=True)
+
+    with t_static:
+        st.warning(
+            "**Static Shortlist Warning (`RR_RECOMMENDED_SQUAD.csv`):** This precomputed 10-player list contains **7 overseas and 3 Indian** players. "
+            "It is an analytical reference only and does **not** guarantee auction availability or overseas-slot compliance—do not treat it as an executable auction-ready squad."
+        )
+        df3 = _apply_nat(rr_sqd).sort_values(score_col, ascending=False)
+        disp3 = pd.DataFrame(
+            {
+                "Player": df3["player_name"],
+                "Discipline": df3["role"].str.title(),
+                "Nationality": df3["nationality"],
+                "Source Pool": df3["selection_pool"].apply(lambda x: humanize_code(x, POOL_LABELS)),
+                "Priority Tier": df3["squad_role"].apply(lambda x: humanize_code(x, POOL_LABELS)),
+                "Global Rank": df3["eb_rank"].apply(fmt_int),
+                "RR Target Role": df3["rr_target_role"],
+                "EB Δ": df3["eb_delta"].apply(fmt_num),
+                "Death SR / Econ": df3["death_sr_or_econ"].apply(lambda x: fmt_num(x, "{:.1f}")),
+                "RR Fit": df3[score_col].apply(fmt_num),
+                "Slot Status": df3["slot_status"],
+                "Availability": df3["availability_status"],
+            }
+        )
+        st.dataframe(disp3, use_container_width=True, hide_index=True)
+
+    st.caption(
+        "*UNVERIFIED_SCENARIO_INPUT Disclosure: Purse constraints (₹27.60–32.60 Cr), overseas slots (8/8), role budgets, release candidates, and player availability "
+        "remain unverified external assumptions (data/reference/rr_2027_auction_assumptions.csv) and are never presented as confirmed auction facts."
+    )
+
+
+def render_methodology() -> None:
+    st.subheader("Methodology, Governance & Artifact Provenance")
+
+    m_tab1, m_tab2, m_tab3, m_tab4 = st.tabs(
+        [
+            "1. Estimator & Proxies",
+            "2. Metric Glossary & Eligibility",
+            "3. Validation & Score Audit",
+            "4. Artifact Provenance (SHA-256)",
+        ]
+    )
+
+    with m_tab1:
+        st.markdown(
+            """
+            - **Primary Estimator (`OPTION_A_COMPLETE_PENALIZED_FWL_REML`):** Residualizes both the ball-by-ball outcome `y` and the resource-stress/scoring-threat predictor `p` against identical state, match, player, and opponent nuisance designs via Schur-complement normal equations, then applies REML Empirical Bayes shrinkage across eligible players.
+            - **Batting Proxy (`BATTING_WICKET_DEPLETION_ANOMALY`):** Excess wickets lost relative to a typical innings at `(innings, overid)`. Cannot distinguish needing 12 vs 70 runs when overs and wickets remaining are identical.
+            - **Bowling Proxy (`BOWLING_EXPECTED_SCORING_THREAT`):** Pre-delivery expected batter runs/100 legal balls from phase, innings, format, wickets remaining, and balls remaining. Primary bowler outcome is negated batter runs conceded per 100 legal balls (`-100 * batter_runs / legal_ball`), not full bowling economy with multi-run extras.
+            """
+        )
+        with st.expander("View Complete FWL & Empirical Bayes Equations"):
+            st.latex(r"\tilde{y} = y - Z\hat{\theta}_y, \qquad \tilde{W} = W - Z\hat{\theta}_W, \qquad \Delta_{\text{unshrunk}, i} = 0.75\,\hat{\beta}_{\text{FWL}, i}")
+            st.latex(r"\text{EB }\Delta_i = w_i\,\Delta_{\text{unshrunk}, i} + (1 - w_i)\,\mu_0, \qquad w_i = \frac{\tau^2}{\tau^2 + \text{SE}_i^2}")
+
+    with m_tab2:
+        st.markdown(
+            """
+            | Term | Exact Definition & Interpretation |
+            |---|---|
+            | **`EB Δ`** | Shrinkage-stabilized absolute within-player shift from P12.5 to P87.5 stress vs the player's own baseline. Used for official ranking. |
+            | **`EB vs Pop μ₀ = EB Δ − μ₀`** | Deviation from the pooled eligible cohort average stress tax (`μ₀ = -36.12` batters; `-50.88` bowlers). Across all 20 shortlisted players, `EB vs Pop μ₀` is positive while their `absolute effect remains negative`. |
+            | **`P(Top 10)`** | Match-cluster bootstrap probability (`B = 2,000`) of entering the Top 10 candidate group. Never interpret or present `P(Top 10)` as `P(Δ > 0)`. |
+            | **Operational Eligibility Gate** | `n_hi >= 50` high-stress balls, `n_lo >= 30` normal-stress balls, `cs_matches >= 8` common-support matches, and `se_delta <= 25.0`. |
+            """
+        )
+
+    with m_tab3:
+        st.markdown("#### Out-of-Time Validation: Claim A (General Skill) vs. Claim C (Pressure Slope)")
+        st.warning(
+            "**Not Production-Predictive Under Resource Stress (`CLAIM_C_OOT_UNPREDICTABLE_UNDER_RESOURCE_STRESS`):** "
+            "Do not interpret Claim A general-skill replication as predictive validation of individual pressure slopes."
+        )
+        oot_c1, oot_c2 = st.columns(2)
+        oot_c1.markdown(
+            """
+            <div class="kpi-card">
+                <div class="kpi-label">CLAIM A — GENERAL PLAYER SKILL (OOT ≥ 2023)</div>
+                <div class="kpi-val">Batters ρ = 0.539 | Bowlers ρ = 0.459</div>
+                <div class="kpi-sub">General player fixed-effect skill replicates reasonably across the temporal split.</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        oot_c2.markdown(
+            """
+            <div class="kpi-card">
+                <div class="kpi-label">CLAIM C — WITHIN-PLAYER PRESSURE SLOPE (OOT ≥ 2023)</div>
+                <div class="kpi-val">Batters ρ = -0.358 | Bowlers ρ = +0.106</div>
+                <div class="kpi-sub">Batters: n=10, p=0.310 | Bowlers: n=18, p=0.675. Historical slopes did not reliably predict future slopes.</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        st.markdown("##### Claim C OOT Across All 5 Tested Ridge Penalty Configurations (`V4_2_MODEL_COMPARISON.csv`)")
+        ridge_cmp = D["model_cmp"][D["model_cmp"]["status"] == "RIDGE_TUNING_CHECK"][
+            ["role", "model_name", "claim_c_oot_spearman_rho", "claim_c_oot_spearman_p", "notes"]
+        ].copy()
+        ridge_cmp["role"] = ridge_cmp["role"].str.title()
+        st.dataframe(ridge_cmp, use_container_width=True, hide_index=True)
+
+        st.markdown("#### Within-Stratum Permutation Placebo: Residual Heterogeneity by Discipline")
+        placebo_df = pd.DataFrame(
+            [
+                {"Discipline": "Batters", "Placebo tau": "0.000", "I² (%)": "0.0%", "Share(|z| > 1.96)": "0.053", "Diagnostic Status": "PASS (Null calibrated)"},
+                {"Discipline": "Bowlers", "Placebo tau": "5.461", "I² (%)": "7.2%", "Share(|z| > 1.96)": "0.075", "Diagnostic Status": "RESIDUAL_HETEROGENEITY_REMAINS"},
+            ]
+        )
+        st.dataframe(placebo_df, use_container_width=True, hide_index=True)
+        st.caption("Residual heterogeneity remains for bowlers under within-stratum permutation (tau = 5.461, I² = 7.2%, Share(|z| > 1.96) = 0.075 > 0.05).")
+
+        st.markdown("#### Eligibility Precision Analysis (`OPERATIONAL_PRECISION_FLOOR_NOT_EMPIRICALLY_OPTIMAL`)")
+        st.dataframe(D["elig_prec"], use_container_width=True, hide_index=True)
+
+        st.markdown("#### Pressure Methodology Comparison")
+        mc = D["method_cmp"]
+        mc_disp = pd.DataFrame(
+            {
+                "Methodology": mc["methodology_id"],
+                "Discipline": mc["discipline"],
+                "Eligible": mc["eligible_players"].apply(fmt_int),
+                "REML μ₀": mc["reml_mu0"].apply(fmt_num),
+                "REML τ": mc["reml_tau"].apply(fmt_num),
+                "I² (%)": mc["reml_i2_pct"].apply(lambda x: fmt_num(x, "{:.1f}%")),
+                "OOT ρ": mc["oot_claim_c_rho"].apply(lambda x: fmt_num(x, "{:.3f}")),
+                "Spearman vs V4.2": mc["spearman_vs_v42_baseline"].apply(lambda x: fmt_num(x, "{:.3f}")),
+                "Status": mc["selection_status"],
+            }
+        )
+        st.dataframe(mc_disp, use_container_width=True, hide_index=True)
+
+        st.markdown("#### Chase-Score Reconstruction Audit (`MARGIN_MISMATCH_BLOCKED`)")
+        st.dataframe(D["score_audit"], use_container_width=True, hide_index=True)
+
+        st.markdown("#### Out-of-Time & Robustness Validation Matrix")
+        vm = D["val_matrix"].copy()
+        disc_vm = st.selectbox("Filter Validation Matrix by Discipline", ["All", "batter", "bowler", "both"], key="vm_disc")
+        if disc_vm != "All" and "role" in vm.columns:
+            vm = vm[vm["role"].astype(str).str.lower() == disc_vm]
+        st.dataframe(vm, use_container_width=True, hide_index=True)
+        st.download_button(
+            "Download PRESSURE_METHODOLOGY_COMPARISON.csv",
+            data=mc.to_csv(index=False).encode("utf-8"),
+            file_name="PRESSURE_METHODOLOGY_COMPARISON.csv",
+            mime="text/csv",
+            key="dl_method_cmp",
+        )
+
+    with m_tab4:
+        st.info(
+            "**Source-of-Truth & Legacy V3 Protection:** Authoritative V4.2 deliverables reside strictly under `data/outputs/final/` and `data/outputs/v4_2/`. "
+            "Legacy V3 CSVs/reports at the repository root are archived baselines retained only for legacy V3 tests and are never read by this dashboard."
+        )
+        sot = D["sot"]
+        prov_rows = [
+            {"Artifact": k, "Scope": "Universal Rankings", "SHA-256": v}
+            for k, v in sot.get("hashes", {}).items()
+        ] + [
+            {"Artifact": k, "Scope": "RR Secondary Module", "SHA-256": v}
+            for k, v in sot.get("rr_hashes", {}).items()
+        ]
+        st.dataframe(pd.DataFrame(prov_rows), use_container_width=True, hide_index=True)
+
+
+if section.startswith("1."):
+    render_overview()
+elif section.startswith("2."):
+    render_top10()
+elif section.startswith("3."):
+    render_explorer()
+elif section.startswith("4."):
+    render_rr()
+else:
+    render_methodology()

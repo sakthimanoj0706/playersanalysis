@@ -1,0 +1,7 @@
+role,comparison,common_n,spearman_r
+batter,V4.4 Main RAPM (DeltaRE_total) vs V4.3 Main RAPM (DeltaRE_batter),96,0.959
+batter,V4.4 Main RAPM vs V4.2 General Skill FE (Claim A),104,0.8156
+batter,V4.4 LI Pressure Slope vs V4.2 Pressure Slope (EB Delta),104,0.2307
+bowler,V4.4 Main RAPM (DeltaRE_total) vs V4.3 Main RAPM (DeltaRE_batter),95,0.9564
+bowler,V4.4 Main RAPM vs V4.2 General Skill FE (Claim A),135,0.8173
+bowler,V4.4 LI Pressure Slope vs V4.2 Pressure Slope (EB Delta),135,-0.239

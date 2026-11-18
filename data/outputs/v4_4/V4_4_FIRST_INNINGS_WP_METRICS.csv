@@ -1,0 +1,3 @@
+innings,model_family,evaluation_split,n_matches,n_deliveries,roc_auc,brier_equal_match,logloss_equal_match,brier_delivery,logloss_delivery,cal_intercept,cal_slope,perspective,governance_status
+1,V4_4_SCORE_AWARE_WP,MatchGrouped_5Fold_CV,725,89690,0.6986,0.2202,0.6304,0.2199,0.6295,-0.0009,0.9377,P(inn1_batting_team_wins),CONDITIONALLY_VALIDATED_CRICSHEET_EXACT
+1,V4_4_SCORE_AWARE_WP,Chronological_OOT_gt_2024,291,35894,0.7105,0.2289,0.6568,0.2269,0.649,-0.446,0.8386,P(inn1_batting_team_wins),CONDITIONALLY_VALIDATED_CRICSHEET_EXACT

@@ -1,0 +1,8 @@
+{
+  "random_seed": 2026,
+  "n_cv_folds": 5,
+  "oot_cutoff_year": 2024,
+  "standard_t20_balls": 120,
+  "team_elo_base": 1500.0,
+  "team_elo_k": 24.0
+}
