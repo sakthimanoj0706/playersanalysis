@@ -87,6 +87,10 @@ st.markdown(
     section[data-testid="stSidebar"] * {{
         color: #F8FAFC !important;
     }}
+    section[data-testid="stSidebar"] [data-baseweb="select"] div,
+    section[data-testid="stSidebar"] input {{
+        color: #0F172A !important;
+    }}
     [data-testid="stSidebar"] code {{
         background-color: rgba(255, 255, 255, 0.16) !important;
         color: #F8FAFC !important;

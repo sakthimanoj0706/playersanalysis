@@ -62,19 +62,34 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-## 15. Dashboard Execution
+## 15. Dashboard UI Overview & Execution
+Launch the interactive Streamlit dashboard:
 ```powershell
 .venv\Scripts\streamlit.exe run dashboard/app.py
 ```
-Use the sidebar **Analytics Engine** selector to switch between `V4.2 Provisional (Resource Stress)` (default) and `V5.0 Universal T20 Pressure Engine (Track A)`.
+- **Engine Selector (`V4.2` Default / `V5.0` Selectable):** The sidebar **Analytics Engine** selector defaults to `V4.2 Provisional (Resource Stress)` to preserve V4.2 governance views, and switches to `V5.0 Universal T20 Pressure Engine (Track A)` for the Power BI-inspired 5-page analytics suite (`dashboard/ui_theme.py`, `dashboard/v5_0_panel.py`).
+- **Global Filters:** Filter by Competition (`All Competitions`, `IPL (T20)`, `Men's T20I`), Season/Year (`2022–2026`), Franchise/Team, Role (`All`, `Batters`, `Bowlers`), or Player Search, with a one-click **Reset Filters** button.
+- **Team → Player → Match Drill-Down Workflow:** Start on **Overview → TOP 10 PLAYERS** (`TOP 10 BATTERS` / `TOP 10 BOWLERS` tabs, governed by the `100/300/12` eligibility gate) or **Team Analysis**, select any player and click **Open Batter/Bowler Profile →** (or **View All Players →** for the full leaderboard), inspect their role-aware KPIs, 6 performance charts, and match history in **Player Explorer**, then click **Open in Match Explorer →** to view the exact ball-by-ball Win Probability and `LI_global` timeline.
 
-## 16. Pipeline Reproduction Commands
+| Dashboard Page | Features |
+|---|---|
+| Overview | Global cricket analytics, team wins vs win %, season scoring trends, top batter/bowler HP leaderboards, competition boxplots, archetype distribution |
+| Team Analysis | Team KPIs, season evolution, batting vs bowling `DeltaRE` contribution, key batters/bowlers, `TEAM → PLAYER` drill-down |
+| Player Explorer | Left filter panel, initials avatar profile, role-aware KPI strip, 6 performance charts, match history, `PLAYER → MATCH` drill-down |
+| Match Explorer | Verified Track A match metadata, WP & `LI_global >= 1.50` timeline, phase-level runs/wickets, batting & bowling match contributions |
+| Pressure Analytics | V5.0 3-tab suite: Global T20 Pressure Leaderboard, Match Pressure Analysis (Track A only), Optional Franchise/Squad View |
+
+**UI & Data Limitations:** Unavailable player/match metrics are displayed as `N/A` (never false zeros). Match Explorer and Match Pressure Analysis display only the `170,680` Cricsheet-verified Track A deliveries (`725` matches); the `181 / 1,652` blocked/unverified innings are excluded and Track B resource proxies are never presented as verified match events.
+
+## 16. Pipeline & Testing Commands
 ```powershell
 .venv\Scripts\python.exe scripts/run_v4_3_phases_0_to_3.py
 .venv\Scripts\python.exe scripts/run_v4_3_phases_3_5_to_7.py
 .venv\Scripts\python.exe scripts/run_v4_4_pipeline.py
 .venv\Scripts\python.exe scripts/run_v5_0_pipeline.py
-.venv\Scripts\python.exe -m pytest tests/test_v5_0/ tests/test_ui_governance.py tests/test_v4_4/ tests/test_v4_3/ -v
+.venv\Scripts\python.exe -m pytest tests/test_ui_governance.py -v
+.venv\Scripts\python.exe -m pytest tests/test_v5_0/ -v
+.venv\Scripts\python.exe -m pytest tests/test_v4_4/ tests/test_v4_3/ -v
 .venv\Scripts\python.exe scripts/verify_v4_2_rankings.py
 ```
 

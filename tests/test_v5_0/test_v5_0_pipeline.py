@@ -80,7 +80,7 @@ def test_v50_outputs_and_archetype_invariants() -> None:
 
 
 def test_v50_dashboard_renders_both_engines() -> None:
-    """Verify dashboard renders V4.2 by default and switches cleanly to V5.0."""
+    """Verify dashboard renders V4.2 by default and switches cleanly across all 5 V5.0 pages."""
     from streamlit.testing.v1 import AppTest
 
     at = AppTest.from_file(str(ROOT / "dashboard/app.py"), default_timeout=30)
@@ -88,3 +88,55 @@ def test_v50_dashboard_renders_both_engines() -> None:
     assert not at.exception
     at.sidebar.selectbox[0].set_value("V5.0 Universal T20 Pressure Engine (Track A)").run()
     assert not at.exception
+
+    for page in ("1. Overview", "2. Team Analysis", "3. Player Explorer", "4. Match Explorer", "5. Pressure Analytics"):
+        nav = [r for r in at.sidebar.radio if r.key == "v50_nav_page"][0]
+        nav.set_value(page).run()
+        assert not at.exception, f"Exception on V5.0 page {page}: {at.exception}"
+
+    # Verify competition filter changes active scope without error
+    comp = [s for s in at.sidebar.selectbox if s.key == "v50_comp_flt"][0]
+    comp.set_value("IPL (T20)").run()
+    assert not at.exception
+
+
+def test_v50_official_top10_tables_and_drilldown() -> None:
+    """Verify Top 10 Batters/Bowlers integrity, 100/300/12 gate, no duplicates, and drill-down."""
+    from streamlit.testing.v1 import AppTest
+    from dashboard.v5_0_panel import get_official_top10
+
+    bat_raw = pd.read_csv(DEFAULT_V50_CONFIG.output_dir / "V5_0_GLOBAL_BATTER_PRESSURE.csv")
+    bowl_raw = pd.read_csv(DEFAULT_V50_CONFIG.output_dir / "V5_0_GLOBAL_BOWLER_PRESSURE.csv")
+
+    t10_b = get_official_top10(bat_raw, "All Competitions", n=10)
+    t10_w = get_official_top10(bowl_raw, "All Competitions", n=10)
+
+    assert len(t10_b) == 10
+    assert len(t10_w) == 10
+    assert t10_b["player_id"].is_unique
+    assert t10_w["player_id"].is_unique
+    assert bool(t10_b["eligible"].all())
+    assert bool(t10_w["eligible"].all())
+    assert t10_b["rank_hp"].tolist() == list(range(1, 11))
+    assert t10_w["rank_hp"].tolist() == list(range(1, 11))
+    assert t10_b["player_id"].tolist() == bat_raw[bat_raw["eligible"]].sort_values("rank_hp").head(10)["player_id"].tolist()
+    assert t10_w["player_id"].tolist() == bowl_raw[bowl_raw["eligible"]].sort_values("rank_hp").head(10)["player_id"].tolist()
+
+    # Headless UI test: click Open Batter Profile -> from Overview Top 10
+    at = AppTest.from_file(str(ROOT / "dashboard/app.py"), default_timeout=30)
+    at.run()
+    at.sidebar.selectbox[0].set_value("V5.0 Universal T20 Pressure Engine (Track A)").run()
+    assert not at.exception
+    md_ov = "\n".join(m.value for m in at.markdown)
+    assert "TOP 10 PLAYERS" in md_ov
+    assert t10_b["player_name"].iloc[0] in md_ov
+    assert t10_w["player_name"].iloc[0] in md_ov
+
+    # Select 2nd batter in Top 10 and drill down to Player Explorer
+    pick = [s for s in at.selectbox if s.key == "v50_ov_t10_bat_pick"][0]
+    pick.set_value(t10_b["player_name"].iloc[1]).run()
+    btn = [b for b in at.button if b.key == "v50_ov_t10_bat_go_pe"][0]
+    btn.click().run()
+    assert not at.exception
+    assert at.session_state["v50_nav_page"] == "3. Player Explorer"
+    assert at.session_state["v50_selected_player_name"] == t10_b["player_name"].iloc[1]
