@@ -74,6 +74,14 @@ def inject_v5_powerbi_theme() -> None:
             padding: 1px 5px;
             border-radius: 4px;
         }}
+        [data-testid="stExpander"] details,
+        [data-testid="stExpander"] summary,
+        [data-testid="stExpander"] summary:hover,
+        [data-testid="stExpander"] summary * {{
+            background: rgba(13, 28, 62, 0.92) !important;
+            color: {PBI_TEXT} !important;
+            border-color: {PBI_PANEL_BORDER} !important;
+        }}
         .pbi-header {{
             background: {PBI_PANEL_BG};
             border: 1px solid {PBI_PANEL_BORDER};

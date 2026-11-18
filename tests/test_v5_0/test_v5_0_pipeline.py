@@ -140,3 +140,58 @@ def test_v50_official_top10_tables_and_drilldown() -> None:
     assert not at.exception
     assert at.session_state["v50_nav_page"] == "3. Player Explorer"
     assert at.session_state["v50_selected_player_name"] == t10_b["player_name"].iloc[1]
+
+
+def test_v50_justifications_and_player_comparison() -> None:
+    """Verify justifications, missing CIs, mixed-role rejection, and comparison chart updates."""
+    import pytest
+    from streamlit.testing.v1 import AppTest
+    from dashboard.v5_0_panel import build_player_justification, get_official_top10, get_same_role_comparison_df
+
+    bat_raw = pd.read_csv(DEFAULT_V50_CONFIG.output_dir / "V5_0_GLOBAL_BATTER_PRESSURE.csv")
+    bowl_raw = pd.read_csv(DEFAULT_V50_CONFIG.output_dir / "V5_0_GLOBAL_BOWLER_PRESSURE.csv")
+    t10_b = get_official_top10(bat_raw, "All Competitions", n=10)
+    t10_w = get_official_top10(bowl_raw, "All Competitions", n=10)
+
+    # 1-4: Justifications for all Top 10 batters & bowlers, positive & negative pressure
+    for role_lbl, t10 in [("Batter", t10_b), ("Bowler", t10_w)]:
+        assert len(t10) == 10
+        for i, row in t10.iterrows():
+            prev_r = t10.iloc[i - 1] if i > 0 else None
+            txt = build_player_justification(row, role_lbl, prev_r)
+            assert f"#{int(row['rank_hp'])}" in txt
+            assert f"{row['combined_hp_per100']:+.2f}" in txt
+            assert f"{int(row['n_hp_global']):,}" in txt
+            if row["pressure_interaction_per100"] > 0:
+                assert "increased by" in txt
+            elif row["pressure_interaction_per100"] < 0:
+                assert "reduced by" in txt
+            if prev_r is not None:
+                assert "lower than #" in txt or "equal to #" in txt
+
+    # 5: Missing confidence intervals show N/A
+    row_na = t10_b.iloc[0].copy()
+    row_na["ci_low_hp"] = np.nan
+    row_na["ci_high_hp"] = np.nan
+    assert "95% CI is N/A" in build_player_justification(row_na, "Batter")
+
+    # 6-7: Player Comparison rejects mixed/invalid roles and matches CSV rows
+    with pytest.raises(ValueError):
+        get_same_role_comparison_df("Mixed", ["Vaibhav Sooryavanshi", "Sunil Narine"], bat_raw, bowl_raw)
+    cmp_b = get_same_role_comparison_df("Batter", t10_b["player_name"].head(3).tolist(), bat_raw, bowl_raw)
+    assert len(cmp_b) == 3
+    assert np.allclose(cmp_b["combined_hp_per100"].values, t10_b["combined_hp_per100"].head(3).values)
+
+    # 8-10: Headless UI test for Overview flow & Player Comparison interaction
+    at = AppTest.from_file(str(ROOT / "dashboard/app.py"), default_timeout=30)
+    at.run()
+    at.sidebar.selectbox[0].set_value("V5.0 Universal T20 Pressure Engine (Track A)").run()
+    assert not at.exception
+    md_all = "\n".join(m.value for m in at.markdown)
+    assert "WHY THESE PLAYERS ARE TOP 10?" in md_all or any("WHY THESE PLAYERS" in e.label for e in at.expander)
+    assert "PLAYER COMPARISON" in md_all
+
+    # Switch comparison role to Bowler and verify update
+    cmp_radio = [r for r in at.radio if r.key == "v50_ov_cmp_role"][0]
+    cmp_radio.set_value("Bowler").run()
+    assert not at.exception

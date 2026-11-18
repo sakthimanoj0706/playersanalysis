@@ -243,13 +243,208 @@ def _render_top10_table(top_df: pd.DataFrame, role_label: str, key_prefix: str) 
     )
 
 
+def build_player_justification(
+    row: pd.Series,
+    role_label: str,
+    prev_row: pd.Series | None = None,
+) -> str:
+    """Generate a concise, evidence-based 2-3 sentence ranking justification from a V5.0 CSV row."""
+    rk = int(row["rank_hp"]) if pd.notna(row["rank_hp"]) else 0
+    main_v = float(row["main_effect_per100"])
+    pres_v = float(row["pressure_interaction_per100"])
+    hp_v = float(row["combined_hp_per100"])
+    hp_b = int(row["n_hp_global"])
+    hp_m = int(row["m_hp"])
+    arch = str(row["archetype"])
+    rel = str(row["reliability"])
+
+    unit = "runs/100b" if role_label == "Batter" else "runs prevented/100b"
+    if prev_row is not None and pd.notna(prev_row.get("combined_hp_per100")):
+        diff = hp_v - float(prev_row["combined_hp_per100"])
+        prev_rk = int(prev_row["rank_hp"])
+        prev_nm = str(prev_row["player_name"])
+        if abs(diff) < 0.005:
+            diff_txt = f"equal to #{prev_rk} {prev_nm} (point estimate only)"
+        elif diff > 0:
+            diff_txt = f"{diff:.2f} higher than #{prev_rk} {prev_nm} (point estimate only)"
+        else:
+            diff_txt = f"{abs(diff):.2f} lower than #{prev_rk} {prev_nm} (point estimate only)"
+        s1 = f"Ranked #{rk} among eligible {role_label.lower()}s with a combined HP estimate of {hp_v:+.2f} {unit} ({diff_txt})."
+    else:
+        s1 = f"Ranked #{rk} with the highest eligible {role_label.lower()} combined HP estimate ({hp_v:+.2f} {unit})."
+
+    if pres_v > 0:
+        pres_desc = f"increased by a {pres_v:+.2f} experimental pressure adjustment"
+    elif pres_v < 0:
+        pres_desc = f"reduced by a {pres_v:+.2f} experimental pressure adjustment"
+    else:
+        pres_desc = "unchanged by a +0.00 experimental pressure adjustment"
+    s2 = f"Their baseline main effect is {main_v:+.2f}, {pres_desc}."
+
+    if pd.notna(row.get("ci_low_hp")) and pd.notna(row.get("ci_high_hp")):
+        c_lo, c_hi = float(row["ci_low_hp"]), float(row["ci_high_hp"])
+        ci_txt = f"95% CI [{c_lo:+.2f}, {c_hi:+.2f}]"
+        if c_lo <= 0:
+            ci_note = f"{ci_txt} crosses zero, so this rank carries notable uncertainty"
+        elif (c_hi - c_lo) > 35.0:
+            ci_note = f"{ci_txt} is wide, indicating moderate estimation uncertainty"
+        else:
+            ci_note = f"{ci_txt} remains above zero"
+    else:
+        ci_note = "95% CI is N/A"
+
+    s3 = f"Supported by {hp_b:,} high-pressure balls across {hp_m} matches ({rel} reliability, {arch}); {ci_note}."
+    return f"{s1} {s2} {s3}"
+
+
+def get_same_role_comparison_df(
+    role_label: str,
+    player_names: List[str],
+    bat_df: pd.DataFrame,
+    bowl_df: pd.DataFrame,
+) -> pd.DataFrame:
+    """Return eligible V5.0 rows for same-role multi-player comparison (rejects mixed/invalid roles)."""
+    if role_label not in ("Batter", "Bowler"):
+        raise ValueError(f"Mixed or invalid role '{role_label}'; only 'Batter' or 'Bowler' allowed.")
+    src = bat_df if role_label == "Batter" else bowl_df
+    el = src[src["eligible"] == True].copy()
+    sub = el[el["player_name"].isin(player_names)].drop_duplicates(subset=["player_id"]).sort_values("rank_hp")
+    return sub.reset_index(drop=True)
+
+
+def _render_justifications_section(top10_bat: pd.DataFrame, top10_bowl: pd.DataFrame) -> None:
+    """Section 3 of Overview: Expandable WHY THESE PLAYERS ARE TOP 10? explanations."""
+    with st.expander("WHY THESE PLAYERS ARE TOP 10? (Evidence-Based Ranking Justifications)", expanded=False):
+        st.caption(
+            "Explanations are generated directly from V5.0 CSV metrics. Adjacent-rank differences reflect point estimates only; "
+            "overlapping individual 95% CIs do not establish statistical superiority, and delta_pressure remains EXPERIMENTAL."
+        )
+        j_bat, j_bowl = st.tabs(["Batter Justifications", "Bowler Justifications"])
+        with j_bat:
+            for i, row in top10_bat.iterrows():
+                prev_r = top10_bat.iloc[i - 1] if i > 0 else None
+                st.markdown(f"**#{int(row['rank_hp']):02d} {row['player_name']}** — {build_player_justification(row, 'Batter', prev_r)}")
+        with j_bowl:
+            for i, row in top10_bowl.iterrows():
+                prev_r = top10_bowl.iloc[i - 1] if i > 0 else None
+                st.markdown(f"**#{int(row['rank_hp']):02d} {row['player_name']}** — {build_player_justification(row, 'Bowler', prev_r)}")
+
+
+def _render_player_comparison(
+    bat_df: pd.DataFrame,
+    bowl_df: pd.DataFrame,
+    comp_flt: str,
+    tpids: set | None,
+) -> None:
+    """Section 5 of Overview: Interactive same-role multi-player comparison (2-5 players)."""
+    st.markdown("### PLAYER COMPARISON — Multi-Player Side-by-Side Analysis")
+    st.caption(
+        "Compare 2 to 5 eligible players within the same role (100/300/12 gate). "
+        "delta_pressure is EXPERIMENTAL; combined HP is not a pure clutch score, and point-estimate differences do not prove statistical significance."
+    )
+    cmp_role = st.radio("Comparison Role", ["Batter", "Bowler"], horizontal=True, key="v50_ov_cmp_role")
+    pool = get_official_top10(bat_df if cmp_role == "Batter" else bowl_df, comp_flt, tpids, n=200)
+    if len(pool) < 2:
+        st.info(f"Fewer than 2 eligible {cmp_role.lower()}s match the current filters for comparison.")
+        return
+
+    opts = pool["player_name"].tolist()
+    defaults = opts[:3] if len(opts) >= 3 else opts[:2]
+    sel_players = st.multiselect(
+        f"Select 2–5 Eligible {cmp_role}s",
+        opts,
+        default=defaults,
+        max_selections=5,
+        key=f"v50_ov_cmp_pick_{cmp_role}",
+    )
+    if len(sel_players) < 2:
+        st.info("Select at least 2 players to display the side-by-side comparison.")
+        return
+
+    cdf = get_same_role_comparison_df(cmp_role, sel_players, bat_df, bowl_df)
+    cmp_rows_html = []
+    for idx, r in cdf.iterrows():
+        bg = "rgba(15, 35, 75, 0.72)" if idx % 2 == 0 else "rgba(10, 24, 54, 0.72)"
+        ci_str = (
+            f"[{r['ci_low_hp']:+.2f}, {r['ci_high_hp']:+.2f}]"
+            if pd.notna(r["ci_low_hp"]) and pd.notna(r["ci_high_hp"])
+            else "N/A"
+        )
+        arch = str(r["archetype"]).replace("UNCLASSIFIED / INSUFFICIENT EVIDENCE", "UNCLASSIFIED")
+        cmp_rows_html.append(
+            f'<tr style="background:{bg};border-bottom:1px solid rgba(148,163,184,0.14);">'
+            f'<td style="padding:8px 10px;font-weight:700;color:{PBI_TEXT};">{r["player_name"]}</td>'
+            f'<td style="padding:8px 10px;text-align:right;">{_fmt_signed(r["main_effect_per100"])}</td>'
+            f'<td style="padding:8px 10px;text-align:right;">{_fmt_signed(r["pressure_interaction_per100"])}</td>'
+            f'<td style="padding:8px 10px;text-align:right;font-weight:700;">{_fmt_signed(r["combined_hp_per100"])}</td>'
+            f'<td style="padding:8px 10px;text-align:right;color:{PBI_MUTED};font-size:12px;">{ci_str}</td>'
+            f'<td style="padding:8px 10px;text-align:right;color:{PBI_TEXT};">{int(r["n_hp_global"]):,}</td>'
+            f'<td style="padding:8px 10px;text-align:right;color:{PBI_TEXT};">{int(r["m_hp"]):,}</td>'
+            f'<td style="padding:8px 10px;color:{PBI_BLUE};font-size:12px;">{arch}</td>'
+            f'</tr>'
+        )
+    cmp_table_html = (
+        '<div style="overflow-x:auto;border:1px solid rgba(148,163,184,0.24);border-radius:10px;margin-bottom:12px;">'
+        '<table style="width:100%;border-collapse:collapse;font-size:13px;">'
+        '<thead><tr style="background:rgba(7,20,46,0.92);color:#CBD5E1;text-align:left;border-bottom:2px solid #38BDF8;">'
+        '<th style="padding:9px 10px;">Player</th>'
+        '<th style="padding:9px 10px;text-align:right;">Main Effect</th>'
+        '<th style="padding:9px 10px;text-align:right;">Pressure Uplift <span style="color:#FACC15;font-size:10px;">[EXP]</span></th>'
+        '<th style="padding:9px 10px;text-align:right;">Combined HP</th>'
+        '<th style="padding:9px 10px;text-align:right;">95% CI</th>'
+        '<th style="padding:9px 10px;text-align:right;">HP Balls</th>'
+        '<th style="padding:9px 10px;text-align:right;">HP Matches</th>'
+        '<th style="padding:9px 10px;">Archetype</th>'
+        '</tr></thead>'
+        f'<tbody>{"".join(cmp_rows_html)}</tbody>'
+        '</table></div>'
+    )
+    st.markdown(cmp_table_html, unsafe_allow_html=True)
+
+    c_left, c_right = st.columns(2)
+    unit_lbl = "Runs / 100 Balls" if cmp_role == "Batter" else "Runs Prevented / 100 Balls"
+    with c_left:
+        f_grp = go.Figure()
+        f_grp.add_trace(go.Bar(x=cdf["player_name"], y=cdf["main_effect_per100"], name="Main Effect (theta_main)", marker_color=PBI_BLUE))
+        f_grp.add_trace(go.Bar(x=cdf["player_name"], y=cdf["pressure_interaction_per100"], name="Pressure Uplift [EXP] (delta_pressure)", marker_color=PBI_YELLOW))
+        f_grp.add_trace(go.Bar(x=cdf["player_name"], y=cdf["combined_hp_per100"], name="Combined HP (theta_HP)", marker_color=PBI_CORAL))
+        f_grp.update_layout(barmode="group")
+        st.plotly_chart(style_pbi_figure(f_grp, "Decomposition: Main vs Pressure [EXP] vs Combined HP", "Player", unit_lbl, 340), use_container_width=True)
+
+    with c_right:
+        f_ci = go.Figure(
+            go.Bar(
+                x=cdf["player_name"],
+                y=cdf["combined_hp_per100"],
+                name="Combined HP",
+                marker_color=PBI_TEAL,
+                error_y=dict(
+                    type="data",
+                    symmetric=False,
+                    array=(cdf["ci_high_hp"] - cdf["combined_hp_per100"]).fillna(0.0).values,
+                    arrayminus=(cdf["combined_hp_per100"] - cdf["ci_low_hp"]).fillna(0.0).values,
+                    color=PBI_YELLOW,
+                ),
+            )
+        )
+        st.plotly_chart(style_pbi_figure(f_ci, "Combined HP Estimate & Individual 95% CIs", "Player", unit_lbl, 340), use_container_width=True)
+
+    # Compact exposure comparison
+    f_exp = go.Figure()
+    f_exp.add_trace(go.Bar(x=cdf["player_name"], y=cdf["n_hp_global"], name="HP Balls (LI_global >= 1.50)", marker_color=PBI_BLUE_DEEP))
+    f_exp.add_trace(go.Scatter(x=cdf["player_name"], y=cdf["m_hp"], name="Distinct HP Matches", yaxis="y2", mode="lines+markers", line=dict(color=PBI_YELLOW, width=3)))
+    f_exp.update_layout(yaxis2=dict(title="HP Matches", overlaying="y", side="right", showgrid=False))
+    st.plotly_chart(style_pbi_figure(f_exp, "High-Pressure Exposure: HP Balls & Distinct HP Matches", "Player", "HP Balls", 270), use_container_width=True)
+
+
 def _render_overview(D: Dict[str, Any], trv_f: pd.DataFrame, m_ver: pd.DataFrame, comp_flt: str, team_flt: str) -> None:
-    """Phase 3: Global Cricket Analytics Overview."""
+    """Phase 3: Storytelling Overview (KPIs -> Top 10 -> Justifications -> Top 10 Graphs -> Player Comparison -> Team/Season -> Competition/Archetypes)."""
     n_matches = int(m_ver["match_id"].nunique())
     n_players = int(pd.concat([trv_f["striker_id"], trv_f["bowler_id"]]).nunique())
     n_innings = int(trv_f.groupby(["match_id", "innings"]).ngroups)
     n_deliv = int(len(trv_f))
 
+    # 1. Overview KPI cards
     c1, c2, c3, c4 = st.columns(4)
     c1.markdown(render_kpi_card("Verified Matches (Track A)", f"{n_matches:,}", "Cricsheet 1-to-1 Reconciled"), unsafe_allow_html=True)
     c2.markdown(render_kpi_card("Active Players", f"{n_players:,}", "Batters & Bowlers in Scope"), unsafe_allow_html=True)
@@ -260,14 +455,16 @@ def _render_overview(D: Dict[str, Any], trv_f: pd.DataFrame, m_ver: pd.DataFrame
         st.warning("No verified Track A deliveries match the active filters.")
         return
 
-    # Prominent TOP 10 PLAYERS Leaderboard Section (Phase 2 & 3)
+    # 2. Official Top 10 Batters and Top 10 Bowlers tables
     tpids = (
         set(D["mapping"].loc[D["mapping"]["team_name"] == team_flt, "player_id"].unique())
         if team_flt != "All Teams"
         else None
     )
-    top10_bat = get_official_top10(D["bat"], comp_flt, tpids, n=10)
-    top10_bowl = get_official_top10(D["bowl"], comp_flt, tpids, n=10)
+    bat_df = D["bat"]
+    bowl_df = D["bowl"]
+    top10_bat = get_official_top10(bat_df, comp_flt, tpids, n=10)
+    top10_bowl = get_official_top10(bowl_df, comp_flt, tpids, n=10)
 
     st.markdown("### TOP 10 PLAYERS — Official V5.0 Pressure Leaderboards")
     st.caption(
@@ -280,10 +477,55 @@ def _render_overview(D: Dict[str, Any], trv_f: pd.DataFrame, m_ver: pd.DataFrame
     with t_bowl:
         _render_top10_table(top10_bowl, "Bowler", "v50_ov_t10_bowl")
 
-    # Row 1: Team Performance Comparison & Season Trends
+    # 3. Why Each Player Is Ranked in the Top 10
+    _render_justifications_section(top10_bat, top10_bowl)
+
+    # 4. Top 10 Batter and Bowler graphs
+    col_b, col_w = st.columns(2)
+    with col_b:
+        b_plot = top10_bat.iloc[::-1]
+        fig2 = go.Figure(
+            go.Bar(
+                x=b_plot["combined_hp_per100"],
+                y=b_plot["player_name"],
+                orientation="h",
+                marker_color=PBI_BLUE,
+                error_x=dict(
+                    type="data",
+                    symmetric=False,
+                    array=(b_plot["ci_high_hp"] - b_plot["combined_hp_per100"]).fillna(0.0).values,
+                    arrayminus=(b_plot["combined_hp_per100"] - b_plot["ci_low_hp"]).fillna(0.0).values,
+                    color=PBI_YELLOW,
+                ),
+            )
+        )
+        st.plotly_chart(style_pbi_figure(fig2, "Top Batters — Combined HP (theta_HP, 95% CI)", "Runs / 100 Balls", "Batter"), use_container_width=True)
+
+    with col_w:
+        w_plot = top10_bowl.iloc[::-1]
+        fig3 = go.Figure(
+            go.Bar(
+                x=w_plot["combined_hp_per100"],
+                y=w_plot["player_name"],
+                orientation="h",
+                marker_color=PBI_CORAL,
+                error_x=dict(
+                    type="data",
+                    symmetric=False,
+                    array=(w_plot["ci_high_hp"] - w_plot["combined_hp_per100"]).fillna(0.0).values,
+                    arrayminus=(w_plot["combined_hp_per100"] - w_plot["ci_low_hp"]).fillna(0.0).values,
+                    color=PBI_YELLOW,
+                ),
+            )
+        )
+        st.plotly_chart(style_pbi_figure(fig3, "Top Bowlers — Combined HP Prevention (95% CI)", "Runs Prevented / 100 Balls", "Bowler"), use_container_width=True)
+
+    # 5. Interactive Player Comparison
+    _render_player_comparison(bat_df, bowl_df, comp_flt, tpids)
+
+    # 6. Team Performance and Season Trends
     col_l, col_r = st.columns(2)
     with col_l:
-        # Team wins & matches in filtered scope
         home_m = m_ver[["match_id", "home_team", "home_team_id", "win_team_id"]].rename(columns={"home_team": "team", "home_team_id": "tid"})
         away_m = m_ver[["match_id", "away_team", "away_team_id", "win_team_id"]].rename(columns={"away_team": "team", "away_team_id": "tid"})
         tm = pd.concat([home_m, away_m], ignore_index=True)
@@ -296,7 +538,7 @@ def _render_overview(D: Dict[str, Any], trv_f: pd.DataFrame, m_ver: pd.DataFrame
         fig1.add_trace(go.Bar(x=t_top["team"], y=t_top["wins"], name="Wins", marker_color=PBI_BLUE))
         fig1.add_trace(go.Scatter(x=t_top["team"], y=t_top["win_pct"], name="Win %", yaxis="y2", mode="lines+markers", line=dict(color=PBI_YELLOW, width=2.5)))
         fig1.update_layout(yaxis2=dict(title="Win %", overlaying="y", side="right", range=[0, 105], showgrid=False))
-        st.plotly_chart(style_pbi_figure(fig1, "1. Team Performance Comparison (Top 12 by Wins)", "Team", "Wins (matches)"), use_container_width=True)
+        st.plotly_chart(style_pbi_figure(fig1, "Team Performance Comparison (Top 12 by Wins)", "Team", "Wins (matches)"), use_container_width=True)
 
     with col_r:
         seas = trv_f.groupby("year", as_index=False).agg(
@@ -309,54 +551,9 @@ def _render_overview(D: Dict[str, Any], trv_f: pd.DataFrame, m_ver: pd.DataFrame
         fig4.add_trace(go.Bar(x=seas["year"].astype(str), y=seas["runs"], name="Total Runs", marker_color=PBI_BLUE_DEEP))
         fig4.add_trace(go.Scatter(x=seas["year"].astype(str), y=seas["run_rate"], name="Run Rate (RPO)", yaxis="y2", mode="lines+markers", line=dict(color=PBI_CORAL, width=3)))
         fig4.update_layout(yaxis2=dict(title="Runs / Over", overlaying="y", side="right", showgrid=False))
-        st.plotly_chart(style_pbi_figure(fig4, "4. Runs & Scoring Rate Trends Across Seasons", "Season Year", "Total Runs"), use_container_width=True)
+        st.plotly_chart(style_pbi_figure(fig4, "Runs & Scoring Rate Trends Across Seasons", "Season Year", "Total Runs"), use_container_width=True)
 
-    # Row 2: Top Batter & Top Bowler Leaderboards
-    col_b, col_w = st.columns(2)
-    bat_df = D["bat"]
-    bowl_df = D["bowl"]
-    bat_el = top10_bat
-    bowl_el = top10_bowl
-
-    with col_b:
-        b_plot = bat_el.iloc[::-1]
-        fig2 = go.Figure(
-            go.Bar(
-                x=b_plot["combined_hp_per100"],
-                y=b_plot["player_name"],
-                orientation="h",
-                marker_color=PBI_BLUE,
-                error_x=dict(
-                    type="data",
-                    symmetric=False,
-                    array=(b_plot["ci_high_hp"] - b_plot["combined_hp_per100"]).values,
-                    arrayminus=(b_plot["combined_hp_per100"] - b_plot["ci_low_hp"]).values,
-                    color=PBI_YELLOW,
-                ),
-            )
-        )
-        st.plotly_chart(style_pbi_figure(fig2, "2. Top Batters — Combined HP (theta_HP, 95% CI)", "Combined HP Runs / 100b", "Batter"), use_container_width=True)
-
-    with col_w:
-        w_plot = bowl_el.iloc[::-1]
-        fig3 = go.Figure(
-            go.Bar(
-                x=w_plot["combined_hp_per100"],
-                y=w_plot["player_name"],
-                orientation="h",
-                marker_color=PBI_CORAL,
-                error_x=dict(
-                    type="data",
-                    symmetric=False,
-                    array=(w_plot["ci_high_hp"] - w_plot["combined_hp_per100"]).values,
-                    arrayminus=(w_plot["combined_hp_per100"] - w_plot["ci_low_hp"]).values,
-                    color=PBI_YELLOW,
-                ),
-            )
-        )
-        st.plotly_chart(style_pbi_figure(fig3, "3. Top Bowlers — Combined HP Prevention (95% CI)", "Combined HP Run Prevention / 100b", "Bowler"), use_container_width=True)
-
-    # Row 3: Competition Distribution & Pressure Archetype Overview
+    # 7. Competition Distribution and Archetype Analysis
     col_c, col_p = st.columns(2)
     with col_c:
         comp_inn = trv_f.groupby(["match_id", "innings", "match_format"], as_index=False)["actual_total_runs"].sum()
@@ -365,7 +562,7 @@ def _render_overview(D: Dict[str, Any], trv_f: pd.DataFrame, m_ver: pd.DataFrame
             sub_c = comp_inn[comp_inn["match_format"] == fmt]
             if len(sub_c) > 0:
                 fig5.add_trace(go.Box(y=sub_c["actual_total_runs"], name="IPL (T20)" if fmt == "T20" else "Men's T20I", marker_color=clr))
-        st.plotly_chart(style_pbi_figure(fig5, "5. Competition-Level Innings Score Distribution", "Competition", "Innings Total Runs"), use_container_width=True)
+        st.plotly_chart(style_pbi_figure(fig5, "Competition-Level Innings Score Distribution", "Competition", "Innings Total Runs"), use_container_width=True)
 
     with col_p:
         arch_b = bat_df[bat_df["eligible"]]["archetype"].value_counts()
@@ -375,7 +572,7 @@ def _render_overview(D: Dict[str, Any], trv_f: pd.DataFrame, m_ver: pd.DataFrame
         fig6.add_trace(go.Bar(x=all_a, y=[int(arch_b.get(a, 0)) for a in all_a], name="Batters (n=89)", marker_color=PBI_BLUE))
         fig6.add_trace(go.Bar(x=all_a, y=[int(arch_w.get(a, 0)) for a in all_a], name="Bowlers (n=82)", marker_color=PBI_CORAL))
         fig6.update_layout(barmode="group")
-        st.plotly_chart(style_pbi_figure(fig6, "6. V5.0 Pressure Archetype Distribution", "Archetype", "Eligible Players"), use_container_width=True)
+        st.plotly_chart(style_pbi_figure(fig6, "V5.0 Pressure Archetype Distribution", "Archetype", "Eligible Players"), use_container_width=True)
 
 
 def _render_team_analysis(D: Dict[str, Any], comp: str, season: str) -> None:

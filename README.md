@@ -73,7 +73,7 @@ Launch the interactive Streamlit dashboard:
 
 ### V5.0 Overview: Top Players, Ranking Reasons, Graphs & Player Comparison
 
-The V5.0 Overview is intended to be read from the global dataset picture down to individual player evidence.
+The V5.0 Overview follows a structured cricket analytics storytelling flow: **KPIs → Official Top 10 Tables → Why These Players Are Top 10? → Top 10 Ranking Graphs → Interactive Player Comparison → Team & Season Trends → Competition & Archetypes**.
 
 #### 1. Overview KPIs
 
@@ -163,7 +163,7 @@ After choosing a player from the Top 10 tables or Player Explorer's **Quick Jump
 5. **Pressure vs Normal Performance:** the selected player's unadjusted `DeltaRE` contribution per 100 balls in `LI_global >= 1.50` versus normal-pressure deliveries.
 6. **V5.0 Effects & 95% Paired Bootstrap CIs:** side-by-side `theta_main`, `delta_pressure`, and `theta_HP` estimates with their confidence intervals.
 
-This is a within-player comparison across time, format, and pressure context. The current dashboard does **not** provide a separate two-player head-to-head comparison selector. Match history appears below the charts, with **Open in Match Explorer →** for verified match drill-down.
+This is a within-player comparison across time, format, and pressure context. For multi-player side-by-side comparison within the same role (`2–5` eligible batters or bowlers), use the **PLAYER COMPARISON** section directly on **1. Overview**, which displays a synchronized metrics table, a grouped `theta_main` / `delta_pressure` (`[EXP]`) / `theta_HP` chart, a `Combined HP & 95% CI` chart, and high-pressure exposure (`HP Balls` & `HP Matches`). Match history appears below the Player Explorer charts, with **Open in Match Explorer →** for verified match drill-down.
 
 | Dashboard Page | Features |
 |---|---|
