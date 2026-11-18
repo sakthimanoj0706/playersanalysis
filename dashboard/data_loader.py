@@ -78,6 +78,8 @@ def load_all_data() -> dict[str, Any]:
         "star_audit": ROOT / "STAR_PLAYER_ELIGIBILITY_AUDIT.csv",
         "method_cmp": ROOT / "PRESSURE_METHODOLOGY_COMPARISON.csv",
         "val_matrix": V42_DIR / "V4_2_VALIDATION_MATRIX.csv",
+        "model_cmp": V42_DIR / "V4_2_MODEL_COMPARISON.csv",
+        "elig_prec": V42_DIR / "V4_2_ELIGIBILITY_PRECISION_ANALYSIS.csv",
         "score_audit": V42_DIR / "V4_2_SCORE_ENRICHMENT_AUDIT.csv",
         "rr_2026_str": V3_DIR / "rr_2026_team_strengths.csv",
         "rr_2026_wk": V3_DIR / "rr_2026_team_weaknesses.csv",
@@ -93,3 +95,94 @@ def load_all_data() -> dict[str, Any]:
             raise FileNotFoundError(f"Required dataset artifact '{path.name}' is missing.")
         data[key] = pd.read_csv(path)
     return data
+
+
+CONFIDENCE_LABELS = {
+    "HIGH": "High",
+    "MODERATE": "Moderate",
+    "PROVISIONAL_BOUNDARY": "Provisional (Boundary)",
+}
+
+TRADEOFF_LABELS = {
+    "none": "Clean",
+    "MODERATE_OR_NEUTRAL_TRADEOFF": "Neutral Tradeoff",
+    "MIXED_SECONDARY_PROFILE": "Mixed Secondary",
+}
+
+POOL_LABELS = {
+    "UNIVERSAL_TOP_10": "Universal Top 10",
+    "OUTSIDE_TOP_10_ELIGIBLE_POOL": "Outside Top 10",
+    "PRIMARY_TARGET": "Primary Target",
+    "TACTICAL_FIT_TARGET": "Tactical Fit",
+}
+
+IDENTITY_LABELS = {
+    "VERIFIED_INDIA_INTL": "India (Intl)",
+    "IPL_DOMESTIC_POOL": "India (IPL Pool)",
+    "VERIFIED_OVERSEAS_INTL": "Overseas",
+    "UNCLASSIFIED": "Unclassified",
+}
+
+
+def humanize_code(val: Any, mapping: dict[str, str], default: str = "—") -> str:
+    if val is None or pd.isna(val):
+        return default
+    s = str(val).strip()
+    if s in mapping:
+        return mapping[s]
+    return s.replace("_", " ").title()
+
+
+@st.cache_data(show_spinner=False)
+def load_rr_scouting_enrichment() -> dict[str, Any]:
+    """Load RR auction assumptions, domestic/overseas tags, and phase/matchup splits."""
+    assumptions_path = ROOT / "data/reference/rr_2027_auction_assumptions.csv"
+    assumptions: dict[str, str] = {}
+    if assumptions_path.exists():
+        adf = pd.read_csv(assumptions_path)
+        assumptions = dict(zip(adf["parameter"], adf["value"]))
+
+    from src.scouting_engine.rr_scouting import get_player_representation_metadata
+
+    rep = get_player_representation_metadata()
+    if not rep.empty:
+        rep = rep[["player_id", "identity_category"]].drop_duplicates("player_id")
+        # Known overseas IPL-only players without 2022-26 T20I caps (e.g., Sunil Narine, ID 781)
+        rep.loc[rep["player_id"].isin([781, 161, 319, 1074]), "identity_category"] = "VERIFIED_OVERSEAS_INTL"
+    else:
+        rep = pd.DataFrame(columns=["player_id", "identity_category"])
+
+    bbb_path = ROOT / "data/ball_by_ball_ipl_t20i.csv"
+    bat_splits = pd.DataFrame(columns=["player_id", "pace_sr", "spin_sr"])
+    bowl_splits = pd.DataFrame(columns=["player_id", "pp_econ", "mid_econ", "death_econ"])
+    if bbb_path.exists():
+        cols = ["innings", "overid", "striker_id", "bowler_id", "runs", "extras_type", "pace_or_spin"]
+        bbb = pd.read_csv(bbb_path, usecols=cols, low_memory=False)
+        reg = bbb[bbb["innings"].isin([1, 2])].copy()
+        reg["is_faced"] = (reg["extras_type"] != "wide").astype(int)
+        reg["is_legal"] = (~reg["extras_type"].isin(["wide", "Overstep"])).astype(int)
+        reg["phase"] = reg["overid"].map(lambda o: "pp" if o <= 6 else ("mid" if o <= 15 else "death"))
+        reg["pos_clean"] = reg["pace_or_spin"].astype(str).str.strip().str.lower()
+
+        bf = reg[reg["is_faced"] == 1]
+        bs = bf.groupby(["striker_id", "pos_clean"], as_index=False).agg(runs=("runs", "sum"), balls=("is_faced", "sum"))
+        bs = bs[bs["balls"] >= 30]
+        bs["sr"] = (100.0 * bs["runs"] / bs["balls"]).round(1)
+        bp = bs.pivot(index="striker_id", columns="pos_clean", values="sr").reset_index().rename(columns={"striker_id": "player_id"})
+        bat_splits = pd.DataFrame({"player_id": bp["player_id"], "pace_sr": bp.get("pace"), "spin_sr": bp.get("spin")})
+
+        bl = reg[reg["is_legal"] == 1]
+        ws = bl.groupby(["bowler_id", "phase"], as_index=False).agg(runs=("runs", "sum"), balls=("is_legal", "sum"))
+        ws = ws[ws["balls"] >= 30]
+        ws["econ"] = (6.0 * ws["runs"] / ws["balls"]).round(2)
+        wp = ws.pivot(index="bowler_id", columns="phase", values="econ").reset_index().rename(columns={"bowler_id": "player_id"})
+        bowl_splits = pd.DataFrame(
+            {"player_id": wp["player_id"], "pp_econ": wp.get("pp"), "mid_econ": wp.get("mid"), "death_econ": wp.get("death")}
+        )
+
+    return {
+        "assumptions": assumptions,
+        "rep": rep,
+        "bat_splits": bat_splits,
+        "bowl_splits": bowl_splits,
+    }

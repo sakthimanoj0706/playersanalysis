@@ -1,0 +1,5 @@
+innings,model_family,evaluation_split,n_deliveries,n_matches,roc_auc,brier_score,log_loss,cal_intercept,cal_slope,cv_auc_std,perspective,governance_status
+1,OBSERVABLE_STATE_WP,MatchGrouped_5Fold_CV,98200,793,0.6526,0.2319,0.6553,0.0092,0.8492,0.0377,P(inn1_batting_team_wins),VALIDATED_SCORE_BLIND_BASELINE
+1,OBSERVABLE_STATE_WP,Chronological_OOT_gt_2024,39292,318,0.6826,0.2244,0.6389,-0.145,1.094,,P(inn1_batting_team_wins),VALIDATED_SCORE_BLIND_BASELINE
+1,LOWER_BOUND_SCORE_WP_DIAGNOSTIC,MatchGrouped_5Fold_CV,98200,793,0.6978,0.2205,0.6315,0.0058,0.892,0.0378,P(inn1_batting_team_wins),BLOCKED_FOR_PRODUCTION_UNVERIFIED_EXTRAS
+1,LOWER_BOUND_SCORE_WP_DIAGNOSTIC,Chronological_OOT_gt_2024,39292,318,0.7128,0.2217,0.6367,-0.3416,0.8604,,P(inn1_batting_team_wins),BLOCKED_FOR_PRODUCTION_UNVERIFIED_EXTRAS

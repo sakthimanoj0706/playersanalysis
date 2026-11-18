@@ -1,0 +1,5 @@
+role,comparison,common_n,spearman_r
+batter,Track B Main vs V4.2 General Skill FE (Claim A),106,0.8087
+batter,Track B Resource-Pressure Slope vs V4.2 Pressure Slope (EB Delta),106,0.2621
+bowler,Track B Main vs V4.2 General Skill FE (Claim A),136,0.8831
+bowler,Track B Resource-Pressure Slope vs V4.2 Pressure Slope (EB Delta),136,-0.2069

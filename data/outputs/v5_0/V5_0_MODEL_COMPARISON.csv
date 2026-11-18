@@ -1,0 +1,15 @@
+role,comparison,common_n,spearman_r
+batter,V5.0 Main vs V4.4 Track A Main,89,0.9935
+batter,V5.0 Binary HP Uplift vs V4.4 Continuous LI Slope,89,0.7795
+batter,V5.0 Main vs V4.3 Batter-Run RAPM,89,0.9583
+batter,V5.0 Track A Main vs V4.4 Track B Main,89,0.9463
+batter,V5.0 Track A HP Uplift vs Track B Resource Slope,89,0.5541
+batter,V5.0 Main vs V4.2 Claim A General Skill,62,0.7334
+batter,V5.0 HP Uplift vs V4.2 Pressure Slope (EB Delta),62,0.4723
+bowler,V5.0 Main vs V4.4 Track A Main,82,0.9889
+bowler,V5.0 Binary HP Uplift vs V4.4 Continuous LI Slope,82,0.7464
+bowler,V5.0 Main vs V4.3 Batter-Run RAPM,82,0.9678
+bowler,V5.0 Track A Main vs V4.4 Track B Main,82,0.9656
+bowler,V5.0 Track A HP Uplift vs Track B Resource Slope,82,0.5005
+bowler,V5.0 Main vs V4.2 Claim A General Skill,76,0.8393
+bowler,V5.0 HP Uplift vs V4.2 Pressure Slope (EB Delta),76,-0.138

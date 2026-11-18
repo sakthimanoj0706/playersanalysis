@@ -1,0 +1,9 @@
+{
+  "best_alpha": 150.0,
+  "n_deliveries": 193988,
+  "n_batters": 824,
+  "n_bowlers": 596,
+  "intercept": 0.49271453868186754,
+  "non_bowler_dismissal_sep_coef": -2.6794119923396686,
+  "unresolved_wicket_sep_coef": 0.010499939681978687
+}

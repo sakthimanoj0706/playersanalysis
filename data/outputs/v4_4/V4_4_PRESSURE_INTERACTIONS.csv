@@ -1,0 +1,3 @@
+role,n_eligible_100_300_12,cont_vs_binary_150_spearman,median_se_main,median_se_pressure
+batter,96,0.7981,6.0904,5.6955
+bowler,95,0.7678,5.733,5.504

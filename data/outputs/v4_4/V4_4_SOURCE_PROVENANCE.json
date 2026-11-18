@@ -1,0 +1,30 @@
+{
+  "retrieval_utc": "2026-11-17T19:29:24.063761+00:00",
+  "archives": {
+    "ipl_json": {
+      "url": "https://cricsheet.org/downloads/ipl_json.zip",
+      "local_path": "D:\\rrhackthon\\data\\external\\cricsheet\\ipl_json.zip",
+      "size_bytes": 5214168,
+      "sha256": "46ff2f5e41147510a55502e52ea8761b216a319974cad907d6ff2d8c2d4be495"
+    },
+    "t20s_male_json": {
+      "url": "https://cricsheet.org/downloads/t20s_male_json.zip",
+      "local_path": "D:\\rrhackthon\\data\\external\\cricsheet\\t20s_male_json.zip",
+      "size_bytes": 14638615,
+      "sha256": "102586ea122793aafc645e05d6a598b9fff0746935e39b77f2d6f153bc385086"
+    }
+  },
+  "cricsheet_matches_indexed_window": 2836,
+  "match_join_counts": {
+    "EXACT_MATCH": 758,
+    "MISSING_MATCH": 95
+  },
+  "innings_reconciliation_counts": {
+    "VERIFIED_CRICSHEET_EXACT": 1442,
+    "UNVERIFIED_MISSING_MATCH": 157,
+    "VERIFIED_DLS_CRICSHEET_EXACT": 29,
+    "UNVERIFIED_DELIVERY_OR_SCORE_MISMATCH": 24
+  },
+  "verified_innings": 1471,
+  "total_regular_innings": 1652
+}

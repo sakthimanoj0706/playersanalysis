@@ -1,0 +1,8 @@
+{
+  "external_scorecard_files_found": 0,
+  "total_regular_innings": 1652,
+  "verified_zero_extras_innings": 11,
+  "dls_revised_target_inn2_only": 23,
+  "unresolved_no_independent_scorecard": 1618,
+  "conclusion": "STOPPED_NO_INDEPENDENT_SCORECARD_SOURCE_IN_REPO"
+}

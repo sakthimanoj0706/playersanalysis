@@ -1,0 +1,34 @@
+category,check_name,observed_value,status,details
+scale,matches_table_rows,853,PASS,Total matches in matches_ipl_t20i.csv
+scale,matches_with_deliveries,837,PASS,Matches with >= 1 ball-by-ball row
+scale,regular_matches,837,PASS,Matches with innings 1 or 2 deliveries
+scale,regular_innings,1652,PASS,"Distinct (match_id, innings) in {1, 2}"
+scale,regular_delivery_rows,193988,PASS,"Delivery rows in innings {1, 2}"
+scale,regular_legal_deliveries,185951,PASS,Deliveries excluding wide and Overstep
+special_cases,super_over_matches,4,ISOLATED,"26 deliveries in innings {3, 4} kept separate"
+special_cases,invalid_innings_numbers,0,PASS,Rows outside innings 1..4
+special_cases,abandoned_matches,19,INFO,16 with 0 deliveries + 3 with partial deliveries
+special_cases,no_result_matches,21,INFO,Matches ending in No Result
+special_cases,tied_matches,5,INFO,"Tied matches (4 decided via Super Over, 1 without)"
+special_cases,dls_matches,19,INFO,Matches with D/L or DLS in result; revised_target populated in 23
+special_cases,matches_with_bbb_missing_win_team_id,25,INFO,Excluded from win-probability training labels
+special_cases,matches_with_innings_1_only,22,INFO,Abandoned/No Result before or at start of innings 2
+special_cases,matches_with_innings_2_without_1,0,PASS,Orphaned second innings check
+special_cases,incomplete_non_dls_innings_1,14,INFO,"Innings 1 with <120 legal balls, <10 wkts, no DLS flag"
+integrity,duplicate_delivery_rows,0,PASS,Exact duplicate rows in ball_by_ball
+integrity,duplicate_innings_ball_num,0,PASS,"Duplicate (match_id, innings, innings_ball_num)"
+integrity,duplicate_over_ball_num,0,PASS,"Duplicate (match_id, innings, overid, over_ball_num)"
+integrity,missing_striker_id,0,PASS,Missing striker_id in regular innings
+integrity,missing_non_striker_id,0,PASS,Missing non_striker_id in regular innings
+integrity,missing_bowler_id,0,PASS,Missing bowler_id in regular innings
+integrity,missing_dismissed_player_id_on_wicket,1,WARN,Wicket rows with blank dismissed_player_id
+integrity,invalid_overid_regular_innings,0,PASS,"overid outside [1, 20] in innings {1, 2}"
+integrity,invalid_ball_sequence_numbers,0,PASS,over_ball_num < 1 or innings_ball_num < 1
+integrity,playing_eleven_key_conflicts,40,WARN,"Repeated (match_id, team_id, player_id) in playing_eleven"
+extras_audit,extras1_runs_is_categorical_codebook,0,VERIFIED_BLOCKER,100% 1-to-1 match with EXTRAS_TYPE_MAP (1..7); NOT numeric runs
+extras_audit,wide_deliveries_with_runs_gt_0,0/7474,BLOCKED_MULTI_RUN,"All 7,474 wides have runs=0 and extras_2_runs=0; 2/3/5-wides unquantified"
+extras_audit,legbyes_deliveries_with_runs_gt_0,0/2661,BLOCKED_UNQUANTIFIED,"All 2,661 legbyes have runs=0 and extras_2_runs=0; exact runs missing"
+extras_audit,byes_deliveries_with_runs_gt_0,0/505,BLOCKED_UNQUANTIFIED,All 505 byes have runs=0 and extras_2_runs=0; exact runs missing
+extras_audit,overstep_deliveries,565,PARTIAL,"Batter runs in `runs`, +1 penalty implied, 21 have extras_2_runs>0"
+extras_audit,other_and_penalty_deliveries,261,BLOCKED_UNQUANTIFIED,260 other + 1 Penalty events with unverified extra run amounts
+extras_audit,extras_2_runs_nonzero,35,WARN,"Only 35/194,014 rows nonzero (19=1, 16=4); semantics unverified"

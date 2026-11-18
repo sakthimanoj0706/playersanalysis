@@ -1,0 +1,3 @@
+role,n_eligible_300b,median_boot_se,median_rank_ci_width,split_half_spearman_mean,split_half_spearman_sd,split_half_pearson_mean,boot_iters,split_half_iters
+batter,169,6.9521,102.13,0.2798,0.053,0.3847,200,10
+bowler,180,6.8376,112.05,0.3278,0.045,0.3321,200,10

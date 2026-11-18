@@ -1,0 +1,13 @@
+{
+  "random_seed": 2026,
+  "n_cv_folds": 5,
+  "oot_cutoff_year": 2024,
+  "standard_t20_balls": 120,
+  "li_thresholds": [
+    1.0,
+    1.25,
+    1.5,
+    1.75,
+    2.0
+  ]
+}
